@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<data>
+    <txt>
+        Gegeben sei der Quelltext:
+    </txt>
+    <src>
+def func(a = 5, b = 7):
+    print a, b        
+    </src>
+    <txt>
+        Ergaenzen Sie die von folgenden Funktionsaufrufen erzeugten Ausgaben
+    </txt>
+    <lelist>
+        <elt>
+            <src>func()</src><le len="10"/><sol>5 7</sol>
+        </elt>
+        <elt>
+            <src>func(3)</src><le len="10"/><sol>3 7</sol>
+        </elt>
+        <elt>
+            <src>func(3, 'test')</src><le len="10"/><sol>3 test</sol>
+        </elt>
+    </lelist>
+    <txt>
+        <b>Hinweis:</b> siehe Kurs02 (Funktionen)
+    </txt>
+</data>
