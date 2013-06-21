@@ -1,0 +1,39 @@
+{% load staticfiles %}
+
+<!-- here we dont need to include the css -->
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'tasks/style.css' %}" /> -->
+
+
+<div class="le_list">
+
+
+{% if le_list %}
+<table>
+    {% for elt in le_list %}
+        <tr><td>{{forloop.counter}}.</td>
+        <td>
+        {% if elt.src.text %}
+        <span class="src">{{elt.src.text}}</span>
+        {% else %}
+        <span class="normal">{{elt.txt.text}}</span>
+        {% endif %}
+        </td>
+        <td>
+        <input name="le{{forloop.counter}}" type="text" size="{{elt.le.len}}" value="{{elt.user_solution}}">
+        </td>
+        {% if print_solution %}
+        <td>
+        <div class="{{elt.css_class}}">
+        {{elt.print_solution}}
+        </div>
+        </td>
+        {% endif %}
+        </tr>
+    {% endfor %}
+</table>
+{% else %}
+    <p>No line_edits are available. This should not happen</p>
+{% endif %}
+
+
+</div>

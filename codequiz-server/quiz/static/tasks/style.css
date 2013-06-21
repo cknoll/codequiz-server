@@ -1,0 +1,78 @@
+li a {
+    color: green;
+}
+
+.klasse1 {
+    border:1px outset gray;
+    margin:.5em;
+    padding:.5em;
+    background-color:#efd;
+    
+}
+
+.task1 {
+    width:600px;
+    border:1px solid;
+    border-color: #000;
+    margin:.5em;
+    padding:.5em;
+    /*background-color:#fafafa;*/
+    
+background-image: -webkit-linear-gradient(#eaeaea 0%, #fafafa 100%); 
+background-image: -ms-linear-gradient(#eaeaea 0%, #fafafa 100%); 
+background-image: -o-linear-gradient(#eaeaea 0%, #fafafa 100%); 
+background-image: -moz-linear-gradient(#fafafa 0%, #fdfdfd 100%); 
+background-image: linear-gradient(#fafafa 0%, #fdfdfd 100%); 
+    
+}
+
+
+
+.src, .src1
+{
+    background-color:#eaeaea;
+    font-family:Fixedsys,Courier,monospace;    
+}
+
+.src1
+{
+    width:400px;
+    border:1px solid;
+    border-color: #555;
+    margin:.5em;
+    padding:.5em;
+}
+
+
+.le_list
+{
+    padding:.5em;
+    border:1px solid;
+    border-color: #555;
+    
+}
+
+.normal
+{
+    /*font-size:14;*/
+    
+}
+
+.sol_right
+{
+    font-family:Fixedsys,Courier,monospace;
+    color:#008000;
+}
+
+.sol_wrong
+{
+    font-family:Fixedsys,Courier,monospace;
+    color:#800000;
+}
+
+
+.tags
+{
+    font-size:10;
+    background-color:#eeeeff; /* nur test*/
+}

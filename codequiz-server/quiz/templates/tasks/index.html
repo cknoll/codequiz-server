@@ -1,0 +1,18 @@
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'tasks/style.css' %}" />
+
+
+<div class="klasse1">
+Das ist ein Test
+</div>
+
+{% if task_list %}
+    <ul>
+    {% for task in task_list %}
+        <li><a href="{% url 'quiz:task_view' task.id %}">{{ task.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No tasks are available.</p>
+{% endif %}

@@ -1,0 +1,41 @@
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'tasks/style.css' %}" />
+
+
+<form action="{% url 'quiz_ns:task_form_process' task.id %}" method="post">
+{% csrf_token %}
+
+<div class="task1">
+<h2>{{ task.title }}</h2>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<br>
+by {{ task.author }}
+<br><br>
+
+{% for s in strings %}
+
+        {{s|safe}}
+<br>        
+{% endfor %}
+
+<br>
+<span style="display: block; text-align: right;">
+{%for bs in button_strings%}
+
+{{bs|safe}}
+
+{% endfor %}
+</span>
+<br>
+<br><br>
+
+Tags:
+{% for tag in task.tag_list %}
+     <span class="tags">{{tag}}</span>
+{% endfor %}
+
+
+
+</div>
+</form>
