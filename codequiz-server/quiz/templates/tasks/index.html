@@ -4,13 +4,13 @@
 
 
 <div class="klasse1">
-Das ist ein Test
+Aufgabenliste
 </div>
 
 {% if task_list %}
     <ul>
     {% for task in task_list %}
-        <li><a href="{% url 'quiz:task_view' task.id %}">{{ task.title }}</a></li>
+        <li><a href="{% url 'quiz_ns:task_view' task.id %}">{{ task.title }}</a></li>
     {% endfor %}
     </ul>
 {% else %}

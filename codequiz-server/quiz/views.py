@@ -26,7 +26,7 @@ def render_toplevel_elt(tle, user_sol_list=None):
     return template.render(Context(tle.context))
 
 def index(request):
-    task_list = Task.objects.order_by('-pub_date')[:5]
+    task_list = Task.objects.order_by('pub_date')[:5]
     #raise Http404, "Ach wie schade"
     return render(request, 'tasks/index.html', dict(task_list=task_list))
 
