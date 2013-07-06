@@ -1,5 +1,5 @@
 from django.contrib import admin
-from quiz.models import Task
+from quiz.models import Task, TaskCollection
 
 
 
@@ -17,3 +17,5 @@ class TaskAdmin(admin.ModelAdmin):
     
 
 admin.site.register(Task, TaskAdmin)
+admin.site.register(TaskCollection)
+

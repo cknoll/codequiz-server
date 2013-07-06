@@ -8,7 +8,7 @@ from IPython import embed as IPS
 
 from aux import xml_lib
 
-from quiz.models import Task
+from quiz.models import Task, TaskCollection
 
 
 class Container(object):
@@ -116,6 +116,17 @@ def form_result_view(request, task_id):
 
     txt = "Results for %s %s" %(task_id, le_res)
     return HttpResponse(txt)
+
+
+
+def task_collection_view(request, tc_id):
+    tc = get_object_or_404(TaskCollection, pk=tc_id)
+    tasks = tc.tasks.iterator()
+
+    d = dict(task_list = tasks, title = tc.title, author = tc.author)
+    context = Context(d)
+
+    return render(request, 'tasks/task_collection.html', context)
 
 
 def task_view0(request, task_id):

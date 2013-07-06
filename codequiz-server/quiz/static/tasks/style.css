@@ -7,6 +7,7 @@ li a {
     margin:.5em;
     padding:.5em;
     background-color:#eee;
+    width:400px;
     
 }
 
@@ -75,4 +76,9 @@ background-image: linear-gradient(#fafafa 0%, #fdfdfd 100%);
 {
     font-size:10;
     background-color:#eeeeff; /* nur test*/
+}
+
+.small
+{
+    font-size:8;
 }
