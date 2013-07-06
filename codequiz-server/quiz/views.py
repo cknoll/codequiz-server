@@ -118,6 +118,14 @@ def form_result_view(request, task_id):
     return HttpResponse(txt)
 
 
+def tc_run_view(request, tc_id, task_id):
+    tc = get_object_or_404(TaskCollection, pk=tc_id)
+    d = dict(task_id = task_id, tc_title = tc.title)
+    context = Context(d)
+
+    return render(request, 'tasks/tc_run.html', context)
+
+
 
 def task_collection_view(request, tc_id):
     tc = get_object_or_404(TaskCollection, pk=tc_id)
