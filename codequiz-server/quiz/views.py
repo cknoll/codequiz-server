@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.template import Context, loader
 from django.shortcuts import render, get_object_or_404
 
@@ -39,16 +39,25 @@ def get_button(button_type):
     return btempl.render(bContext)
 
 
-def aux_get_task(task_id):
 
-    task = get_object_or_404(Task, pk=task_id)
+def aux_get_tle_list_from_task(task):
+    """
+    returns list of top level elements (tle) of the task-xml
+    """
     root = xml_lib.load_xml(task.body_xml)
 
+    # unpack the taglist:
+    # TODO: this should be implemented in the model??
+    if isinstance(task.tag_list, str):
+        task.tag_list = [tag.strip() for tag in task.tag_list.split(',')]
 
-    task.tag_list = [tag.strip() for tag in task.tag_list.split(',')]
     tle_list = xml_lib.split_xml_root(root)
 
-    return task, tle_list
+    return tle_list
+
+
+
+
 
 def get_solutions_from_post(request):
     items = request.POST.items()
@@ -60,9 +69,8 @@ def get_solutions_from_post(request):
 
     return le_sol
 
-def task_view(request, task_id, solution = False):
-    task, tle_list = aux_get_task(task_id)
 
+def aux_task_strings(task, solution=False):
     if not solution:
         button_strings = [get_button(t) for t in ['solution', 'next']]
         user_solution = None
@@ -71,14 +79,43 @@ def task_view(request, task_id, solution = False):
 
         user_solution = get_solutions_from_post(request)
 
+    return button_strings, user_solution
 
+def aux_task_button_strings(solution):
+
+    if not solution:
+        button_strings = [get_button(t) for t in ['solution', 'next']]
+    else:
+        button_strings = [get_button('next') ]
+
+    return button_strings
+
+
+def aux_task_user_solution(request, solution):
+
+    if not solution:
+        user_solution = None
+    else:
+        user_solution = get_solutions_from_post(request)
+
+    return user_solution
+
+
+
+
+def task_view(request, task_id, solution = False):
+    task = get_object_or_404(Task, pk=task_id)
+    tle_list = aux_get_tle_list_from_task(task)
+
+    button_strings = aux_task_button_strings(solution)
+    user_solution = aux_task_user_solution(request, solution)
     html_strings = [render_toplevel_elt(tle, user_solution) for tle in tle_list]
-    context = Context({
-            'task' : task,
-            'strings' : html_strings,
-            'button_strings' : button_strings
-        })
-    return render(request, 'tasks/detail.html', context)
+
+    d = dict(task = task, strings = html_strings,
+             button_strings = button_strings)
+
+    context = Context(d)
+    return render(request, 'tasks/task_detail.html', context)
 
 
 
@@ -118,12 +155,38 @@ def form_result_view(request, task_id):
     return HttpResponse(txt)
 
 
-def tc_run_view(request, tc_id, task_id):
+def tc_run_view(request, tc_id, tc_task_id):
+    """
+    tc_task_id is the relative position of the current task in the
+    current TaskCollection. NOT the task_id (pk of tasks)
+    """
+
+    tc_task_id = int(tc_task_id)
+
     tc = get_object_or_404(TaskCollection, pk=tc_id)
-    d = dict(task_id = task_id, tc_title = tc.title)
+    # get current task an next task
+    ordered_task_list = tc.tc_membership_set.order_by('ordering')
+#    IPS()
+    # TODO: do we need it?
+    if tc_task_id >= len(ordered_task_list):
+        raise Http404('No such task_id (%s) for task collection %s' % (tc_task_id, tc_id))
+    current_task = ordered_task_list[tc_task_id].task
+
+
+    solution=False
+    tle_list = aux_get_tle_list_from_task(current_task)
+
+    button_strings = aux_task_button_strings(solution)
+    user_solution = aux_task_user_solution(request, solution)
+    html_strings = [render_toplevel_elt(tle, user_solution) for tle in tle_list]
+
+
+    d = dict(task = current_task, tc = tc, button_strings = button_strings,
+             html_strings = html_strings, ID = tc_task_id+1,
+             LEN = len(ordered_task_list))
     context = Context(d)
 
-    return render(request, 'tasks/tc_run.html', context)
+    return render(request, 'tasks/tc_run_task_detail.html', context)
 
 
 

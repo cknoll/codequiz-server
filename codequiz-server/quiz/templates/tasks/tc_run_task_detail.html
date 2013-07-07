@@ -1,4 +1,4 @@
-<!-- For a single Task (outside of a test)-->
+<!--For a task as an element of a test (TaskCollection) -->
 {% load staticfiles %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'tasks/style.css' %}" />
@@ -8,13 +8,14 @@
 {% csrf_token %}
 
 <div class="task1">
+<h3>{{ tc.title }} : Task {{ ID }}/{{ LEN }}</h3>
 <h2>{{ task.title }}</h2>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 <br>
 by {{ task.author }}
 <br><br>
 
-{% for s in strings %}
+{% for s in html_strings %}
 
         {{s|safe}}
 <br>        
@@ -29,14 +30,6 @@ by {{ task.author }}
 {% endfor %}
 </span>
 <br>
-<br><br>
-
-Tags:
-{% for tag in task.tag_list %}
-     <span class="tags">{{tag}}</span>
-{% endfor %}
-
-
 
 </div>
 </form>
