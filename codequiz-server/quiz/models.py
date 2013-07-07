@@ -19,7 +19,7 @@ class Task(models.Model):
     is_beta.short_description = 'in beta state?'
 
     def __unicode__(self):
-        return self.title + str(self.id)
+        return ("T%03i:" % self.id) +self.title
 
 class TaskCollection(models.Model):
     """
@@ -28,6 +28,19 @@ class TaskCollection(models.Model):
     author = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
 
-    tasks = models.ManyToManyField(Task)
+    tasks = models.ManyToManyField(Task, through='TC_Membership')
 
-# Create your models here.
+    def __unicode__(self):
+        return ("TC%03i:" % self.id) +self.title
+
+
+class TC_Membership(models.Model):
+    """
+    This class specifies the assoziation of a Task to a TaskCollection
+    (needed for custom ordering of Tasks in TC)
+    """
+
+    task = models.ForeignKey(Task)
+    group = models.ForeignKey(TaskCollection)
+    ordering = models.FloatField()
+
