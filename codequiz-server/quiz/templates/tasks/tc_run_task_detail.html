@@ -4,11 +4,11 @@
 <link rel="stylesheet" type="text/css" href="{% static 'tasks/style.css' %}" />
 
 
-<form action="{% url 'quiz_ns:task_form_process' task.id %}" method="post">
+<form action="{% url 'quiz_ns:tc_run_form_process' tc.id ID %}" method="post">
 {% csrf_token %}
 
 <div class="task1">
-<h3>{{ tc.title }} : Task {{ ID }}/{{ LEN }}</h3>
+<h3>{{ tc.title }} : Task {{ ID|add:1 }}/{{ LEN }}</h3>
 <h2>{{ task.title }}</h2>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 <br>

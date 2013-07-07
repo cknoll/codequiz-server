@@ -33,6 +33,10 @@ class TaskCollection(models.Model):
     def __unicode__(self):
         return ("TC%03i:" % self.id) +self.title
 
+    def LEN(self):
+        return len(self.tc_membership_set.all())
+
+
 
 class TC_Membership(models.Model):
     """

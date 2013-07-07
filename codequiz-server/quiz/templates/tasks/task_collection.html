@@ -4,20 +4,23 @@
 
 
 <div class="klasse1">
-TEST: {{ title }}
+Test: {{ tc.title }}
 <br>
 <div class="small">
-{{ author }}
+Author: {{ tc.author }}
 </div>
 
 </div>
 
 {% if task_list %}
-    <ul>
+Tasks:
+    <ol>
     {% for task in task_list %}
-        <li><a href="{% url 'quiz_ns:task_view' task.id %}">{{ task.title }}</a></li>
+        <li>{{ task.title }}</li>
     {% endfor %}
-    </ul>
+    </ol>
+    <br>
+    <a href="{% url 'quiz_ns:tc_run_view' tc.id 0 %}">Start this test!</a></li>
 {% else %}
     <p>No tasks are available.</p>
 {% endif %}

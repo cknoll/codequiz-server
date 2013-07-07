@@ -65,35 +65,23 @@ def get_solutions_from_post(request):
 
     le_sol = [v for k,v in items if k.startswith('le')]
 
-    #!! cbox
+    #!TODO: !! cbox
 
     return le_sol
 
+def aux_task_button_strings(solution_flag):
 
-def aux_task_strings(task, solution=False):
-    if not solution:
-        button_strings = [get_button(t) for t in ['solution', 'next']]
-        user_solution = None
+    if not solution_flag:
+        button_strings = [get_button(t) for t in ['result']]
     else:
-        button_strings = [get_button('next') ]
-
-        user_solution = get_solutions_from_post(request)
-
-    return button_strings, user_solution
-
-def aux_task_button_strings(solution):
-
-    if not solution:
-        button_strings = [get_button(t) for t in ['solution', 'next']]
-    else:
-        button_strings = [get_button('next') ]
+        button_strings = [get_button(t) for t in ['result', 'next']]
 
     return button_strings
 
 
-def aux_task_user_solution(request, solution):
+def aux_task_user_solution(request, solution_flag):
 
-    if not solution:
+    if not solution_flag:
         user_solution = None
     else:
         user_solution = get_solutions_from_post(request)
@@ -103,12 +91,12 @@ def aux_task_user_solution(request, solution):
 
 
 
-def task_view(request, task_id, solution = False):
+def task_view(request, task_id, solution_flag = False):
     task = get_object_or_404(Task, pk=task_id)
     tle_list = aux_get_tle_list_from_task(task)
 
-    button_strings = aux_task_button_strings(solution)
-    user_solution = aux_task_user_solution(request, solution)
+    button_strings = aux_task_button_strings(solution_flag)
+    user_solution = aux_task_user_solution(request, solution_flag)
     html_strings = [render_toplevel_elt(tle, user_solution) for tle in tle_list]
 
     d = dict(task = task, strings = html_strings,
@@ -131,31 +119,51 @@ def form_result_view(request, task_id):
 
     if 'next' in request.POST:
         return next_task(request, task_id)
-    elif 'solution' in request.POST:
-        return task_view(request, task_id, solution=True)
-        #return solution_task(request, task_id)
+    elif 'result' in request.POST:
+        return task_view(request, task_id, solution_flag=True)
     else:
         # this should not happen
         return task_view(request, task_id)
 
-    le1 = request.POST.get('le1', '')
-    le2 = request.POST.get('le2', '')
-    le3 = request.POST.get('le3', '')
+#    le1 = request.POST.get('le1', '')
+#    le2 = request.POST.get('le2', '')
+#    le3 = request.POST.get('le3', '')
+#
+#    IPS()
+#
+#    le_res = """
+#    le1 = %s
+#    le2 = %s
+#    le3 = %s
+#    """ % (le1, le2, le3)
+#
+#
+#    txt = "Results for %s %s" %(task_id, le_res)
+#    return HttpResponse(txt)
 
-    IPS()
 
-    le_res = """
-    le1 = %s
-    le2 = %s
-    le3 = %s
-    """ % (le1, le2, le3)
+def tc_run_form_process(request, tc_id, tc_task_id):
 
+    if 'next' in request.POST:
+        next_id = u"%i" % ( int(tc_task_id)+1 )
+        return tc_run_view(request, tc_id, next_id, solution_flag=False)
 
-    txt = "Results for %s %s" %(task_id, le_res)
-    return HttpResponse(txt)
+    elif 'result' in request.POST:
+        return tc_run_view(request, tc_id, tc_task_id, solution_flag=True)
 
 
-def tc_run_view(request, tc_id, tc_task_id):
+
+def tc_run_final_view(request, tc_id):
+
+    tc = get_object_or_404(TaskCollection, pk=tc_id)
+
+    d = dict(tc = tc)
+    context = Context(d)
+
+    return render(request, 'tasks/tc_run_final.html', context)
+
+
+def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
     """
     tc_task_id is the relative position of the current task in the
     current TaskCollection. NOT the task_id (pk of tasks)
@@ -165,24 +173,24 @@ def tc_run_view(request, tc_id, tc_task_id):
 
     tc = get_object_or_404(TaskCollection, pk=tc_id)
     # get current task an next task
+    # TODO: this should live in the model:
     ordered_task_list = tc.tc_membership_set.order_by('ordering')
-#    IPS()
-    # TODO: do we need it?
+
     if tc_task_id >= len(ordered_task_list):
-        raise Http404('No such task_id (%s) for task collection %s' % (tc_task_id, tc_id))
+        return tc_run_final_view(request, tc_id)
+
     current_task = ordered_task_list[tc_task_id].task
 
 
-    solution=False
     tle_list = aux_get_tle_list_from_task(current_task)
 
-    button_strings = aux_task_button_strings(solution)
-    user_solution = aux_task_user_solution(request, solution)
+    button_strings = aux_task_button_strings(solution_flag)
+    user_solution = aux_task_user_solution(request, solution_flag)
     html_strings = [render_toplevel_elt(tle, user_solution) for tle in tle_list]
 
 
     d = dict(task = current_task, tc = tc, button_strings = button_strings,
-             html_strings = html_strings, ID = tc_task_id+1,
+             html_strings = html_strings, ID = tc_task_id,
              LEN = len(ordered_task_list))
     context = Context(d)
 
@@ -194,7 +202,7 @@ def task_collection_view(request, tc_id):
     tc = get_object_or_404(TaskCollection, pk=tc_id)
     tasks = tc.tasks.iterator()
 
-    d = dict(task_list = tasks, title = tc.title, author = tc.author)
+    d = dict(task_list = tasks, tc = tc)
     context = Context(d)
 
     return render(request, 'tasks/task_collection.html', context)
