@@ -139,4 +139,4 @@ def task_collection_view(request, tc_id):
 
 def task_view0(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
-    return render(request, 'tasks/detail.html', dict(task=task))
+    return render(request, 'tasks/task_detail.html', dict(task=task))
