@@ -180,6 +180,9 @@ def load_xml(xml_string):
     resubstitute original delimiters in the .text-attributes
     """
 
+    if isinstance(xml_string, unicode):
+        xml_string = xml_string.encode('utf8')
+
     test_raw_xml(xml_string)
     replaced_string = preprocess_delimiters(xml_string)
 
