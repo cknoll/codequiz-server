@@ -19,10 +19,10 @@ li a {
     padding:.5em;
     /*background-color:#fafafa;*/
     
-background-image: -webkit-linear-gradient(#eaeaea 0%, #fafafa 100%); 
-background-image: -ms-linear-gradient(#eaeaea 0%, #fafafa 100%); 
-background-image: -o-linear-gradient(#eaeaea 0%, #fafafa 100%); 
-background-image: -moz-linear-gradient(#fafafa 0%, #fdfdfd 100%); 
+background-image: -webkit-linear-gradient(#eaeaea 0%, #fdfdfd 100%); 
+background-image: -ms-linear-gradient(#eaeaea 0%, #fdfdfd 100%); 
+background-image: -o-linear-gradient(#eaeaea 0%, #fdfdfd 100%); 
+background-image: -moz-linear-gradient(#eaeaea 0%, #fdfdfd 100%); 
 background-image: linear-gradient(#eaeaea 0%, #fdfdfd 100%); 
     
 }

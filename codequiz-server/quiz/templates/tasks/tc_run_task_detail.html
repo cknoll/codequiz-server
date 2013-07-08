@@ -9,10 +9,8 @@
 
 <div class="task1">
 <h3>{{ tc.title }} : Task {{ ID|add:1 }}/{{ LEN }}</h3>
-<h2>{{ task.title }}</h2>
+<h2>{{ task.title }}<div class="small">by {{ task.author }}</div></h2>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-<br>
-by {{ task.author }}
 <br><br>
 
 {% for s in html_strings %}
