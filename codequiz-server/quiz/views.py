@@ -25,11 +25,17 @@ def render_toplevel_elt(tle, user_sol_list=None):
         tle.update_user_solution(user_sol_list)
     return template.render(Context(tle.context))
 
-def index(request):
+def index_old(request):
     task_list = Task.objects.order_by('pub_date')[:5]
     #raise Http404, "Ach wie schade"
     return render(request, 'tasks/index.html', dict(task_list=task_list))
 
+def index(request):
+    """
+    temporary solution for the python lecture 2013/07/08
+    """
+    
+    return task_collection_view(request, 2)
 
 def get_button(button_type):
     #!! loaded every time!!
