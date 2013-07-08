@@ -5,9 +5,9 @@
 <div class="le_list">
 
 
-{% if le_list %}
+{% if input_list %}
 <table>
-    {% for elt in le_list %}
+    {% for elt in input_list %}
         <tr><td>{{forloop.counter}}.</td>
         <td>
         {% if elt.src.text %}
@@ -17,7 +17,16 @@
         {% endif %}
         </td>
         <td>
-        <input name="le{{forloop.counter}}" type="text" size="{{elt.le.len}}" value="{{elt.user_solution}}">
+        {% if elt.le %}
+        <input name="le{{forloop.counter}}" type="text" size="{{elt.le.len}}" value="{{elt.user_solution}}" autocomplete="off">
+        {% elif elt.cbox %}
+        <input name="cbox{{forloop.counter}}" type="checkbox" {% if elt.user_solution == "True" %} checked="checked" {% endif%}>
+        {# unchecked cboxes are not contained in the form data -> hidden compagnion#}
+        <input type="hidden" name="hidden_cbox{{forloop.counter}}" value="foo">
+        &nbsp;{{elt.cbox.label}}
+        {% else %}
+        Invalid input field.
+        {% endif %}
         </td>
         {% if print_solution %}
         <td>

@@ -98,6 +98,8 @@ def split_xml_root(root):
 
 
 
+
+
 class TopLevelElement(object):
 
     def __init__(self, elt):
@@ -107,6 +109,7 @@ class TopLevelElement(object):
                    'src' : self.process_src,
                    'lelist' : self.process_lelist,
                    'cboxlist' : self.process_cboxlist,
+                   'input_list' : self.process_input_list,
                    }
 
         # execute the appropriate method
@@ -114,6 +117,8 @@ class TopLevelElement(object):
 
         #print self.elt.text
         #print "multi:", self.context.get('multiline')
+
+
 
     def process_txt(self):
 
@@ -138,34 +143,47 @@ class TopLevelElement(object):
             'le_list': elt_list,
         }
 
-    def update_user_solution(self, sol_list):
+    def process_input_list(self):
+        """
+        this list can contain checkboxes, line-edits and maybe more
+        """
+        input_list, depths = zip(*[xml_to_py(xml_elt) for xml_elt in self.elt])
+
+        self.template = 'tasks/part_input_list.html'
+        self.context = dict(input_list = input_list)
+        #IPS()
+
+    def update_user_solution(self, sol_dict):
         """
         used to insert the user solution into the appropriate data structs
         """
-        if not self.tag in ['lelist', 'cboxlist']:
+        if not self.tag in ['lelist', 'cboxlist', 'input_list']:
             return
         if self.tag  == 'cboxlist':
             raise NotImplementedError
 
-        elt_list = self.context['le_list']
+        if self.tag  == 'input_list':
+            elt_list = self.context['input_list']
+            assert len(sol_dict) == len(elt_list)
 
-        assert len(sol_list) == len(elt_list)
-
-        for sol, elt in zip(sol_list, elt_list):
-#            if "pass" in sol:
+            # Challange: elt_list is ordered
+            # sol_dict is not.
+            # -> we construct the keys live
+            for i, elt in enumerate(elt_list):
+                j = i+1
+                key = elt.get_type()+str(j)
 #                IPS()
-
-            elt.user_solution = sol
-            #print '>%s<:|%s|' % (repr(elt.sol.text),  repr(sol))
-            elt.user_correct = (elt.sol.text == aux_convert_leadings_spaces(sol))
-            if elt.user_correct:
-                elt.css_class = "sol_right"
-                elt.print_solution = "OK"
-            else:
-                elt.css_class = "sol_wrong"
-                elt.print_solution = elt.sol.text
-
-            #IPS() # testen, wie mit mehreren Lösungen umgegangen wird
+                sol = sol_dict[key]
+                elt.user_solution = sol
+                #print '>%s<:|%s|' % (repr(elt.sol.text),  repr(sol))
+                elt.user_correct = \
+                        (elt.sol.text == aux_convert_leadings_spaces(sol))
+                if elt.user_correct:
+                    elt.css_class = "sol_right"
+                    elt.print_solution = "OK"
+                else:
+                    elt.css_class = "sol_wrong"
+                    elt.print_solution = elt.sol.text
 
 
     def process_cboxlist(self):
@@ -213,6 +231,19 @@ class Element(object):
         self.user_solution = ""
         self.print_solution = "" # will be overwritten later
         self.css_class = "undefined_css_class"
+
+    def get_type(self):
+        """
+        determine which kind of elt we have (le or cbox)
+        """
+
+        if hasattr(self, 'le'):
+            return 'le'
+        elif hasattr(self, 'cbox'):
+            return 'cbox'
+        else:
+#            IPS()
+            raise ValueError, "unknown xml-elt-type"
 
     def __repr__(self):
         return 'xml:'+self.tag

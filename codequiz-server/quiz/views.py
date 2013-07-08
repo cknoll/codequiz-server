@@ -11,10 +11,14 @@ from aux import xml_lib
 from quiz.models import Task, TaskCollection
 
 
-class Container(object):
-    pass
+class DictContainer(object):
+    """
+    allows easy dot access to the content of a dict
+    """
 
-C = Container()
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+
 
 def render_toplevel_elt(tle, user_sol_list=None):
     template = loader.get_template(tle.template)
@@ -34,7 +38,7 @@ def index(request):
     """
     temporary solution for the python lecture 2013/07/08
     """
-    
+
     return task_collection_view(request, 2)
 
 def get_button(button_type):
@@ -69,11 +73,22 @@ def get_solutions_from_post(request):
     items = request.POST.items()
     items.sort()
 
-    le_sol = [v for k,v in items if k.startswith('le')]
+    le_sol = [ (k,v) for k,v in items if k.startswith('le')]
 
-    #!TODO: !! cbox
+    # Problem: unchecked cboxes are not contained in request.POST
+    # solution every cbox has a hidden compagnion with the name:
+    # hidden_<cbox_name>
 
-    return le_sol
+    cbox_names = [k[7:] for k,v in items if k.startswith('hidden_cbox')]
+
+#    print cbox_names
+
+    #create a list of tuples like [('cbox1', 'True'), ('cbox2', 'False')]
+    cbox_results = [(cbn, str(cbn in request.POST)) for cbn in cbox_names]
+
+
+    res = dict(le_sol+cbox_results)
+    return res
 
 def aux_task_button_strings(solution_flag):
 
@@ -123,6 +138,8 @@ def next_task(request, task_id):
 
 def form_result_view(request, task_id):
 
+    p = request.POST
+    #IPS()
     if 'next' in request.POST:
         return next_task(request, task_id)
     elif 'result' in request.POST:
