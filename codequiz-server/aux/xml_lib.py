@@ -152,9 +152,12 @@ class TopLevelElement(object):
         assert len(sol_list) == len(elt_list)
 
         for sol, elt in zip(sol_list, elt_list):
+#            if "pass" in sol:
+#                IPS()
 
             elt.user_solution = sol
-            elt.user_correct = (elt.sol.text == sol)
+            print '>%s<:|%s|' % (repr(elt.sol.text),  repr(sol))
+            elt.user_correct = (elt.sol.text == aux_convert_leadings_spaces(sol))
             if elt.user_correct:
                 elt.css_class = "sol_right"
                 elt.print_solution = "OK"
@@ -214,7 +217,16 @@ class Element(object):
     def __repr__(self):
         return 'xml:'+self.tag
 
+def aux_convert_leadings_spaces(string):
+    s2 = string.strip()
+    if s2 == '':
+        return s2
+    idx = string.index(s2[0])
 
+    leading_spaces = string[:idx]
+    # assumes utf8 file encoding:
+    brace = u"␣"#.encode('utf8')
+    return string.replace(leading_spaces, brace*len(leading_spaces))
 
 
 def xml_to_py(xml_elt):
@@ -232,7 +244,13 @@ def xml_to_py(xml_elt):
     if xml_elt.text == None:
         xml_elt.text = '' # allows .strip()
 
-    attribute_list = child_list + [('text', xml_elt.text.strip())]
+    # TODO: This should live in the xml_elt
+    if xml_elt.tag == "sol":
+        tmp_elt_string = aux_convert_leadings_spaces(xml_elt.text)
+    else:
+        tmp_elt_string = xml_elt.text
+
+    attribute_list = child_list + [( 'text', tmp_elt_string.strip() )]
     attribute_list +=  [('tag', xml_elt.tag)]
     attribute_list += xml_elt.attrib.items()
     kwargs = dict(attribute_list)
