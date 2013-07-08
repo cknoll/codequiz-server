@@ -8,19 +8,20 @@
 {% csrf_token %}
 
 <div class="task1">
-<h2>{{ task.title }}</h2>
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-<br>
+<h2>{{ task.title }}
+<div class="small">
 by {{ task.author }}
-<br><br>
+</div>
+</h2>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
 
 {% for s in strings %}
 
         {{s|safe}}
-<br>        
+        
 {% endfor %}
 
-<br>
 <span style="display: block; text-align: right;">
 {%for bs in button_strings%}
 

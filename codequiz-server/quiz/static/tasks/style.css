@@ -7,12 +7,12 @@ li a {
     margin:.5em;
     padding:.5em;
     background-color:#eee;
-    width:400px;
+    width:600px;
     
 }
 
 .task1 {
-    width:600px;
+    width:750px;
     border:1px solid;
     border-color: #000;
     margin:.5em;
@@ -31,31 +31,35 @@ background-image: linear-gradient(#eaeaea 0%, #fdfdfd 100%);
 
 .src, .src1
 {
-    background-color:#eaeaea;
+    border:1px solid;
+    border-color: #aaa;
+/*     background-color:#eaeaea; */
     font-family:Fixedsys,Courier,monospace;    
 }
 
 .src1
 {
-    width:400px;
+    width:600px;
     border:1px solid;
     border-color: #555;
-    margin:.5em;
     padding:.5em;
+    margin:.5em;
+    
 }
 
 
 .le_list
 {
-    padding:.5em;
+    width:600px;
     border:1px solid;
     border-color: #555;
-    
+    padding:.5em;
+    margin:.5em;
 }
 
 .normal
 {
-    /*font-size:14;*/
+    font-size:14;
     
 }
 
@@ -63,12 +67,14 @@ background-image: linear-gradient(#eaeaea 0%, #fdfdfd 100%);
 {
     font-family:Fixedsys,Courier,monospace;
     color:#008000;
+    font-size:13;
 }
 
 .sol_wrong
 {
     font-family:Fixedsys,Courier,monospace;
     color:#800000;
+    font-size:13;
 }
 
 

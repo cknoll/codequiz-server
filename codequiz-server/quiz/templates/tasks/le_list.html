@@ -13,7 +13,7 @@
         <tr><td>{{forloop.counter}}.</td>
         <td>
         {% if elt.src.text %}
-        <span class="src">{{elt.src.text}}</span>
+        <pre class="src">{{elt.src.text}}</pre>
         {% else %}
         <span class="normal">{{elt.txt.text}}</span>
         {% endif %}

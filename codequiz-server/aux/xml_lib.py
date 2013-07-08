@@ -237,7 +237,8 @@ def xml_to_py(xml_elt):
     attribute_list += xml_elt.attrib.items()
     kwargs = dict(attribute_list)
     if not len(kwargs) == len(attribute_list):
-        raise ValueError, "duplicate in attribute_list: %s" % zip(*attribute_list)[0]
+        raise ValueError, "duplicate in attribute_list. "\
+        "This list should be unique: %s." % str(zip(*attribute_list)[0])
 
     this = Element(**kwargs)
 
