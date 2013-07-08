@@ -112,8 +112,8 @@ class TopLevelElement(object):
         # execute the appropriate method
         mapping[self.tag]()
 
-        print self.elt.text
-        print "multi:", self.context.get('multiline')
+        #print self.elt.text
+        #print "multi:", self.context.get('multiline')
 
     def process_txt(self):
 
@@ -156,7 +156,7 @@ class TopLevelElement(object):
 #                IPS()
 
             elt.user_solution = sol
-            print '>%s<:|%s|' % (repr(elt.sol.text),  repr(sol))
+            #print '>%s<:|%s|' % (repr(elt.sol.text),  repr(sol))
             elt.user_correct = (elt.sol.text == aux_convert_leadings_spaces(sol))
             if elt.user_correct:
                 elt.css_class = "sol_right"
