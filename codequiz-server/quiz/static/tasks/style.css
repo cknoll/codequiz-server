@@ -4,30 +4,38 @@ li a {
 
 .klasse1 {
     border:1px outset gray;
-    margin:.5em;
-    padding:.5em;
+    margin: 10px auto;
+    padding: 12px;
     background-color:#eee;
     width:600px;
-    
+}
+
+span.author {
+    font-size: 10px;
+    display: block;
+    float: left;
 }
 
 .task1 {
     width:750px;
     border:1px solid;
     border-color: #000;
-    margin:.5em;
-    padding:.5em;
+    margin: 10px auto;
+    padding: 12px;
     /*background-color:#fafafa;*/
-    
-background-image: -webkit-linear-gradient(#eaeaea 0%, #fdfdfd 100%); 
-background-image: -ms-linear-gradient(#eaeaea 0%, #fdfdfd 100%); 
-background-image: -o-linear-gradient(#eaeaea 0%, #fdfdfd 100%); 
-background-image: -moz-linear-gradient(#eaeaea 0%, #fdfdfd 100%); 
-background-image: linear-gradient(#eaeaea 0%, #fdfdfd 100%); 
-    
+    background-image: -webkit-linear-gradient(#eaeaea 0%, #fdfdfd 100%);
+    background-image: -ms-linear-gradient(#eaeaea 0%, #fdfdfd 100%);
+    background-image: -o-linear-gradient(#eaeaea 0%, #fdfdfd 100%);
+    background-image: -moz-linear-gradient(#eaeaea 0%, #fdfdfd 100%);
+    background-image: linear-gradient(#eaeaea 0%, #fdfdfd 100%);
 }
 
-
+div#mainbox {
+    margin: auto;
+    background-color: #0B2A51;
+    padding: 10px;
+    width: 800px;
+}
 
 .src, .src1
 {
@@ -84,7 +92,4 @@ background-image: linear-gradient(#eaeaea 0%, #fdfdfd 100%);
     background-color:#eeeeff; /* nur test*/
 }
 
-.small
-{
-    font-size:8;
-}
+

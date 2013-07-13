@@ -5,7 +5,7 @@
     </txt>
     <src>
 def func(a = 5, b = 7):
-    print a, b        
+    print a, b
     </src>
     <txt>
         Ergaenzen Sie die von folgenden Funktionsaufrufen erzeugten Ausgaben

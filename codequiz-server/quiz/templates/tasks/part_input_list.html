@@ -1,9 +1,7 @@
-{% load staticfiles %}
-{# is this line neccessary?#}
-
+{% extends "tasks/base.html" %}
+{% block content %}
 
 <div class="le_list">
-
 
 {% if input_list %}
 <table>
@@ -42,5 +40,6 @@
     <p>No line_edits are available. This should not happen</p>
 {% endif %}
 
-
 </div>
+
+{% endblock %}

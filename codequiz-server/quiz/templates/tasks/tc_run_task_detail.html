@@ -1,33 +1,32 @@
-<!--For a task as an element of a test (TaskCollection) -->
-{% load staticfiles %}
+{# For a task as an element of a test (TaskCollection) #}
 
-<link rel="stylesheet" type="text/css" href="{% static 'tasks/style.css' %}" />
-
-
-<form action="{% url 'quiz_ns:tc_run_form_process' tc.id ID %}" method="post">
-{% csrf_token %}
-
+{% extends "tasks/base.html" %}
+{% block content %}
 <div class="task1">
-<h3>{{ tc.title }} : Task {{ ID|add:1 }}/{{ LEN }}</h3>
-<h2>{{ task.title }}<div class="small">by {{ task.author }}</div></h2>
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-<br><br>
+<form action="{% url 'quiz_ns:tc_run_form_process' tc.id ID %}" method="post">
+    {% csrf_token %}
 
-{% for s in html_strings %}
+    <h3>{{ tc.title }} : Task {{ ID|add:1 }}/{{ LEN }}</h3>
+    <h2>{{ task.title }}</h2>
+    <span class="author">by {{ task.author }}</span>
 
+
+    {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
+    <br><br>
+
+    {% for s in html_strings %}
         {{s|safe}}
-<br>        
-{% endfor %}
+    <br>
+    {% endfor %}
 
-<br>
-<span style="display: block; text-align: right;">
-{%for bs in button_strings%}
-
-{{bs|safe}}
-
-{% endfor %}
-</span>
-<br>
-
-</div>
+    <br>
+    <span style="display: block; text-align: right;">
+    {% for bs in button_strings %}
+        {{bs|safe}}
+    {% endfor %}
+    </span>
 </form>
+</div>
+{% endblock %}

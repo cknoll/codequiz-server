@@ -1,0 +1,15 @@
+{# Used to load the "static" context #}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'tasks/style.css' %}" />
+</head>
+<body>
+<div id="mainbox"><img src="{% static 'logo_tud.png' %}" />
+{% block content %}
+{% endblock %}
+</div>
+</body>
+</html>

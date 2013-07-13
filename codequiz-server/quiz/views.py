@@ -23,9 +23,9 @@ class DictContainer(object):
 def render_toplevel_elt(tle, user_sol_list=None):
     template = loader.get_template(tle.template)
     if user_sol_list == None:
-        tle.context.update({'print_solution':False})
+        tle.context.update({'print_solution': False})
     else:
-        tle.context.update({'print_solution':True})
+        tle.context.update({'print_solution': True})
         tle.update_user_solution(user_sol_list)
     return template.render(Context(tle.context))
 
@@ -38,7 +38,6 @@ def index(request):
     """
     temporary solution for the python lecture 2013/07/08
     """
-
     return task_collection_view(request, 2)
 
 def get_button(button_type):

@@ -1,7 +1,5 @@
-{% load staticfiles %}
-
-<link rel="stylesheet" type="text/css" href="{% static 'tasks/style.css' %}" />
-
+{% extends "tasks/base.html" %}
+{% block content %}
 
 <div class="klasse1">
 Congratulations!<br>
@@ -16,4 +14,4 @@ You completed the test: "{{ tc.title }}" with {{tc.LEN}} tasks.
 In  further versions of this web application you will see some information about your results here.
 </div>
 
-
+{% endblock %}
