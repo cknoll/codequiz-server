@@ -6,31 +6,57 @@ text file such that it can be tracked by version control.
 """
 
 import os, sys, time
-import StringIO
-
-# this copied from manage.py
-
-new_argv = [sys.argv[0], 'dumpdata', "quiz"]
 
 
 dumpfilname = "quiz_data_dump.sql"
-stdout = sys.stdout
+
+def get_field_names(model):
+    return [f.name for f in model._meta.fields]
+
+
+def gen_model_report(model):
+    assert issubclass(model, models.Model)
+
+    fieldnames = get_field_names(model)
+
+    instances = model.objects.all()
+
+    res = "-> Model: %s\n\n" % model.__name__
+    for instance in instances:
+        for f in fieldnames:
+            res+="%s = %s\n\n" %(f, getattr(instance, f))
+        res +="%s\n\n" %("- "*3)
+    res +="%s\n\n""- "%("- "*7)
+    return res
+
 
 if __name__ == "__main__":
 
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "codequiz.settings")
 
-    from django.core.management import execute_from_command_line
+    import quiz.models as dm
+    from django.db import models
 
-    sys.stdout = StringIO.StringIO()
-    sys.stdout.write(time.ctime()+"\n")
-    execute_from_command_line(new_argv) # writes to stdout
 
-    dump_string = sys.stdout.get_value()
 
-    sys.stdout.close()
-    sys.stdout = stdout
+    model_list = [getattr(dm, a) for a in dir(dm)]
+    model_list = filter(lambda x: isinstance(x, type), model_list)
+    model_list = filter(lambda x: issubclass(x, models.Model), model_list)
 
-    dump_string.replace('\n')
 
-    # unvollständig
+    res = [gen_model_report(m) for m in model_list]
+    res = "".join(res)
+
+
+    with open(dumpfilname, 'w') as dumpfile:
+        dumpfile.write(res)
+    print "%s written" % dumpfilname
+
+
+
+
+
+
+
+
+
