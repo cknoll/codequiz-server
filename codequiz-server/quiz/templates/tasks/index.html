@@ -1,7 +1,5 @@
-{% load staticfiles %}
-
-<link rel="stylesheet" type="text/css" href="{% static 'tasks/style.css' %}" />
-
+{% extends "tasks/base.html" %}
+{% block content %}
 
 <div class="klasse1">
 Aufgabenliste
@@ -16,3 +14,5 @@ Aufgabenliste
 {% else %}
     <p>No tasks are available.</p>
 {% endif %}
+
+{% endblock %}

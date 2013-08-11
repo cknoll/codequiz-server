@@ -1,30 +1,27 @@
-{% load staticfiles %}
-{# is this line neccessary?#}
-
+{# Not used as single content block, included by other templates  #}
+{# {% extends "tasks/base.html" %}  {% block content %} #}
 
 <div class="le_list">
-
-
 {% if le_list %}
 <table>
     {% for elt in le_list %}
         <tr><td>{{forloop.counter}}.</td>
         <td>
         {% if elt.src.text %}
-        <pre class="src">{{elt.src.text}}</pre>
+            <pre class="src">{{elt.src.text}}</pre>
         {% else %}
-        <span class="normal">{{elt.txt.text}}</span>
+            <span class="normal">{{elt.txt.text}}</span>
         {% endif %}
         </td>
         <td>
         <input name="le{{forloop.counter}}" type="text" size="{{elt.le.len}}" value="{{elt.user_solution}}">
         </td>
         {% if print_solution %}
-        <td>
-        <div class="{{elt.css_class}}">
-        {{elt.print_solution}}
-        </div>
-        </td>
+            <td>
+            <div class="{{ elt.css_class }}">
+                {{ elt.print_solution }}
+            </div>
+            </td>
         {% endif %}
         </tr>
     {% endfor %}
@@ -32,6 +29,5 @@
 {% else %}
     <p>No line_edits are available. This should not happen</p>
 {% endif %}
-
 
 </div>

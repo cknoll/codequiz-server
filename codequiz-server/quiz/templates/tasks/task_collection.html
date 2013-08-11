@@ -1,15 +1,11 @@
-{% load staticfiles %}
-
-<link rel="stylesheet" type="text/css" href="{% static 'tasks/style.css' %}" />
-
+{% extends "tasks/base.html" %}
+{% block content %}
 
 <div class="klasse1">
 Test: {{ tc.title }}
 <br>
 <div class="small">
 Author: {{ tc.author }}
-</div>
-
 </div>
 
 {% if task_list %}
@@ -24,3 +20,5 @@ Tasks:
 {% else %}
     <p>No tasks are available.</p>
 {% endif %}
+</div>
+{% endblock %}

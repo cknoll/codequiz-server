@@ -159,10 +159,11 @@ class TopLevelElement(object):
         """
         if not self.tag in ['lelist', 'cboxlist', 'input_list']:
             return
-        if self.tag  == 'cboxlist':
+
+        if self.tag == 'cboxlist':
             raise NotImplementedError
 
-        if self.tag  == 'input_list':
+        if self.tag == 'input_list':
             elt_list = self.context['input_list']
             assert len(sol_dict) == len(elt_list)
 
@@ -185,10 +186,8 @@ class TopLevelElement(object):
                     elt.css_class = "sol_wrong"
                     elt.print_solution = elt.sol.text
 
-
     def process_cboxlist(self):
         raise NotImplementedError
-#
 
 
 
