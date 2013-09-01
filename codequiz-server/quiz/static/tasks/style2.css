@@ -176,6 +176,20 @@ a4aeb8 bg
 }
 
 
+.sol_right
+{
+    font-family:Fixedsys,Courier,monospace;
+    color:#008000;
+    font-size: 80%;
+}
+
+.sol_wrong
+{
+    font-family:Fixedsys,Courier,monospace;
+    color:#800000;
+    font-size: 80%;
+}
+
 
 #mainleft img
 {

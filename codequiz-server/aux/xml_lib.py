@@ -177,13 +177,19 @@ class TopLevelElement(object):
                 elt.user_solution = sol
                 #print '>%s<:|%s|' % (repr(elt.sol.text),  repr(sol))
                 elt.user_correct = \
-                        (elt.sol.text == aux_convert_leadings_spaces(sol))
+                        (elt.sol.text == aux_space_convert_for_lines(sol))
+
                 if elt.user_correct:
                     elt.css_class = "sol_right"
                     elt.print_solution = "OK"
                 else:
+                    print elt.sol.text
                     elt.css_class = "sol_wrong"
-                    elt.print_solution = elt.sol.text
+                    if elt.sol.text == "":
+                        # !! LANG
+                        elt.print_solution = "[keine Änderung]"
+                    else:
+                        elt.print_solution = elt.sol.text
 
 
     def process_cboxlist(self):
@@ -248,7 +254,14 @@ class Element(object):
     def __repr__(self):
         return 'xml:'+self.tag
 
-def aux_convert_leadings_spaces(string):
+def aux_space_convert(string):
+    u"""
+    converts leading spaces into ␣
+    strips trailing spaces
+    """
+
+    assert "\n" not in string, "No multiline support here"
+
     s2 = string.strip()
     if s2 == '':
         return s2
@@ -257,7 +270,15 @@ def aux_convert_leadings_spaces(string):
     leading_spaces = string[:idx]
     # assumes utf8 file encoding:
     brace = u"␣"#.encode('utf8')
-    return string.replace(leading_spaces, brace*len(leading_spaces))
+    res = brace*len(leading_spaces)+s2
+    return res
+
+def aux_space_convert_for_lines(string):
+
+    lines = string.split("\n")
+    return "\n".join([aux_space_convert(line) for line in lines])
+
+
 
 
 def xml_to_py(xml_elt):
@@ -277,7 +298,7 @@ def xml_to_py(xml_elt):
 
     # TODO: This should live in the xml_elt
     if xml_elt.tag == "sol":
-        tmp_elt_string = aux_convert_leadings_spaces(xml_elt.text)
+        tmp_elt_string = aux_space_convert_for_lines(xml_elt.text)
     else:
         tmp_elt_string = xml_elt.text
 
