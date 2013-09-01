@@ -1,7 +1,7 @@
 <!-- content of one single task  -->
 
 
-<form action="{% url 'quiz_ns:tc_run_form_process' task.tc.id task.tc_task_id %}" method="post">
+<form action="{% url 'quiz_ns:tc_run_form_process' task.tc.id task.tc_task_id %}" method="post" autocomplete="off">
 
 
 
@@ -9,7 +9,7 @@
 
 <!-- <div class="task1"> -->
 
-<h2>{{ task.title }}</h2>
+<h2><span id="color1">Task:</span> "{{ task.title }}"</h2>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 <br><br>
 

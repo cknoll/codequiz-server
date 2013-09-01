@@ -1,8 +1,12 @@
 <!-- ==> start: txt.html -->
+{% comment %}
+multiline case switch now obsolete
+{% endcomment %}
+
 {% if multiline %}
-<div class="normal">
+<!-- <div id="normal"> -->
 {{text|safe}}
-</div>
+<!-- </div> -->
 {% else %}
 {{text|safe}}    
 {% endif %}

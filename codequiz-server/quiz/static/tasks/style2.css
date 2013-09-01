@@ -1,6 +1,6 @@
 body
 {
-	margin: 0 0 30px 0;
+	margin: 0 0 30px 0px;
 	padding: 0;
 	background: #FFF;
 	font-size: 75%;
@@ -16,12 +16,12 @@ img
 #container
 {
 	margin: 0 auto;
-	width: 800px;
+	width: 1000px;
 }
 
 #headercont
 {
-	width: 800px;
+	width: 1000px;
 	height: 70px;
 	border-bottom: 2px solid #F90;
 }
@@ -85,7 +85,7 @@ a4aeb8 bg
 #headerright
 {
 	float: left;
-	width: 500px;
+	width: 700px;
 	height: 100px;
 }
 
@@ -129,7 +129,7 @@ a4aeb8 bg
 
 #maincont
 {
-	width: 800px;
+	width: 1000px;
 	line-height: 160%;
 	padding: 15px 0 0 0;
 	border-bottom: 2px solid #F90;
@@ -144,18 +144,38 @@ a4aeb8 bg
 {
 	margin: 0 0 15px 0;
 	padding: 0px 15px;
-	font-size: 120%;
+	font-size: 140%;
 	font-weight: normal;
-	color: #F90;
+    color: #0b2a51;
+/* 	color: #F90; */  /* orange */
 	border-bottom: 1px solid #E5E5E5;
+}
+
+#color1
+{
+    color: #8594a8;
 }
 
 #mainleft
 {
 	float: left;
-	width: 485px;
+	width: 685px;
 	padding: 0 15px 0 0;
+    font-size: 110%;
 }
+
+
+
+.src
+{
+    border:1px solid;
+    border-color: #aaa;
+    padding:.5em;
+/*     background-color:#eaeaea; */
+    font-family:Fixedsys,Courier,monospace;    
+}
+
+
 
 #mainleft img
 {

@@ -9,7 +9,7 @@
 {% if le_list %}
 <table>
     {% for elt in le_list %}
-        <tr><td>{{forloop.counter}}.</td>
+        <tr><td width="20px">{{forloop.counter}}.</td>
         <td>
         {% if elt.src.text %}
         <pre class="src">{{elt.src.text}}</pre>
@@ -17,7 +17,7 @@
         <span class="normal">{{elt.txt.text}}</span>
         {% endif %}
         </td>
-        <td>
+        <td style="padding: 20px;">
         <input name="le{{forloop.counter}}" type="text" size="{{elt.le.len}}" value="{{elt.user_solution}}">
         </td>
         {% if print_solution %}
