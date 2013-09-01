@@ -1,0 +1,17 @@
+<!-- content of one single task  -->
+
+
+
+<h2>Task-Meta-Infos (Task#{{ task.id }})</h2>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<br><br>
+<b>{{task.title}}</b>
+
+
+<!--  maybe a table would be better here-->
+<ul>
+            <li>ID: {{task.id}}</li>
+            <li>Author: {{task.author}}</li>
+            <li>Difficulty: ...</li>
+            <li>Didactic Quality: ...</li>
+</ul>

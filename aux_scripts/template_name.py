@@ -19,8 +19,10 @@ def add_comments(fname):
     c1 = "<!-- ==> start: %s -->\n" % (fname)
     c2 = "<!-- ==> end: %s -->\n" % (fname)
 
-    lines.insert(0,c1)
-    lines.append(c2)
+    if not lines[0] == c1:
+        lines.insert(0,c1)
+    if not lines[-1] == c2:
+        lines.append(c2)
 
     if 0:
         print lines[0]

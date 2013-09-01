@@ -203,21 +203,41 @@ def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
         return tc_run_final_view(request, tc_id)
 
     current_task = ordered_task_list[tc_task_id].task
+    current_task.solution_flag = solution_flag
+    current_task.tc_task_id = tc_task_id
+    current_task.tc = tc
+    current_task.tc_len = len(ordered_task_list)
 
 
-    tle_list = aux_get_tle_list_from_task(current_task)
+    # construct the main_blocks
 
-    button_strings = aux_task_button_strings(solution_flag)
-    user_solution = aux_task_user_solution(request, solution_flag)
-    html_strings = [render_toplevel_elt(tle, user_solution) for tle in tle_list]
+    main_blocks = [task_content_block(request, current_task)]
 
-
-    d = dict(task = current_task, tc = tc, button_strings = button_strings,
-             html_strings = html_strings, ID = tc_task_id,
-             LEN = len(ordered_task_list))
+    d = dict(main_blocks = main_blocks)
     context = Context(d)
 
-    return render(request, 'tasks/tc_run_task_detail.html', context)
+#    return render(request, 'tasks/tc_run_task_detail.html', context)
+    return render(request, 'tasks/cq0_main.html', context)
+
+
+def task_content_block(request, task):
+    """
+    returns the rendered html for the content of a task
+    """
+
+    tle_list = aux_get_tle_list_from_task(task)
+
+    button_strings = aux_task_button_strings(task.solution_flag)
+    user_solution = aux_task_user_solution(request, task.solution_flag)
+    html_strings = [render_toplevel_elt(tle, user_solution) for tle in tle_list]
+
+    d = dict(task = task, button_strings = button_strings,
+             html_strings = html_strings)
+
+    context = Context(d)
+    tmpl = loader.get_template('tasks/cq1_task_content.html')
+
+    return tmpl.render(context)
 
 
 
