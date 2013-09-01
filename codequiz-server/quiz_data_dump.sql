@@ -106,7 +106,7 @@ def func(a = 5, b = 7):
     <txt>
         Ergänzen Sie die von folgenden Funktionsaufrufen erzeugten Ausgaben
     </txt>
-    <lelist>
+    <input_list>
         <elt>
             <src>func()</src><le len="10"/><sol>5 7</sol>
         </elt>
@@ -116,7 +116,7 @@ def func(a = 5, b = 7):
         <elt>
             <src>func(3, 'test')</src><le len="10"/><sol>3 test</sol>
         </elt>
-    </lelist>
+    </input_list>
     <txt>
         <b>Hinweis:</b> siehe Kurs02 (Funktionen)
     </txt>
@@ -148,7 +148,7 @@ def func(a = 8, b = 7):
     <txt>
         Ergaenzen Sie die von folgenden Funktionsaufrufen erzeugten Ausgaben
     </txt>
-    <lelist>
+    <input_list>
         <elt>
             <src>func()</src><le len="10"/><sol>8 7</sol>
         </elt>
@@ -158,7 +158,7 @@ def func(a = 8, b = 7):
         <elt>
             <src>func(3, 'test')</src><le len="10"/><sol>3 test</sol>
         </elt>
-    </lelist>
+    </input_list>
     <txt>
         <b>Hinweis:</b> siehe Kurs02 (Funktionen)
     </txt>
@@ -187,14 +187,14 @@ body_xml = <?xml version="1.0"?>
 a=10
 b=1
     </src>
-    <lelist>
+    <input_list>
         <elt>
             <le len="10"/><sol>a=str(a)</sol>
         </elt>
         <elt>
           <le len="10"/><sol>b=str(b)</sol>
         </elt>
-    </lelist>
+    </input_list>
     <src>
 print a + b # -> 101
     </src>
@@ -219,7 +219,7 @@ body_xml = <?xml version="1.0"?>
     <txt>
 Die folgenden Code-Schnipsel enthalten zum Teil <i>Syntax</i>-Fehler. Korrigieren Sie ggf. den Quelltext (nur die fehlerhafte Zeile). Wenn kein Fehler vorliegen sollte, so lassen Sie das Eingabefeld leer.
     </txt>
-<lelist>
+<input_list>
         <elt>
     <src>
 def schöneFunktion(a):
@@ -241,7 +241,7 @@ a, b, c = b, c, a
     </src>
 <le len="10"/><sol></sol>
     </elt>
-    </lelist>
+    </input_list>
 </data>
 
 tag_list = beta,basics
@@ -265,14 +265,14 @@ Schreiben Sie eine Funktion namens func1, die beliebig viele (unbenannte) Argume
 <br><br>
 <b>Hinweise:</b> Die Muster-Lösung hat zwei Zeilen und verwendet vier Leerzeichen pro Einrückungsebene.
     </txt>
-    <lelist>
+    <input_list>
         <elt>
             <le len="10"/><sol>def func1(*args):</sol>
         </elt>
         <elt>
             <le len="10"/><sol>    pass</sol>
         </elt>
-    </lelist>
+    </input_list>
 </data>
 
 tag_list = beta, basics
@@ -292,11 +292,11 @@ pub_date = 2013-07-08 07:56:34+00:00
 body_xml = <?xml version="1.0"?>
 <data>
     <txt>
-        Ergänzen sie jeweils das Ergebnis folgender Code-Zeilen (ohne Leerzeichen).
+        Ergänzen Sie jeweils das Ergebnis folgender Code-Zeilen.
 <br><br>
-<b>Hinweise:</b> Beispiel-Liste: <tt>[8,9,10]</tt>, Beispiel-String: <tt>"Hallo Welt"</tt>
+<b>Hinweise:</b> Beispiel-Liste: <tt>[8,9,10]</tt>, Beispiel-String: <tt>"xyz"</tt> (inkl. "-Zeichen)
     </txt>
-    <lelist>
+    <input_list>
         <elt>
             <src>range(3)</src><le len="10"/><sol>[0,1,2]</sol>
         </elt>
@@ -315,7 +315,7 @@ body_xml = <?xml version="1.0"?>
         <elt>
             <src>"Hallo Welt"[1:5]</src><le len="10"/><sol>"allo"</sol>
         </elt>
-    </lelist>
+    </input_list>
 </data>
 
 tag_list = beta, basics
@@ -339,7 +339,7 @@ body_xml = <?xml version="1.0"?>
 <br><br>
 <b>Hinweise:</b> Beispiel-Liste: <tt>[8,9,10]</tt>, Beispiel-String: <tt>"Hallo Welt"</tt>, Beispiel-Bool: <tt>False</tt>
     </txt>
-    <lelist>
+    <input_list>
         <elt>
             <src>[1,5]*3</src><le len="10"/><sol>[1,5,1,5,1,5]</sol>
         </elt>
@@ -358,7 +358,7 @@ body_xml = <?xml version="1.0"?>
         <elt>
             <src>"g" not in "[a-z]" </src><le len="10"/><sol>True</sol>
         </elt>
-    </lelist>
+    </input_list>
 </data>
 
 tag_list = beta, basics

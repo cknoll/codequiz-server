@@ -157,10 +157,12 @@ class TopLevelElement(object):
         """
         used to insert the user solution into the appropriate data structs
         """
-        if not self.tag in ['lelist', 'cboxlist', 'input_list']:
+        assert not self.tag == 'lelist', "Deprecated"
+
+        if self.tag in ['txt']:
             return
-        if self.tag  == 'cboxlist':
-            raise NotImplementedError
+
+        assert self.tag  == 'input_list', "unexpected Tag %s" %self.tag
 
         if self.tag  == 'input_list':
             elt_list = self.context['input_list']
