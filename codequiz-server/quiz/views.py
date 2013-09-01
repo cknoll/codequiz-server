@@ -2,6 +2,9 @@
 
 from django.http import HttpResponse, Http404
 from django.template import Context, loader
+
+from django.template import RequestContext
+
 from django.shortcuts import render, get_object_or_404
 
 from IPython import embed as IPS
@@ -216,7 +219,7 @@ def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
     d = dict(main_blocks = main_blocks)
     context = Context(d)
 
-#    return render(request, 'tasks/tc_run_task_detail.html', context)
+
     return render(request, 'tasks/cq0_main.html', context)
 
 
@@ -237,7 +240,7 @@ def task_content_block(request, task):
     context = Context(d)
     tmpl = loader.get_template('tasks/cq1_task_content.html')
 
-    return tmpl.render(context)
+    return tmpl.render(RequestContext(request, context))
 
 
 
