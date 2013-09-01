@@ -159,7 +159,7 @@ class TopLevelElement(object):
         """
         assert not self.tag == 'lelist', "Deprecated"
 
-        if self.tag in ['txt']:
+        if self.tag in ['txt', 'src']:
             return
 
         assert self.tag  == 'input_list', "unexpected Tag %s" %self.tag

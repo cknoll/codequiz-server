@@ -199,8 +199,10 @@ def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
 
     tc = get_object_or_404(TaskCollection, pk=tc_id)
     # get current task an next task
+
     # TODO: this should live in the model:
     ordered_task_list = tc.tc_membership_set.order_by('ordering')
+    tc.len = len(ordered_task_list)
 
     if tc_task_id >= len(ordered_task_list):
         return tc_run_final_view(request, tc_id)
@@ -213,10 +215,13 @@ def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
 
 
     # construct the main_blocks
-
     main_blocks = [task_content_block(request, current_task)]
 
-    d = dict(main_blocks = main_blocks)
+    # construct the meta_blocks
+    meta_blocks = [task_meta_block(request, current_task)]
+    meta_blocks += [task_collection_meta_block(request, tc)]
+
+    d = dict(main_blocks = main_blocks, meta_blocks = meta_blocks)
     context = Context(d)
 
 
@@ -241,6 +246,29 @@ def task_content_block(request, task):
     tmpl = loader.get_template('tasks/cq1_task_content.html')
 
     return tmpl.render(RequestContext(request, context))
+
+def task_meta_block(request, task):
+    """
+    returns the rendered html for the meta-info-block for a task
+    """
+
+    d = dict(task = task)
+
+    context = Context(d)
+    tmpl = loader.get_template('tasks/cq1_task_meta.html')
+
+    return tmpl.render(context)
+
+def task_collection_meta_block(request, tc):
+    """
+    returns the rendered html for the meta-info-block for a task collection
+    """
+
+    d = dict(tc = tc)
+    context = Context(d)
+    tmpl = loader.get_template('tasks/cq1_taskcollection_meta.html')
+
+    return tmpl.render(context)
 
 
 

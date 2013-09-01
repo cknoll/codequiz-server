@@ -46,6 +46,13 @@
 <!-- End of mainleft -->
 
 		<div id="mainright">
+
+{% for mb in meta_blocks %}
+<!-- Meta-Block _ save -->
+        {{mb|safe}}
+<br>        
+{% endfor %}		
+		<!--
 			<h2>Task-Infos-Statisch</h2>
             <ul><li> ID, (Author), Version ...</li>
             <li>Difficulty: ...</li>
@@ -63,7 +70,8 @@
 			quam erat, dapibus a, blandit ac, posuere at, eros.</p>
 			<p>Donec erat. Suspendisse posuere orci placerat urna. Nunc posuere, 
 			diam et ultricies ultricies, lectus elit viverra leo, in porta leo 
-			libero vel eros.</p>
+			libero vel eros.</p>-->
+			
 		</div>
 		
 		
