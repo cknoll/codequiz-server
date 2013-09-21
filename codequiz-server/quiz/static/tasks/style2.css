@@ -19,21 +19,21 @@ img
 	width: 1000px;
 }
 
-#headercont
+#header_container
 {
 	width: 1000px;
 	height: 70px;
 	border-bottom: 2px solid #F90;
 }
 
-#headerleft
+#header_left
 {
 	float: left;
 	width: 300px;
 	height: 100px;
 }
 
-#headerleft h1
+#header_left h1
 {
 	margin: 28px 0 0 15px;
 	padding: 0;
@@ -75,14 +75,14 @@ a4aeb8 bg
     font-weight: normal;
 }
 
-#headerleft h1 span
+#header_left h1 span
 {
 	color: #8594a8;
 	/*color: #FFC875;*/
     font-weight: normal;
 }
 
-#headerleft h1 css_version
+#header_left h1
 {
 	font-size: 50%;
 	color: #F90;
@@ -90,14 +90,14 @@ a4aeb8 bg
 	font-weight: normal;
 }
 
-#headerright
+#header_right
 {
 	float: left;
 	width: 700px;
 	height: 100px;
 }
 
-#headerright ul
+#header_right ul
 {
 	margin: 35px 15px 0 0;
 	padding: 0;
@@ -109,33 +109,33 @@ a4aeb8 bg
      */
 }
 
-#headerright ul li
+#header_right ul li
 {
 	display: inline;
 	margin: 0 0 0 10px;
 }
 
-#headerright ul li a
+#header_right ul li a
 {
 	text-decoration: none;
 	color: #40779e;
 	font-weight: bold;
 }
 
-#headerright ul li a.active
+#header_right ul li a.active
 {
 	text-decoration: none;
 	color: #0b2a51;
 	font-weight: bold;
 }
 
-#headerright ul li a:hover
+#header_right ul li a:hover
 {
 	text-decoration: underline;
 	color: #6d7f97;
 }
 
-#maincont
+#main_container
 {
 	width: 1000px;
 	line-height: 160%;
@@ -143,12 +143,12 @@ a4aeb8 bg
 	border-bottom: 2px solid #F90;
 }
 
-#maincont p
+#main_container p
 {
 	margin: 0 15px 15px 15px;
 }
 
-#maincont h2, h3
+#main_container h2, h3
 {
 	margin: 0 0 15px 0;
 	padding: 0px 15px;
@@ -164,7 +164,7 @@ a4aeb8 bg
     color: #8594a8;
 }
 
-#mainleft
+#main_left
 {
 	float: left;
 	width: 685px;
@@ -199,7 +199,7 @@ a4aeb8 bg
 }
 
 
-#mainleft img
+#main_left img
 {
 	float: left;
 	border: 1px solid #CDCDCD;
@@ -207,7 +207,7 @@ a4aeb8 bg
 	margin: 0 15px 5px 15px;
 }
 
-#mainright
+#main_right
 {
 	float: left;
 	width: 285px;
@@ -220,7 +220,7 @@ a4aeb8 bg
 	width: 800px;
 }
 
-#footercont
+#footer_container
 {
 	float: left;
 	width: 800px;
@@ -228,32 +228,32 @@ a4aeb8 bg
 	color: #999;
 }
 
-#footercont p
+#footer_container p
 {
 	margin: 0;
 	padding: 15px;
 }
 
-#footercont a
+#footer_container a
 {
 	color: #999;
 	text-decoration: none;
 }
 
-#footercont a:hover
+#footer_container a:hover
 {
 	color: #F90;
 	text-decoration: none;
 }
 
-#footerleft
+#footer_left
 {
 	float: left;
 	width: 300px;
 	height: 50px;
 }
 
-#footerright
+#footer_right
 {
 	float: left;
 	width: 500px;
