@@ -1,3 +1,4 @@
+<!-- ==> start: le_list.html -->
 {% load staticfiles %}
 {# is this line neccessary?#}
 
@@ -7,22 +8,22 @@
 
 {% if le_list %}
 <table>
-    {% for elt in le_list %}
-        <tr><td>{{forloop.counter}}.</td>
+    {% for element in le_list %}
+        <tr><td width="20px">{{forloop.counter}}.</td>
         <td>
-        {% if elt.src.text %}
-        <pre class="src">{{elt.src.text}}</pre>
+        {% if element.src.text %}
+        <pre class="src">{{element.src.text}}</pre>
         {% else %}
-        <span class="normal">{{elt.txt.text}}</span>
+        <span class="normal">{{element.txt.text}}</span>
         {% endif %}
         </td>
-        <td>
-        <input name="le{{forloop.counter}}" type="text" size="{{elt.le.len}}" value="{{elt.user_solution}}">
+        <td style="padding: 20px;">
+        <input name="le{{forloop.counter}}" type="text" size="{{element.le.len}}" value="{{element.user_solution}}">
         </td>
         {% if print_solution %}
         <td>
-        <div class="{{elt.css_class}}">
-        {{elt.print_solution}}
+        <div class="{{element.css_class}}">
+        {{element.print_solution}}
         </div>
         </td>
         {% endif %}
@@ -35,3 +36,4 @@
 
 
 </div>
+<!-- ==> end: le_list.html -->

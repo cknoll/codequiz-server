@@ -2,14 +2,14 @@
 
 from django.db import models
 
-class Task(models.Model):
 
+class Task(models.Model):
     author = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
     versionstring = models.CharField(max_length=20)
     pub_date = models.DateTimeField('date published')
     body_xml = models.TextField()
-    tag_list = models.TextField()# separator : "; "
+    tag_list = models.TextField()  # separator : "; "
 
     def is_beta(self):
         return 'beta' in self.tag_list.split("; ")
@@ -19,7 +19,8 @@ class Task(models.Model):
     is_beta.short_description = 'in beta state?'
 
     def __unicode__(self):
-        return ("T%03i:" % self.id) +self.title
+        return ("T%03i:" % self.id) + self.title
+
 
 class TaskCollection(models.Model):
     """
@@ -31,16 +32,15 @@ class TaskCollection(models.Model):
     tasks = models.ManyToManyField(Task, through='TC_Membership')
 
     def __unicode__(self):
-        return ("TC%03i:" % self.id) +self.title
+        return ("TC%03i:" % self.id) + self.title
 
     def LEN(self):
         return len(self.tc_membership_set.all())
 
 
-
 class TC_Membership(models.Model):
     """
-    This class specifies the assoziation of a Task to a TaskCollection
+    This class specifies the association of a Task to a TaskCollection
     (needed for custom ordering of Tasks in TC)
     """
 

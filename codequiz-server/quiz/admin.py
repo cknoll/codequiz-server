@@ -2,7 +2,6 @@ from django.contrib import admin
 from quiz.models import Task, TaskCollection, TC_Membership
 
 
-
 class TC_MembershipInline(admin.TabularInline):
     model = TC_Membership
     extra = 1
@@ -15,6 +14,7 @@ class TaskAdmin(admin.ModelAdmin):
     search_fields = ['title', 'tag_list']
     date_hierarchy = 'pub_date'
     inlines = (TC_MembershipInline,)
+
 #    fieldsets = [
 #        (None,               {'fields': ['question']}),
 #        ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
@@ -24,6 +24,7 @@ class TaskAdmin(admin.ModelAdmin):
 
 class TaskCollectionAdmin(admin.ModelAdmin):
     inlines = (TC_MembershipInline,)
+
 
 admin.site.register(Task, TaskAdmin)
 admin.site.register(TaskCollection, TaskCollectionAdmin)

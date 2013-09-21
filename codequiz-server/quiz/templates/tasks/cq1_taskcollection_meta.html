@@ -1,0 +1,14 @@
+<!-- content of one single task  -->
+
+<h2>Taskcollection-Meta-Infos</h2>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<table>
+<tr><td>Title</td><td width="10px"></td><td>"{{tc.title}}"</td></tr>
+<tr><td>ID:</td><td></td><td>{{tc.id}}</td></tr>
+<tr><td>Author</td><td></td><td>{{task.author}}</td></tr>
+<tr><td>Length</td><td></td><td>{{tc.len}}</td></tr>
+</table>
+
+Tags: ...
+<br>

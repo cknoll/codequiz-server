@@ -1,4 +1,9 @@
 *.log
 *.pot
 *.pyc
+.idea
 local_settings.py
+
+sqlite-jdbc-3.7.2.jar
+
+xerial-sqlite-license.txt

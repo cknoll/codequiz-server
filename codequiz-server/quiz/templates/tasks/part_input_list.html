@@ -1,3 +1,4 @@
+<!-- ==> start: part_input_list.html -->
 {% load staticfiles %}
 {# is this line neccessary?#}
 
@@ -7,31 +8,31 @@
 
 {% if input_list %}
 <table>
-    {% for elt in input_list %}
+    {% for element in input_list %}
         <tr><td>{{forloop.counter}}.</td>
         <td>
-        {% if elt.src.text %}
-        <pre class="src">{{elt.src.text}}</pre>
+        {% if element.src.text %}
+        <pre class="src">{{element.src.text}}</pre>
         {% else %}
-        <span class="normal">{{elt.txt.text}}</span>
+        <span class="normal">{{element.txt.text}}</span>
         {% endif %}
         </td>
         <td>
-        {% if elt.le %}
-        <input name="le{{forloop.counter}}" type="text" size="{{elt.le.len}}" value="{{elt.user_solution}}" autocomplete="off">
-        {% elif elt.cbox %}
-        <input name="cbox{{forloop.counter}}" type="checkbox" {% if elt.user_solution == "True" %} checked="checked" {% endif%}>
+        {% if element.le %}
+        <input name="le{{forloop.counter}}" type="text" size="{{element.le.len}}" value="{{element.user_solution}}" autocomplete="off">
+        {% elif element.cbox %}
+        <input name="cbox{{forloop.counter}}" type="checkbox" {% if element.user_solution == "True" %} checked="checked" {% endif%}>
         {# unchecked cboxes are not contained in the form data -> hidden compagnion#}
         <input type="hidden" name="hidden_cbox{{forloop.counter}}" value="foo">
-        &nbsp;{{elt.cbox.label}}
+        &nbsp;{{element.cbox.label}}
         {% else %}
         Invalid input field.
         {% endif %}
         </td>
         {% if print_solution %}
         <td>
-        <div class="{{elt.css_class}}">
-        {{elt.print_solution}}
+        <div class="{{element.css_class}}">
+        {{element.print_solution}}
         </div>
         </td>
         {% endif %}
@@ -44,3 +45,4 @@
 
 
 </div>
+<!-- ==> end: part_input_list.html -->
