@@ -65,7 +65,15 @@ a4aeb8 bg
 
  
  
- */ 
+ */
+
+.css_version
+{
+    font-size: 50%;
+    color: #F90;
+    /*color: #FFC875;*/
+    font-weight: normal;
+}
 
 #headerleft h1 span
 {

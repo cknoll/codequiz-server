@@ -2,44 +2,44 @@
 <!-- For a single Task (outside of a test)-->
 {% load staticfiles %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'tasks/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'tasks/style.css' %}"/>
 
 
 <form action="{% url 'quiz_ns:task_form_process' task.id %}" method="post">
-{% csrf_token %}
+    {% csrf_token %}
 
-<div class="task1">
-<h2>{{ task.title }}
-<div class="small">
-by {{ task.author }}
-</div>
-</h2>
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
-
-{% for s in strings %}
-
-        {{s|safe}}
-        
-{% endfor %}
-
-<span style="display: block; text-align: right;">
-{%for bs in button_strings%}
-
-{{bs|safe}}
-
-{% endfor %}
-</span>
-<br>
-<br><br>
-
-Tags:
-{% for tag in task.tag_list %}
-     <span class="tags">{{tag}}</span>
-{% endfor %}
+    <div class="task1">
+        <h2>{{ task.title }}
+            <div class="small">
+                by {{ task.author }}
+            </div>
+        </h2>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 
+        {% for s in strings %}
 
-</div>
+            {{ s|safe }}
+
+        {% endfor %}
+
+        <span style="display: block; text-align: right;">
+            {% for bs in button_strings %}
+
+                {{ bs|safe }}
+
+            {% endfor %}
+        </span>
+        <br/>
+        <br/>
+        <br/>
+
+        Tags:
+        {% for tag in task.tag_list %}
+            <span class="tags">{{ tag }}</span>
+        {% endfor %}
+
+
+    </div>
 </form>
 <!-- ==> end: task_detail.html -->

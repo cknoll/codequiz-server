@@ -6,7 +6,6 @@ import xml.etree.ElementTree as ET
 from IPython import embed as IPS
 
 
-
 delim_replacements = [('<', '{+'), ('>', '+}')]
 delim_replacements_rev = zip(*reversed(zip(*delim_replacements)))
 
@@ -14,24 +13,22 @@ pp_matches = ['<txt>.*</txt>', "<src>.*</src>"]
 
 pp_tags = [re.findall('\<(?P<my_match>.+?)\>', m)[0] for m in pp_matches]
 
-allowed_toplevel_tags = set(['src', 'txt', 'lelist', 'cboxlist'])
+allowed_toplevel_tags = {'src', 'txt', 'lelist', 'cboxlist'}
 
 
 def preprocess_delimiters(xml_string):
-
     regex = '(?P<my_match>(?:.|\n)*?)'
-    # exlpanation:
+    # explanation:
     # (?P<my_match>.*) would match any string without \n in it
     # and would return it (instead of the whole matching regex, including
     # the <txt> stuff)
     # we want \n to be included
-    # (?:.|\n)* is a group that mathces every string
+    # (?:.|\n)* is a group that matches every string
     # Note: (?:...) is the non capturing version of the parenthesis
     # final ? makes the * quantifier non-greedy
 
 
     pp_matches_re = [m.replace('.*', regex) for m in pp_matches]
-
 
     result_string = xml_string
 
@@ -51,21 +48,23 @@ def preprocess_delimiters(xml_string):
 
     return result_string
 
-def post_process_delimiters(xml_elt):
+
+def post_process_delimiters(xml_element):
     """
     re insert the original tag-delimiters for the tmp-delimiters
     """
-    if not xml_elt.tag in pp_tags:
+    if not xml_element.tag in pp_tags:
         return # do nothing
 
     # these tags are not allowed to have child tags
-    assert len(xml_elt) == 0
+    assert len(xml_element) == 0
     for o, n in delim_replacements_rev:
-        xml_elt.text = xml_elt.text.replace(o,n)
+        xml_element.text = xml_element.text.replace(o, n)
+
 
 def test_raw_xml(xml_string):
     """
-    we have certain assumtions regarding our raw_xml_strings
+    we have certain assumptions regarding our raw_xml_strings
     -> raise an exception if an assumption is violated
     """
     if not xml_string.startswith("<?xml "):
@@ -77,17 +76,19 @@ def test_raw_xml(xml_string):
         if new_d in xml_string:
             raise ValueError
 
+
 def test_parsed_xml(root):
     """
     raise exception if assumption on xml structures are not met
     """
-    tags = map(lambda e:e.tag, root)
+    tags = map(lambda e: e.tag, root)
 
     tag_set = set(tags)
     if not tag_set.issubset(allowed_toplevel_tags):
-        raise ValueError, "invalid top level tag found"
+        raise ValueError("invalid top level tag found")
 
-    #!!TODO: more sanity checks (deeper level, depths)
+        #!!TODO: more sanity checks (deeper level, depths)
+
 
 def split_xml_root(root):
     """
@@ -97,60 +98,54 @@ def split_xml_root(root):
     return [TopLevelElement(child) for child in root]
 
 
-
-
-
 class TopLevelElement(object):
-
-    def __init__(self, elt):
-        self.tag = elt.tag
-        self.elt = elt
-        mapping = {'txt' : self.process_txt,
-                   'src' : self.process_src,
-                   'lelist' : self.process_lelist,
-                   'cboxlist' : self.process_cboxlist,
-                   'input_list' : self.process_input_list,
-                   }
+    def __init__(self, element):
+        self.tag = element.tag
+        self.element = element
+        mapping = {'txt': self.process_txt,
+                   'src': self.process_src,
+                   'lelist': self.process_lelist,
+                   'cboxlist': self.process_cboxlist,
+                   'input_list': self.process_input_list,
+        }
 
         # execute the appropriate method
         mapping[self.tag]()
 
-        #print self.elt.text
+        #print self.element.text
         #print "multi:", self.context.get('multiline')
-
-
 
     def process_txt(self):
 
         self.template = 'tasks/txt.html'
         self.context = {
-            'text': self.elt.text,
-            'multiline': "\n" in self.elt.text
-            }
+            'text': self.element.text,
+            'multiline': "\n" in self.element.text
+        }
 
     def process_src(self):
         self.template = 'tasks/src.html'
         self.context = {
-            'text': self.elt.text,
-            'multiline': "\n" in self.elt.text
-            }
+            'text': self.element.text,
+            'multiline': "\n" in self.element.text
+        }
 
     def process_lelist(self):
-        elt_list, depths = zip(*[xml_to_py(xml_elt) for xml_elt in self.elt])
+        element_list, depths = zip(*[xml_to_py(xml_element) for xml_element in self.element])
 
         self.template = 'tasks/le_list.html'
         self.context = {
-            'le_list': elt_list,
+            'le_list': element_list,
         }
 
     def process_input_list(self):
         """
         this list can contain checkboxes, line-edits and maybe more
         """
-        input_list, depths = zip(*[xml_to_py(xml_elt) for xml_elt in self.elt])
+        input_list, depths = zip(*[xml_to_py(xml_element) for xml_element in self.element])
 
         self.template = 'tasks/part_input_list.html'
-        self.context = dict(input_list = input_list)
+        self.context = dict(input_list=input_list)
         #IPS()
 
     def update_user_solution(self, sol_dict):
@@ -162,42 +157,39 @@ class TopLevelElement(object):
         if self.tag in ['txt', 'src']:
             return
 
-        assert self.tag  == 'input_list', "unexpected Tag %s" %self.tag
+        assert self.tag == 'input_list', "unexpected Tag %s" % self.tag
 
-        if self.tag  == 'input_list':
-            elt_list = self.context['input_list']
-            assert len(sol_dict) == len(elt_list)
+        if self.tag == 'input_list':
+            element_list = self.context['input_list']
+            assert len(sol_dict) == len(element_list)
 
-            # Challange: elt_list is ordered
+            # Challange: element_list is ordered
             # sol_dict is not.
             # -> we construct the keys live
-            for i, elt in enumerate(elt_list):
-                j = i+1
-                key = elt.get_type()+str(j)
-#                IPS()
+            for i, element in enumerate(element_list):
+                j = i + 1
+                key = element.get_type() + str(j)
+                #                IPS()
                 sol = sol_dict[key]
-                elt.user_solution = sol
-                #print '>%s<:|%s|' % (repr(elt.sol.text),  repr(sol))
-                elt.user_correct = \
-                        (elt.sol.text == aux_space_convert_for_lines(sol))
+                element.user_solution = sol
+                #print '>%s<:|%s|' % (repr(element.sol.text),  repr(sol))
+                element.user_correct = \
+                    (element.sol.text == aux_space_convert_for_lines(sol))
 
-                if elt.user_correct:
-                    elt.css_class = "sol_right"
-                    elt.print_solution = "OK"
+                if element.user_correct:
+                    element.css_class = "sol_right"
+                    element.print_solution = "OK"
                 else:
-                    print elt.sol.text
-                    elt.css_class = "sol_wrong"
-                    if elt.sol.text == "":
+                    print element.sol.text
+                    element.css_class = "sol_wrong"
+                    if element.sol.text == "":
                         # !! LANG
-                        elt.print_solution = "[keine Änderung]"
+                        element.print_solution = "[keine Änderung]"
                     else:
-                        elt.print_solution = elt.sol.text
-
+                        element.print_solution = element.sol.text
 
     def process_cboxlist(self):
         raise NotImplementedError
-#
-
 
 
 def load_xml(xml_string):
@@ -217,9 +209,8 @@ def load_xml(xml_string):
 
     root = ET.fromstring(replaced_string)
 
-    for elt in root.iter():
-        post_process_delimiters(elt)
-
+    for element in root.iter():
+        post_process_delimiters(element)
 
     return root
 
@@ -228,6 +219,7 @@ class Element(object):
     """
     models an xml-Element which is not toplevel
     """
+
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
 
@@ -237,12 +229,12 @@ class Element(object):
 
         # will be overwritten later
         self.user_solution = ""
-        self.print_solution = "" # will be overwritten later
+        self.print_solution = ""  # will be overwritten later
         self.css_class = "undefined_css_class"
 
     def get_type(self):
         """
-        determine which kind of elt we have (le or cbox)
+        determine which kind of element we have (le or cbox)
         """
 
         if hasattr(self, 'le'):
@@ -250,11 +242,12 @@ class Element(object):
         elif hasattr(self, 'cbox'):
             return 'cbox'
         else:
-#            IPS()
-            raise ValueError, "unknown xml-elt-type"
+        #            IPS()
+            raise ValueError("unknown xml-element-type")
 
     def __repr__(self):
-        return 'xml:'+self.tag
+        return 'xml:' + self.tag
+
 
 def aux_space_convert(string):
     u"""
@@ -271,53 +264,51 @@ def aux_space_convert(string):
 
     leading_spaces = string[:idx]
     # assumes utf8 file encoding:
-    brace = u"␣"#.encode('utf8')
-    res = brace*len(leading_spaces)+s2
+    brace = u"␣"  # .encode('utf8')
+    res = brace * len(leading_spaces) + s2
     return res
 
-def aux_space_convert_for_lines(string):
 
+def aux_space_convert_for_lines(string):
     lines = string.split("\n")
     return "\n".join([aux_space_convert(line) for line in lines])
 
 
-
-
-def xml_to_py(xml_elt):
+def xml_to_py(xml_element):
     """
     converts an xml element into a py Element object
     """
     child_list = []
-    depths = [-1] # if no
-    for child in xml_elt:
-        elt_object, depth = xml_to_py(child)
-        child_list.append((child.tag, elt_object))
+    depths = [-1]  # if no
+    for child in xml_element:
+        element_object, depth = xml_to_py(child)
+        child_list.append((child.tag, element_object))
         depths.append(depth)
 
-    maxdepth = max(depths)+1
-    if xml_elt.text == None:
-        xml_elt.text = '' # allows .strip()
+    maxdepth = max(depths) + 1
+    if xml_element.text is None:
+        xml_element.text = ''  # allows .strip()
 
-    # TODO: This should live in the xml_elt
-    if xml_elt.tag == "sol":
-        tmp_elt_string = aux_space_convert_for_lines(xml_elt.text)
+    # TODO: This should live in the xml_element
+    if xml_element.tag == "sol":
+        tmp_element_string = aux_space_convert_for_lines(xml_element.text)
     else:
-        tmp_elt_string = xml_elt.text
+        tmp_element_string = xml_element.text
 
-    attribute_list = child_list + [( 'text', tmp_elt_string.strip() )]
-    attribute_list +=  [('tag', xml_elt.tag)]
-    attribute_list += xml_elt.attrib.items()
+    attribute_list = child_list + [( 'text', tmp_element_string.strip() )]
+    attribute_list += [('tag', xml_element.tag)]
+    attribute_list += xml_element.attrib.items()
     kwargs = dict(attribute_list)
     if not len(kwargs) == len(attribute_list):
-        raise ValueError, "duplicate in attribute_list. "\
-        "This list should be unique: %s." % str(zip(*attribute_list)[0])
+        raise ValueError, "duplicate in attribute_list. " \
+                          "This list should be unique: %s." % str(zip(*attribute_list)[0])
 
     this = Element(**kwargs)
 
     return this, maxdepth
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     path = "task1.xml"
     with open(path, 'r') as myfile:
         content = myfile.read()

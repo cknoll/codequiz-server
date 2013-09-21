@@ -107,15 +107,15 @@ def func(a = 5, b = 7):
         Ergänzen Sie die von folgenden Funktionsaufrufen erzeugten Ausgaben
     </txt>
     <input_list>
-        <elt>
+        <element>
             <src>func()</src><le len="10"/><sol>5 7</sol>
-        </elt>
-        <elt>
+        </element>
+        <element>
             <src>func(3)</src><le len="10"/><sol>3 7</sol>
-        </elt>
-        <elt>
+        </element>
+        <element>
             <src>func(3, 'test')</src><le len="10"/><sol>3 test</sol>
-        </elt>
+        </element>
     </input_list>
     <txt>
         <b>Hinweis:</b> siehe Kurs02 (Funktionen)
@@ -149,15 +149,15 @@ def func(a = 8, b = 7):
         Ergaenzen Sie die von folgenden Funktionsaufrufen erzeugten Ausgaben
     </txt>
     <input_list>
-        <elt>
+        <element>
             <src>func()</src><le len="10"/><sol>8 7</sol>
-        </elt>
-        <elt>
+        </element>
+        <element>
             <src>func(3)</src><le len="10"/><sol>3 7</sol>
-        </elt>
-        <elt>
+        </element>
+        <element>
             <src>func(3, 'test')</src><le len="10"/><sol>3 test</sol>
-        </elt>
+        </element>
     </input_list>
     <txt>
         <b>Hinweis:</b> siehe Kurs02 (Funktionen)
@@ -188,12 +188,12 @@ a=10
 b=1
     </src>
     <input_list>
-        <elt>
+        <element>
             <le len="10"/><sol>a=str(a)</sol>
-        </elt>
-        <elt>
+        </element>
+        <element>
           <le len="10"/><sol>b=str(b)</sol>
-        </elt>
+        </element>
     </input_list>
     <src>
 print a + b # -> 101
@@ -220,27 +220,27 @@ body_xml = <?xml version="1.0"?>
 Die folgenden Code-Schnipsel enthalten zum Teil <i>Syntax</i>-Fehler. Korrigieren Sie ggf. den Quelltext (nur die fehlerhafte Zeile). Wenn kein Fehler vorliegen sollte, so lassen Sie das Eingabefeld leer.
     </txt>
 <input_list>
-        <elt>
+        <element>
     <src>
 def schöneFunktion(a):
     return 2*a 
     </src>
 <le len="10"/><sol>def schoeneFunktion(a):</sol>
-    </elt>
+    </element>
 
-        <elt>
+        <element>
     <src>
 if a=b: print "gleich"
     </src>
 <le len="10"/><sol>if a==b: print "gleich"</sol>
-    </elt>
+    </element>
 
-        <elt>
+        <element>
     <src>
 a, b, c = b, c, a 
     </src>
 <le len="10"/><sol></sol>
-    </elt>
+    </element>
     </input_list>
 </data>
 
@@ -266,12 +266,12 @@ Schreiben Sie eine Funktion namens func1, die beliebig viele (unbenannte) Argume
 <b>Hinweise:</b> Die Muster-Lösung hat zwei Zeilen und verwendet vier Leerzeichen pro Einrückungsebene.
     </txt>
     <input_list>
-        <elt>
+        <element>
             <le len="10"/><sol>def func1(*args):</sol>
-        </elt>
-        <elt>
+        </element>
+        <element>
             <le len="10"/><sol>    pass</sol>
-        </elt>
+        </element>
     </input_list>
 </data>
 
@@ -297,24 +297,24 @@ body_xml = <?xml version="1.0"?>
 <b>Hinweise:</b> Beispiel-Liste: <tt>[8,9,10]</tt>, Beispiel-String: <tt>"xyz"</tt> (inkl. "-Zeichen)
     </txt>
     <input_list>
-        <elt>
+        <element>
             <src>range(3)</src><le len="10"/><sol>[0,1,2]</sol>
-        </elt>
-        <elt>
-            <src>"Hallo Welt"[1]</src><le len="10"/><sol>"a"</sol>
-        </elt>
-        <elt>
-            <src>"Hallo Welt"[:4]</src><le len="10"/><sol>"Hall"</sol>
-        </elt>
-        <elt>
-            <src>"Hallo Welt"[-3]</src><le len="10"/><sol>"e"</sol>
-        </elt>
-        <elt>
-            <src>"Hallo Welt"[-3:]</src><le len="10"/><sol>"elt"</sol>
-        </elt>
-        <elt>
-            <src>"Hallo Welt"[1:5]</src><le len="10"/><sol>"allo"</sol>
-        </elt>
+        </element>
+        <element>
+            <src>"Hallo Welement"[1]</src><le len="10"/><sol>"a"</sol>
+        </element>
+        <element>
+            <src>"Hallo Welement"[:4]</src><le len="10"/><sol>"Hall"</sol>
+        </element>
+        <element>
+            <src>"Hallo Welement"[-3]</src><le len="10"/><sol>"e"</sol>
+        </element>
+        <element>
+            <src>"Hallo Welement"[-3:]</src><le len="10"/><sol>"element"</sol>
+        </element>
+        <element>
+            <src>"Hallo Welement"[1:5]</src><le len="10"/><sol>"allo"</sol>
+        </element>
     </input_list>
 </data>
 
@@ -337,27 +337,27 @@ body_xml = <?xml version="1.0"?>
     <txt>
         Ergänzen sie jeweils das Ergebnis folgender Code-Zeilen (ohne Leerzeichen).
 <br><br>
-<b>Hinweise:</b> Beispiel-Liste: <tt>[8,9,10]</tt>, Beispiel-String: <tt>"Hallo Welt"</tt>, Beispiel-Bool: <tt>False</tt>
+<b>Hinweise:</b> Beispiel-Liste: <tt>[8,9,10]</tt>, Beispiel-String: <tt>"Hallo Welement"</tt>, Beispiel-Bool: <tt>False</tt>
     </txt>
     <input_list>
-        <elt>
+        <element>
             <src>[1,5]*3</src><le len="10"/><sol>[1,5,1,5,1,5]</sol>
-        </elt>
-        <elt>
+        </element>
+        <element>
             <src>"-"*3</src><le len="10"/><sol>"---"</sol>
-        </elt>
-        <elt>
+        </element>
+        <element>
             <src>"abc" == 'abc'</src><le len="10"/><sol>True</sol>
-        </elt>
-        <elt>
+        </element>
+        <element>
             <src>8 in range(10)</src><le len="10"/><sol>True</sol>
-        </elt>
-        <elt>
+        </element>
+        <element>
             <src>"all" in 'Hallo'</src><le len="10"/><sol>True</sol>
-        </elt>
-        <elt>
+        </element>
+        <element>
             <src>"g" not in "[a-z]" </src><le len="10"/><sol>True</sol>
-        </elt>
+        </element>
     </input_list>
 </data>
 
@@ -383,12 +383,12 @@ body_xml = <?xml version="1.0"?>
 <b>Hinweise:</b> Denken Sie nach!
     </txt>
     <input_list>
-        <elt>
+        <element>
             <src>[1,5]*3</src><le len="10"/><sol>[1,5,1,5,1,5]</sol>
-        </elt>
-        <elt>
+        </element>
+        <element>
             <src>[1,5]***3</src><cbox label='Richtig?'/><sol>False</sol>
-        </elt>
+        </element>
     </input_list>
 </data>
 
