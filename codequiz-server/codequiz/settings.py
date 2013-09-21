@@ -11,8 +11,8 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'codequiz_db_file',                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'codequiz_db_file_2',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
@@ -122,6 +122,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'quiz',
+    'taggit',
+    'taggit_autosuggest',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -156,3 +158,16 @@ LOGGING = {
         },
     }
 }
+
+
+# TAGGIT_AUTOSUGGEST_STATIC_BASE_URL:
+# Instead of collecting and serving the static files directly, you can
+# also set this variable to your static base URL somewhere else.
+#TAGGIT_AUTOSUGGEST_MAX_SUGGESTIONS (Defaults to 20):
+# The amount of suggestions is limited, you can raise or lower the limit
+# of default 20 using this setting.
+#TAGGIT_AUTOSUGGEST_CSS_FILENAME (Defaults to 'autoSuggest.css'):
+# Set the CSS file which best fits your site elements.
+# The CSS file have to be in 'jquery-autosuggest/css/'.
+#TAGGIT_AUTOSUGGEST_MODEL (Defaults to tuple('taggit','Tag'))
+# The Tag model used, if you happen to use Taggit custom tagging.

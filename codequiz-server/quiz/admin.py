@@ -11,7 +11,7 @@ class TC_MembershipInline(admin.TabularInline):
 class TaskAdmin(admin.ModelAdmin):
 #    list_display = ('question', 'pub_date', 'was_published_recently')
 #    list_filter = ['was_published_recently']
-    search_fields = ['title', 'tag_list']
+    search_fields = ['title', 'tags']
     date_hierarchy = 'pub_date'
     inlines = (TC_MembershipInline,)
 
