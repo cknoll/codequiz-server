@@ -6,42 +6,49 @@
 <div class="le_list">
 
 
-{% if input_list %}
-<table>
-    {% for element in input_list %}
-        <tr><td>{{forloop.counter}}.</td>
-        <td>
-        {% if element.src.text %}
-        <pre class="src">{{element.src.text}}</pre>
-        {% else %}
-        <span class="normal">{{element.txt.text}}</span>
-        {% endif %}
-        </td>
-        <td>
-        {% if element.le %}
-        <input name="le{{forloop.counter}}" type="text" size="{{element.le.len}}" value="{{element.user_solution}}" autocomplete="off">
-        {% elif element.cbox %}
-        <input name="cbox{{forloop.counter}}" type="checkbox" {% if element.user_solution == "True" %} checked="checked" {% endif%}>
-        {# unchecked cboxes are not contained in the form data -> hidden compagnion#}
-        <input type="hidden" name="hidden_cbox{{forloop.counter}}" value="foo">
-        &nbsp;{{element.cbox.label}}
-        {% else %}
-        Invalid input field.
-        {% endif %}
-        </td>
-        {% if print_solution %}
-        <td>
-        <div class="{{element.css_class}}">
-        {{element.print_solution}}
-        </div>
-        </td>
-        {% endif %}
-        </tr>
-    {% endfor %}
-</table>
-{% else %}
-    <p>No line_edits are available. This should not happen</p>
-{% endif %}
+    {% if input_list %}
+        <table>
+            {% for element in input_list %}
+                <tr>
+                    <td>{{ forloop.counter }}.</td>
+                    <td>
+                        {% if element.src.text %}
+                            <pre class="src">{{ element.src.text }}</pre>
+                        {% else %}
+                            <span class="normal">{{ element.txt.text }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if element.le %}
+                            <label>Antwort:
+                                <input name="le{{ forloop.counter }}" type="text" size="{{ element.le.len }}"
+                                       value="{{ element.user_solution }}" autocomplete="off">
+                            </label>
+                        {% elif element.cbox %}
+                            <label>
+                                <input name="cbox{{ forloop.counter }}" type="checkbox"
+                                {% if element.user_solution == "True" %} checked="checked" {% endif %}>
+                            </label>
+                            {# unchecked cboxes are not contained in the form data -> hidden companion#}
+                            <input type="hidden" name="hidden_cbox{{ forloop.counter }}" value="foo">
+                            &nbsp;{{ element.cbox.label }}
+                        {% else %}
+                            Invalid input field.
+                        {% endif %}
+                    </td>
+                    {% if print_solution %}
+                        <td>
+                            <div class="{{ element.css_class }}">
+                                {{ element.print_solution }}
+                            </div>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No line_edits are available. This should not happen</p>
+    {% endif %}
 
 
 </div>

@@ -14,7 +14,9 @@
                 by {{ task.author }}
             </div>
         </h2>
-        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        {% if error_message %}
+            <p><strong>{{ error_message }}</strong></p>
+        {% endif %}
 
 
         {% for s in strings %}

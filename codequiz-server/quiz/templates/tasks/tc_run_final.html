@@ -1,21 +1,16 @@
 <!-- ==> start: tc_run_final.html -->
 {% load staticfiles %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'tasks/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'tasks/style.css' %}"/>
 
 
 <div class="klasse1">
-Congratulations!<br>
-
-You completed the test: "{{ tc.title }}" with {{tc.LEN}} tasks.
+    <p>Congratulations!</p>
+    <p>You completed the test: "{{ tc.title }}" with {{ tc.LEN }} tasks.</p>
 </div>
 
-<br>
-<br>
-<br>
 <div class="small">
-In  further versions of this web application you will see some information about your results here.
+    <p>In further versions of this web application you will see some information about your results here.</p>
 </div>
-
 
 <!-- ==> end: tc_run_final.html -->
