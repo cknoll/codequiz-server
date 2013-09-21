@@ -53,29 +53,29 @@ hier ist <b>was</b> fett
 </txt>
 """
         res1 = xml_lib.preprocess_delimiters(xml1)
-        elt = xml_lib.ET.fromstring(res1)
-        xml_lib.post_process_delimiters(elt)
+        element = xml_lib.ET.fromstring(res1)
+        xml_lib.post_process_delimiters(element)
 
 
         self.assertNotEqual(xml1, res1)
 
-        self.assertTrue(elt.text in xml1) # <txt> etc is stripped of
+        self.assertTrue(element.text in xml1) # <txt> etc is stripped of
         # but the core matters
 
     def test_xml_to_py(self):
         xml1 = """
-<elt>
+<element>
     <src>func()</src><le len="10"/><sol>5 7</sol>
-</elt>
+</element>
 """
-        elt = xml_lib.ET.fromstring(xml1)
-        pyelt, depth = xml_lib.xml_to_py(elt)
+        element = xml_lib.ET.fromstring(xml1)
+        pyelement, depth = xml_lib.xml_to_py(element)
 
         self.assertEqual(depth, 1)
-        self.assertEqual(pyelt.src.text, "func()")
-        self.assertEqual(pyelt.le.text, "")
-        self.assertEqual(pyelt.le.len, "10")
-        self.assertEqual(pyelt.sol.text, "5 7")
+        self.assertEqual(pyelement.src.text, "func()")
+        self.assertEqual(pyelement.le.text, "")
+        self.assertEqual(pyelement.le.len, "10")
+        self.assertEqual(pyelement.sol.text, "5 7")
 
     def test_fail(self):
 #        self.assertTrue(False)

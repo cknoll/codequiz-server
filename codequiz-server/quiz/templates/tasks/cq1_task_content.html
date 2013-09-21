@@ -1,0 +1,37 @@
+<!-- content of one single task  -->
+
+
+<form action="{% url 'quiz_ns:tc_run_form_process' task.tc.id task.tc_task_id %}" method="post" autocomplete="off">
+
+
+
+{% csrf_token %} <!-- protect against cross site reference forgery -->
+
+<!-- <div class="task1"> -->
+
+<h2><span id="color1">Task:</span> "{{ task.title }}"</h2>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+
+{% for s in html_strings %}
+
+        {{s|safe}}
+<br>        
+{% endfor %}
+
+<br>
+
+<!-- Buttons: -->
+<span style="display: block; text-align: right;">
+{%for bs in button_strings%}
+
+{{bs|safe}}
+
+{% endfor %}
+</span>
+<br>
+
+<!-- </div> -->
+
+
+</form>

@@ -6,7 +6,8 @@ text file such that it can be tracked by version control.
 """
 
 import os, sys, time
-
+from ipHelp import IPS, Tracer, ip_syshook, sys
+# Tracer(colors='Linux')() # start debugging
 
 dumpfilname = "quiz_data_dump.sql"
 
@@ -49,6 +50,8 @@ if __name__ == "__main__":
 
 
     with open(dumpfilname, 'w') as dumpfile:
+        if isinstance(res, unicode):
+            res = res.encode('utf-8')
         dumpfile.write(res)
     print "%s written" % dumpfilname
 

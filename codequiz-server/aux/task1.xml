@@ -11,15 +11,15 @@ def func(a = 5, b = 7):
         Ergaenzen Sie die von folgenden Funktionsaufrufen erzeugten Ausgaben
     </txt>
     <lelist>
-        <elt>
+        <element>
             <src>func()</src><le len="10"/><sol>5 7</sol>
-        </elt>
-        <elt>
+        </element>
+        <element>
             <src>func(3)</src><le len="10"/><sol>3 7</sol>
-        </elt>
-        <elt>
+        </element>
+        <element>
             <src>func(3, 'test')</src><le len="10"/><sol>3 test</sol>
-        </elt>
+        </element>
     </lelist>
     <txt>
         <b>Hinweis:</b> siehe Kurs02 (Funktionen)
