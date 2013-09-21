@@ -1,0 +1,90 @@
+li a {
+    color: green;
+}
+
+.klasse1 {
+    border:1px outset gray;
+    margin:.5em;
+    padding:.5em;
+    background-color:#eee;
+    width:600px;
+    
+}
+
+.task1 {
+    width:750px;
+    border:1px solid;
+    border-color: #000;
+    margin:.5em;
+    padding:.5em;
+    /*background-color:#fafafa;*/
+    
+background-image: -webkit-linear-gradient(#eaeaea 0%, #fdfdfd 100%); 
+background-image: -ms-linear-gradient(#eaeaea 0%, #fdfdfd 100%); 
+background-image: -o-linear-gradient(#eaeaea 0%, #fdfdfd 100%); 
+background-image: -moz-linear-gradient(#eaeaea 0%, #fdfdfd 100%); 
+background-image: linear-gradient(#eaeaea 0%, #fdfdfd 100%); 
+    
+}
+
+
+
+.src, .src1
+{
+    border:1px solid;
+    border-color: #aaa;
+/*     background-color:#eaeaea; */
+    font-family:Fixedsys,Courier,monospace;    
+}
+
+.src1
+{
+    width:600px;
+    border:1px solid;
+    border-color: #555;
+    padding:.5em;
+    margin:.5em;
+    
+}
+
+
+.le_list
+{
+    width:600px;
+    border:1px solid;
+    border-color: #555;
+    padding:.5em;
+    margin:.5em;
+}
+
+.normal
+{
+    font-size:14;
+    
+}
+
+.sol_right
+{
+    font-family:Fixedsys,Courier,monospace;
+    color:#008000;
+    font-size:13;
+}
+
+.sol_wrong
+{
+    font-family:Fixedsys,Courier,monospace;
+    color:#800000;
+    font-size:13;
+}
+
+
+.tags
+{
+    font-size:10;
+    background-color:#eeeeff; /* nur test*/
+}
+
+.small
+{
+    font-size:8;
+}

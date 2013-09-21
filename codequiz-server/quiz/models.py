@@ -2,6 +2,8 @@
 
 from django.db import models
 
+from taggit_autosuggest.managers import TaggableManager
+
 
 class Task(models.Model):
     author = models.CharField(max_length=200)
@@ -9,10 +11,14 @@ class Task(models.Model):
     versionstring = models.CharField(max_length=20)
     pub_date = models.DateTimeField('date published')
     body_xml = models.TextField()
-    tag_list = models.TextField()  # separator : "; "
+    tags = TaggableManager()
 
     def is_beta(self):
-        return 'beta' in self.tag_list.split("; ")
+        tags = []
+        for x in self.tags.names():
+            tags.append(x)
+
+        return 'beta' in tags
 
     #is_beta.admin_order_field = 'pub_date'
     is_beta.boolean = True
@@ -21,6 +27,13 @@ class Task(models.Model):
     def __unicode__(self):
         return ("T%03i:" % self.id) + self.title
 
+    def tags_as_string(self):
+        """
+        :return: all tags in one comma separated string
+        """
+
+        stringified = ", ".join([str(x) for x in self.tags.names()])
+        return stringified
 
 class TaskCollection(models.Model):
     """

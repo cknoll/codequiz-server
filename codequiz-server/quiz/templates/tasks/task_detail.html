@@ -36,11 +36,7 @@
         <br/>
         <br/>
 
-        Tags:
-        {% for tag in task.tag_list %}
-            <span class="tags">{{ tag }}</span>
-        {% endfor %}
-
+        Tags: <span class="tags">{{ task.tags_as_string }}</span>
 
     </div>
 </form>
