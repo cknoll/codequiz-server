@@ -7,8 +7,9 @@ admin.autodiscover()
 import quiz.views as quiz_app_views
 
 urlpatterns = patterns('',
-                       url(r'^$', quiz_app_views.index, name='index'), # Problems here
+                       url(r'^$', quiz_app_views.index, name='index'),  # Problems here
                        url(r'^quiz/', include('quiz.urls', namespace="quiz_ns")),
+                       url(r'^taggit_autosuggest/', include('taggit_autosuggest.urls')),
     # Examples:
     # url(r'^$', 'codequiz.views.home', name='home'),
     # url(r'^codequiz/', include('codequiz.foo.urls')),
