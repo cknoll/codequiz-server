@@ -1,59 +1,83 @@
 <!-- content of one single task  -->
 
+{# javascripts required by SliderVoteForm #}
+
 <h2>Task-Meta-Infos</h2>
 {% if error_message %}
     <p><strong>{{ error_message }}</strong></p>
 {% endif %}
 
-<table>
-    <tr>
-        <td>Title</td>
-        <td style="width:10px"></td>
-        <td>"{{ task.title }}"</td>
-    </tr>
-    <tr>
-        <td>ID:</td>
-        <td></td>
-        <td>{{ task.id }}</td>
-    </tr>
-    <tr>
-        <td>Author</td>
-        <td></td>
-        <td>{{ task.author }}</td>
-    </tr>
-    <tr>
-        <td>Version</td>
-        <td></td>
-        <td>...</td>
-    </tr>
-    <tr>
-        <td>Last changed</td>
-        <td></td>
-        <td>...</td>
-    </tr>
-    <tr>
-        <td>Difficulty</td>
-        <td></td>
-        <td>...</td>
-    </tr>
-    <tr>
-        <td>Didactic Quality</td>
-        <td></td>
-        <td>...</td>
-    </tr>
-    <tr>
-        <td>Feedback</td>
-        <td></td>
-        <td>...</td>
-    </tr>
-    <tr>
-        <td>Tags</td>
-        <td></td>
-        <td>
-            <span class="tags">{{ task.tags_as_string }}</span>
-        </td>
-    </tr>
-</table>
+{% load ratings_tags %}
+{% get_rating_form for task using 'difficulty' as rating_form_difficulty %}
+{% get_rating_form for task using 'quality' as rating_form_quality %}
+{% get_rating_score for task using 'difficulty' as score_difficulty %}
+{% get_rating_score for task using 'quality' as score_quality %}
 
-<br/>
+
+<div class="container">
+    <div class="row">
+        <div class="left">
+            <p>Title:</p>
+        </div>
+        <div class="right"> {{ task.title }} </div>
+    </div>
+    <div class="row">
+        <div class="left">
+            <p>ID:</p>
+        </div>
+        <div class="right"> {{ task.id }} </div>
+    </div>
+    <div class="row">
+        <div class="left">
+            <p>Author:</p>
+        </div>
+        <div class="right"> {{ task.author }} </div>
+    </div>
+    <div class="row">
+        <div class="left">
+            <p>Version:</p>
+        </div>
+        <div class="right"> {{ task.versionstring }} </div>
+    </div>
+    <div class="row">
+        <div class="left">
+            <p>Quality:</p>
+        </div>
+        <div class="right">
+            <form id="qualityratingform" action="{% url "ratings_vote" %}" class="ratings" method="post">
+                {% csrf_token %}
+                {{ rating_form_quality }}
+                {{ score_quality.average }} ({{ score_quality.num_votes }})
+                <span class="success" style="display: none;"></span>
+                <span class="error" style="display: none;">Errors...</span>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="left">
+            <p>Difficulty:</p>
+        </div>
+        <div class="right">
+            <form id="difficultyratingform" action="{% url "ratings_vote" %}" class="ratings" method="post">
+                {% csrf_token %}
+                {{ rating_form_difficulty }}
+                {{ score_difficulty.average }} ({{ score_difficulty.num_votes }})
+                <span class="success" style="display: none;"></span>
+                <span class="error" style="display: none;">Errors...</span>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+
+    $("#difficultyratingform").on("vote_submit", function (data) {
+        alert("Difficulty: " + data["result"]);
+    });
+
+    $("#qualityratingform").on("vote_submit", function (data) {
+        alert("Quality: " + data["result"]);
+    });
+
+</script>
 

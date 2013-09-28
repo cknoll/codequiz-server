@@ -61,3 +61,22 @@ class TC_Membership(models.Model):
     group = models.ForeignKey(TaskCollection)
     ordering = models.FloatField()
 
+# register model classes for django-generic-ratings
+from ratings.handlers import ratings, RatingHandler
+from ratings.forms import StarVoteForm
+
+
+class CustomRatingHandler(RatingHandler):
+    score_range = (0.5, 5)
+    score_step = (0.5)
+    can_delete_vote = False      # default is True
+    form_class = StarVoteForm
+    allow_anonymous = True       # default is False
+    votes_per_ip_address = 0     # default is 0, meaning unlimited
+    cookie_max_age = 2592000     # 30 days in seconds, default is 1 year
+
+    def allow_key(self, request, instance, key):
+        return key in ('difficulty', 'quality')
+
+
+ratings.register(Task, CustomRatingHandler)

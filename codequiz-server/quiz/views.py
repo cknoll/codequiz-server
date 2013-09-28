@@ -44,7 +44,7 @@ def index(request):
     temporary solution for the python lecture 2013/07/08
     """
 
-    return task_collection_view(request, 2)
+    return task_collection_view(request, 1)
 
 
 def get_button(button_type):
@@ -238,7 +238,7 @@ def task_meta_block(request, task):
 
     d = dict(task=task)
 
-    context = Context(d)
+    context = RequestContext(request, d)
     tmpl = loader.get_template('tasks/cq1_task_meta.html')
 
     return tmpl.render(context)

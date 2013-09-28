@@ -5,28 +5,29 @@
     <p><strong>{{ error_message }}</strong></p>
 {% endif %}
 
-<table>
-    <tr>
-        <td>Title</td>
-        <td style="width:10px"></td>
-        <td>"{{ tc.title }}"</td>
-    </tr>
-    <tr>
-        <td>ID:</td>
-        <td></td>
-        <td>{{ tc.id }}</td>
-    </tr>
-    <tr>
-        <td>Author</td>
-        <td></td>
-        <td>{{ task.author }}</td>
-    </tr>
-    <tr>
-        <td>Length</td>
-        <td></td>
-        <td>{{ tc.len }}</td>
-    </tr>
-</table>
-
-Tags: ...
-<br/>
+<div class="container">
+    <div class="row">
+        <div class="left">
+            <p>Title:</p>
+        </div>
+        <div class="right"> {{ tc.title }} </div>
+    </div>
+    <div class="row">
+        <div class="left">
+            <p>ID:</p>
+        </div>
+        <div class="right"> {{ tc.id }} </div>
+    </div>
+    <div class="row">
+        <div class="left">
+            <p>Author:</p>
+        </div>
+        <div class="right"> {{ tc.author }} </div>
+    </div>
+    <div class="row">
+        <div class="left">
+            <p>Length:</p>
+        </div>
+        <div class="right"> {{ tc.len }} </div>
+    </div>
+</div>

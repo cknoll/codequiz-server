@@ -5,52 +5,63 @@
 
 <head>
 
-<title>Code Quiz</title> 
+    <title>Code Quiz</title>
 
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-{% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'tasks/style2.css' %}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'tasks/style2.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'tasks/tabular_style.css' %}"/>
+    <script src="{{ STATIC_URL }}js/jquery.js" type="text/javascript"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}ratings/js/ratings.js" type="text/javascript"></script>
+    <link href="{{ STATIC_URL }}jquery-rating/jquery.rating.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery-rating/jquery.MetaData.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL}}jquery-rating/jquery.rating.js"></script>
 </head>
 
 <body>
 
 <div id="container">
-	<div id="header_container">
-		<div id="header_left">
-			<h1>Code <span class="css_version">Quiz beta 0.2</span></h1>
-		</div>
-		<div id="header_right">
-			<ul>
+    <div id="header_container">
+        <div id="header_left">
+            <h1>Code <span class="css_version">Quiz beta 0.2</span></h1>
+        </div>
+        <div id="header_right">
+            <ul>
                 <li><a title="home" href="/">home</a></li>
-				<li><a class="active" title="quiz" href="{% url 'quiz_ns:task_collection_view' 2 %}">quiz</a></li><li>|</li>
-				<li><a title="about" href="index.html">about</a></li><li>|</li>
-				<li><a title="admin" href="/admin/">admin</a></li><li>|</li>
-				<li><a title="link four" href="index.html">Link Four</a></li><li>|</li>
-				
-			</ul>
-		</div>
-	</div>
-	
-	<div id="main_container">
-		<div id="main_left">
-		
+                <li><a class="active" title="quiz" href="{% url 'quiz_ns:task_collection_view' 2 %}">quiz</a></li>
+                <li>|</li>
+                <li><a title="about" href="index.html">about</a></li>
+                <li>|</li>
+                <li><a title="admin" href="/admin/">admin</a></li>
+                <li>|</li>
+                <li><a title="link four" href="index.html">Link Four</a></li>
+                <li>|</li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div id="main_container">
+        <div id="main_left">
+
             {% for mb in main_blocks %}
-            <!-- Block _ save -->
-                {{mb|safe}}
-            <br/>
+                <!-- Block _ save -->
+                {{ mb|safe }}
+                <br/>
             {% endfor %}
-		
-		</div>
-		
+
+        </div>
+
         <!-- End of main_left -->
 
-		<div id="main_right">
+        <div id="main_right">
 
             {% for mb in meta_blocks %}
-            <!-- Meta-Block _ save -->
-                {{mb|safe}}
-            <br/>
+                <!-- Meta-Block _ save -->
+                {{ mb|safe }}
+                <br/>
             {% endfor %}
             <!--
                 <h2>Task-Infos-Statisch</h2>
@@ -71,23 +82,24 @@
                 <p>Donec erat. Suspendisse posuere orci placerat urna. Nunc posuere,
                 diam et ultricies ultricies, lectus elit viverra leo, in porta leo
                 libero vel eros.</p>-->
-			
-		</div>
-		
-		
+
+        </div>
+
+
         <!-- End of main_right -->
-		
-		<div id="bottom"></div>
-	</div>
-	
-	<div id="footer_container">
-		<div id="footer_left">
-			<p><a title="back to top" href="#container"><strong>^ back to top</strong></a></p>
-		</div>
-		<div id="footer_right">
-			<p><a title="derby web design" href="http://www.tristarwebdesign.co.uk">template by <strong>tristar</strong></a></p>
-		</div>
-	</div>
+
+        <div id="bottom"></div>
+    </div>
+
+    <div id="footer_container">
+        <div id="footer_left">
+            <p><a title="back to top" href="#container"><strong>^ back to top</strong></a></p>
+        </div>
+        <div id="footer_right">
+            <p><a title="derby web design" href="http://www.tristarwebdesign.co.uk">template by <strong>tristar</strong></a>
+            </p>
+        </div>
+    </div>
 </div>
 
 </body>

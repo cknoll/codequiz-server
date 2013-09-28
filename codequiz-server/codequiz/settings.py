@@ -132,6 +132,8 @@ INSTALLED_APPS = (
     'quiz',
     'taggit',
     'taggit_autosuggest',
+    'ratings',
+    'jquery',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -166,6 +168,12 @@ LOGGING = {
         },
     }
 }
+
+# from http://django-generic-ratings.readthedocs.org/en/latest/getting_started.html#installation
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+TEMPLATE_CONTEXT_PROCESSORS += (
+    'django.core.context_processors.request',
+)
 
 
 # TAGGIT_AUTOSUGGEST_STATIC_BASE_URL:
