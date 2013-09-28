@@ -35,12 +35,14 @@ class Task(models.Model):
         stringified = ", ".join([str(x) for x in self.tags.names()])
         return stringified
 
+
 class TaskCollection(models.Model):
     """
     This is a Test (i.e. a collection of tasks)
     """
     author = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
+    tags = TaggableManager()
 
     tasks = models.ManyToManyField(Task, through='TC_Membership')
 
@@ -50,6 +52,13 @@ class TaskCollection(models.Model):
     def LEN(self):
         return len(self.tc_membership_set.all())
 
+    def tags_as_string(self):
+        """
+        :return: all tags in one comma separated string
+        """
+
+        stringified = ", ".join([str(x) for x in self.tags.names()])
+        return stringified
 
 class TC_Membership(models.Model):
     """
