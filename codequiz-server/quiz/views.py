@@ -61,11 +61,6 @@ def aux_get_tle_list_from_task(task):
     """
     root = xml_lib.load_xml(task.body_xml)
 
-    # unpack the taglist:
-    # TODO: this should be implemented in the model??
-    if isinstance(task.tag_list, str):
-        task.tag_list = [tag.strip() for tag in task.tag_list.split(',')]
-
     tle_list = xml_lib.split_xml_root(root)
 
     return tle_list
