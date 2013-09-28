@@ -3,22 +3,23 @@
 {# is this line neccessary?#}
 
 
-<div class="le_list">
+<div class="le_list" xmlns="http://www.w3.org/1999/html">
 
 
     {% if input_list %}
-        <table>
+        <div class="container" style="width: 100%; padding-top: 20pt">
             {% for element in input_list %}
-                <tr>
-                    <td>{{ forloop.counter }}.</td>
-                    <td>
-                        {% if element.src.text %}
-                            <pre class="src">{{ element.src.text }}</pre>
-                        {% else %}
-                            <span class="normal">{{ element.txt.text }}</span>
-                        {% endif %}
-                    </td>
-                    <td>
+                <div class="row" style="height: 40pt">
+                    <div class="left">
+                            {{ forloop.counter }}.
+
+                            {% if element.src.text %}
+                                <pre class="src inline">{{ element.src.text }}</pre>
+                            {% else %}
+                                <span class="normal">{{ element.txt.text }}</span>
+                            {% endif %}
+                    </div>
+                    <div class="middle">
                         {% if element.le %}
                             <label>Antwort:
                                 <input name="le{{ forloop.counter }}" type="text" size="{{ element.le.len }}"
@@ -27,7 +28,7 @@
                         {% elif element.cbox %}
                             <label>
                                 <input name="cbox{{ forloop.counter }}" type="checkbox"
-                                {% if element.user_solution == "True" %} checked="checked" {% endif %}>
+                                        {% if element.user_solution == "True" %} checked="checked" {% endif %}>
                             </label>
                             {# unchecked cboxes are not contained in the form data -> hidden companion#}
                             <input type="hidden" name="hidden_cbox{{ forloop.counter }}" value="foo">
@@ -35,17 +36,17 @@
                         {% else %}
                             Invalid input field.
                         {% endif %}
-                    </td>
+                    </div>
                     {% if print_solution %}
-                        <td>
+                        <div class="right">
                             <div class="{{ element.css_class }}">
                                 {{ element.print_solution }}
                             </div>
-                        </td>
+                        </div>
                     {% endif %}
-                </tr>
+                </div>
             {% endfor %}
-        </table>
+        </div>
     {% else %}
         <p>No line_edits are available. This should not happen</p>
     {% endif %}

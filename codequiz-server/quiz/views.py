@@ -44,7 +44,7 @@ def index(request):
     temporary solution for the python lecture 2013/07/08
     """
 
-    return task_collection_view(request, 2)
+    return task_collection_view(request, 1)
 
 
 def get_button(button_type):
@@ -60,11 +60,6 @@ def aux_get_tle_list_from_task(task):
     returns list of top level elements (tle) of the task-xml
     """
     root = xml_lib.load_xml(task.body_xml)
-
-    # unpack the taglist:
-    # TODO: this should be implemented in the model??
-    if isinstance(task.tag_list, str):
-        task.tag_list = [tag.strip() for tag in task.tag_list.split(',')]
 
     tle_list = xml_lib.split_xml_root(root)
 
@@ -243,7 +238,7 @@ def task_meta_block(request, task):
 
     d = dict(task=task)
 
-    context = Context(d)
+    context = RequestContext(request, d)
     tmpl = loader.get_template('tasks/cq1_task_meta.html')
 
     return tmpl.render(context)
