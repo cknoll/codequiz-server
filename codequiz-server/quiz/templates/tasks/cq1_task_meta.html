@@ -19,7 +19,7 @@
         <div class="left">
             <p>Title:</p>
         </div>
-        <div class="right"> {{ task.title }} </div>
+        <div class="right" style="width:180px"> {{ task.title }} </div>
     </div>
     <div class="row">
         <div class="left">
@@ -47,7 +47,8 @@
             <form id="qualityratingform" action="{% url "ratings_vote" %}" class="ratings" method="post">
                 {% csrf_token %}
                 {{ rating_form_quality }}
-                {{ score_quality.average }} ({{ score_quality.num_votes }})
+                <span id="score_quality"
+                      style="padding-left: 5px">{{ score_quality.average }} ({{ score_quality.num_votes }})</span>
                 <span class="success" style="display: none;"></span>
                 <span class="error" style="display: none;">Errors...</span>
             </form>
@@ -61,7 +62,8 @@
             <form id="difficultyratingform" action="{% url "ratings_vote" %}" class="ratings" method="post">
                 {% csrf_token %}
                 {{ rating_form_difficulty }}
-                {{ score_difficulty.average }} ({{ score_difficulty.num_votes }})
+                <span id="score_difficulty"
+                      style="padding-left: 5px">{{ score_difficulty.average }} ({{ score_difficulty.num_votes }})</span>
                 <span class="success" style="display: none;"></span>
                 <span class="error" style="display: none;">Errors...</span>
             </form>
@@ -69,14 +71,20 @@
     </div>
 </div>
 
+{# JS for updating the average ratings on the fly #}
 <script type="text/javascript" charset="utf-8">
 
-    $("#difficultyratingform").on("vote_submit", function (data) {
-        alert("Difficulty: " + data["result"]);
-    });
+    $(document).ready(function () {
+        var doSomething = function (element, target) {
+            $('#' + element).on("vote_submit", function (event, data) {
+                score_average = data["score_average"];
+                score_num = data["score_num_votes"];
+                $('#' + target).text(score_average + "(" + score_num + ")");
+            });
+        };
 
-    $("#qualityratingform").on("vote_submit", function (data) {
-        alert("Quality: " + data["result"]);
+        doSomething("difficultyratingform", "score_difficulty");
+        doSomething("qualityratingform", "score_quality");
     });
 
 </script>
