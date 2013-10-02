@@ -4,19 +4,23 @@
 <!-- this template was designed by http://www.tristarwebdesign.co.uk - please visit for more templates & information - thank you. -->
 
 <head>
-
     <title>Code Quiz</title>
-
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static 'tasks/style2.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'tasks/tabular_style.css' %}"/>
+
+    {# jQuery #}
     <script src="{{ STATIC_URL }}js/jquery.js" type="text/javascript"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="{{ STATIC_URL }}ratings/js/ratings.js" type="text/javascript"></script>
-    <link href="{{ STATIC_URL }}jquery-rating/jquery.rating.css" rel="stylesheet" type="text/css" />
+
+    {# part of django-generic-ratings http://django-generic-ratings.readthedocs.org#}
     <script type="text/javascript" src="{{ STATIC_URL }}jquery-rating/jquery.MetaData.js"></script>
+    <script src="{{ STATIC_URL }}ratings/js/ratings.js" type="text/javascript"></script>
+
+    {# part of jquery star rating plugin http://www.fyneworks.com/jquery/star-rating/ #}
+    <link href="{{ STATIC_URL }}jquery-rating/jquery.rating.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="{{ STATIC_URL}}jquery-rating/jquery.rating.js"></script>
 </head>
 
@@ -63,28 +67,7 @@
                 {{ mb|safe }}
                 <br/>
             {% endfor %}
-            <!--
-                <h2>Task-Infos-Statisch</h2>
-                <ul><li> ID, (Author), Version ...</li>
-                <li>Difficulty: ...</li>
-                <li>Didactic Quality: ...</li>
-                </ul>
-
-                <p><strong>
-                Proin magna erat, accumsan.</strong></p>
-                <p>Ut a orci. Vivamus a felis ac neque dictum fermentum. Aliquam
-                quam erat, dapibus a, blandit ac, posuere at, eros.</p>
-
-                <h2>Collection Infos</h2>
-                <p><strong>Name der Aufgabensammlung</strong></p>
-                <p>Kurze Beschreibung. Vivamus a felis ac neque dictum fermentum. Aliquam
-                quam erat, dapibus a, blandit ac, posuere at, eros.</p>
-                <p>Donec erat. Suspendisse posuere orci placerat urna. Nunc posuere,
-                diam et ultricies ultricies, lectus elit viverra leo, in porta leo
-                libero vel eros.</p>-->
-
         </div>
-
 
         <!-- End of main_right -->
 
