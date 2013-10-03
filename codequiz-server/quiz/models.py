@@ -8,7 +8,7 @@ from taggit_autosuggest.managers import TaggableManager
 class Task(models.Model):
     author = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
-    versionstring = models.CharField(max_length=20)
+    revision = models.CharField(max_length=20)
     pub_date = models.DateTimeField('date published')
     body_xml = models.TextField()
     tags = TaggableManager()
@@ -49,8 +49,11 @@ class TaskCollection(models.Model):
     def __unicode__(self):
         return ("TC%03i:" % self.id) + self.title
 
-    def LEN(self):
+    def len(self):
         return len(self.tc_membership_set.all())
+
+    def number_of_tasks(self):
+        return self.len
 
     def tags_as_string(self):
         """
