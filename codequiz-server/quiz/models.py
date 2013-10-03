@@ -49,11 +49,8 @@ class TaskCollection(models.Model):
     def __unicode__(self):
         return ("TC%03i:" % self.id) + self.title
 
-    def len(self):
-        return len(self.tc_membership_set.all())
-
     def number_of_tasks(self):
-        return self.len
+        return len(self.tc_membership_set.all())
 
     def tags_as_string(self):
         """
