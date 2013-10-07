@@ -25,7 +25,7 @@ class Task(models.Model):
     is_beta.short_description = 'in beta state?'
 
     def __unicode__(self):
-        return ("T%03i:" % self.id) + self.title
+        return ("T%03i: " % self.id) + self.title
 
     def tags_as_string(self):
         """

@@ -16,33 +16,23 @@
 
 <div class="container">
     <div class="row">
-        <div class="cell">
-            <p>Title:</p>
-        </div>
+        <div class="cell">Title:</div>
         <div class="cell" style="width:180px"> {{ task.title }} </div>
     </div>
     <div class="row">
-        <div class="cell">
-            <p>ID:</p>
-        </div>
+        <div class="cell">ID:</div>
         <div class="cell"> {{ task.id }} </div>
     </div>
     <div class="row">
-        <div class="cell">
-            <p>Author:</p>
-        </div>
+        <div class="cell">Author:</div>
         <div class="cell"> {{ task.author }} </div>
     </div>
     <div class="row">
-        <div class="cell">
-            <p>Revision:</p>
-        </div>
+        <div class="cell">Revision:</div>
         <div class="cell"> {{ task.revision }} </div>
     </div>
     <div class="row">
-        <div class="cell">
-            <p>Quality:</p>
-        </div>
+        <div class="cell">Quality:</div>
         <div class="cell">
             <form id="qualityratingform" action="{% url "ratings_vote" %}" class="ratings" method="post">
                 {% csrf_token %}
@@ -55,9 +45,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="cell">
-            <p>Difficulty:</p>
-        </div>
+        <div class="cell">Difficulty:</div>
         <div class="cell">
             <form id="difficultyratingform" action="{% url "ratings_vote" %}" class="ratings" method="post">
                 {% csrf_token %}
@@ -68,6 +56,10 @@
                 <span class="error" style="display: none;">Errors...</span>
             </form>
         </div>
+    </div>
+    <div class="row">
+        <div class="cell">Tags:</div>
+        <div class="cell"> {{ task.tags_as_string }} </div>
     </div>
 </div>
 
