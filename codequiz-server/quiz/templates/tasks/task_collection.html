@@ -14,7 +14,7 @@
 
     {% if task_list %}
         <h2>Tasks:</h2>
-        <div class="container">
+        <div class="container" style="width: 100%">
             {% for task in task_list %}
                 <div class="row">
                     <div class="linenumber">{{ forloop.counter }}.</div>
@@ -22,9 +22,9 @@
                 </div>
             {% endfor %}
         </div>
+        <br/>
+        <a class="button" style="width:200pt" href="{% url 'quiz_ns:tc_run_view' tc.id 0 %}">Start this test!</a>
 
-
-        <a href="{% url 'quiz_ns:tc_run_view' tc.id 0 %}">Start this test!</a>
     {% else %}
         <p>No tasks are available.</p>
     {% endif %}
