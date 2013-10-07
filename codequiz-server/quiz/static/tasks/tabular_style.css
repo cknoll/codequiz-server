@@ -4,11 +4,20 @@ div.container {
 div.row  {
     display: table-row;
     }
-div.left, div.right, div.middle {
+
+div.cell {
     display: table-cell;
-    width: 120px;
     padding-right: 25px;
     }
-div.left p, div.right p, div.middle p {
+
+div.cell p {
     margin: 1px 1px;
    }
+
+div.linenumber {
+    display: table-cell;
+    padding-right: 25px;
+    width: 20pt;
+}
+
+

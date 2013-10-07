@@ -10,16 +10,21 @@
         <div class="container" style="width: 100%; padding-top: 20pt">
             {% for element in input_list %}
                 <div class="row" style="height: 40pt">
-                    <div class="left">
-                            {{ forloop.counter }}.
+                    <div class="linenumber">
+                        {{ forloop.counter }}.
+                    </div>
 
+                    {% if element.txt.text or element.src.text %}
+                        <div class="cell">
                             {% if element.src.text %}
-                                <pre class="src inline">{{ element.src.text }}</pre>
+                                <pre class="src">{{ element.src.text }}</pre>
                             {% else %}
                                 <span class="normal">{{ element.txt.text }}</span>
                             {% endif %}
-                    </div>
-                    <div class="middle">
+                        </div>
+                    {% endif %}
+
+                    <div class="cell">
                         {% if element.le %}
                             <label>Antwort:
                                 <input name="le{{ forloop.counter }}" type="text" size="{{ element.le.len }}"
@@ -38,7 +43,7 @@
                         {% endif %}
                     </div>
                     {% if print_solution %}
-                        <div class="right">
+                        <div class="cell">
                             <div class="{{ element.css_class }}">
                                 {{ element.print_solution }}
                             </div>
