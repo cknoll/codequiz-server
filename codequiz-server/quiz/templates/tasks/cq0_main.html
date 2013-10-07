@@ -33,16 +33,11 @@
         </div>
         <div id="header_right">
             <ul>
-                <li><a title="home" href="/">home</a></li>
-                <li><a class="active" title="quiz" href="{% url 'quiz_ns:task_collection_view' 2 %}">quiz</a></li>
+                <li><a title="home" href="{% url 'quiz_ns:index' %}">home</a></li>
                 <li>|</li>
-                <li><a title="about" href="index.html">about</a></li>
+                <li><a class="active" title="quiz" href="{% url 'quiz_ns:task_collection_view' 1 %}">quiz</a></li>
                 <li>|</li>
-                <li><a title="admin" href="/admin/">admin</a></li>
-                <li>|</li>
-                <li><a title="link four" href="index.html">Link Four</a></li>
-                <li>|</li>
-
+                <li><a title="admin" href="{% url 'admin:index' %}">admin</a></li>
             </ul>
         </div>
     </div>

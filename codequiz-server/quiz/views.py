@@ -23,7 +23,7 @@ class DictContainer(object):
         self.__dict__.update(kwargs)
 
 
-def render_toplevel_element(tle, user_sol_list = None):
+def render_toplevel_element(tle, user_sol_list=None):
     template = loader.get_template(tle.template)
     if user_sol_list is None:
         tle.context.update({'print_solution': False})
@@ -173,7 +173,7 @@ def tc_run_final_view(request, tc_id):
     return render(request, 'tasks/tc_run_final.html', context)
 
 
-def tc_run_view(request, tc_id, tc_task_id, solution_flag = False):
+def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
     """
     tc_task_id is the relative position of the current task in the
     current TaskCollection. NOT the task_id (pk of tasks)
