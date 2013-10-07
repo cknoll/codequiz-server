@@ -1,29 +1,32 @@
 <!-- ==> start: task_collection.html -->
 {% load staticfiles %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'tasks/style.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'tasks/style2.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'tasks/tabular_style.css' %}"/>
 
 
-<div class="klasse1">
-    Test: {{ tc.title }}
-    <br/>
+<div class="centered" style="width:400px">
+    <h1>Test: {{ tc.title }}</h1>
 
     <div class="small">
         Author: {{ tc.author }}
     </div>
 
-</div>
+    {% if task_list %}
+        <h2>Tasks:</h2>
+        <div class="container">
+            {% for task in task_list %}
+                <div class="row">
+                    <div class="linenumber">{{ forloop.counter }}.</div>
+                    <div class="cell">{{ task.title }}</div>
+                </div>
+            {% endfor %}
+        </div>
 
-{% if task_list %}
-    Tasks:
-    <ol>
-        {% for task in task_list %}
-            <li>{{ task.title }}</li>
-        {% endfor %}
-    </ol>
-    <br>
-    <a href="{% url 'quiz_ns:tc_run_view' tc.id 0 %}">Start this test!</a>
-{% else %}
-    <p>No tasks are available.</p>
-{% endif %}
+
+        <a href="{% url 'quiz_ns:tc_run_view' tc.id 0 %}">Start this test!</a>
+    {% else %}
+        <p>No tasks are available.</p>
+    {% endif %}
+</div>
 <!-- ==> end: task_collection.html -->
