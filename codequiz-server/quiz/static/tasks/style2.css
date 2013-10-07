@@ -24,18 +24,18 @@ img {
 }
 
 .button {
-    -moz-box-shadow: inset 0px 1px 0px 0px #d9fbbe;
-    -webkit-box-shadow: inset 0px 1px 0px 0px #d9fbbe;
-    box-shadow: inset 0px 1px 0px 0px #d9fbbe;
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #b8e356), color-stop(1, #a5cc52));
-    background: -moz-linear-gradient(center top, #b8e356 5%, #a5cc52 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b8e356', endColorstr='#a5cc52');
-    background-color: #b8e356;
+    -moz-box-shadow: inset 0px 1px 0px 0px #fceaca;
+    -webkit-box-shadow: inset 0px 1px 0px 0px #fceaca;
+    box-shadow: inset 0px 1px 0px 0px #fceaca;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ff9900), color-stop(1, #eeaf41));
+    background: -moz-linear-gradient(center top, #ff9900 5%, #eeaf41 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffce79', endColorstr='#eeaf41');
+    background-color: #ff9900;
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     border-radius: 20px;
-    text-indent: 0px;
-    border: 1px solid #83c41a;
+    text-indent: 0;
+    border: 1px solid #eeb44f;
     display: inline-block;
     color: #ffffff;
     font-family: Arial;
@@ -44,17 +44,17 @@ img {
     font-style: normal;
     height: 40px;
     line-height: 40px;
-    width: 60px;
+    width: 100px;
     text-decoration: none;
     text-align: center;
-    text-shadow: 1px 1px 0px #86ae47;
+    text-shadow: 1px 1px 0px #ce8e28;
 }
 
 .button:hover {
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #a5cc52), color-stop(1, #b8e356));
-    background: -moz-linear-gradient(center top, #a5cc52 5%, #b8e356 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#a5cc52', endColorstr='#b8e356');
-    background-color: #a5cc52;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #eeaf41), color-stop(1, #ffce79));
+    background: -moz-linear-gradient(center top, #eeaf41 5%, #ffce79 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeaf41', endColorstr='#ffce79');
+    background-color: #eeaf41;
 }
 
 .button:active {
