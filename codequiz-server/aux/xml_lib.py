@@ -180,7 +180,7 @@ class TopLevelElement(object):
                     element.css_class = "sol_right"
                     element.print_solution = "OK"
                 else:
-                    print element.sol.text
+                    print element.sol.text.encode('utf8')
                     element.css_class = "sol_wrong"
                     if element.sol.text == "":
                         # !! LANG
