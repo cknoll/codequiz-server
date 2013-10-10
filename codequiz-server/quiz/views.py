@@ -137,22 +137,6 @@ def form_result_view(request, task_id):
         # this should not happen
         return task_view(request, task_id)
 
-#    le1 = request.POST.get('le1', '')
-#    le2 = request.POST.get('le2', '')
-#    le3 = request.POST.get('le3', '')
-#
-#    IPS()
-#
-#    le_res = """
-#    le1 = %s
-#    le2 = %s
-#    le3 = %s
-#    """ % (le1, le2, le3)
-#
-#
-#    txt = "Results for %s %s" %(task_id, le_res)
-#    return HttpResponse(txt)
-
 
 def tc_run_form_process(request, tc_id, tc_task_id):
     post = request.POST
@@ -167,8 +151,8 @@ def tc_run_form_process(request, tc_id, tc_task_id):
 def tc_run_final_view(request, tc_id):
     tc = get_object_or_404(TaskCollection, pk=tc_id)
 
-    d = dict(tc=tc)
-    context = Context(d)
+    context_dict = dict(tc=tc)
+    context = Context(context_dict)
 
     return render(request, 'tasks/tc_run_final.html', context)
 
@@ -236,9 +220,9 @@ def task_meta_block(request, task):
     returns the rendered html for the meta-info-block for a task
     """
 
-    d = dict(task=task)
+    context_dict = dict(task=task)
 
-    context = RequestContext(request, d)
+    context = RequestContext(request, context_dict)
     tmpl = loader.get_template('tasks/cq1_task_meta.html')
 
     return tmpl.render(context)
