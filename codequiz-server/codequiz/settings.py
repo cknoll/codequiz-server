@@ -90,6 +90,8 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 #     'django.template.loaders.eggs.Loader',
+    'yammy.django_loaders.YammyFileSystemLoader',  # support yammy templates
+    'yammy.django_loaders.YammyPackageLoader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -134,11 +136,14 @@ INSTALLED_APPS = (
     'taggit_autosuggest',
     'ratings',
     'jquery',
+    'feedback',
+
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
+
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

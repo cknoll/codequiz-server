@@ -1,0 +1,11 @@
+{% load static %}
+
+link
+    - rel stylesheet
+    - href {% static 'feedback/main.css' %}
+
+script 
+    - src {% static 'feedback/jquery.form.js' %}
+
+script 
+    - src {% static 'feedback/main.js' %}

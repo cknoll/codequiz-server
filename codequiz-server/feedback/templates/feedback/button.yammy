@@ -1,0 +1,36 @@
+{% load i18n %}
+
+div#feedback_button.white.left.normal 
+    a {% trans 'Feedback' %}
+div#feedback_drop.hiding
+div#feedback_popup.hiding
+    form.feedback [action="{% url 'feedback' request.path %}"][method=POST]
+        {% csrf_token %}
+
+        div.email.error
+        label [for=email] {% trans 'email (optional)' %}
+        input [name=email]
+
+        div.subject.error
+        label [for=subject] {% trans 'subject (optional)' %}
+        input [name=subject]
+
+        div.text.error
+        label [for=text] {% trans 'message' %}
+        textarea [name=text]
+
+        div.buttons
+            button Send
+    
+    div.thanks.hiding {% trans 'Thank you for your feedback!' %}
+    div.close
+
+
+script
+    $(function(){
+        feedback.init({
+            'button':$('#feedback_button'),
+            'drop':$('#feedback_drop'),
+            'popup':$('#feedback_popup')
+        });
+    });
