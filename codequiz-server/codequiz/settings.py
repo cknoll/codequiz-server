@@ -63,6 +63,21 @@ MEDIA_URL = ''
 # Example: "/var/www/example.com/static/"
 STATIC_ROOT = ''
 
+# Optionally include a setting from static_root.py
+# It should only contain:
+# STATIC_ROOT = '<absolute path to static root>'
+import os
+
+
+def include(filename):
+    if os.path.exists(filename):
+        execfile(filename)
+
+
+include('static_root.py')
+# end
+
+
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
