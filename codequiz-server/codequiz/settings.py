@@ -67,9 +67,17 @@ STATIC_ROOT = ''
 # It should only contain:
 # STATIC_ROOT = '<absolute path to static root>'
 import os
-BASE_PATH = os.path.abspath(__file__)
-if os.path.exists(BASE_PATH + 'static_root.py'):
-    from static_root import *
+
+
+def include(filename):
+    if os.path.exists(filename):
+        print('exists')
+        exec open(filename) in globals()
+    else:
+        print('no exits')
+
+BASE_PATH = os.path.dirname(os.path.abspath(__file__))
+include(os.path.join(BASE_PATH, 'static_root.py'))
 # end
 
 
