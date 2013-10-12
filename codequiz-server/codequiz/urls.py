@@ -12,6 +12,7 @@ urlpatterns = patterns('',
                        url(r'^quiz/', include('quiz.urls', namespace="quiz_ns")),
                        url(r'^taggit_autosuggest/', include('taggit_autosuggest.urls')),
                        url(r'^ratings/', include('ratings.urls')),
+
                        # Examples:
                        # url(r'^$', 'codequiz.views.home', name='home'),
                        # url(r'^codequiz/', include('codequiz.foo.urls')),

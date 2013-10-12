@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 
 from django.db import models
 
@@ -9,8 +10,8 @@ class Task(models.Model):
     author = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
     revision = models.CharField(max_length=20)
-    pub_date = models.DateTimeField('date published')
-    body_xml = models.TextField()
+    pub_date = models.DateTimeField('Publish date', default=datetime.datetime.now)
+    body_xml = models.TextField('Body')
     tags = TaggableManager()
 
     def is_beta(self):
