@@ -104,7 +104,6 @@ class TopLevelElement(object):
         self.element = element
         mapping = {'txt': self.process_txt,
                    'src': self.process_src,
-                   'lelist': self.process_lelist,
                    'cboxlist': self.process_cboxlist,
                    'input_list': self.process_input_list,
         }
@@ -130,13 +129,6 @@ class TopLevelElement(object):
             'multiline': "\n" in self.element.text
         }
 
-    def process_lelist(self):
-        element_list, depths = zip(*[xml_to_py(xml_element) for xml_element in self.element])
-
-        self.template = 'tasks/le_list.html'
-        self.context = {
-            'le_list': element_list,
-        }
 
     def process_input_list(self):
         """
