@@ -3,6 +3,8 @@
 """
 This script is used for dumping all data from the sqlite database to a
 text file such that it can be tracked by version control.
+
+this script is propably outdated
 """
 
 import os, sys, time
@@ -39,10 +41,10 @@ if __name__ == "__main__":
     from django.db import models
 
 
-
-    model_list = [getattr(dm, a) for a in dir(dm)]
-    model_list = filter(lambda x: isinstance(x, type), model_list)
+    model_list = [getattr(dm, a) for a in dir(dm)] # all attributes
+    model_list = filter(lambda x: isinstance(x, type), model_list) # all types
     model_list = filter(lambda x: issubclass(x, models.Model), model_list)
+    # all models
 
 
     res = [gen_model_report(m) for m in model_list]
