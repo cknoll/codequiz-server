@@ -24,6 +24,8 @@
     <script type="text/javascript" src="{{ STATIC_URL}}jquery-rating/jquery.rating.js"></script>
 
     {% include "feedback/header.html" %}  {# to make the feedback form ajaxy #}
+    {% load mathjax %}
+    {% mathjax_scripts %}
 </head>
 
 <body>
