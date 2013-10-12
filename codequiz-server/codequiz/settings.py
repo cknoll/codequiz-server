@@ -4,7 +4,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+# ('Your Name', 'your_email@example.com'),
 )
 
 MANAGERS = ADMINS
@@ -12,12 +12,12 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'codequiz_db_file',                      # Or path to database file if using sqlite3.
+        'NAME': 'codequiz_db_file',  # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'HOST': '',  # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '',  # Set to empty string for default.
     }
 }
 
@@ -71,10 +71,8 @@ import os
 
 def include(filename):
     if os.path.exists(filename):
-        print('exists')
         exec open(filename) in globals()
-    else:
-        print('no exits')
+
 
 BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 include(os.path.join(BASE_PATH, 'static_root.py'))
@@ -86,10 +84,10 @@ include(os.path.join(BASE_PATH, 'static_root.py'))
 STATIC_URL = '/static/'
 
 # Additional locations of static files
+# Put strings here, like "/home/html/static" or "C:/www/django/static".
+# Always use forward slashes, even on Windows.
+# Don't forget to use absolute paths, not relative paths.
 STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
 )
 
 # List of finder classes that know how to find static files in
@@ -97,7 +95,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -107,9 +105,7 @@ SECRET_KEY = 'we#3**=pyd0(gf5=apt7lnolf0t7b4_#$)wh+i1ib^u&3#^jkw'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
-    'yammy.django_loaders.YammyFileSystemLoader',  # support yammy templates
-    'yammy.django_loaders.YammyPackageLoader',
+    #     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -129,8 +125,6 @@ WSGI_APPLICATION = 'codequiz.wsgi.application'
 
 # Don't use absolute paths, build up the path instead. This is better for collaboration,
 # as not everybody has the same file structure
-
-import os
 
 path = os.path.abspath("views.py")
 dir_path = os.path.dirname(path)
@@ -156,6 +150,7 @@ INSTALLED_APPS = (
     'jquery',
     'feedback',
 
+    'django_ace',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -194,6 +189,7 @@ LOGGING = {
 
 # from http://django-generic-ratings.readthedocs.org/en/latest/getting_started.html#installation
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+
 TEMPLATE_CONTEXT_PROCESSORS += (
     'django.core.context_processors.request',
 )
