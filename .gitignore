@@ -8,3 +8,4 @@ sqlite-jdbc-3.7.2.jar
 
 xerial-sqlite-license.txt
 codequiz-server/codequiz_db_file*
+static_root.py
