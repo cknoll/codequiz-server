@@ -11,13 +11,13 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'codequiz_db_file', # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'codequiz_db_file',  # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
-        'HOST': '', # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '', # Set to empty string for default.
+        'HOST': '',  # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '',  # Set to empty string for default.
     }
 }
 
@@ -84,10 +84,10 @@ include(os.path.join(BASE_PATH, 'static_root.py'))
 STATIC_URL = '/static/'
 
 # Additional locations of static files
-STATICFILES_DIRS = (
 # Put strings here, like "/home/html/static" or "C:/www/django/static".
 # Always use forward slashes, even on Windows.
 # Don't forget to use absolute paths, not relative paths.
+STATICFILES_DIRS = (
 )
 
 # List of finder classes that know how to find static files in
@@ -126,8 +126,6 @@ WSGI_APPLICATION = 'codequiz.wsgi.application'
 # Don't use absolute paths, build up the path instead. This is better for collaboration,
 # as not everybody has the same file structure
 
-import os
-
 path = os.path.abspath("views.py")
 dir_path = os.path.dirname(path)
 
@@ -150,6 +148,7 @@ INSTALLED_APPS = (
     'taggit_autosuggest',
     'ratings',
     'jquery',
+    'django_ace',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

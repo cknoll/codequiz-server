@@ -1,7 +1,7 @@
 # coding=utf-8
 from django.contrib import admin
-import django.forms as forms
-from django.conf import settings
+from django import forms
+from django_ace import AceWidget
 
 from quiz.models import Task, TaskCollection, TC_Membership
 
@@ -12,23 +12,13 @@ class TC_MembershipInline(admin.TabularInline):
     ordering = ("ordering",)
 
 
-class BehaveEditor(forms.Textarea):
-    def __init__(self):
-        attrs = {'class': 'behave'}
-        super(BehaveEditor, self).__init__(attrs)
-
-    class Media:
-        css = {'all': (settings.STATIC_URL + 'behave/behave.css',)}
-        js = (settings.STATIC_URL + 'behave/behave.js', settings.STATIC_URL + 'behave/replace.js', )
-
-
 class TaskAdminForm(forms.ModelForm):
     pass
 
     class Meta:
         model = Task
         widgets = {
-            'body_xml': BehaveEditor()
+            'body_xml': AceWidget(mode="xml", theme="solarized_light", width="600px")
         }
 
 
