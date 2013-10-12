@@ -141,17 +141,17 @@ div.hiding {
 }
 
 /** form stuff **/
-label {
+label.feedback {
     font-size:.8em;
     color:#555;
     display:block;
 }
 
-textarea {
+textarea.feedback {
     min-height:70px;
     width:221px;
 }
 
-input {
+input.feedback {
     width:223px;
 }
