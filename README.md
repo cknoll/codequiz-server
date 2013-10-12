@@ -18,9 +18,12 @@ Dependencies:
 ###Django apps
 If you don't have these modules already:  
 
-    pip install django-generic-ratings
-    pip install django-jquery
-    pip install django-taggit-autosuggest
+[django-generic-ratings](https://bitbucket.org/frankban/django-generic-ratings)  
+[django-jquery](https://bitbucket.org/massimilianoravelli/django-jquery)  
+[django-taggit-autosuggest](https://bitbucket.org/fabian/django-taggit-autosuggest)  
+[django-feedback](https://github.com/jaredly/django-feedback) (don't use pip for this one, it's included in the repo)  
+[Django-MathJax](https://github.com/kaleidos/django-mathjax)  
+[django-ace](https://github.com/bradleyayers/django-ace) (also: don't use pip, it's too old, therefore it's included)  
 
 (optional: `pip install ipython`)
 
