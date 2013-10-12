@@ -1,0 +1,58 @@
+[
+    {
+        ◆title◆: ◆Funktions-Aufrufe◆, 
+        ◆pub_date_pickle◆: ◆cdatetime\ndatetime\np0\n(S'\\x07\\xdd\\x06\\x10\\x00\\x1a2\\x00\\x00\\x00'\np1\ncpytz\n_UTC\np2\n(tRp3\ntp4\nRp5\n.◆, 
+        ◆author◆: ◆ck◆, 
+        ◆body_xml◆: ◆<?xml version=\u23181.0\u2318?>\r\n<data>\r\n    <txt>\r\n        Gegeben sei der Quelltext:\r\n    </txt>\r\n    <src>\r\ndef func(a = 5, b = 7):\r\n    print a, b        \r\n    </src>\r\n    <txt>\r\n        Erg\u00e4nzen Sie die von folgenden Funktionsaufrufen erzeugten Ausgaben\r\n    </txt>\r\n    <input_list>\r\n        <elt>\r\n            <src>func()</src><le len=\u231810\u2318/><sol>5 7</sol>\r\n        </elt>\r\n        <elt>\r\n            <src>func(3)</src><le len=\u231810\u2318/><sol>3 7</sol>\r\n        </elt>\r\n        <elt>\r\n            <src>func(3, 'test')</src><le len=\u231810\u2318/><sol>3 test</sol>\r\n        </elt>\r\n    </input_list>\r\n    <txt>\r\n        <b>Hinweis:</b> siehe Kurs02 (Funktionen)\r\n    </txt>\r\n</data>◆, 
+        ◆id◆: 1, 
+        ◆revision◆: ◆1.0◆
+    }, 
+    {
+        ◆title◆: ◆Typ-Umwandlung ◆, 
+        ◆pub_date_pickle◆: ◆cdatetime\ndatetime\np0\n(S'\\x07\\xdd\\x07\\x07\\r-\\x05\\x00\\x00\\x00'\np1\ncpytz\n_UTC\np2\n(tRp3\ntp4\nRp5\n.◆, 
+        ◆author◆: ◆ck◆, 
+        ◆body_xml◆: ◆<?xml version=\u23181.0\u2318?>\r\n<data>\r\n    <txt>\r\n        Vervollst\u00e4ndigen Sie folgenden Quelltext mit zwei geeigneten Typumwandlungen, sodass die Ausgabe am Ende lautet: <TT>101</TT>\r\n    </txt>\r\n    <src>\r\na=10\r\nb=1\r\n    </src>\r\n    <input_list>\r\n        <elt>\r\n            <le len=\u231810\u2318/><sol>a=str(a)</sol>\r\n        </elt>\r\n        <elt>\r\n          <le len=\u231810\u2318/><sol>b=str(b)</sol>\r\n        </elt>\r\n    </input_list>\r\n    <src>\r\nprint a + b # -> 101\r\n    </src>\r\n</data>◆, 
+        ◆id◆: 3, 
+        ◆revision◆: ◆1.0◆
+    }, 
+    {
+        ◆title◆: ◆Syntax-Fehler◆, 
+        ◆pub_date_pickle◆: ◆cdatetime\ndatetime\np0\n(S'\\x07\\xdd\\x07\\x07\\x0e\\x0c\\x10\\x00\\x00\\x00'\np1\ncpytz\n_UTC\np2\n(tRp3\ntp4\nRp5\n.◆, 
+        ◆author◆: ◆ck◆, 
+        ◆body_xml◆: ◆<?xml version=\u23181.0\u2318?>\r\n<data>\r\n    <txt>\r\nDie folgenden Code-Schnipsel enthalten zum Teil <i>Syntax</i>-Fehler. Korrigieren Sie ggf. den Quelltext (nur die fehlerhafte Zeile). Wenn kein Fehler vorliegen sollte, so lassen Sie das Eingabefeld leer.\r\n    </txt>\r\n<input_list>\r\n        <elt>\r\n    <src>\r\ndef sch\u00f6neFunktion(a):\r\n    return 2*a \r\n    </src>\r\n<le len=\u231810\u2318/><sol>def schoeneFunktion(a):</sol>\r\n    </elt>\r\n\r\n        <elt>\r\n    <src>\r\nif a=b: print \u2318gleich\u2318\r\n    </src>\r\n<le len=\u231810\u2318/><sol>if a==b: print \u2318gleich\u2318</sol>\r\n    </elt>\r\n\r\n        <elt>\r\n    <src>\r\na, b, c = b, c, a \r\n    </src>\r\n<le len=\u231810\u2318/><sol></sol>\r\n    </elt>\r\n    </input_list>\r\n</data>◆, 
+        ◆id◆: 4, 
+        ◆revision◆: ◆1.0◆
+    }, 
+    {
+        ◆title◆: ◆Funktion mit beliebigen vielen Argumenten◆, 
+        ◆pub_date_pickle◆: ◆cdatetime\ndatetime\np0\n(S'\\x07\\xdd\\x07\\x08\\x07\\t\\x07\\x00\\x00\\x00'\np1\ncpytz\n_UTC\np2\n(tRp3\ntp4\nRp5\n.◆, 
+        ◆author◆: ◆ck◆, 
+        ◆body_xml◆: ◆<?xml version=\u23181.0\u2318?>\r\n<data>\r\n    <txt>\r\nSchreiben Sie eine Funktion namens func1, die beliebig viele (unbenannte) Argumente empfangen kann nichts tut und nichts zur\u00fcckgibt.\r\n<br><br>\r\n<b>Hinweise:</b> Die Muster-L\u00f6sung hat zwei Zeilen und verwendet vier Leerzeichen pro Einr\u00fcckungsebene.\r\n    </txt>\r\n    <input_list>\r\n        <elt>\r\n            <le len=\u231810\u2318/><sol>def func1(*args):</sol>\r\n        </elt>\r\n        <elt>\r\n            <le len=\u231810\u2318/><sol>    pass</sol>\r\n        </elt>\r\n    </input_list>\r\n</data>◆, 
+        ◆id◆: 5, 
+        ◆revision◆: ◆1.0◆
+    }, 
+    {
+        ◆title◆: ◆Indizierung 1◆, 
+        ◆pub_date_pickle◆: ◆cdatetime\ndatetime\np0\n(S'\\x07\\xdd\\x07\\x08\\x078\◆\\x00\\x00\\x00'\np1\ncpytz\n_UTC\np2\n(tRp3\ntp4\nRp5\n.◆, 
+        ◆author◆: ◆ck◆, 
+        ◆body_xml◆: ◆<?xml version=\u23181.0\u2318?>\r\n<data>\r\n    <txt>\r\n        Erg\u00e4nzen Sie jeweils das Ergebnis folgender Code-Zeilen.\r\n<br><br>\r\n<b>Hinweise:</b> Beispiel-Liste: <tt>[8,9,10]</tt>, Beispiel-String: <tt>\u2318xyz\u2318</tt> (inkl. \u2318-Zeichen)\r\n    </txt>\r\n    <input_list>\r\n        <elt>\r\n            <src>range(3)</src><le len=\u231810\u2318/><sol>[0,1,2]</sol>\r\n        </elt>\r\n        <elt>\r\n            <src>\u2318Hallo Welt\u2318[1]</src><le len=\u231810\u2318/><sol>\u2318a\u2318</sol>\r\n        </elt>\r\n        <elt>\r\n            <src>\u2318Hallo Welt\u2318[:4]</src><le len=\u231810\u2318/><sol>\u2318Hall\u2318</sol>\r\n        </elt>\r\n        <elt>\r\n            <src>\u2318Hallo Welt\u2318[-3]</src><le len=\u231810\u2318/><sol>\u2318e\u2318</sol>\r\n        </elt>\r\n        <elt>\r\n            <src>\u2318Hallo Welt\u2318[-3:]</src><le len=\u231810\u2318/><sol>\u2318elt\u2318</sol>\r\n        </elt>\r\n        <elt>\r\n            <src>\u2318Hallo Welt\u2318[1:5]</src><le len=\u231810\u2318/><sol>\u2318allo\u2318</sol>\r\n        </elt>\r\n    </input_list>\r\n</data>◆, 
+        ◆id◆: 6, 
+        ◆revision◆: ◆1.0◆
+    }, 
+    {
+        ◆title◆: ◆Indizierung 2◆, 
+        ◆pub_date_pickle◆: ◆cdatetime\ndatetime\np0\n(S'\\x07\\xdd\\x07\\x08\\x079\\x18\\x00\\x00\\x00'\np1\ncpytz\n_UTC\np2\n(tRp3\ntp4\nRp5\n.◆, 
+        ◆author◆: ◆ck◆, 
+        ◆body_xml◆: ◆<?xml version=\u23181.0\u2318?>\r\n<data>\r\n    <txt>\r\n        Erg\u00e4nzen sie jeweils das Ergebnis folgender Code-Zeilen (ohne Leerzeichen).\r\n<br><br>\r\n<b>Hinweise:</b> Beispiel-Liste: <tt>[8,9,10]</tt>, Beispiel-String: <tt>\u2318Hallo Welt\u2318</tt>, Beispiel-Bool: <tt>False</tt>\r\n    </txt>\r\n    <input_list>\r\n        <elt>\r\n            <src>[1,5]*3</src><le len=\u231810\u2318/><sol>[1,5,1,5,1,5]</sol>\r\n        </elt>\r\n        <elt>\r\n            <src>\u2318-\u2318*3</src><le len=\u231810\u2318/><sol>\u2318---\u2318</sol>\r\n        </elt>\r\n        <elt>\r\n            <src>\u2318abc\u2318 == 'abc'</src><le len=\u231810\u2318/><sol>True</sol>\r\n        </elt>\r\n        <elt>\r\n            <src>8 in range(10)</src><le len=\u231810\u2318/><sol>True</sol>\r\n        </elt>\r\n        <elt>\r\n            <src>\u2318all\u2318 in 'Hallo'</src><le len=\u231810\u2318/><sol>True</sol>\r\n        </elt>\r\n        <elt>\r\n            <src>\u2318g\u2318 not in \u2318[a-z]\u2318 </src><le len=\u231810\u2318/><sol>True</sol>\r\n        </elt>\r\n    </input_list>\r\n</data>◆, 
+        ◆id◆: 7, 
+        ◆revision◆: ◆1.0◆
+    }, 
+    {
+        ◆title◆: ◆cbox_test◆, 
+        ◆pub_date_pickle◆: ◆cdatetime\ndatetime\np0\n(S'\\x07\\xdd\\x07\\x08\\x15( \\x00\\x00\\x00'\np1\ncpytz\n_UTC\np2\n(tRp3\ntp4\nRp5\n.◆, 
+        ◆author◆: ◆ck◆, 
+        ◆body_xml◆: ◆<?xml version=\u23181.0\u2318?>\r\n<data>\r\n    <txt>\r\n        Richtig oder Falsch?\r\n<br><br>\r\n<b>Hinweise:</b> Denken Sie nach!\r\n    </txt>\r\n    <input_list>\r\n        <elt>\r\n            <src>[1,5]*3</src><le len=\u231810\u2318/><sol>[1,5,1,5,1,5]</sol>\r\n        </elt>\r\n        <elt>\r\n            <src>[1,5]***3</src><cbox label='Richtig?'/><sol>False</sol>\r\n        </elt>\r\n    </input_list>\r\n</data>◆, 
+        ◆id◆: 8, 
+        ◆revision◆: ◆1.0◆
+    }
+]
