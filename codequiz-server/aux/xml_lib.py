@@ -115,7 +115,6 @@ class TopLevelElement(object):
         #print "multi:", self.context.get('multiline')
 
     def process_txt(self):
-
         self.template = 'tasks/txt.html'
         self.context = {
             'text': self.element.text,
@@ -125,9 +124,13 @@ class TopLevelElement(object):
     def process_src(self):
         self.template = 'tasks/src.html'
         self.context = {
-            'text': self.element.text,
+            'text': self.element.text.rstrip(),  # rstrip() to remove trailing newline and spaces.
+                                                 # cleaning up after the fact.
+                                                 # should not have newlines in the first place!
             'multiline': "\n" in self.element.text
         }
+        print ("text: " + self.element.text)
+        print (self.context)
 
 
     def process_input_list(self):
@@ -263,7 +266,8 @@ def aux_space_convert(string):
 
 def aux_space_convert_for_lines(string):
     lines = string.split("\n")
-    return "\n".join([aux_space_convert(line) for line in lines])
+    res = "\n".join([aux_space_convert(line) for line in lines])
+    return res
 
 
 def xml_to_py(xml_element):

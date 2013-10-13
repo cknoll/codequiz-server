@@ -11,11 +11,8 @@
         <p><strong>{{ error_message }}</strong></p>
     {% endif %}
 
-
     {% for s in html_strings %}
-
         {{ s|safe }}
-        <br/>
     {% endfor %}
 
     <br/>
@@ -23,9 +20,7 @@
     <!-- Buttons: -->
     <span style="display: block; text-align: right;">
     {% for bs in button_strings %}
-
         {{ bs|safe }}
-
     {% endfor %}
     </span>
     <br/>
