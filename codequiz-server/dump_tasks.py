@@ -13,6 +13,7 @@ import os, sys, time
 import json
 import pickle
 from ipHelp import IPS, Tracer, ip_syshook, sys
+ip_syshook(1)
 # Tracer(colors='Linux')() # start debugging
 
 dumpfilname = "quiz_tasks.json"
@@ -34,27 +35,51 @@ def serialize_value(val):
 
 
 
+ENC = "utf-8"
 
-uc_const1 = u'⌘' # temp for all '"'-chars in the source
-uc_const2 = u'◆' # represents all '"'-chars introduced by json (in our file)
+
+uc_const1 = u'⌘'.encode(ENC) # temp for all '"'-chars in the source
+uc_const2 = u'◆'.encode(ENC) # represents all '"'-chars introduced by json (in our file)
 
 def repl_src_quotes(string):
-    return unicode(string).replace('"', uc_const1)
+    assert isinstance(string, str) # we want utf-8 strings here
+    return string.replace('"', uc_const1)
 
 def reinsert_src_quotes(string):
-    return unicode(string).replace(uc_const1, '"')
+    assert isinstance(string, str) # we want utf-8 strings here
+    return string.replace(uc_const1, '"')
 
 
 def repl_json_quotes(string):
-    return unicode(string).replace('"', uc_const2)
+    assert isinstance(string, str) # we want utf-8 strings here
+    return string.replace('"', uc_const2)
+
+
+def repl_linebreaks(string):
+    """
+    in body we want prevent json from ecaping line breaks
+    """
+
+
+def myencode(string):
+    if isinstance(string, unicode):
+        return string.encode('utf-8')
+    else:
+        return string
 
 
 def model_instance_to_dict(instance, fieldnames):
+    """task specific"""
     items = []
     for fname in fieldnames:
         value = getattr(instance, fname)
+        fname = myencode(fname)
         if isinstance(value, basestring):
+            value =  myencode(value)
             value = repl_src_quotes(value)
+
+        if fname.startswith('body'):
+            value = repl_linebreaks(value)
 
         if isinstance(  value, ( basestring, int, long, float,
                                  bool, type(None) )  ):
@@ -71,10 +96,14 @@ def model_to_json(model):
     fieldnames = get_field_names(model)
     instances = model.objects.all()
 
+
     dict_list = [model_instance_to_dict(mi, fieldnames) for mi in instances]
 
 
-    jstring = json.dumps(dict_list, indent=4)
+    if 0:
+        IPS()
+        sys.exit()
+    jstring = json.dumps(dict_list, indent=4, ensure_ascii=False)
     jstring = repl_json_quotes(jstring)
 
 
@@ -92,10 +121,10 @@ if __name__ == "__main__":
     res = model_to_json(dm.Task)
 
 
-    with open(dumpfilname, 'w') as dumpfile:
-        if isinstance(res, unicode):
-            res = res.encode('utf-8')
-        dumpfile.write(res)
+with open(dumpfilname, 'w') as dumpfile:
+    if isinstance(res, unicode):
+        res = res.encode('utf-8')
+    dumpfile.write(res)
     print "%s written" % dumpfilname
 
 
