@@ -1,0 +1,251 @@
+# -*- coding: utf-8 -*-
+
+import re
+import xml.etree.ElementTree as ET
+
+import json
+
+from IPython import embed as IPS
+
+"""
+Currently, the body of a task is stored in a custom xml format.
+-> better: json
+
+this module should be the json backend of the code-quiz server
+"""
+
+
+class TopLevelElement(object):
+    def __init__(self, element):
+        self.tag = element.tag
+        self.element = element
+        mapping = {'txt': self.process_txt,
+                   'src': self.process_src,
+                   'lelist': self.process_lelist,
+                   'cboxlist': self.process_cboxlist,
+                   'input_list': self.process_input_list,
+        }
+
+        # execute the appropriate method
+        mapping[self.tag]()
+
+        #print self.element.text
+        #print "multi:", self.context.get('multiline')
+
+    def process_txt(self):
+
+        self.template = 'tasks/txt.html'
+        self.context = {
+            'text': self.element.text,
+            'multiline': "\n" in self.element.text
+        }
+
+    def process_src(self):
+        self.template = 'tasks/src.html'
+        self.context = {
+            'text': self.element.text,
+            'multiline': "\n" in self.element.text
+        }
+
+    def process_lelist(self):
+        element_list, depths = zip(*[xml_to_py(xml_element) for xml_element in self.element])
+
+        self.template = 'tasks/le_list.html'
+        self.context = {
+            'le_list': element_list,
+        }
+
+    def process_input_list(self):
+        """
+        this list can contain checkboxes, line-edits and maybe more
+        """
+        input_list, depths = zip(*[xml_to_py(xml_element) for xml_element in self.element])
+
+        self.template = 'tasks/part_input_list.html'
+        self.context = dict(input_list=input_list)
+        #IPS()
+
+    def update_user_solution(self, sol_dict):
+        """
+        used to insert the user solution into the appropriate data structs
+        """
+        assert not self.tag == 'lelist', "Deprecated"
+
+        if self.tag in ['txt', 'src']:
+            return
+
+        assert self.tag == 'input_list', "unexpected Tag %s" % self.tag
+
+        if self.tag == 'input_list':
+            element_list = self.context['input_list']
+            assert len(sol_dict) == len(element_list)
+
+            # Challange: element_list is ordered
+            # sol_dict is not.
+            # -> we construct the keys live
+            for i, element in enumerate(element_list):
+                j = i + 1
+                key = element.get_type() + str(j)
+                #                IPS()
+                sol = sol_dict[key]
+                element.user_solution = sol
+                #print '>%s<:|%s|' % (repr(element.sol.text),  repr(sol))
+                element.user_correct = \
+                    (element.sol.text == aux_space_convert_for_lines(sol))
+
+                if element.user_correct:
+                    element.css_class = "sol_right"
+                    element.print_solution = "OK"
+                else:
+                    print element.sol.text.encode('utf8')
+                    element.css_class = "sol_wrong"
+                    if element.sol.text == "":
+                        # !! LANG
+                        element.print_solution = "[keine Änderung]"
+                    else:
+                        element.print_solution = element.sol.text
+
+    def process_cboxlist(self):
+        raise NotImplementedError
+
+
+
+
+
+class Element(object):
+    """
+    models an xml-Element which is not toplevel
+    """
+
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+
+        assert 'user_solution' not in self.__dict__
+        assert 'print_solution' not in self.__dict__
+        assert 'user_right' not in self.__dict__
+
+        # will be overwritten later
+        self.user_solution = ""
+        self.print_solution = ""  # will be overwritten later
+        self.css_class = "undefined_css_class"
+
+    def get_type(self):
+        """
+        determine which kind of element we have (le or cbox)
+        """
+
+        if hasattr(self, 'le'):
+            return 'le'
+        elif hasattr(self, 'cbox'):
+            return 'cbox'
+        else:
+        #            IPS()
+            raise ValueError("unknown xml-element-type")
+
+    def __repr__(self):
+        return 'xml:' + self.tag
+
+
+def aux_space_convert(string):
+    u"""
+    converts leading spaces into ␣
+    strips trailing spaces
+    """
+
+    assert "\n" not in string, "No multiline support here"
+
+    s2 = string.strip()
+    if s2 == '':
+        return s2
+    idx = string.index(s2[0])
+
+    leading_spaces = string[:idx]
+    # assumes utf8 file encoding:
+    brace = u"␣"  # .encode('utf8')
+    res = brace * len(leading_spaces) + s2
+    return res
+
+
+def aux_space_convert_for_lines(string):
+    lines = string.split("\n")
+    return "\n".join([aux_space_convert(line) for line in lines])
+
+
+def xml_to_py(xml_element):
+    """
+    converts an xml element into a py Element object
+    """
+    child_list = []
+    depths = [-1]  # if no
+    for child in xml_element:
+        element_object, depth = xml_to_py(child)
+        child_list.append((child.tag, element_object))
+        depths.append(depth)
+
+    maxdepth = max(depths) + 1
+    if xml_element.text is None:
+        xml_element.text = ''  # allows .strip()
+
+    # TODO: This should live in the xml_element
+    if xml_element.tag == "sol":
+        tmp_element_string = aux_space_convert_for_lines(xml_element.text)
+    else:
+        tmp_element_string = xml_element.text
+
+    attribute_list = child_list + [( 'text', tmp_element_string.strip() )]
+    attribute_list += [('tag', xml_element.tag)]
+    attribute_list += xml_element.attrib.items()
+    kwargs = dict(attribute_list)
+    if not len(kwargs) == len(attribute_list):
+        raise ValueError, "duplicate in attribute_list. " \
+                          "This list should be unique: %s." % str(zip(*attribute_list)[0])
+
+    this = Element(**kwargs)
+
+    return this, maxdepth
+
+
+class DictContainer(object):
+
+    def __init__(self, thedict, dc_name = 'unnamed'):
+        self.dc_name = dc_name
+        self.ext_attributes = thedict.keys()
+        # only new keys are allowed
+        assert set(self.ext_attributes).intersection(self.__dict__.keys()) ==\
+                                                                        set()
+        self.__dict__.update(thedict)
+
+        self.deep_recursion()
+
+    def deep_recursion(self):
+        """
+        goes through external attributes and converts all dicts
+        (lurking in lists etc) to DictContainers
+        """
+
+        for aname in self.ext_attributes:
+            attr = getattr(self, aname)
+
+            if isinstance(attr, dict):
+                setattr(self, aname, DictContainer(attr, aname))
+            elif isinstance(attr, list):
+                for i, element in enumerate(attr):
+                    if isinstance(element, dict):
+                        name = "%s[%i]" %(aname, i)
+                        attr[i] = DictContainer(element, name)
+
+    def __repr__(self):
+        return "<DC:%s>" % self.dc_name
+
+if __name__ == "__main__":
+    path = "task1.json"
+    with open(path, 'r') as myfile:
+        content = myfile.read()
+
+    rd = json.loads(content)
+
+    c = DictContainer(rd)
+
+
+    IPS()
+
