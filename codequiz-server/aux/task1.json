@@ -1,0 +1,35 @@
+{
+"segments" : [
+{
+"txt": "Gegeben sei der Quelltext:",
+"src": [
+"def func(a = 5, b = 7):",
+" print a, b"
+]
+},
+{
+"txt": "Ergänzen Sie die von folgenden Funktionsaufrufen erzeugten Ausgaben",
+"input_list": [
+{
+"src": "func()",
+"le": 10,
+"sol": "5 7"
+},
+{
+"src": "func(3)",
+"le": 10,
+"sol": "3 7"
+},
+{
+"src": "func(3, 'test')",
+"le": 10,
+"sol": "3 test"
+}
+]
+},
+{
+"txt" : "[b]Hinweis:[/b] siehe Kurs02 (Funktionen)"
+}
+]
+} 
+
