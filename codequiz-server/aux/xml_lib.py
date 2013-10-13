@@ -111,9 +111,6 @@ class TopLevelElement(object):
         # execute the appropriate method
         mapping[self.tag]()
 
-        #print self.element.text
-        #print "multi:", self.context.get('multiline')
-
     def process_txt(self):
         self.template = 'tasks/txt.html'
         self.context = {
@@ -129,9 +126,6 @@ class TopLevelElement(object):
                                                  # should not have newlines in the first place!
             'multiline': "\n" in self.element.text
         }
-        print ("text: " + self.element.text)
-        print (self.context)
-
 
     def process_input_list(self):
         """
