@@ -161,13 +161,13 @@ INSTALLED_APPS = (
 MATHJAX_ENABLED = True
 MATHJAX_CONFIG_FILE = "TeX-AMS-MML_HTMLorMML"
 MATHJAX_CONFIG_DATA = {
-  "tex2jax": {
-    "inlineMath":
-      [
-          ['$','$'],
-          ['\\(','\\)']
-      ]
-  }
+    "tex2jax": {
+        "inlineMath":
+            [
+                ['$', '$'],
+                ['\\(', '\\)']
+            ]
+    }
 }
 
 # A sample logging configuration. The only tangible logging
