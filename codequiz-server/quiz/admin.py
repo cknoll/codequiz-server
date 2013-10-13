@@ -20,7 +20,7 @@ class TaskAdminForm(forms.ModelForm):
     class Meta:
         model = Task
         widgets = {
-            'body_xml': AceWidget(mode = "xml", theme = "solarized_light", width = "600px")
+            'body_xml': AceWidget(mode="xml", theme="solarized_light", width="100%")
         }
 
 
