@@ -1,8 +1,26 @@
-{% load i18n %}<div class="white left normal" id="feedback_button"><a>{% trans 'Feedback' %}</a></div><div class="hiding" id="feedback_drop"></div><div class="hiding" id="feedback_popup"><form action="{% url 'feedback' request.path %}" class="feedback" method="POST">{% csrf_token %}<div class="email error"></div><label class="feedback" for="email">{% trans 'email (optional)' %}</label><input class="feedback" name="email"/><div class="subject error"></div><label class="feedback" for="subject">{% trans 'subject (optional)' %}</label><input name="subject"/><div class="text error"></div><label class="feedback" for="text">{% trans 'message' %}</label><textarea class="feedback" name="text"></textarea><div class="buttons"><button>Send</button></div></form><div class="thanks hiding">{% trans 'Thank you for your feedback!' %}</div><div class="close"></div></div>
-<script>$(function(){
-feedback.init({
-'button':$('#feedback_button'),
-'drop':$('#feedback_drop'),
-'popup':$('#feedback_popup')
-});
+{% load i18n %}
+<div class="white left normal" id="feedback_button"><a>{% trans 'Feedback' %}</a></div>
+<div class="hiding" id="feedback_drop"></div>
+<div class="hiding" id="feedback_popup">
+    <form action="{% url 'feedback' task.id request.path %}" class="feedback" method="POST">{% csrf_token %}
+    <div class="email error"></div>
+        <label class="feedback" for="email">{% trans 'email (optional)' %}</label><input class="feedback" name="email"/>
+
+        <div class="text error"></div>
+        <label class="feedback" for="text">{% trans 'message' %}</label><textarea class="feedback"
+                                                                                  name="text"></textarea>
+
+        <div class="buttons">
+            <button>Send</button>
+        </div>
+    </form>
+    <div class="thanks hiding">{% trans 'Thank you for your feedback!' %}</div>
+    <div class="close"></div>
+</div>
+<script>$(function () {
+    feedback.init({
+        'button': $('#feedback_button'),
+        'drop': $('#feedback_drop'),
+        'popup': $('#feedback_popup')
+    });
 });</script>

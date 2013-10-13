@@ -9,7 +9,6 @@ import json
 from feedback.forms import FeedbackForm
 
 
-
 class FeedbackView(CreateView):
     form_class = FeedbackForm
     template_name = 'feedback/feedback.html'
@@ -19,6 +18,9 @@ class FeedbackView(CreateView):
         post = kwargs['data'].copy()
         post['url'] = self.kwargs['url']
         post['site'] = Site.objects.get_current().pk
+        post['task'] = self.kwargs['task']
+        print("post\['task'\] = " + post['task'])
+        print(self.kwargs)
         kwargs['data'] = post
         return kwargs
 
@@ -31,12 +33,12 @@ class FeedbackView(CreateView):
             d = form.cleaned_data
             try:
                 send_mail(
-                        'Feedback received: {}'.format(d['subject']),
-                        'email: {} \n\n {}'.format(d['email'], d['text']),
-                        settings.SERVER_EMAIL,
-                        [settings.FEEDBACK_EMAIL],
-                        fail_silently=False,
-                        )
+                    'Feedback received:',
+                    'email: {} \n\n {}'.format(d['email'], d['text']),
+                    settings.SERVER_EMAIL,
+                    [settings.FEEDBACK_EMAIL],
+                    fail_silently=False,
+                )
             except:
                 return HttpResponse(json.dumps({'error': _('Failed to send email')}))
         return HttpResponse(json.dumps({}))

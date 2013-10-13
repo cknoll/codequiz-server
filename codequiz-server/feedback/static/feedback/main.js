@@ -40,6 +40,5 @@ feedback.closeit = function(config) {
         config.popup.css('display','');
         config.drop.css('display','');
         config.popup.find('textarea').val('');
-        config.popup.find('input[name=subject]').val('');
     };
 };
