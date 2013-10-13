@@ -12,7 +12,7 @@ class Task(models.Model):
     revision = models.IntegerField(default=0)
     pub_date = models.DateTimeField('Publish date', default=datetime.datetime.now)
     body_xml = models.TextField('Body')
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
 
     def is_beta(self):
@@ -44,12 +44,12 @@ class TaskCollection(models.Model):
     """
     author = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     tasks = models.ManyToManyField(Task, through='TC_Membership')
 
     def __unicode__(self):
-        return ("TC%03i:" % self.id) + self.title
+        return ("TC%03i: " % self.id) + self.title
 
     def number_of_tasks(self):
         return len(self.tc_membership_set.all())
