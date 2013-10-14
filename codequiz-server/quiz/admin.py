@@ -38,21 +38,23 @@ class TaskAdmin(admin.ModelAdmin):
                   'description': 'Wird automatisch auf aktuelle Zeit gesetzt, kann aber geändert werden',
                   'classes': ('collapse',)}),
     ]
+
+    # comment the following line in case of problems with Java-Script editor enhancement
     form = TaskAdminForm
 
     def save_model(self, request, task, form, change):
 
-        if len(task.author) == 0:
+        if not task.author:
             user = User.objects.get(username__exact=request.user)
             name = user.get_full_name()
-            if len(name) == 0:
+            if not name:
                 name = user.get_short_name()
-                if len(name) == 0:
+                if not name:
                     name = user.get_username()
 
             task.author = name
-            task.revision += 1
-            task.save()
+        task.revision += 1
+        task.save()
 
 
 class TaskCollectionAdmin(admin.ModelAdmin):
