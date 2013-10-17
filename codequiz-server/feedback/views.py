@@ -16,11 +16,12 @@ class FeedbackView(CreateView):
     def get_form_kwargs(self):
         kwargs = super(FeedbackView, self).get_form_kwargs()
         post = kwargs['data'].copy()
-        post['url'] = self.kwargs['url']
         post['site'] = Site.objects.get_current().pk
+
+        # these two come from the URL scheme in urls.py
+        post['url'] = self.kwargs['url']
         post['task'] = self.kwargs['task']
-        print("post\['task'\] = " + post['task'])
-        print(self.kwargs)
+
         kwargs['data'] = post
         return kwargs
 
