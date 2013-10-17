@@ -104,18 +104,28 @@ def aux_task_user_solution(request, solution_flag):
 
 
 def task_view(request, task_id, solution_flag=False):
-    task = get_object_or_404(Task, pk=task_id)
-    tle_list = aux_get_tle_list_from_task(task)
+    """
+    Show a task by itself
 
-    button_strings = aux_task_button_strings(solution_flag)
-    user_solution = aux_task_user_solution(request, solution_flag)
-    html_strings = [render_toplevel_element(tle, user_solution) for tle in tle_list]
+    Dirty workaround for now. Used only for previewing/debugging
+    """
 
-    context_dict = dict(task=task, strings=html_strings,
-                        button_strings=button_strings)
+    tc_task_id = 0
+    tc_id = 1
+    tc = get_object_or_404(TaskCollection, pk=tc_id)
 
+    current_task = get_object_or_404(Task, pk=task_id)
+    current_task.solution_flag = solution_flag
+    current_task.tc_task_id = tc_task_id
+    current_task.tc = tc
+
+    # construct the main_blocks
+    main_blocks = [task_content_block(request, current_task, preview_only=True)]
+
+    context_dict = dict(main_blocks=main_blocks, meta_blocks=None)
     context = Context(context_dict)
-    return render(request, 'tasks/task_detail.html', context)
+
+    return render(request, 'tasks/cq0_main.html', context)
 
 
 def next_task(request, task_id):
@@ -164,11 +174,8 @@ def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
     """
 
     tc_task_id = int(tc_task_id)
-
     tc = get_object_or_404(TaskCollection, pk=tc_id)
-    # get current task an next task
 
-    # TODO: this should live in the model:
     ordered_task_list = tc.tc_membership_set.order_by('ordering')
     tc.len = len(ordered_task_list)
 
@@ -176,10 +183,10 @@ def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
         return tc_run_final_view(request, tc_id)
 
     current_task = ordered_task_list[tc_task_id].task
+    current_task.tc_len = len(ordered_task_list)
     current_task.solution_flag = solution_flag
     current_task.tc_task_id = tc_task_id
     current_task.tc = tc
-    current_task.tc_len = len(ordered_task_list)
 
     # construct the main_blocks
     main_blocks = [task_content_block(request, current_task)]
@@ -194,15 +201,19 @@ def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
     return render(request, 'tasks/cq0_main.html', context)
 
 
-def task_content_block(request, task):
+def task_content_block(request, task, preview_only):
     """
-    :param request:
-    :param task: which task to insert
-    :return: the rendered html for the content of a task
+    @param task: the task to render
+    @param preview_only: True disables rendering of buttons
+    @return the rendered html for the content of a task
     """
+
     tle_list = aux_get_tle_list_from_task(task)
 
-    button_strings = aux_task_button_strings(task.solution_flag)
+    if not preview_only:
+        button_strings = aux_task_button_strings(task.solution_flag)
+    else:
+        button_strings = None
     user_solution = aux_task_user_solution(request, task.solution_flag)
     html_strings = [render_toplevel_element(tle, user_solution) for tle in tle_list]
 
