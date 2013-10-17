@@ -15,6 +15,9 @@ class TC_MembershipInline(admin.TabularInline):
 
 
 class TaskAdminForm(forms.ModelForm):
+    """
+    Tell the form to use a fancy code editor instead of the plain text field.
+    """
     pass
 
     class Meta:
@@ -25,6 +28,12 @@ class TaskAdminForm(forms.ModelForm):
 
 
 class TaskAdmin(admin.ModelAdmin):
+    """
+    Setup for a nicer Task admin interface
+
+    includes a filter by author, more meta data in the list view, hides unnecessary fields,
+    replaces the text field element with a sophisticated code editor
+    """
     list_display = ['id', 'title', 'pub_date', 'revision']
     list_display_links = ['title']
     search_fields = ['title', 'tags']
@@ -43,7 +52,12 @@ class TaskAdmin(admin.ModelAdmin):
     form = TaskAdminForm
 
     def save_model(self, request, task, form, change):
+        """
+        hooks into saving a task to add/change some data automatically
 
+        specifically, the author gets set to the logged in users name/username
+        and the tasks revision is incremented
+        """
         if not task.author:
             user = User.objects.get(username__exact=request.user)
             name = user.get_full_name()
