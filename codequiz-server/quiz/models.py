@@ -4,6 +4,7 @@ import datetime
 from django.db import models
 
 from taggit_autosuggest.managers import TaggableManager
+from django.core.urlresolvers import reverse
 
 
 class TaggedModel:
@@ -27,6 +28,10 @@ class Task(models.Model, TaggedModel):
     pub_date = models.DateTimeField('Publish date', default=datetime.datetime.now)
     body_xml = models.TextField('Body')
     tags = TaggableManager(blank=True)
+
+    def get_absolute_url(self):
+        path = reverse('quiz_ns:task_view', args=[str(self.id)])
+        return path
 
 
 class TaskCollection(models.Model, TaggedModel):

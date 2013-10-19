@@ -151,6 +151,7 @@ INSTALLED_APPS = (
     'feedback',
     'django_mathjax',
     'django_ace',
+    'builder',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
