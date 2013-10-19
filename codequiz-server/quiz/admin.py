@@ -1,14 +1,9 @@
 # coding=utf-8
 from django.contrib import admin
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import permission_required
-from django.conf.urls import *
-import admin_views as views
-from builder import BuilderTextArea
-
 from django import forms
-from django_ace import AceWidget
 
+from builder import BuilderTextArea
 from quiz.models import Task, TaskCollection, TC_Membership
 
 
