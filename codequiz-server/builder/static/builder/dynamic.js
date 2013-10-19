@@ -2,6 +2,8 @@ var counter = 0;
 var radioGroupCounter = 0;
 var multiGroupCounter = 0;
 
+
+jq162 = django.jQuery.noConflict( true );
 var $ = django.jQuery;
 
 
