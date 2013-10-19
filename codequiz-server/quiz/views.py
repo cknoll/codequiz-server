@@ -13,6 +13,8 @@ from aux import xml_lib
 
 from quiz.models import Task, TaskCollection
 
+import admin_views
+
 
 class DictContainer(object):
     """
