@@ -1,0 +1,67 @@
+div.dynamic {
+    margin: 10px;
+    padding: 5px;
+    border-width: 1px;
+    border-color: #000000;
+}
+
+a.add {
+    margin: 5px;
+    padding: 5px;
+    background-color: #105cb6;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
+a.done {
+    margin: 5px;
+    padding: 5px;
+    color: #ffffff;
+    border-radius: 5px;
+    background-color: #86f8a7;
+}
+
+a.delete {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    text-decoration: none;
+
+    margin: 1px;
+    padding: 1px;
+    color: #9d1315;
+    font-size: 0.8em;
+}
+
+#sortable {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+#sortable li {
+    list-style-type: none;
+    position: relative;
+    margin: 0 3px 3px 3px;
+    padding: 0.2em;
+    padding-left: 1.5em;
+    font-size: 1.4em;
+    width: 80%;
+    /*height: 18px;*/
+    background-color: #ddebff;
+}
+
+#sortable li span {
+    position: absolute;
+    margin-left: -1.3em;
+    margin-top: 0.2em
+}
+
+textarea {
+    width:95%;
+}
+
+textarea.src {
+    font-family: monospace;
+}
