@@ -4,7 +4,8 @@ var multiGroupCounter = 0;
 
 var $ = django.jQuery;
 
-function addInput(containerName, inputType) {
+
+function addInput(containerName, inputType, data) {
     var newElement = document.createElement('li');
 
     newElement.class = "ui-state-default";
@@ -15,40 +16,101 @@ function addInput(containerName, inputType) {
 
     switch (inputType) {
         case 'text':
-            newElement.innerHTML += "<textarea cols='100' rows='5' name='myInputs[]' placeholder='Text...'/>";
+            var value = "";
+            if (typeof data !== 'undefined' || data) {
+                value = data;
+            }
+
+            console.log("data: " + data + "   value: " + value);
+            newElement.innerHTML += "<textarea cols='100' rows='5' placeholder='Text...'>" + value + "</textarea>";
             break;
 
-        case 'src':
-            newElement.innerHTML += "<textarea class='src' name='myInputs[]' cols='100' rows='5' placeholder='Source code...'/>";
+        case 'source':
+            var value = "";
+            if (typeof data !== 'undefined' || data) {
+                value = data;
+            }
+
+            console.log("data: " + data + "   value: " + value);
+            newElement.innerHTML += "<textarea class='src' cols='100' rows='5' placeholder='Source code...'>" + value + "</textarea>";
             break;
 
         case 'line':
-            newElement.innerHTML += "<input type='text' placeholder='Description'> " +
-                "<input type='text' placeholder='Source'> " +
-                "<input type='text' placeholder='Answer'>";
+            var text = "";
+            var source = "";
+            var solution = "";
+            if (typeof data !== 'undefined' || data) {
+                text = data["text"];
+                source = data["source"];
+                solution = data["solution"];
+            }
+
+            newElement.innerHTML += "<input type='text' placeholder='Description' value='" + text + "'> " +
+                "<input type='text' placeholder='Source' value='" + source + "'> " +
+                "<input type='text' placeholder='Answer' value='" + solution + "'>";
             break;
 
         case 'check':
-            newElement.innerHTML += "<input type='text' placeholder='Description'> " +
-                "<input type='text' placeholder='Source'> " +
-                "<input type='checkbox' name='myInputs[]'>";
+            var statement = "";
+            var question = "";
+            var checked = "";
+            if (typeof data !== 'undefined' || data) {
+                statement = data["statement"];
+                question = data["question"];
+                if (data["solution"]) {
+                    checked = " checked='checked'";
+                }
+            }
+
+            newElement.innerHTML += "<input type='text' placeholder='Statement' value='" + statement + "'> " +
+                "<input type='text' placeholder='Question' value='" + question + "'> " +
+                "<input type='checkbox'" + checked + ">";
             break;
 
         case 'radio':
             var labels = [];
+            var solution = [];
+            if (typeof data !== 'undefined' || data) {
+                labels = data["labels"];
+                solution = data["solution"];
+            }
+            console.log("lab: " + labels + "   sol: " + solution);
+
             for (var i = 0; i < 3; i++) {
-                newElement.innerHTML += "<input type='text' placeholder='Option " + (i + 1) + "'> " +
-                    "<input type='radio' name='myInputs" + radioGroupCounter + "[]' value='" + i + "'>" +
+                var checked = "";
+                if (i.toString() == solution) {
+                    checked = " checked='checked'";
+                }
+                var label = "";
+                if (typeof labels[i] !== 'undefined') {
+                    label = labels[i];
+                }
+                newElement.innerHTML += "<input type='text' placeholder='Option " + (i + 1) + "' value='" + label + "'> " +
+                    "<input type='radio' name='radio" + radioGroupCounter + "[]' value='" + i + "'" + checked + ">" +
                     "<br/>";
-                labels.push("");
             }
             radioGroupCounter++;
             break;
 
         case 'multi':
+            var labels = [];
+            var solution = [];
+            if (typeof data !== 'undefined' || data) {
+                labels = data["labels"];
+                solution = data["solution"];
+            }
+
             for (var i = 0; i < 3; i++) {
-                newElement.innerHTML += "<input type='text' placeholder='Option " + (i + 1) + "'> " +
-                    "<input type='checkbox' name='myInputs" + multiGroupCounter + "[]' value='" + i + "'>" +
+                var checked = "";
+                if ($.inArray(i.toString(), solution) >= 0) {
+                    checked = " checked='checked'";
+                }
+                var label = "";
+                if (typeof labels[i] !== 'undefined') {
+                    label = labels[i];
+                }
+                newElement.innerHTML += "<input type='text' placeholder='Option " + (i + 1) + "' value='" + label + "'> " +
+                    "<input type='checkbox' name='multi" + multiGroupCounter + "[]' value='" + i + "'" + checked + ">" +
                     "<br/>";
             }
             multiGroupCounter++;
@@ -56,13 +118,13 @@ function addInput(containerName, inputType) {
     }
 
     newElement.innerHTML += "<a href='#' class='delete' remove='" + newElement.id + "'><i class='icon-remove-sign'></a></i>";
+    $("#" + containerName).append(newElement);
 
+    //    Hooks for dynamic behaviour, delete button
     $("a.delete").click(function (event) {
         event.preventDefault();
         removeInput($(this).attr("remove"));
     });
-
-    $("#" + containerName).append(newElement);
 
     $("li input").addClass("watch");
     $("li textarea").addClass("watch");
@@ -96,22 +158,22 @@ function exportValues() {
         switch (obj.type) {
             case 'text':
                 var $firstChild = $(this).children("textarea").first();
-                segments.push({text: $firstChild.val()});
+                segments.push({"text": $firstChild.val()});
                 break;
 
-            case 'src':
+            case 'source':
                 var $firstChild = $(this).children("textarea").first();
-                segments.push({source: $firstChild.val()});
+                segments.push({"source": $firstChild.val()});
                 break;
 
             case 'line':
                 var $firstChild = $(this).children("input").first();
 
                 segments.push(
-                    {line: {
-                        text: $firstChild.val(),
-                        source: $firstChild.next().val(),
-                        solution: $firstChild.next().next().val()
+                    {"line": {
+                        "text": $firstChild.val(),
+                        "source": $firstChild.next().val(),
+                        "solution": $firstChild.next().next().val()
                     }}
                 );
                 break;
@@ -119,10 +181,10 @@ function exportValues() {
             case 'check':
                 var $firstChild = $(this).children("input").first();
                 segments.push(
-                    {check: {
-                        statement: $firstChild.val(),
-                        question: $firstChild.next().val(),
-                        solution: $firstChild.next().next().is(':checked')
+                    {"check": {
+                        "statement": $firstChild.val(),
+                        "question": $firstChild.next().val(),
+                        "solution": $firstChild.next().next().is(':checked')
                     }}
                 );
                 break;
@@ -139,9 +201,9 @@ function exportValues() {
                 });
 
                 segments.push(
-                    {multi: {
-                        labels: labels,
-                        solution: solutions
+                    {"multi": {
+                        "labels": labels,
+                        "solution": solutions
                     }}
                 );
                 break;
@@ -152,15 +214,15 @@ function exportValues() {
                     labels.push($(this).val());
                 });
 
-                var solution = None;
+                var solution = "";
                 $(this).children("input[type='radio']:checked").each(function () {
                     solution = $(this).val();
                 });
 
                 segments.push(
-                    {radio: {
-                        labels: labels,
-                        solution: solution
+                    {"radio": {
+                        "labels": labels,
+                        "solution": solution
                     }}
                 );
                 break;
@@ -172,6 +234,8 @@ function exportValues() {
 
 $(document).ready(function () {
 
+    var jsonString = $("textarea.builder").val();
+
     $("textarea.builder")
         .replaceWith("<div style='margin-left:10em'><ul id='sortable' style='width: 80%'></ul></div>");
 
@@ -181,13 +245,13 @@ $(document).ready(function () {
 
     $("#builderbuttons")
         .append("<a class='add' href='#' type='text'>Text</a>")
-        .append("<a class='add' href='#' type='src'>Source</a>")
+        .append("<a class='add' href='#' type='source'>Source</a>")
         .append("<a class='add' href='#' type='line'>Line Entry</a>")
         .append("<a class='add' href='#' type='check'>Check</a>")
         .append("<a class='add' href='#' type='multi'>Multiple</a>")
         .append("<a class='add' href='#' type='radio'>Radio</a>")
         .append("<a class='done' href='#'>Update</a>")
-        .append("<input type='hidden' name='body_xml' value=''>");
+        .append("<input type='hidden' name='body_xml'>");
 
     $("a.add").click(function (event) {
         event.preventDefault();
@@ -198,7 +262,23 @@ $(document).ready(function () {
         event.preventDefault();
         updateTask();
     });
+
+    $("input[name='body_xml']").val(jsonString);
+    restoreFromJSON(JSON.parse(jsonString));
 });
+
+function restoreFromJSON(json) {
+    var segments = json["segments"];
+    console.log("segments: " + segments);
+
+    segments.forEach(function logArrayElements(segment, index, array) {
+        for (var key in segment) {
+            var value = segment[key];
+            console.log("key:" + key + "  value: " + value);
+            addInput("sortable", key, value);
+        }
+    });
+}
 
 
 $(function () {
