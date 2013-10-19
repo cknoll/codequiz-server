@@ -258,7 +258,9 @@ $(document).ready(function () {
     });
 
     $("input[name='body_xml']").val(jsonString);
-    restoreFromJSON(JSON.parse(jsonString));
+    if (typeof jsonString !== 'undefined' && jsonString.length > 0 && jsonString.charAt(0) == "{" ) {
+        restoreFromJSON(JSON.parse(jsonString));
+    }
 });
 
 function restoreFromJSON(json) {
