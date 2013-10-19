@@ -1,35 +1,66 @@
 {
-"segments" : [
+"segments": [
 {
-"txt": "Gegeben sei der Quelltext:",
+"txt": "Gegeben sei der Quelltext:"
+},
+{
 "src": [
 "def func(a = 5, b = 7):",
 " print a, b"
 ]
 },
 {
-"txt": "Ergänzen Sie die von folgenden Funktionsaufrufen erzeugten Ausgaben",
-"input_list": [
+"txt": "Ergänzen Sie die von folgenden Funktionsaufrufen erzeugten Ausgaben"
+},
 {
+"line item": {
+"txt": "Beschreibender Text",
 "src": "func()",
-"le": 10,
 "sol": "5 7"
+}
 },
 {
+"line item": {
 "src": "func(3)",
-"le": 10,
 "sol": "3 7"
+}
 },
 {
+"line item": {
 "src": "func(3, 'test')",
-"le": 10,
 "sol": "3 test"
 }
-]
 },
 {
-"txt" : "[b]Hinweis:[/b] siehe Kurs02 (Funktionen)"
+"checkbox item": {
+"label": "Richtig?",
+"sol": false
+}
+},
+{
+"multiple choice": {
+"labels": [
+"Zeile 1",
+"Zeile 2",
+"Zeile 3"
+],
+"sol": [
+1, 2
+]
+}
+},
+{
+"radio item": {
+"labels": [
+"Zeile 1",
+"Zeile 2",
+"Zeile 3"
+],
+"sol": 2
+}
+},
+{
+"txt": "[b]Hinweis:[/b] siehe Kurs02 (Funktionen)"
 }
 ]
-} 
-
+}
