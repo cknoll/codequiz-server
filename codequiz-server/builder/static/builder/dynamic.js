@@ -2,10 +2,7 @@ var counter = 0;
 var radioGroupCounter = 0;
 var multiGroupCounter = 0;
 
-
-jq162 = django.jQuery.noConflict( true );
 var $ = django.jQuery;
-
 
 function addInput(containerName, inputType, data) {
     var newElement = document.createElement('li');
@@ -22,8 +19,6 @@ function addInput(containerName, inputType, data) {
             if (typeof data !== 'undefined' || data) {
                 value = data;
             }
-
-            console.log("data: " + data + "   value: " + value);
             newElement.innerHTML += "<textarea cols='100' rows='5' placeholder='Text...'>" + value + "</textarea>";
             break;
 
@@ -32,8 +27,6 @@ function addInput(containerName, inputType, data) {
             if (typeof data !== 'undefined' || data) {
                 value = data;
             }
-
-            console.log("data: " + data + "   value: " + value);
             newElement.innerHTML += "<textarea class='src' cols='100' rows='5' placeholder='Source code...'>" + value + "</textarea>";
             break;
 
@@ -76,7 +69,6 @@ function addInput(containerName, inputType, data) {
                 labels = data["labels"];
                 solution = data["solution"];
             }
-            console.log("lab: " + labels + "   sol: " + solution);
 
             for (var i = 0; i < 3; i++) {
                 var checked = "";
@@ -271,12 +263,10 @@ $(document).ready(function () {
 
 function restoreFromJSON(json) {
     var segments = json["segments"];
-    console.log("segments: " + segments);
 
     segments.forEach(function logArrayElements(segment, index, array) {
         for (var key in segment) {
             var value = segment[key];
-            console.log("key:" + key + "  value: " + value);
             addInput("sortable", key, value);
         }
     });
