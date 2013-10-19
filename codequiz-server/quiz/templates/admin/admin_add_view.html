@@ -1,0 +1,147 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="../../../">{% trans "Home" %}</a> &rsaquo;
+    <a href="../../">{{ app_label|capfirst|escape }}</a> &rsaquo;
+    {% if has_change_permission %}
+    <a href="../">{{ opts.verbose_name_plural|capfirst }}</a>
+    {% else %}
+    {{ opts.verbose_name_plural|capfirst }}
+    {% endif %} &rsaquo; My Custom View
+</div>
+{% endblock %}
+{% block content %}
+    <!-- do stuff here -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
+    <script src="{{ STATIC_URL }}dynamic.js"></script>
+
+    <style>
+        div.dynamic {
+            margin: 10px;
+            padding: 5px;
+            border-width: 1px;
+            border-color: #000000;
+        }
+
+        a.add {
+            margin: 5px;
+            padding: 5px;
+            background-color: #105cb6;
+            color: #ffffff;
+            border-radius: 5px;
+        }
+
+        a.done {
+            margin: 5px;
+            padding: 5px;
+            color: #ffffff;
+            border-radius: 5px;
+            background-color: #86f8a7;
+        }
+
+        a.delete {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            text-decoration: none;
+
+            margin: 1px;
+            padding: 1px;
+            color: #9d1315;
+            font-size: 0.8em;
+        }
+
+        #sortable {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        #sortable li {
+            list-style-type: none;
+            position: relative;
+            margin: 0 3px 3px 3px;
+            padding: 0.2em;
+            padding-left: 1.5em;
+            font-size: 1.4em;
+            width: 80%;
+            /*height: 18px;*/
+            background-color: #ddebff;
+        }
+
+        #sortable li span {
+            position: absolute;
+            margin-left: -1.3em;
+            margin-top: 0.2em
+        }
+
+        textarea.src {
+            font-family: monospace;
+        }
+    </style>
+
+    <form action="." method="POST">
+
+        <fieldset class="module aligned">
+            <div class="form-row">
+                <label>Body</label>
+                <textarea style="height: 136px; width: 161px; margin: 2px;" rows="10">{{ task.body }}</textarea>
+            </div>
+        </fieldset>
+        <ul id="sortable" style="width: 100%">
+
+        </ul>
+
+        <br/>
+        <a class="add" href="#" type="text">Text</a>
+        <a class="add" href="#" type="src">SRC</a>
+        <a class="add" href="#" type="line">Line Entry</a>
+        <a class="add" href="#" type="check">Check</a>
+        <a class="add" href="#" type="multi">Multiple</a>
+        <a class="add" href="#" type="radio">Radio</a>
+        <a class="done" href="#">Save</a>
+
+        <div class="submit-row">
+            <input class="default" type="submit" value="{% trans 'Save' %}" />
+        </div>
+
+        <script type="application/javascript">
+            $("a.add").click(function (event) {
+                event.preventDefault();
+                addInput("sortable", $(this).attr("type"));
+            });
+
+            $("a.done").click(function (event) {
+                event.preventDefault();
+                var dict = exportValues();
+                console.log(JSON.stringify(dict, null, 4));
+            });
+
+            $(function () {
+                $("#sortable").sortable({
+                    delay: 300,
+                    forcePlaceholderSize: true,
+                    placeholder: "ui-state-highlight",
+                    opacity: 0.5,
+                    start: function (e, ui) {
+                        $(ui.placeholder).hide(300);
+                    },
+                    change: function (e, ui) {
+                        $(ui.placeholder).hide().show(300);
+                    },
+    //                stop: function (event, ui) {
+    //                    logDict();
+    //                }
+                });
+            });
+        </script>
+    </form>
+
+{% endblock %}
