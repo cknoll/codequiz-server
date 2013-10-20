@@ -14,6 +14,15 @@ from aux import xml_lib, json_lib
 from quiz.models import Task, TaskCollection
 
 
+class myContainer(object):
+    """
+    just a simple data structure for storing objects as attributes
+    """
+
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+
+
 
 def render_toplevel_element(tle, user_sol_list=None):
     template = loader.get_template(tle.template)
@@ -38,32 +47,53 @@ def index(request):
 
     return task_collection_view(request, 1)
 
-def debug1(request):
-    #raise Http404, "Ach wie schade"
+
+
+
+
+def debug_main_block_object(request, task):
+    """
+    :param request:
+    :param task: which task to insert
+    :return: a container which will be passed to an "include"-template tag
+
+    This function is primarily for testing
+    """
+
     segment_list = json_lib.debug_task()
 
+    button_strings = aux_task_button_strings(False)
+    html_strings = [render_toplevel_element(tle, None) for tle in segment_list]
+
+    res = myContainer(task=task, button_strings=button_strings,
+                        html_strings=html_strings)
+
+    return res
+
+def debug1(request):
+    #raise Http404, "Ach wie schade"
+
     class task():
+        """
+        pseudo task, because json currently comes from a file and
+        not a database
+        """
         id = 0
         title = "0815-Test-Task"
         author = "Wilhelm, das Kind"
         tags_as_string = "no tags"
 
-    button_strings = aux_task_button_strings(False)
-#    user_solution = aux_task_user_solution(request, False)
-    html_strings = [render_toplevel_element(tle, None) for tle in segment_list]
 
+    main_block = debug_main_block_object(request, task)
 
-    context_dict = dict(task=task, strings=html_strings,
-                        button_strings=button_strings)
-
-
+    context_dict = dict(main_block=main_block)
 
     # currently not really clear whats the difference between Context-Object
     # and dict ... anyway
     context = Context(context_dict)
 
 
-    return render(request, 'tasks/task_detail.html', context)
+    return render(request, 'tasks/cq0_main_simple.html', context)
 
 
 
