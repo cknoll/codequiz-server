@@ -13,12 +13,12 @@ class BuilderTextArea(Textarea):
         css = {
             'all': (
                 'builder/style.css',
-                'http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css',
-                'http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css'
+                'jquery/smoothness/jquery-ui.css',
+                'font-awesome/css/font-awesome.min.css'
             )
         }
         js = (
             'builder/dynamic.js',
-            'http://code.jquery.com/jquery-1.9.1.js',
-            'http://code.jquery.com/ui/1.10.3/jquery-ui.js'
+            'jquery/jquery-1.10.2.min.js',
+            'jquery/jquery-ui-1.10.3.custom.min.js'
         )
