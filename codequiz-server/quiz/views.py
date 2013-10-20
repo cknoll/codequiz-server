@@ -9,18 +9,10 @@ from django.shortcuts import render, get_object_or_404
 
 from IPython import embed as IPS
 
-from aux import xml_lib
+from aux import xml_lib, json_lib
 
 from quiz.models import Task, TaskCollection
 
-
-class DictContainer(object):
-    """
-    allows easy dot access to the content of a dict
-    """
-
-    def __init__(self, **kwargs):
-        self.__dict__.update(kwargs)
 
 
 def render_toplevel_element(tle, user_sol_list=None):
@@ -45,6 +37,35 @@ def index(request):
     """
 
     return task_collection_view(request, 1)
+
+def debug1(request):
+    #raise Http404, "Ach wie schade"
+    segment_list = json_lib.debug_task()
+
+    class task():
+        id = 0
+        title = "0815-Test-Task"
+        author = "Wilhelm, das Kind"
+        tags_as_string = "no tags"
+
+    button_strings = aux_task_button_strings(False)
+#    user_solution = aux_task_user_solution(request, False)
+    html_strings = [render_toplevel_element(tle, None) for tle in segment_list]
+
+
+    context_dict = dict(task=task, strings=html_strings,
+                        button_strings=button_strings)
+
+
+
+    # currently not really clear whats the difference between Context-Object
+    # and dict ... anyway
+    context = Context(context_dict)
+
+
+    return render(request, 'tasks/task_detail.html', context)
+
+
 
 
 def get_button(button_type):

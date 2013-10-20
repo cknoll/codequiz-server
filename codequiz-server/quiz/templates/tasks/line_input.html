@@ -1,0 +1,23 @@
+<!-- ==> start: line_input.html -->
+
+        <div class="container" style="width: 100%; padding-top: 20pt">
+
+                    <div class="cell">
+                            <label>Antwort:
+                                <input name="le{{ li_id }}" type="text" size="10"
+                                       value="{{ user_solution }}" autocomplete="off">
+                            </label>
+                    
+                            
+                    </div>
+                    {% if print_solution %}
+                        <div class="cell">
+                            <div class="{{ element.css_class }}">
+                                {{ element.print_solution }}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+        </div>
+
+<!-- ==> end: line_input.html -->
