@@ -237,6 +237,70 @@ class DictContainer(object):
     def __repr__(self):
         return "<DC:%s>" % self.dc_name
 
+class Segment(object):
+    """
+    This class models a json segment (of the segmentlist)
+    """
+    def __init__(self, adict):
+        self.__dict__.update(adict)
+
+    def __unicode__(self):
+        return unicode( "<%s %s>" % (type(self), id(self) ) )
+
+
+class Text(Segment):
+    """
+    Models Text (and Source) Segments
+    """
+    def __init__(self, arg):
+        if isinstance(arg, basestring):
+            self.line_list = [arg]
+        elif isinstance(arg, list):
+            ## !! speed improvement potential:
+            assert all([isinstance(line, basestring) for line in arg])
+            self.line_list = arg
+        else:
+            raise TypeError, "arg has the wrong type: %s" % type(arg)
+
+
+class Src(Text):
+    pass
+
+class LineInput(Segment):
+    pass
+
+class CBox(Segment):
+    pass
+
+
+class RadioList(Segment):
+    pass
+
+
+def make_segment(thedict):
+    assert isinstance(thedict, dict)
+
+    assert len(thedict) == 1
+    key, value = thedict.items()[0]
+
+    if key == "text":
+        s = Text(value)
+    elif key == "source":
+        s = Src(value)
+
+    # !! second option is for compatibility should be removed soon
+    elif key == "cbox" or key == "check":
+        s = CBox(value)
+    elif key == "line_input" or key == "line":
+        s = LineInput(value)
+    elif key == "radio":
+        raise NotImplementedError, "radio buttons not yet implemented"
+    else:
+        raise ValueError, "unknown segment type from json: %s" % key
+
+
+    return s
+
 if __name__ == "__main__":
     path = "task1.json"
     with open(path, 'r') as myfile:
@@ -244,7 +308,9 @@ if __name__ == "__main__":
 
     rd = json.loads(content)
 
-    c = DictContainer(rd)
+    dict_list = rd['segments']
+
+    seg_list = [make_segment(d) for d in dict_list]
 
 
     IPS()

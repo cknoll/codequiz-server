@@ -1,66 +1,8 @@
-{
-"segments": [
-{
-"txt": "Gegeben sei der Quelltext:"
-},
-{
-"src": [
-"def func(a = 5, b = 7):",
-" print a, b"
-]
-},
-{
-"txt": "Ergänzen Sie die von folgenden Funktionsaufrufen erzeugten Ausgaben"
-},
-{
-"line item": {
-"txt": "Beschreibender Text",
-"src": "func()",
-"sol": "5 7"
-}
-},
-{
-"line item": {
-"src": "func(3)",
-"sol": "3 7"
-}
-},
-{
-"line item": {
-"src": "func(3, 'test')",
-"sol": "3 test"
-}
-},
-{
-"checkbox item": {
-"label": "Richtig?",
-"sol": false
-}
-},
-{
-"multiple choice": {
-"labels": [
-"Zeile 1",
-"Zeile 2",
-"Zeile 3"
-],
-"sol": [
-1, 2
-]
-}
-},
-{
-"radio item": {
-"labels": [
-"Zeile 1",
-"Zeile 2",
-"Zeile 3"
-],
-"sol": 2
-}
-},
-{
-"txt": "[b]Hinweis:[/b] siehe Kurs02 (Funktionen)"
-}
-]
-}
+{ "segments": [
+{ "text": "Das ist der Text" },
+{ "check": { "statement": "sate", "question": "quest", "solution": true } },
+{ "line_input": { "text": "des", "source": "src", "solution": "sol" } },
+{"source": "hier steht source"         }
+] }
+
+
