@@ -8,19 +8,19 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static 'tasks/style2.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static 'tasks/tabular_style.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/style2.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/tabular_style.css"/>
 
     {# jQuery #}
-    <script src="{{ STATIC_URL }}js/jquery.js" type="text/javascript"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery/jquery-ui-1.10.3.custom.min.js"></script>
 
     {# part of django-generic-ratings http://django-generic-ratings.readthedocs.org#}
     <script type="text/javascript" src="{{ STATIC_URL }}jquery-rating/jquery.metadata.js"></script>
-    <script src="{{ STATIC_URL }}ratings/js/ratings.js" type="text/javascript"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}ratings/js/ratings.js"></script>
 
     {# part of jquery star rating plugin http://www.fyneworks.com/jquery/star-rating/ #}
-    <link href="{{ STATIC_URL }}jquery-rating/jquery.rating.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}jquery-rating/jquery.rating.css"/>
     <script type="text/javascript" src="{{ STATIC_URL}}jquery-rating/jquery.rating.js"></script>
 
     {% include "feedback/header.html" %}  {# to make the feedback form ajaxy #}

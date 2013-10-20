@@ -145,7 +145,6 @@ INSTALLED_APPS = (
     'taggit',
     'taggit_autosuggest',
     'ratings',
-    'jquery',
     'feedback',
     'django_mathjax',
     'django_ace',

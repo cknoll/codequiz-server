@@ -201,7 +201,7 @@ def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
     return render(request, 'tasks/cq0_main.html', context)
 
 
-def task_content_block(request, task, preview_only):
+def task_content_block(request, task, preview_only=False):
     """
     @param task: the task to render
     @param preview_only: True disables rendering of buttons
