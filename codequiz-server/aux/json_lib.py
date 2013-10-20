@@ -105,9 +105,6 @@ class TopLevelElement(object):
                     else:
                         element.print_solution = element.sol.text
 
-    def process_cboxlist(self):
-        raise NotImplementedError
-
 
 
 
@@ -167,6 +164,9 @@ def aux_space_convert(string):
 
 
 def aux_space_convert_for_lines(string):
+    u"""
+    multiline support of converting the leading spaces into ␣
+    """
     lines = string.split("\n")
     return "\n".join([aux_space_convert(line) for line in lines])
 
@@ -242,38 +242,88 @@ class Segment(object):
     This class models a json segment (of the segmentlist)
     """
     def __init__(self, adict):
-        self.__dict__.update(adict)
+        items = adict.items()
+
+        # mark the name of the keys which will go to self.context later
+        # soulution should not be part of self.context
+        new_items = [('c_%s'%k, v) for k,v in items if not k.startswith('sol')]
+        self.__dict__.update(new_items)
+
+        self.make_context()
 
     def __unicode__(self):
         return unicode( "<%s %s>" % (type(self), id(self) ) )
 
+    def make_context(self):
+        """
+        every segment needs a context attribute where the rendering data
+        is  contained
+
+        this method creates it
+        """
+
+        keys = [k for k in dir(self) if k.startswith('c_')]
+
+
+        items = [(k.replace('c_', ''), getattr(self, k)) for k in keys]
+        self.context = dict(items)
+
+
+class QuestionSegment():
+    """
+    models anything with a solution
+    """
+
+    def update_user_solution(self, sol_dict):
+        pass
 
 class Text(Segment):
     """
     Models Text (and Source) Segments
     """
+
+    template = 'tasks/txt.html'
+
     def __init__(self, arg):
-        if isinstance(arg, basestring):
-            self.line_list = [arg]
+        if isinstance(arg, unicode):
+            self.c_text = arg
         elif isinstance(arg, list):
             ## !! speed improvement potential:
-            assert all([isinstance(line, basestring) for line in arg])
-            self.line_list = arg
+            assert all([isinstance(line, unicode) for line in arg])
+            self.c_text = "\n".join(arg)
         else:
             raise TypeError, "arg has the wrong type: %s" % type(arg)
 
+        self.c_multiline = "\n" in self.c_text
+
+        self.make_context()
+
+
+
+
 
 class Src(Text):
+
+    template = 'tasks/src.html'
     pass
 
-class LineInput(Segment):
+class LineInput(Segment, QuestionSegment):
+    template = 'tasks/line_input.html'
     pass
 
-class CBox(Segment):
-    pass
+class CBox(Segment, QuestionSegment):
+    template = 'tasks/cbox.html'
+
+    def __init__(self, arg):
+        self.c_text_slot2 = "Label (Richtig)"
+        self.c_cbox_id = "123"
+        Segment.__init__(self, arg)
 
 
-class RadioList(Segment):
+
+
+
+class RadioList(Segment, QuestionSegment):
     pass
 
 
@@ -288,7 +338,7 @@ def make_segment(thedict):
     elif key == "source":
         s = Src(value)
 
-    # !! second option is for compatibility should be removed soon
+    # !! second option is only for compatibility; should be removed soon
     elif key == "cbox" or key == "check":
         s = CBox(value)
     elif key == "line_input" or key == "line":
@@ -300,6 +350,23 @@ def make_segment(thedict):
 
 
     return s
+
+
+def debug_task():
+    path = "aux/task1.json"
+    with open(path, 'r') as myfile:
+        content = myfile.read()
+
+    rd = json.loads(content)
+
+    dict_list = rd['segments']
+
+    seg_list = [make_segment(d) for d in dict_list]
+
+    return seg_list
+
+
+
 
 if __name__ == "__main__":
     path = "task1.json"
