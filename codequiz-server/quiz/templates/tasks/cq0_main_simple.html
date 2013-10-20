@@ -1,0 +1,40 @@
+{% extends "tasks/cq0_main_base.html" %}
+
+
+{# This template is used to render a task independed of a task_collection #}
+
+        
+        {% block main_left %}
+
+            <!-- begin cq0_main_base.html  -->
+            
+            {% include "tasks/z_cq1_task_content.html" with mb=main_block %}
+            
+            
+            <!-- end cq0_main_base.html  -->
+        
+
+        {% endblock main_left %}
+        
+        
+        {% block main_right %}
+        
+        
+            <h2>Task-Meta-Infos</h2>
+       
+       
+            <div class="container">
+                <div class="row">
+                    <div class="cell">Title:</div>
+                    <div class="cell" style="width:180px"> Task-Titel </div>
+                </div>
+                <div class="row">
+                    <div class="cell">ID:</div>
+                    <div class="cell"> 100 </div>
+                </div>
+            </div>
+
+
+    {% endblock main_right %}
+
+ 

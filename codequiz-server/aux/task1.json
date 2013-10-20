@@ -1,5 +1,11 @@
 { "segments": [
-{ "text": "Das ist der Text" },
+{ "text": ["Hier steht viel Text." ,
+           "Der kann      viele Leerzeichen enthalten.",
+           "Und über mehrere Zeilen gehen."]
+},
+{"source": ["def func(x,y):",
+            "    pass"]
+},
 { "check": { "statement": "sate", "question": "quest", "solution": true } },
 { "line_input": { "text": "des", "source": "src", "solution": "sol" } },
 {"source": "hier steht source"         }
