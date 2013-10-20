@@ -2,24 +2,42 @@ var counter = 0;
 var radioGroupCounter = 0;
 var multiGroupCounter = 0;
 
-var $ = django.jQuery;
+var $ = django.jQuery;  // bind Djangos jQuery to the shortcut "$", or else not much will work
 
+/**
+ * Adds a segment to the task definition
+ *
+ * This is where new types of input can be implemented for the admin interface.
+ *
+ * @param {String} containerName Which element to add this to (id name)
+ * @param {String} inputType Which type of segment to add
+ * @param {Object} data Data to prefill the segment with
+ */
 function addInput(containerName, inputType, data) {
-    var newElement = document.createElement('li');
 
+    // First, we create a new list item
+    var newElement = document.createElement('li');
     newElement.class = "ui-state-default";
     newElement.id = "segment" + counter;
     newElement.type = inputType;
 
-    newElement.innerHTML += "<span class='ui-icon ui-icon-arrowthick-2-n-s'></span>";
+    // we add it to the container that goes by the id in 'containername' and store it as a jQuery variable
+    $("#" + containerName).append(newElement);
+    var item = $("#" + newElement.id);
 
+    // add the little arrow icon to the left of each segment
+    item.append("<span class='ui-icon ui-icon-arrowthick-2-n-s'></span>");
+
+    // depending on the type of segment we want to insert, add some input fields
+    // there's quite some type/null/undefined checking going on, unfortunately,
+    // to cleanly support both cases (new segments and loaded segments)
     switch (inputType) {
         case 'text':
             var value = "";
             if (typeof data !== 'undefined' || data) {
                 value = data;
             }
-            newElement.innerHTML += "<textarea cols='100' rows='5' placeholder='Text...'>" + value + "</textarea>";
+            item.append("<textarea cols='100' rows='5' placeholder='Text...'>" + value + "</textarea>");
             break;
 
         case 'source':
@@ -27,7 +45,7 @@ function addInput(containerName, inputType, data) {
             if (typeof data !== 'undefined' || data) {
                 value = data;
             }
-            newElement.innerHTML += "<textarea class='src' cols='100' rows='5' placeholder='Source code...'>" + value + "</textarea>";
+            item.append("<textarea class='src' cols='100' rows='5' placeholder='Source code...'>" + value + "</textarea>");
             break;
 
         case 'line':
@@ -40,9 +58,9 @@ function addInput(containerName, inputType, data) {
                 solution = data["solution"];
             }
 
-            newElement.innerHTML += "<input type='text' placeholder='Description' value='" + text + "'> " +
+            item.append("<input type='text' placeholder='Description' value='" + text + "'> " +
                 "<input type='text' placeholder='Source' value='" + source + "'> " +
-                "<input type='text' placeholder='Answer' value='" + solution + "'>";
+                "<input type='text' placeholder='Answer' value='" + solution + "'>");
             break;
 
         case 'check':
@@ -57,9 +75,9 @@ function addInput(containerName, inputType, data) {
                 }
             }
 
-            newElement.innerHTML += "<input type='text' placeholder='Statement' value='" + statement + "'> " +
+            item.append("<input type='text' placeholder='Statement' value='" + statement + "'> " +
                 "<input type='text' placeholder='Question' value='" + question + "'> " +
-                "<input type='checkbox'" + checked + ">";
+                "<input type='checkbox'" + checked + ">");
             break;
 
         case 'radio':
@@ -79,9 +97,9 @@ function addInput(containerName, inputType, data) {
                 if (typeof labels[i] !== 'undefined') {
                     label = labels[i];
                 }
-                newElement.innerHTML += "<input type='text' placeholder='Option " + (i + 1) + "' value='" + label + "'> " +
+                item.append("<input type='text' placeholder='Option " + (i + 1) + "' value='" + label + "'> " +
                     "<input type='radio' name='radio" + radioGroupCounter + "[]' value='" + i + "'" + checked + ">" +
-                    "<br/>";
+                    "<br/>");
             }
             radioGroupCounter++;
             break;
@@ -103,23 +121,24 @@ function addInput(containerName, inputType, data) {
                 if (typeof labels[i] !== 'undefined') {
                     label = labels[i];
                 }
-                newElement.innerHTML += "<input type='text' placeholder='Option " + (i + 1) + "' value='" + label + "'> " +
+                item.append("<input type='text' placeholder='Option " + (i + 1) + "' value='" + label + "'> " +
                     "<input type='checkbox' name='multi" + multiGroupCounter + "[]' value='" + i + "'" + checked + ">" +
-                    "<br/>";
+                    "<br/>");
             }
             multiGroupCounter++;
             break;
     }
 
-    newElement.innerHTML += "<a href='#' class='delete' remove='" + newElement.id + "'><i class='icon-remove-sign'></a></i>";
-    $("#" + containerName).append(newElement);
+    // add the delete button to the segment
+    item.append("<a href='#' class='delete' remove='" + newElement.id + "'><i class='icon-remove-sign'></a></i>");
 
-    //    Hooks for dynamic behaviour, delete button
+    // add hooks for delete button
     $("a.delete").click(function (event) {
         event.preventDefault();
         removeInput($(this).attr("remove"));
     });
 
+    // mark input and textarea fields for automatic updating of hidden input field that stores the JSON
     $("li input").addClass("watch");
     $("li textarea").addClass("watch");
 
@@ -130,21 +149,35 @@ function addInput(containerName, inputType, data) {
         updateTask();
     });
 
+    // update after inserting a new segment
     updateTask();
 
     counter++;
 }
 
+/**
+ * update the hidden input field that holds the generated JSON
+ */
 function updateTask() {
     var dict = exportValues();
     $("input[name='body_xml']").val(JSON.stringify(dict, null, 4));
 }
 
+/**
+ * Remove a segment from the task
+ * @param {String} name Which segment to remove
+ */
 function removeInput(name) {
     $("#" + name).remove();
     updateTask();
 }
 
+
+/**
+ * Walks over all the segments and builds a dictionary/JSON object
+ *
+ * @returns {{segments: Array}}
+ */
 function exportValues() {
     var segments = [];
 
@@ -226,15 +259,14 @@ function exportValues() {
     return {segments: segments};
 }
 
+// This block gets called by jQuery as soon as the DOM is ready
 $(document).ready(function () {
-
+    // store the JSON string from the original textarea widget (i.e. the one from the DB)
     var jsonString = $("textarea.builder").val();
 
     $("textarea.builder")
         .replaceWith("<div style='margin-left:10em'><ul id='sortable' style='width: 80%'></ul></div>");
 
-// Ordering is kinda strange, but makes sense. We want the <ul> to come before the links,
-// and they should be ordered from Text to Update
     $("#sortable").after("<div id='builderbuttons' style='margin-top:1em'></div>");
 
     $("#builderbuttons")
@@ -244,25 +276,28 @@ $(document).ready(function () {
         .append("<a class='add' href='#' type='check'>Check</a>")
         .append("<a class='add' href='#' type='multi'>Multiple</a>")
         .append("<a class='add' href='#' type='radio'>Radio</a>")
-        .append("<a class='done' href='#'>Update</a>")
         .append("<input type='hidden' name='body_xml'>");
 
     $("a.add").click(function (event) {
         event.preventDefault();
+        // call addInput() with the type that is in the "type" attribute of the <a> element
         addInput("sortable", $(this).attr("type"));
     });
 
-    $("a.done").click(function (event) {
-        event.preventDefault();
-        updateTask();
-    });
-
+    // set the hidden input fields content to the initial JSON string
     $("input[name='body_xml']").val(jsonString);
-    if (typeof jsonString !== 'undefined' && jsonString.length > 0 && jsonString.charAt(0) == "{" ) {
+
+    // check if it really is a JSON string and is defined and has a length
+    if (typeof jsonString !== 'undefined' && jsonString.length > 0 && jsonString.charAt(0) == "{") {
         restoreFromJSON(JSON.parse(jsonString));
     }
 });
 
+/**
+ * Builds up the segment list from the JSON object that describes it
+ *
+ * @param {Object} json JSON object (not the JSON string! i.e. use JSON.parse(jsonString)!)
+ */
 function restoreFromJSON(json) {
     var segments = json["segments"];
 
@@ -275,6 +310,8 @@ function restoreFromJSON(json) {
 }
 
 
+// set some options and event hooks for jQuery Sortable to get a few animations and to update the hidden input for the JSON
+// (this gets called automatically, when the script loads)
 $(function () {
     $("#sortable").sortable({
         delay: 300,
