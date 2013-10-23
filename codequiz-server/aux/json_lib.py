@@ -242,12 +242,17 @@ class Segment(object):
     This class models a json segment (of the segmentlist)
     """
     def __init__(self, adict):
+        # TODO: This constructor should live in QuestionSegment
+        # -> dismiss the multi inheritance
         items = adict.items()
 
         # mark the name of the keys which will go to self.context later
         # soulution should not be part of self.context
         new_items = [('c_%s'%k, v) for k,v in items if not k.startswith('sol')]
         self.__dict__.update(new_items)
+
+        assert 'solution' in adict
+        self.solution  = unicode(adict['solution'])
 
         self.make_context()
 
@@ -268,13 +273,39 @@ class Segment(object):
         items = [(k.replace('c_', ''), getattr(self, k)) for k in keys]
         self.context = dict(items)
 
+    def set_idx(self, idx):
+        assert self.context.get('idx') == None
+        self.context['idx'] = idx # for the template
+        self.idx = idx # for update_user_solution
+
+    def update_user_solution(self, *args, **kwargs):
+        """
+        this abstract method does nothing
+        Segments which actually have a solution override this method
+        """
+
+        # hack to use multiple inheritance here (see QuestionSegment)
+        method_name = "_update_user_solution"
+        if hasattr(self, method_name):
+            the_method = getattr(self, method_name)
+#            IPS()
+            the_method(*args, **kwargs)
+        else:
+            # no solution to update
+            pass
+
 
 class QuestionSegment():
     """
     models anything with a solution
     """
 
-    def update_user_solution(self, sol_dict):
+    def _update_user_solution(self, sol_dict, **kwargs):
+
+        # get the matching solution for this segment
+        my_solution = sol_dict[self.idx]
+
+        IPS()
         pass
 
 class Text(Segment):
@@ -297,8 +328,6 @@ class Text(Segment):
         self.c_multiline = "\n" in self.c_text
 
         self.make_context()
-
-
 
 
 
@@ -327,7 +356,12 @@ class RadioList(Segment, QuestionSegment):
     pass
 
 
-def make_segment(thedict):
+def make_segment(thedict, idx):
+    """
+    :thedict:   dictionary from json parser
+    :idx:       number (index) in the segment-list
+    """
+
     assert isinstance(thedict, dict)
 
     assert len(thedict) == 1
@@ -348,7 +382,7 @@ def make_segment(thedict):
     else:
         raise ValueError, "unknown segment type from json: %s" % key
 
-
+    s.set_idx(idx)
     return s
 
 
@@ -361,7 +395,7 @@ def debug_task():
 
     dict_list = rd['segments']
 
-    seg_list = [make_segment(d) for d in dict_list]
+    seg_list = [make_segment(d, idx) for idx, d in enumerate(dict_list)]
 
     return seg_list
 

@@ -4,10 +4,10 @@
 
                 <div class="cell">
                         <label>
-                            <input name="{{ cbox_id }}" type="checkbox" {% if user_solution == "True" %} checked="checked" {% endif %}>
+                            <input name="cbox_idx_{{ idx }}" type="checkbox" {% if user_solution == "True" %} checked="checked" {% endif %}>
                         </label>
                         {# unchecked cboxes are not contained in the form data -> hidden companion#}
-                        <input type="hidden" name="hidden_cbox{{ cbox_id }}" value="foo">
+                        <input type="hidden" name="hidden_cbox_idx_{{ idx }}" value="foo">
                         &nbsp;{{ text_slot2 }}
                 </div>
                 {% if print_solution %}
@@ -18,7 +18,5 @@
                     </div>
                 {% endif %}
             </div>
-
-
 <!-- ==> end: cbox.html -->
 
