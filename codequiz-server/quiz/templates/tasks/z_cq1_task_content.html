@@ -1,9 +1,24 @@
 <!-- content of one single task  -->
 
+{# This debug stuff should be removed with version 0.4 (xml dismissed) #}
+{% if mb.debug_flag %}
+
+<form action="{% url 'quiz_ns:debug_task_process' %}" method="post" autocomplete="off">
+
+{% else %}
+
 <form action="{% url 'quiz_ns:task_form_process' mb.task.id %}" method="post" autocomplete="off">
 
+{% endif %}
 
-    {% csrf_token %} <!-- protect against cross site reference forgery -->
+    <!-- protect against cross site reference forgery -->
+    {% csrf_token %} 
+
+    <input type="hidden" name="meta_task_id" value="{{ mb.task.id }}">
+    <input type="hidden" name="meta_tc_id" value="{{ mb.tc_id }}">
+    <input type="hidden" name="meta_tc_task_id" value="{{ mb.tc_task_id }}">
+    
+
 
     <h2><span id="color1">Task:</span> "{{ mb.task.title }}"</h2>
 
