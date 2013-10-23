@@ -14,5 +14,8 @@ urlpatterns = patterns('',
                            views.tc_run_form_process, name='tc_run_form_process'),
                        url(r'^test/(?P<tc_id>\d+)/$', views.task_collection_view, name='task_collection_view'),
                        url(r'^result/(?P<task_id>\d+)/$', views.form_result_view, name='task_form_process'),
-                       #url(r'^(?P<poll_id>\d+)/vote/$', views.vote, name='vote'),
+                       # debug mode
+                       url(r'^task_process/$',
+                           views.debug_task_process, name='debug_task_process'),
+
 )

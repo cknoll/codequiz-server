@@ -49,6 +49,41 @@ def index(request):
 
 
 
+def debug_url_landing(request):
+    """
+    Example function how to emulate formular-processing
+    in case just a simple url is opend
+    """
+
+    p = dict(request.POST) # POST itself is immutable
+    p['meta_task_id'] = "23"
+    request.POST = p
+
+
+    return debug_task_process(request)
+
+
+
+def debug_task_process(request):
+    """
+    # currently this docstring describes the striven situation
+
+    This function is the main entry point for rendering a task
+    all relevant data (task_id, tc_task_id etc) is obtained via request.POST
+
+    """
+
+    post = request.POST
+
+    return HttpResponse(u"Better than nothing:\n"+unicode(post))
+
+    if 0:
+        if 'next' in post:
+            next_id = u"%i" % ( int(tc_task_id) + 1)
+            return tc_run_view(request, tc_id, next_id, solution_flag=False)
+
+        elif 'result' in post:
+            return tc_run_view(request, tc_id, tc_task_id, solution_flag=True)
 
 
 def debug_main_block_object(request, task):
@@ -68,10 +103,12 @@ def debug_main_block_object(request, task):
     res = myContainer(task=task, button_strings=button_strings,
                         html_strings=html_strings)
 
+    res.tc_id = None
+    res.tc_task_id = None
+
     return res
 
-def debug1(request):
-    #raise Http404, "Ach wie schade"
+def debug1(request, tc_id=None, tc_task_id=None):
 
     class task():
         """
@@ -85,6 +122,10 @@ def debug1(request):
 
 
     main_block = debug_main_block_object(request, task)
+
+    # say to the template that we are in debug (i.e. testing) mode
+    main_block.debug_flag = True
+
 
     context_dict = dict(main_block=main_block)
 
