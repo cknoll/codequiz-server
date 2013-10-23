@@ -27,7 +27,8 @@ If you don't have these modules already:
 
 (optional: `pip install ipython`)
 
-To deploy the static files you have to set the right path for `STATIC_ROOT` in `codequiz/settings.py`, then run `python manage.py collectstatic`.
+To deploy the static files on the production server, you have to set the right path for `STATIC_ROOT` in `codequiz/static_root.py`, then run `python manage.py collectstatic`.
+In `settings.py` there is some code that will conditionally load the server specific setting, which should not be in the git repository.
 
 ### jQuery and Plugins
 [jQuery Star Rating Plugin](http://www.fyneworks.com/jquery/star-rating/#tab-Download)  

@@ -63,20 +63,18 @@ MEDIA_URL = ''
 # Example: "/var/www/example.com/static/"
 STATIC_ROOT = ''
 
-# Optionally include a setting from static_root.py
-# It should only contain:
+# -->     To use a server specific setting for STATIC_ROOT     <--
+# The following code optionally includes a setting from static_root.py
+# That file should contain only one line:
 # STATIC_ROOT = '<absolute path to static root>'
 import os
-
-
 def include(filename):
     if os.path.exists(filename):
         exec open(filename) in globals()
 
-
 BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 include(os.path.join(BASE_PATH, 'static_root.py'))
-# end
+# -->              End of server specific settings             <--
 
 
 # URL prefix for static files.
