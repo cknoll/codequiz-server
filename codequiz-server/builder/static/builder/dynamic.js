@@ -1,6 +1,4 @@
 var counter = 0;
-var radioGroupCounter = 0;
-var multiGroupCounter = 0;
 
 var $ = django.jQuery;  // bind Djangos jQuery to the shortcut "$", or else not much will work
 
@@ -78,54 +76,6 @@ function addInput(containerName, inputType, data) {
             item.append("<input type='text' placeholder='Statement' value='" + statement + "'> " +
                 "<input type='text' placeholder='Question' value='" + question + "'> " +
                 "<input type='checkbox'" + checked + ">");
-            break;
-
-        case 'radio':
-            var labels = [];
-            var solution = [];
-            if (typeof data !== 'undefined' || data) {
-                labels = data["labels"];
-                solution = data["solution"];
-            }
-
-            for (var i = 0; i < 3; i++) {
-                var checked = "";
-                if (i.toString() == solution) {
-                    checked = " checked='checked'";
-                }
-                var label = "";
-                if (typeof labels[i] !== 'undefined') {
-                    label = labels[i];
-                }
-                item.append("<input type='text' placeholder='Option " + (i + 1) + "' value='" + label + "'> " +
-                    "<input type='radio' name='radio" + radioGroupCounter + "[]' value='" + i + "'" + checked + ">" +
-                    "<br/>");
-            }
-            radioGroupCounter++;
-            break;
-
-        case 'multi':
-            var labels = [];
-            var solution = [];
-            if (typeof data !== 'undefined' || data) {
-                labels = data["labels"];
-                solution = data["solution"];
-            }
-
-            for (var i = 0; i < 3; i++) {
-                var checked = "";
-                if ($.inArray(i.toString(), solution) >= 0) {
-                    checked = " checked='checked'";
-                }
-                var label = "";
-                if (typeof labels[i] !== 'undefined') {
-                    label = labels[i];
-                }
-                item.append("<input type='text' placeholder='Option " + (i + 1) + "' value='" + label + "'> " +
-                    "<input type='checkbox' name='multi" + multiGroupCounter + "[]' value='" + i + "'" + checked + ">" +
-                    "<br/>");
-            }
-            multiGroupCounter++;
             break;
     }
 
@@ -215,44 +165,6 @@ function exportValues() {
                     }}
                 );
                 break;
-
-            case 'multi':
-                var labels = [];
-                $(this).children("input[type='text']").each(function () {
-                    labels.push($(this).val());
-                });
-
-                var solutions = [];
-                $(this).children("input[type='checkbox']:checked").each(function () {
-                    solutions.push($(this).val());
-                });
-
-                segments.push(
-                    {"multi": {
-                        "labels": labels,
-                        "solution": solutions
-                    }}
-                );
-                break;
-
-            case 'radio':
-                var labels = [];
-                $(this).children("input[type='text']").each(function () {
-                    labels.push($(this).val());
-                });
-
-                var solution = "";
-                $(this).children("input[type='radio']:checked").each(function () {
-                    solution = $(this).val();
-                });
-
-                segments.push(
-                    {"radio": {
-                        "labels": labels,
-                        "solution": solution
-                    }}
-                );
-                break;
         }
 
     });
@@ -274,8 +186,6 @@ $(document).ready(function () {
         .append("<a class='add' href='#' type='source'>Source</a>")
         .append("<a class='add' href='#' type='line'>Line Entry</a>")
         .append("<a class='add' href='#' type='check'>Check</a>")
-        .append("<a class='add' href='#' type='multi'>Multiple</a>")
-        .append("<a class='add' href='#' type='radio'>Radio</a>")
         .append("<input type='hidden' name='body_xml'>");
 
     $("a.add").click(function (event) {
