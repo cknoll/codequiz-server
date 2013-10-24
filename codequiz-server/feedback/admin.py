@@ -25,12 +25,12 @@ class TaskFilter(SimpleListFilter):
 
 
 class FeedbackAdmin(admin.ModelAdmin):
-    list_display = ['date', 'task_name', 'feedback_text']
+    list_display = ['date', 'task_name', 'feedback_text', 'answered']
     list_display_links = ['task_name', 'feedback_text']
 
     # Spans lookup into relation task --> task.author
     # :DOC: https://docs.djangoproject.com/en/dev/ref/contrib/admin/#django.contrib.admin.ModelAdmin.list_filter
-    list_filter = ('task__author', TaskFilter)
+    list_filter = ('task__author', TaskFilter, 'answered')
     ordering = ['-date']
 
     def task_name(self, obj):
@@ -65,7 +65,7 @@ class FeedbackAdmin(admin.ModelAdmin):
 
     #fields = ['text']
     fieldsets = [
-        (None, {'fields': ['show_email', 'text']})
+        (None, {'fields': ['show_email', 'text', 'answered']}),
     ]
     readonly_fields = ('show_email', 'text')
 

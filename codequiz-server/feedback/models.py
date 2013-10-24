@@ -9,6 +9,7 @@ class Feedback(models.Model):
     email = models.EmailField(blank=True, null=True, verbose_name=_('email'))
     text = models.TextField(verbose_name=_('text'))
     date = models.DateTimeField(default=datetime.datetime.now)
+    answered = models.BooleanField(default=False)
 
     def __unicode__(self):
         return '%s' % 'Feedback ' + str(self.id)
