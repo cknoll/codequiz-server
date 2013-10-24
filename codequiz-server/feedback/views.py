@@ -1,7 +1,6 @@
 from django.views.generic import CreateView
 from django.conf import settings
 from django.http import HttpResponse
-from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 
 import json
@@ -16,7 +15,6 @@ class FeedbackView(CreateView):
     def get_form_kwargs(self):
         kwargs = super(FeedbackView, self).get_form_kwargs()
         post = kwargs['data'].copy()
-        post['site'] = Site.objects.get_current().pk
 
         # these two come from the URL scheme in urls.py
         post['url'] = self.kwargs['url']
