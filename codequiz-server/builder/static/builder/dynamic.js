@@ -38,12 +38,12 @@ function addInput(containerName, inputType, data) {
             item.append("<textarea cols='100' rows='5' placeholder='Text...'>" + value + "</textarea>");
             break;
 
-        case 'source':
+        case 'hint':
             var value = "";
             if (typeof data !== 'undefined' || data) {
                 value = data;
             }
-            item.append("<textarea class='src' cols='100' rows='5' placeholder='Source code...'>" + value + "</textarea>");
+            item.append("<textarea cols='100' rows='5' placeholder='Hint...'>" + value + "</textarea>");
             break;
 
         case 'line':
@@ -56,8 +56,8 @@ function addInput(containerName, inputType, data) {
                 solution = data["solution"];
             }
 
-            item.append("<input type='text' placeholder='Description' value='" + text + "'> " +
-                "<input type='text' placeholder='Source' value='" + source + "'> " +
+            item.append("<input type='text' placeholder='Statement' value='" + text + "'> " +
+                "<input type='text' placeholder='Question' value='" + source + "'> " +
                 "<input type='text' placeholder='Answer' value='" + solution + "'>");
             break;
 
@@ -138,9 +138,9 @@ function exportValues() {
                 segments.push({"text": $firstChild.val()});
                 break;
 
-            case 'source':
+            case 'hint':
                 var $firstChild = $(this).children("textarea").first();
-                segments.push({"source": $firstChild.val()});
+                segments.push({"hint": $firstChild.val()});
                 break;
 
             case 'line':
@@ -183,7 +183,7 @@ $(document).ready(function () {
 
     $("#builderbuttons")
         .append("<a class='add' href='#' type='text'>Text</a>")
-        .append("<a class='add' href='#' type='source'>Source</a>")
+        .append("<a class='add' href='#' type='hint'>Hint</a>")
         .append("<a class='add' href='#' type='line'>Line Entry</a>")
         .append("<a class='add' href='#' type='check'>Check</a>")
         .append("<input type='hidden' name='body_xml'>");
