@@ -43,10 +43,31 @@ class FeedbackAdmin(admin.ModelAdmin):
             dots = " ..."
         return '%s' % feedback_lines[0] + dots
 
+    def show_email(self, obj):
+        if (obj.email):
+            url = obj.email
+            subject = "Regarding your Feedback on Task \"%s\"" % obj.task.title
+            body = "\n\n" + obj.text
+            body = body.replace("\n", "%0D%0A> ")
+            #print(obj.text)
+            return u"<a href='mailto:{url}?subject={subject}&body={body}'>{url}</a>".format(url=url,
+                                                                                            subject=subject,
+                                                                                            body=body)
+        else:
+            return ""
+    show_email.allow_tags = True
+    show_email.short_description = 'Email'
+
     task_name.short_description = 'Task'
     task_name.admin_order_field = 'task__title'  # To enable ordering by custom field that has no model/DB field
 
     feedback_text.short_description = 'Feedback'
+
+    #fields = ['text']
+    fieldsets = [
+        (None, {'fields': ['show_email', 'text']})
+    ]
+    readonly_fields = ('show_email', 'text')
 
 admin.site.register(Feedback, FeedbackAdmin)
 
