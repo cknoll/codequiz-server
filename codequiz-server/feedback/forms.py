@@ -8,5 +8,6 @@ class FeedbackForm(forms.ModelForm):
     """The form shown when giving feedback"""
     class Meta(object):
         model = Feedback
+        exclude = ('date',)
 
 # vim: et sw=4 sts=4
