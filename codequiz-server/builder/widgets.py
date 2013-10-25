@@ -18,7 +18,10 @@ class BuilderTextArea(Textarea):
             )
         }
         js = (
-            'builder/dynamic.js',
             'jquery/jquery-1.10.2.min.js',
-            'jquery/jquery-ui-1.10.3.custom.min.js'
+            'jquery/jquery-ui-1.10.3.custom.min.js',
+            'ace/ace.js',
+            'ace/require.js',
+            'builder/aced.js',
+            'builder/dynamic.js'
         )

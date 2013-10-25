@@ -1,6 +1,6 @@
 var counter = 0;
 
-var $ = django.jQuery;  // bind Djangos jQuery to the shortcut "$", or else not much will work
+//var $ = django.jQuery;  // bind Djangos jQuery to the shortcut "$", or else not much will work
 
 /**
  * Add a selection drop down list, to choose the kind of text field
@@ -82,10 +82,13 @@ function addInput(containerName, inputType, data) {
             placeholder: placeHolder,
             text: content
         });
+
         if (contentType == "source") {
             $textarea.addClass("source");
         }
+
         item.append($textarea);
+
         addTypeSelection(item, "right", contentType);
     }
 
@@ -174,7 +177,11 @@ function addInput(containerName, inputType, data) {
     $("select").change(function () {
         var selectedValue = $(this).find(":selected").val();
         if (selectedValue == "source") {
+            console.log("selection is source", $(this).prev());
             $(this).prev().addClass("source");
+            if ($(this).prev().is("textarea.source")) {
+                transformTextAreasToACE($(this).prev());
+            }
         } else if (selectedValue == "normal") {
             $(this).prev().removeClass("source");
         }
@@ -307,7 +314,21 @@ $(document).ready(function () {
     if (typeof jsonString !== 'undefined' && jsonString.length > 0 && jsonString.charAt(0) == "{") {
         restoreFromJSON(JSON.parse(jsonString));
     }
+
+    transformTextAreasToACE($("textarea.source"));
+//    $().acedInit({theme: 'github', mode: 'python'});
 });
+
+function transformTextAreasToACE(textarea) {
+    var content = textarea.val();
+
+    textarea.filter(".source").not(".ace").acedInitTA({theme: 'solarized_light', mode: 'python'});
+    textarea.addClass("ace");
+    textarea.data('ace-div').acedSession().on("change", function () {
+        updateTask();
+    });
+    textarea.data('ace-div').acedSession().setValue(content);
+}
 
 /**
  * Builds up the segment list from the JSON object that describes it

@@ -52,7 +52,7 @@ a.delete {
     background-color: #ddebff;
 }
 
-#sortable li span {
+#sortable li span.ui-icon {
     position: absolute;
     margin-left: -1.3em;
     margin-top: 0.2em

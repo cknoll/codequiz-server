@@ -147,7 +147,6 @@ INSTALLED_APPS = (
     'ratings',
     'feedback',
     'django_mathjax',
-    'django_ace',
     'builder',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
