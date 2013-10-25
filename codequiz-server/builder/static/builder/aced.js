@@ -38,6 +38,23 @@ $.fn.extend({
             });
         });
     },
+    acedRemoveFromTA: function () {
+        return this.each(function () {
+            var div, editor, ta;
+            ta = $(this);
+            ta.show();
+            div = ta.data("ace-div");
+
+            var session = div.acedSession();
+            var content = session.getValue();
+            div.aced().destroy();
+            div.remove();
+
+            ta.val(content);
+
+            return;
+        });
+    },
     aced: function () {
         return $(this).data('ace-editor');
     },

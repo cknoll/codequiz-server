@@ -175,15 +175,19 @@ function addInput(containerName, inputType, data) {
     });
 
     $("select").change(function () {
+        var $prev = $(this).prev();
         var selectedValue = $(this).find(":selected").val();
         if (selectedValue == "source") {
-            console.log("selection is source", $(this).prev());
-            $(this).prev().addClass("source");
-            if ($(this).prev().is("textarea.source")) {
-                transformTextAreasToACE($(this).prev());
+            console.log("selection is source", $prev);
+            $prev.addClass("source");
+            if ($prev.is("textarea.source")) {
+                transformTextAreasToACE($prev);
             }
         } else if (selectedValue == "normal") {
-            $(this).prev().removeClass("source");
+            $prev.removeClass("source");
+            if ($(this).prev().is("textarea.ace")) {
+                transformACEToTextarea($prev);
+            }
         }
     })
 
@@ -328,6 +332,11 @@ function transformTextAreasToACE(textarea) {
         updateTask();
     });
     textarea.data('ace-div').acedSession().setValue(content);
+}
+
+function transformACEToTextarea(textarea) {
+    textarea.filter(".ace").acedRemoveFromTA();
+    textarea.filter(".ace").removeClass("ace");
 }
 
 /**
