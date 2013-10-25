@@ -99,6 +99,7 @@ function addInput(containerName, inputType, data) {
     // mark input and textarea fields for automatic updating of hidden input field that stores the JSON
     $("li input").addClass("watch");
     $("li textarea").addClass("watch");
+    $("li select").addClass("watch");
 
     $(".watch").change(function () {
         updateTask();
@@ -107,7 +108,7 @@ function addInput(containerName, inputType, data) {
         updateTask();
     });
 
-    $("select").change(function() {
+    $("select").change(function () {
         var selectedValue = $(this).find(":selected").val();
         if (selectedValue == "source") {
             $(this).prev().addClass("source");
@@ -154,36 +155,67 @@ function exportValues() {
     var segments = [];
 
     $("#sortable li").each(function (number, obj) {
+        var li = $(this);
+
+        /**
+         * Extracts a text area type of input, whose key will be the type of the <li> its contained in
+         */
+        function extractTextArea() {
+            var $firstChild = li.children("textarea").first();
+            var $typeSelect = $firstChild.next();
+            var textAreaType = li.attr("type");
+            var dict = {};
+            dict[textAreaType] = {
+                    "content": $firstChild.val(),
+                    "type": $typeSelect.val()
+                };
+            segments.push(dict);
+        }
+
+
         switch (obj.type) {
             case 'text':
-                var $firstChild = $(this).children("textarea").first();
-                segments.push({"text": $firstChild.val()});
+                extractTextArea();
                 break;
 
             case 'hint':
-                var $firstChild = $(this).children("textarea").first();
-                segments.push({"hint": $firstChild.val()});
+                extractTextArea();
                 break;
 
             case 'line':
-                var $firstChild = $(this).children("input").first();
+                var $inputs = $(this).children("input");
+                var $selects = $(this).children("select");
 
                 segments.push(
                     {"line": {
-                        "text": $firstChild.val(),
-                        "source": $firstChild.next().val(),
-                        "solution": $firstChild.next().next().val()
+                        "first": {
+                            "content": $inputs.eq(0).val(),
+                            "type": $selects.eq(0).val()
+                        },
+                        "second": {
+                            "content": $inputs.eq(1).val(),
+                            "type": $selects.eq(1).val()
+                        },
+                        "solution": $inputs.eq(2).val()
                     }}
                 );
                 break;
 
             case 'check':
-                var $firstChild = $(this).children("input").first();
+                var $inputs = $(this).children("input");
+                var $selects = $(this).children("select");
+
                 segments.push(
                     {"check": {
-                        "statement": $firstChild.val(),
-                        "question": $firstChild.next().val(),
-                        "solution": $firstChild.next().next().is(':checked')
+                        "first": {
+                            "content": $inputs.eq(0).val(),
+                            "type": $selects.eq(0).val()
+                        },
+                        "second": {
+                            "content": $inputs.eq(1).val(),
+                            "type": $selects.eq(1).val()
+                        },
+                        "solution": $inputs.eq(2).is(':checked')
                     }}
                 );
                 break;
