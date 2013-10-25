@@ -59,9 +59,33 @@ a.delete {
 }
 
 textarea {
-    width:95%;
+    width:89%;
 }
 
-textarea.src {
+textarea.source {
     font-family: monospace;
+}
+
+input {
+    width: 160px;
+}
+
+input.source {
+    font-family: monospace;
+}
+
+
+
+#sortable li.hint {
+    background-color: #a4e68e;
+}
+
+select.right {
+    position: absolute;
+    right:10px;
+    bottom:3px;
+}
+
+select.inline {
+    margin-right: 20px;
 }

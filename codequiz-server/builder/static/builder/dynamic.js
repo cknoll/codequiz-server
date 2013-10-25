@@ -36,6 +36,7 @@ function addInput(containerName, inputType, data) {
                 value = data;
             }
             item.append("<textarea cols='100' rows='5' placeholder='Text...'>" + value + "</textarea>");
+            addTypeSelection(item, "right");
             break;
 
         case 'hint':
@@ -44,6 +45,8 @@ function addInput(containerName, inputType, data) {
                 value = data;
             }
             item.append("<textarea cols='100' rows='5' placeholder='Hint...'>" + value + "</textarea>");
+            addTypeSelection(item, "right");
+            item.addClass("hint");
             break;
 
         case 'line':
@@ -56,9 +59,12 @@ function addInput(containerName, inputType, data) {
                 solution = data["solution"];
             }
 
-            item.append("<input type='text' placeholder='Statement' value='" + text + "'> " +
-                "<input type='text' placeholder='Question' value='" + source + "'> " +
-                "<input type='text' placeholder='Answer' value='" + solution + "'>");
+            item.append("<input type='text' placeholder='Statement' value='" + text + "'>");
+            addTypeSelection(item, "inline");
+            item.append("<input type='text' placeholder='Question' value='" + source + "'>");
+            addTypeSelection(item, "inline");
+            item.append("<input type='text' placeholder='Answer' value='" + solution + "'>");
+            addTypeSelection(item);
             break;
 
         case 'check':
@@ -73,9 +79,11 @@ function addInput(containerName, inputType, data) {
                 }
             }
 
-            item.append("<input type='text' placeholder='Statement' value='" + statement + "'> " +
-                "<input type='text' placeholder='Question' value='" + question + "'> " +
-                "<input type='checkbox'" + checked + ">");
+            item.append("<input type='text' placeholder='Statement' value='" + statement + "'>");
+            addTypeSelection(item, "inline");
+            item.append("<input type='text' placeholder='Question' value='" + question + "'>");
+            addTypeSelection(item, "inline");
+            item.append("<input type='checkbox'" + checked + ">");
             break;
     }
 
@@ -99,10 +107,24 @@ function addInput(containerName, inputType, data) {
         updateTask();
     });
 
+    $("select").change(function() {
+        var selectedValue = $(this).find(":selected").val();
+        if (selectedValue == "source") {
+            $(this).prev().addClass("source");
+        }
+        else if (selectedValue == "normal") {
+            $(this).prev().removeClass("source");
+        }
+    })
+
     // update after inserting a new segment
     updateTask();
 
     counter++;
+}
+
+function addTypeSelection(node, cssclass) {
+    node.append("<select class='" + cssclass + "'><option value='normal'>Normal</option><option value='source'>Source</option></select>");
 }
 
 /**
@@ -177,7 +199,7 @@ $(document).ready(function () {
     var jsonString = $("textarea.builder").val();
 
     $("textarea.builder")
-        .replaceWith("<div style='margin-left:10em'><ul id='sortable' style='width: 80%'></ul></div>");
+        .replaceWith("<div style='margin-left:10em'><ul id='sortable' style='width: 100%'></ul></div>");
 
     $("#sortable").after("<div id='builderbuttons' style='margin-top:1em'></div>");
 
