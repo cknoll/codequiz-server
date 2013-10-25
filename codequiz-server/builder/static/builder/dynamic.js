@@ -3,6 +3,35 @@ var counter = 0;
 var $ = django.jQuery;  // bind Djangos jQuery to the shortcut "$", or else not much will work
 
 /**
+ * Add a selection drop down list, to choose the kind of text field
+ * @param node DOM object to append this to
+ * @param cssclass CSS class to give the drop down ('right' or 'inline')
+ * @param preSelectedType Which option to preselect
+ */
+function addTypeSelection(node, cssclass, preSelectedType) {
+    $select = $("<select>").addClass(cssclass);
+
+    var options = [
+        {"type": "normal", "text": "Normal"},
+        {"type": "source", "text": "Source"}
+    ];
+
+    var count = options.length;
+
+    for (var i = 0; i < count; i++) {
+        var option = options[i];
+
+        $option = $("<option>", {value: option["type"], text: option["text"]});
+        if (preSelectedType == option["type"]) {
+            $option.prop({"selected": true});
+        }
+        $select.append($option);
+    }
+
+    node.append($select);
+}
+
+/**
  * Adds a segment to the task definition
  *
  * This is where new types of input can be implemented for the admin interface.
@@ -26,45 +55,81 @@ function addInput(containerName, inputType, data) {
     // add the little arrow icon to the left of each segment
     item.append("<span class='ui-icon ui-icon-arrowthick-2-n-s'></span>");
 
+    /**
+     * Add a textarea
+     * @param {String} type The kind of textarea (currently only distinguishes "text" and "hint")
+     */
+    function addTextArea(type) {
+        var content = "";
+        var contentType = "";
+        if (typeof data !== 'undefined' || data) {
+            content = data["content"];
+            contentType = data["type"];
+        }
+
+        var placeHolder = "";
+        switch (type) {
+            case 'text':
+                placeHolder = "Text...";
+                break;
+            case 'hint':
+                placeHolder = "Hint...";
+                item.addClass("hint");
+                break;
+        }
+        $textarea = $("<textarea>", {
+            cols: "100", rows: "5",
+            placeholder: placeHolder,
+            text: content
+        });
+        if (contentType == "source") {
+            $textarea.addClass("source");
+        }
+        item.append($textarea);
+        addTypeSelection(item, "right", contentType);
+    }
+
+    /**
+     * Add a text input field and a type selection next to it
+     * @param {String} key The key to retrieve data from JSON
+     * @param {String} placeHolder Placeholder text for the input field
+     */
+    function addTextInput(key, placeHolder) {
+        var content = "";
+        var contentType = "";
+        if (typeof data !== 'undefined' || data) {
+            content = data[key]["content"];
+            contentType = data[key]["type"];
+        }
+
+        $input = $("<input>", {
+            type: "text",
+            placeholder: placeHolder,
+            value: content
+        });
+        if (contentType == "source") {
+            $input.addClass("source");
+        }
+        item.append($input);
+        addTypeSelection(item, "inline", contentType);
+    }
+
     // depending on the type of segment we want to insert, add some input fields
     // there's quite some type/null/undefined checking going on, unfortunately,
     // to cleanly support both cases (new segments and loaded segments)
     switch (inputType) {
         case 'text':
-            var value = "";
-            if (typeof data !== 'undefined' || data) {
-                value = data;
-            }
-            item.append("<textarea cols='100' rows='5' placeholder='Text...'>" + value + "</textarea>");
-            addTypeSelection(item, "right");
+            addTextArea(inputType);
             break;
 
         case 'hint':
-            var value = "";
-            if (typeof data !== 'undefined' || data) {
-                value = data;
-            }
-            item.append("<textarea cols='100' rows='5' placeholder='Hint...'>" + value + "</textarea>");
-            addTypeSelection(item, "right");
-            item.addClass("hint");
+            addTextArea(inputType);
             break;
 
         case 'line':
-            var text = "";
-            var source = "";
-            var solution = "";
-            if (typeof data !== 'undefined' || data) {
-                text = data["text"];
-                source = data["source"];
-                solution = data["solution"];
-            }
-
-            item.append("<input type='text' placeholder='Statement' value='" + text + "'>");
-            addTypeSelection(item, "inline");
-            item.append("<input type='text' placeholder='Question' value='" + source + "'>");
-            addTypeSelection(item, "inline");
-            item.append("<input type='text' placeholder='Answer' value='" + solution + "'>");
-            addTypeSelection(item);
+            addTextInput("first", "First");
+            addTextInput("second", "Second");
+            addTextInput("solution", "Answer");
             break;
 
         case 'check':
@@ -79,11 +144,9 @@ function addInput(containerName, inputType, data) {
                 }
             }
 
-            item.append("<input type='text' placeholder='Statement' value='" + statement + "'>");
-            addTypeSelection(item, "inline");
-            item.append("<input type='text' placeholder='Question' value='" + question + "'>");
-            addTypeSelection(item, "inline");
-            item.append("<input type='checkbox'" + checked + ">");
+            addTextInput("first", "First");
+            addTextInput("second", "Second");
+            item.append("<label for='answer'>Answer</label><input name='answer' type='checkbox'" + checked + ">");
             break;
     }
 
@@ -112,8 +175,7 @@ function addInput(containerName, inputType, data) {
         var selectedValue = $(this).find(":selected").val();
         if (selectedValue == "source") {
             $(this).prev().addClass("source");
-        }
-        else if (selectedValue == "normal") {
+        } else if (selectedValue == "normal") {
             $(this).prev().removeClass("source");
         }
     })
@@ -122,10 +184,6 @@ function addInput(containerName, inputType, data) {
     updateTask();
 
     counter++;
-}
-
-function addTypeSelection(node, cssclass) {
-    node.append("<select class='" + cssclass + "'><option value='normal'>Normal</option><option value='source'>Source</option></select>");
 }
 
 /**
@@ -145,10 +203,8 @@ function removeInput(name) {
     updateTask();
 }
 
-
 /**
  * Walks over all the segments and builds a dictionary/JSON object
- *
  * @returns {{segments: Array}}
  */
 function exportValues() {
@@ -166,12 +222,11 @@ function exportValues() {
             var textAreaType = li.attr("type");
             var dict = {};
             dict[textAreaType] = {
-                    "content": $firstChild.val(),
-                    "type": $typeSelect.val()
-                };
+                "content": $firstChild.val(),
+                "type": $typeSelect.val()
+            };
             segments.push(dict);
         }
-
 
         switch (obj.type) {
             case 'text':
@@ -186,41 +241,39 @@ function exportValues() {
                 var $inputs = $(this).children("input");
                 var $selects = $(this).children("select");
 
-                segments.push(
-                    {"line": {
-                        "first": {
-                            "content": $inputs.eq(0).val(),
-                            "type": $selects.eq(0).val()
-                        },
-                        "second": {
-                            "content": $inputs.eq(1).val(),
-                            "type": $selects.eq(1).val()
-                        },
-                        "solution": $inputs.eq(2).val()
-                    }}
-                );
+                segments.push({"line": {
+                    "first": {
+                        "content": $inputs.eq(0).val(),
+                        "type": $selects.eq(0).val()
+                    },
+                    "second": {
+                        "content": $inputs.eq(1).val(),
+                        "type": $selects.eq(1).val()
+                    },
+                    "solution": {
+                        "content": $inputs.eq(2).val(),
+                        "type": $selects.eq(2).val()
+                    }
+                }});
                 break;
 
             case 'check':
                 var $inputs = $(this).children("input");
                 var $selects = $(this).children("select");
 
-                segments.push(
-                    {"check": {
-                        "first": {
-                            "content": $inputs.eq(0).val(),
-                            "type": $selects.eq(0).val()
-                        },
-                        "second": {
-                            "content": $inputs.eq(1).val(),
-                            "type": $selects.eq(1).val()
-                        },
-                        "solution": $inputs.eq(2).is(':checked')
-                    }}
-                );
+                segments.push({"check": {
+                    "first": {
+                        "content": $inputs.eq(0).val(),
+                        "type": $selects.eq(0).val()
+                    },
+                    "second": {
+                        "content": $inputs.eq(1).val(),
+                        "type": $selects.eq(1).val()
+                    },
+                    "solution": $inputs.eq(2).is(':checked')
+                }});
                 break;
         }
-
     });
     return {segments: segments};
 }
@@ -230,8 +283,7 @@ $(document).ready(function () {
     // store the JSON string from the original textarea widget (i.e. the one from the DB)
     var jsonString = $("textarea.builder").val();
 
-    $("textarea.builder")
-        .replaceWith("<div style='margin-left:10em'><ul id='sortable' style='width: 100%'></ul></div>");
+    $("textarea.builder").replaceWith("<div style='margin-left:10em'><ul id='sortable' style='width: 100%'></ul></div>");
 
     $("#sortable").after("<div id='builderbuttons' style='margin-top:1em'></div>");
 
@@ -272,7 +324,6 @@ function restoreFromJSON(json) {
         }
     });
 }
-
 
 // set some options and event hooks for jQuery Sortable to get a few animations and to update the hidden input for the JSON
 // (this gets called automatically, when the script loads)
