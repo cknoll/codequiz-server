@@ -1,5 +1,13 @@
 var counter = 0;
 
+// String additions
+String.prototype.lines = function () {
+    return this.split(/\r*\n/);
+}
+String.prototype.lineCount = function () {
+    return this.lines().length;
+}
+
 //var $ = django.jQuery;  // bind Djangos jQuery to the shortcut "$", or else not much will work
 
 /**
@@ -12,7 +20,7 @@ function addTypeSelection(node, cssclass, preSelectedType) {
     $select = $("<select>").addClass(cssclass);
 
     var options = [
-        {"type": "normal", "text": "Normal"},
+        {"type": "text", "text": "Normal"},
         {"type": "source", "text": "Source"}
     ];
 
@@ -42,6 +50,8 @@ function addTypeSelection(node, cssclass, preSelectedType) {
  */
 function addInput(containerName, inputType, data) {
 
+    console.log(data);
+
     // First, we create a new list item
     var newElement = document.createElement('li');
     newElement.class = "ui-state-default";
@@ -57,30 +67,56 @@ function addInput(containerName, inputType, data) {
 
     /**
      * Add a textarea
-     * @param {String} type The kind of textarea (currently only distinguishes "text" and "hint")
+     * @param {String} type The kind of textarea (currently only distinguishes "text" and "comment")
      */
-    function addTextArea(type) {
+    function addTextArea(type, placeHolder, textareaData, cols, cssClass) {
         var content = "";
         var contentType = "";
-        if (typeof data !== 'undefined' || data) {
-            content = data["content"];
-            contentType = data["type"];
+        var rows = 1;
+        var isComment = false;
+        if (textareaData) {
+            content = textareaData["content"];
+            contentType = textareaData["type"];
+            rows = content.lineCount();
+            isComment = textareaData["comment"];
         }
 
-        var placeHolder = "";
-        switch (type) {
-            case 'text':
-                placeHolder = "Text...";
-                break;
-            case 'hint':
-                placeHolder = "Hint...";
-                item.addClass("hint");
-                break;
+        if (cols > 20) {
+            rows = 5;
+        }
+
+        if (isComment) {
+            item.addClass("comment");
         }
         $textarea = $("<textarea>", {
-            cols: "100", rows: "5",
+            cols: cols, rows: rows,
             placeholder: placeHolder,
             text: content
+        });
+
+        if (cols > 20) {
+            $textarea.addClass("wide");
+        }
+        else {
+            $textarea.addClass("no-ace");
+        }
+
+        function updateLines() {
+            var rows = $(this).attr("rows");
+            var lines = $(this).val().lineCount();
+            if (lines != rows) {
+                if ($(this).hasClass('wide')) {
+                    lines = Math.max(5, lines);
+                }
+                $(this).attr("rows", lines);
+            }
+        }
+
+        $textarea.change(function () {
+            updateLines.call(this);
+        });
+        $textarea.keyup(function () {
+            updateLines.call(this);
         });
 
         if (contentType == "source") {
@@ -88,8 +124,7 @@ function addInput(containerName, inputType, data) {
         }
 
         item.append($textarea);
-
-        addTypeSelection(item, "right", contentType);
+        addTypeSelection(item, cssClass, contentType);
     }
 
     /**
@@ -97,21 +132,27 @@ function addInput(containerName, inputType, data) {
      * @param {String} key The key to retrieve data from JSON
      * @param {String} placeHolder Placeholder text for the input field
      */
-    function addTextInput(key, placeHolder) {
+    function addTextInput(placeHolder, inputData) {
         var content = "";
         var contentType = "";
-        if (typeof data !== 'undefined' || data) {
-            content = data[key]["content"];
-            contentType = data[key]["type"];
+        var isComment;
+        var lines = 1;
+        if (typeof inputData !== 'undefined' || inputData) {
+            content = inputData["content"];
+            contentType = inputData["type"];
+            isComment = inputData["comment"];
         }
 
-        $input = $("<input>", {
+        var $input = $("<input>", {
             type: "text",
             placeholder: placeHolder,
             value: content
         });
         if (contentType == "source") {
             $input.addClass("source");
+        }
+        if (isComment) {
+            $input.addClass("comment");
         }
         item.append($input);
         addTypeSelection(item, "inline", contentType);
@@ -122,34 +163,58 @@ function addInput(containerName, inputType, data) {
     // to cleanly support both cases (new segments and loaded segments)
     switch (inputType) {
         case 'text':
-            addTextArea(inputType);
+            addTextArea(inputType, "Text...", data, 100, "right");
             break;
 
-        case 'hint':
-            addTextArea(inputType);
+        case 'source':
+            addTextArea(inputType, "Text...", data, 100, "right");
             break;
 
-        case 'line':
-            addTextInput("first", "First");
-            addTextInput("second", "Second");
-            addTextInput("solution", "Answer");
+        case 'comment':
+            addTextArea(inputType, "Comment...", data, 100, "right");
+            break;
+
+        case 'input':
+            if (data) {
+                var content = data["content"];
+                var count = content.length;
+                for (var i = 0; i < count; i++) {
+                    addTextInput("Text", content[i]);
+                }
+            }
+            else {
+                addTextInput("Text");
+            }
+
+            var answer = null
+            solution = null;
+            if (data) {
+                answer = data["answer"];
+                solution = data["solution"];
+            }
+            addTextArea("text", "Answer", answer, 20, "inline");
+            addTextArea("text", "Solution", solution, 20, "inline");
             break;
 
         case 'check':
-            var statement = "";
-            var question = "";
-            var checked = "";
-            if (typeof data !== 'undefined' || data) {
-                statement = data["statement"];
-                question = data["question"];
-                if (data["solution"]) {
-                    checked = " checked='checked'";
+            var solution = false;
+            if (data) {
+                var content = data["content"];
+                var count = content.length;
+                for (var i = 0; i < count; i++) {
+                    addTextInput("Text", content[i]);
                 }
+                solution = data["solution"];
             }
-
-            addTextInput("first", "First");
-            addTextInput("second", "Second");
-            item.append("<label for='answer'>Answer</label><input name='answer' type='checkbox'" + checked + ">");
+            else {
+                addTextInput("Text");
+            }
+            item.append("<label for='answer'>Answer</label>");
+            $checkbox = $("<input>", {name: "answer", type: "checkbox"});
+            if (solution) {
+                $checkbox.prop({"checked": true});
+            }
+            item.append($checkbox);
             break;
     }
 
@@ -181,9 +246,9 @@ function addInput(containerName, inputType, data) {
             console.log("selection is source", $prev);
             $prev.addClass("source");
             if ($prev.is("textarea.source")) {
-                transformTextAreasToACE($prev);
+                transformTextAreaToACE($prev);
             }
-        } else if (selectedValue == "normal") {
+        } else if (selectedValue == "text") {
             $prev.removeClass("source");
             if ($(this).prev().is("textarea.ace")) {
                 transformACEToTextarea($prev);
@@ -230,13 +295,28 @@ function exportValues() {
         function extractTextArea() {
             var $firstChild = li.children("textarea").first();
             var $typeSelect = $firstChild.next();
-            var textAreaType = li.attr("type");
-            var dict = {};
-            dict[textAreaType] = {
+            var isComment = li.attr("type") == "comment";
+            var dict = {
                 "content": $firstChild.val(),
-                "type": $typeSelect.val()
+                "type": $typeSelect.val(),
             };
+            if (isComment) {
+                dict["comment"] = true;
+            }
             segments.push(dict);
+        }
+
+        function extractInput(node) {
+            var $select = node.next();
+            var dict = {
+                "content": node.val(),
+                "type": $select.val()
+            };
+            var isComment = node.attr("type") == "comment";
+            if (isComment) {
+                dict["comment"] = true;
+            }
+            return dict;
         }
 
         switch (obj.type) {
@@ -244,48 +324,64 @@ function exportValues() {
                 extractTextArea();
                 break;
 
-            case 'hint':
+            case 'source':
                 extractTextArea();
                 break;
 
-            case 'line':
-                var $inputs = $(this).children("input");
-                var $selects = $(this).children("select");
+            case 'comment':
+                extractTextArea();
+                break;
 
-                segments.push({"line": {
-                    "first": {
-                        "content": $inputs.eq(0).val(),
-                        "type": $selects.eq(0).val()
-                    },
-                    "second": {
-                        "content": $inputs.eq(1).val(),
-                        "type": $selects.eq(1).val()
-                    },
-                    "solution": {
-                        "content": $inputs.eq(2).val(),
-                        "type": $selects.eq(2).val()
-                    }
-                }});
+            case 'input':
+                var content = [];
+                var $inputs = $(this).children("input");
+                var count = $inputs.length;
+                for (var i = 0; i < count; i++) {
+                    content.push(extractInput($inputs.eq(i)));
+                }
+
+                var $textareas = $(this).children("textarea");
+
+                var $answer = $textareas.eq(0);
+                var answerDict = {
+                    "content": $answer.val(),
+                    "type": $answer.next().val()
+                }
+
+                var $solution = $textareas.eq(1);
+                var solutionDict = {
+                    "content": $solution.val(),
+                    "type": $solution.next().val()
+                }
+
+                segments.push({
+                    "type": "input",
+                    "content": content,
+                    "answer": answerDict,
+                    "solution": solutionDict
+                });
                 break;
 
             case 'check':
-                var $inputs = $(this).children("input");
-                var $selects = $(this).children("select");
+                var content = [];
+                var $inputs = $(this).children("input[type='text']");
+                var count = $inputs.length;
+                for (var i = 0; i < count; i++) {
+                    content.push(extractInput($inputs.eq(i)));
+                }
 
-                segments.push({"check": {
-                    "first": {
-                        "content": $inputs.eq(0).val(),
-                        "type": $selects.eq(0).val()
-                    },
-                    "second": {
-                        "content": $inputs.eq(1).val(),
-                        "type": $selects.eq(1).val()
-                    },
-                    "solution": $inputs.eq(2).is(':checked')
-                }});
+                var solution = $(this).children("input[type='checkbox']").first().is(':checked');
+
+                segments.push({
+                    "type": "check",
+                    "content": content,
+                    "solution": solution
+                });
+
                 break;
         }
-    });
+    })
+    ;
     return {segments: segments};
 }
 
@@ -300,8 +396,8 @@ $(document).ready(function () {
 
     $("#builderbuttons")
         .append("<a class='add' href='#' type='text'>Text</a>")
-        .append("<a class='add' href='#' type='hint'>Hint</a>")
-        .append("<a class='add' href='#' type='line'>Line Entry</a>")
+        .append("<a class='add' href='#' type='comment'>Comment</a>")
+        .append("<a class='add' href='#' type='input'>Line Entry</a>")
         .append("<a class='add' href='#' type='check'>Check</a>")
         .append("<input type='hidden' name='body_xml'>");
 
@@ -319,14 +415,13 @@ $(document).ready(function () {
         restoreFromJSON(JSON.parse(jsonString));
     }
 
-    transformTextAreasToACE($("textarea.source"));
-//    $().acedInit({theme: 'github', mode: 'python'});
+    transformTextAreaToACE($("textarea.source"));
 });
 
-function transformTextAreasToACE(textarea) {
+function transformTextAreaToACE(textarea) {
     var content = textarea.val();
 
-    textarea.filter(".source").not(".ace").acedInitTA({theme: 'solarized_light', mode: 'python'});
+    textarea.filter(".source").not(".ace").not(".no-ace").acedInitTA({theme: 'solarized_light', mode: 'python'});
     textarea.addClass("ace");
     textarea.data('ace-div').acedSession().on("change", function () {
         updateTask();
@@ -348,10 +443,8 @@ function restoreFromJSON(json) {
     var segments = json["segments"];
 
     segments.forEach(function logArrayElements(segment, index, array) {
-        for (var key in segment) {
-            var value = segment[key];
-            addInput("sortable", key, value);
-        }
+        var type = segment["type"];
+        addInput("sortable", type, segment);
     });
 }
 

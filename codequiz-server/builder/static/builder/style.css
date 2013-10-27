@@ -58,7 +58,7 @@ a.delete {
     margin-top: 0.2em
 }
 
-textarea {
+textarea.wide {
     width:89%;
 }
 
@@ -74,9 +74,12 @@ input.source {
     font-family: monospace;
 }
 
+input.comment {
+    background-color: #a4e68e;
+}
 
 
-#sortable li.hint {
+#sortable li.comment {
     background-color: #a4e68e;
 }
 
