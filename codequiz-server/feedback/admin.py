@@ -47,9 +47,10 @@ class FeedbackAdmin(admin.ModelAdmin):
         if (obj.email):
             url = obj.email
             subject = "Regarding your Feedback on Task \"%s\"" % obj.task.title
-            body = "\n\n" + obj.text
+            body = "\n" + str(obj.date) + "\n\n" + obj.text
             body = body.replace("\n", "%0D%0A> ")
-            #print(obj.text)
+            body = "\n" + body
+            body = body.replace("\n", "%0D%0A")
             return u"<a href='mailto:{url}?subject={subject}&body={body}'>{url}</a>".format(url=url,
                                                                                             subject=subject,
                                                                                             body=body)
