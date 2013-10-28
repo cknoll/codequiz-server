@@ -1,16 +1,29 @@
 <!-- ==> start: tc_run_final.html -->
-{% load staticfiles %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<!-- this template was designed by http://www.tristarwebdesign.co.uk - please visit for more templates & information - thank you. -->
+
+<head>
+    <title>Code Quiz</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    {% load staticfiles %}
+
+</head>
 
 <link rel="stylesheet" type="text/css" href="{% static 'tasks/style2.css' %}"/>
 
 
-<div class="centered " style="width:500px">
+<div class="centered " style="width:800px">
     <h1>Congratulations!</h1>
     <p>You completed the test: "{{ tc.title }}" with {{ tc.number_of_tasks }} tasks.</p>
-    <p>To prove that you've completed it, show this receipt to your tutor:</p>
-    <p style="font-size: 18pt">{{ hash }}</p>
-
     <p>In further versions of this web application you will see some information about your results here.</p>
+    <br>
+    <br>
+    <p>Als <b>Nachweis der Durchführung</b> dieses Online-Testats dient der folgende Hash-Code:</p>
+    <p style="font-size: 18pt">{{ hash }}</p>
+    <p>Über die OPAL-Lernplattform wird bzw. wurde bekanntgegeben, wie mit diesem Code zu verfahren ist.</p>
 </div>
 
 <!-- ==> end: tc_run_final.html -->
