@@ -29,6 +29,11 @@ class Task(models.Model, TaggedModel):
     tags = TaggableManager(blank=True)
 
 
+class QuizResult(models.Model):
+    date = models.DateTimeField()
+    hash = models.CharField(max_length=128)
+    log = models.TextField()
+
 class TaskCollection(models.Model, TaggedModel):
     """
     This is a Test (i.e. a collection of tasks)
