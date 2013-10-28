@@ -2,6 +2,7 @@
 <div class="white left normal" id="feedback_button"><a>{% trans 'Feedback' %}</a></div>
 <div class="hiding" id="feedback_drop"></div>
 <div class="hiding" id="feedback_popup">
+    <h1 style="padding-left: 5px; font-size: 14pt">Feedback for {{ task.title }}</h1>
     <form action="{% url 'feedback' task.id request.path %}" class="feedback" method="POST">{% csrf_token %}
     <div class="email error"></div>
         <label class="feedback" for="email">{% trans 'email (optional)' %}</label><input class="feedback" name="email"/>
@@ -19,7 +20,7 @@
 </div>
 <script>$(function () {
     feedback.init({
-        'button': $('#feedback_button'),
+        'button': $('#feedback_button, #feedback_link'),
         'drop': $('#feedback_drop'),
         'popup': $('#feedback_popup')
     });
