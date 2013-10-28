@@ -25,6 +25,7 @@ class myContainer(object):
 
 
 def render_toplevel_element(tle, user_sol_list=None):
+    # TODO: rename to tle to segment
     template = loader.get_template(tle.template)
     if user_sol_list is None:
         tle.context.update({'print_solution': False})

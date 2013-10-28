@@ -186,7 +186,7 @@ def xml_to_py(xml_element):
     if xml_element.text is None:
         xml_element.text = ''  # allows .strip()
 
-    # TODO: This should live in the xml_element
+
     if xml_element.tag == "sol":
         tmp_element_string = aux_space_convert_for_lines(xml_element.text)
     else:
@@ -301,12 +301,37 @@ class QuestionSegment():
     """
 
     def _update_user_solution(self, sol_dict, **kwargs):
+        """
+        This function decides whether the users answer was correct and
+        sets the respective attributes (css_class, printed_solution)
+        """
 
         # get the matching solution for this segment
-        my_solution = sol_dict[self.idx]
+        user_solution = sol_dict[self.idx]
 
-        IPS()
-        pass
+        # !! encoding?
+        # user_solution is just a string (not unicode)
+        # TODO: test solutions with special characters
+
+        if 0:
+            # TODO : handle leading spaces properly (already in self.solution)
+            user_solution =  aux_space_convert_for_lines(user_solution)
+
+        # TODO: more sophisticated test here (multiple solutions)
+        self.user_was_correct = (user_solution == self.solution)
+        self.context['user_solution'] = user_solution
+
+        if self.user_was_correct:
+            self.context['css_class'] = "sol_right"
+            self.context['printed_solution'] = "OK"
+        else:
+            self.context['css_class'] = "sol_wrong"
+            if self.solution == "":
+                # !! LANG
+                self.context['printed_solution'] = "<empty string>"
+            else:
+                self.context['printed_solution'] = self.solution
+
 
 class Text(Segment):
     """
