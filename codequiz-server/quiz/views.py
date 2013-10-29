@@ -241,11 +241,11 @@ def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
     context_dict = dict(main_blocks=main_blocks, meta_blocks=meta_blocks)
     context = Context(context_dict)
 
+    response = HttpResponse()
     if 'tc_task_id' in request.session:
         session_tc_task_id = request.session['tc_task_id']
         session_tc_id = request.session['tc_id']
 
-        response = HttpResponse()
         if session_tc_id != tc_id:
             response.write("<p>This is not the Task Collection you're looking for.</p>")
             return response
