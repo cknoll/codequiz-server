@@ -13,13 +13,6 @@ a.add {
     border-radius: 5px;
 }
 
-a.done {
-    margin: 5px;
-    padding: 5px;
-    color: #ffffff;
-    border-radius: 5px;
-    background-color: #86f8a7;
-}
 
 a.delete {
     position: absolute;
@@ -30,7 +23,23 @@ a.delete {
     margin: 1px;
     padding: 1px;
     color: #9d1315;
-    font-size: 0.8em;
+    font-size: 0.5em;
+}
+
+a.addinput {
+    color: #46ca35;
+    font-size: 0.5em;
+    margin-left: -1.5em;
+    position: relative;
+    top:-2px;
+}
+
+a.removeinput {
+    color: #9d1315;
+    font-size: 0.5em;
+    padding-right: 1em;
+    position: relative;
+    top:-2px;
 }
 
 #sortable {
@@ -59,7 +68,7 @@ a.delete {
 }
 
 textarea.wide {
-    width:89%;
+    width: 89%;
 }
 
 textarea.source {
@@ -78,15 +87,14 @@ input.comment {
     background-color: #a4e68e;
 }
 
-
 #sortable li.comment {
     background-color: #a4e68e;
 }
 
 select.right {
     position: absolute;
-    right:10px;
-    bottom:3px;
+    right: 10px;
+    bottom: 3px;
 }
 
 select.inline {

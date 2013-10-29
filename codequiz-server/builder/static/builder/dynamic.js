@@ -36,7 +36,10 @@ function addTypeSelection(node, cssclass, preSelectedType) {
         $select.append($option);
     }
 
-    node.append($select);
+    if (node.css('display') == 'none') {
+        $select.hide();
+    }
+    node.after($select);
 }
 
 /**
@@ -50,8 +53,6 @@ function addTypeSelection(node, cssclass, preSelectedType) {
  */
 function addInput(containerName, inputType, data) {
 
-    console.log(data);
-
     // First, we create a new list item
     var newElement = document.createElement('li');
     newElement.class = "ui-state-default";
@@ -61,6 +62,9 @@ function addInput(containerName, inputType, data) {
     // we add it to the container that goes by the id in 'containername' and store it as a jQuery variable
     $("#" + containerName).append(newElement);
     var item = $("#" + newElement.id);
+    if (!data || data["animate"]) {
+        item.hide();
+    }
 
     // add the little arrow icon to the left of each segment
     item.append("<span class='ui-icon ui-icon-arrowthick-2-n-s'></span>");
@@ -124,7 +128,7 @@ function addInput(containerName, inputType, data) {
         }
 
         item.append($textarea);
-        addTypeSelection(item, cssClass, contentType);
+        addTypeSelection($textarea, cssClass, contentType);
     }
 
     /**
@@ -132,12 +136,12 @@ function addInput(containerName, inputType, data) {
      * @param {String} key The key to retrieve data from JSON
      * @param {String} placeHolder Placeholder text for the input field
      */
-    function addTextInput(placeHolder, inputData) {
+    function addTextInput(placeHolder, inputData, position) {
         var content = "";
         var contentType = "";
         var isComment;
         var lines = 1;
-        if (typeof inputData !== 'undefined' || inputData) {
+        if (inputData) {
             content = inputData["content"];
             contentType = inputData["type"];
             isComment = inputData["comment"];
@@ -154,8 +158,20 @@ function addInput(containerName, inputType, data) {
         if (isComment) {
             $input.addClass("comment");
         }
-        item.append($input);
-        addTypeSelection(item, "inline", contentType);
+        if (position) {
+            console.log("pos:", position);
+
+            $input.hide();
+            item.children("select").eq(position - 1).after($input);
+            addTypeSelection($input, "inline", contentType);
+            $input.show('slow');
+            $input.next().show('slow');
+        }
+        else {
+            item.append($input);
+            addTypeSelection($input, "inline", contentType);
+        }
+
     }
 
     // depending on the type of segment we want to insert, add some input fields
@@ -185,6 +201,31 @@ function addInput(containerName, inputType, data) {
             else {
                 addTextInput("Text");
             }
+
+            var $addTextInputButton = $('<a href="#" class="addinput">');
+            $addTextInputButton.append('<span class="fa-stack">' +
+                '<i class="fa fa-circle fa-stack-2x"></i>' +
+                '<i class="fa fa-plus fa-stack-1x fa-inverse"></i>' +
+                '</span></i>');
+            $addTextInputButton.click(function (e) {
+                e.preventDefault();
+                var numTextInputs = item.children("input").length;
+                addTextInput("Text", null, numTextInputs);
+                updateWatchdogs();
+            });
+
+            var $removeTextInputButton = $('<a href="#" class="removeinput">');
+            $removeTextInputButton.append('<span class="fa-stack">' +
+                '<i class="fa fa-circle fa-stack-2x"></i>' +
+                '<i class="fa fa-minus fa-stack-1x fa-inverse"></i>' +
+                '</span></i>');
+            $removeTextInputButton.click(function (e) {
+                e.preventDefault();
+                removeTextInput(1);
+                updateWatchdogs();
+            });
+            item.append($addTextInputButton);
+            item.append($removeTextInputButton);
 
             var answer = null
             solution = null;
@@ -219,7 +260,10 @@ function addInput(containerName, inputType, data) {
     }
 
     // add the delete button to the segment
-    item.append("<a href='#' class='delete' remove='" + newElement.id + "'><i class='icon-remove-sign'></a></i>");
+    item.append('<a href="#" class="delete" remove="' + newElement.id + '"><span class="fa-stack">' +
+        '<i class="fa fa-circle fa-stack-2x"></i>' +
+        '<i class="fa fa-times fa-stack-1x fa-inverse"></i>' +
+        '</span></i></a>');
 
     // add hooks for delete button
     $("a.delete").click(function (event) {
@@ -227,39 +271,43 @@ function addInput(containerName, inputType, data) {
         removeInput($(this).attr("remove"));
     });
 
-    // mark input and textarea fields for automatic updating of hidden input field that stores the JSON
-    $("li input").addClass("watch");
-    $("li textarea").addClass("watch");
-    $("li select").addClass("watch");
-
-    $(".watch").change(function () {
-        updateTask();
-    });
-    $(".watch").keyup(function () {
-        updateTask();
-    });
-
-    $("select").change(function () {
-        var $prev = $(this).prev();
-        var selectedValue = $(this).find(":selected").val();
-        if (selectedValue == "source") {
-            console.log("selection is source", $prev);
-            $prev.addClass("source");
-            if ($prev.is("textarea.source")) {
-                transformTextAreaToACE($prev);
+    function updateWatchdogs() {
+// mark input and textarea fields for automatic updating of hidden input field that stores the JSON
+        $("li input").addClass("watch");
+        $("li textarea").addClass("watch");
+        $("li select").addClass("watch");
+        $(".watch").change(function () {
+            updateTask();
+        });
+        $(".watch").keyup(function () {
+            updateTask();
+        });
+        $("select").change(function () {
+            var $prev = $(this).prev();
+            var selectedValue = $(this).find(":selected").val();
+            if (selectedValue == "source") {
+                $prev.addClass("source");
+                if ($prev.is("textarea.source")) {
+                    transformTextAreaToACE($prev);
+                }
+            } else if (selectedValue == "text") {
+                $prev.removeClass("source");
+                if ($(this).prev().is("textarea.ace")) {
+                    transformACEToTextarea($prev);
+                }
             }
-        } else if (selectedValue == "text") {
-            $prev.removeClass("source");
-            if ($(this).prev().is("textarea.ace")) {
-                transformACEToTextarea($prev);
-            }
-        }
-    })
+        })
+        // update after inserting a new segment
+        updateTask();
+    }
 
-    // update after inserting a new segment
-    updateTask();
+    updateWatchdogs();
 
     counter++;
+
+    if (!data || data["animate"]) {
+        item.slideDown( "slow" );
+    }
 }
 
 /**
@@ -408,7 +456,7 @@ $(document).ready(function () {
         var data = null;
         if (type == "comment") {
             type = "text";
-            data = {"comment": true, "content": "", "type": "text"}
+            data = {"comment": true, "content": "", "type": "text", "animate":true}
         }
         addInput("sortable", $(this).attr("type"), data);
     });

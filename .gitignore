@@ -2,6 +2,7 @@
 *.pot
 *.pyc
 .idea
+.DS_Store
 local_settings.py
 
 sqlite-jdbc-3.7.2.jar
