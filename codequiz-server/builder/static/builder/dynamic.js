@@ -73,7 +73,7 @@ function addInput(containerName, inputType, data) {
         var content = "";
         var contentType = "";
         var rows = 1;
-        var isComment = false;
+        var isComment;
         if (textareaData) {
             content = textareaData["content"];
             contentType = textareaData["type"];
@@ -404,7 +404,13 @@ $(document).ready(function () {
     $("a.add").click(function (event) {
         event.preventDefault();
         // call addInput() with the type that is in the "type" attribute of the <a> element
-        addInput("sortable", $(this).attr("type"));
+        var type = $(this).attr("type");
+        var data = null;
+        if (type == "comment") {
+            type = "text";
+            data = {"comment": true, "content": "", "type": "text"}
+        }
+        addInput("sortable", $(this).attr("type"), data);
     });
 
     // set the hidden input fields content to the initial JSON string
@@ -442,7 +448,7 @@ function transformACEToTextarea(textarea) {
 function restoreFromJSON(json) {
     var segments = json["segments"];
 
-    segments.forEach(function logArrayElements(segment, index, array) {
+    segments.forEach(function (segment, index, array) {
         var type = segment["type"];
         addInput("sortable", type, segment);
     });
