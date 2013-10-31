@@ -1,5 +1,3 @@
-var counter = 0;
-
 // String additions
 String.prototype.lines = function () {
     return this.split(/\r*\n/);
@@ -11,35 +9,37 @@ String.prototype.lineCount = function () {
 //var $ = django.jQuery;  // bind Djangos jQuery to the shortcut "$", or else not much will work
 
 /**
- * Add a selection drop down list, to choose the kind of text field
- * @param node DOM object to append this to
- * @param cssclass CSS class to give the drop down ('right' or 'inline')
- * @param preSelectedType Which option to preselect
+ * Add a segment to the list
+ * @param {Boolean} animated Animated if true
+ * @param {Object} segment The segment to append
  */
-function addTypeSelection(node, cssclass, preSelectedType) {
-    $select = $("<select>").addClass(cssclass);
-
-    var options = [
-        {"type": "text", "text": "Normal"},
-        {"type": "source", "text": "Source"}
-    ];
-
-    var count = options.length;
-
-    for (var i = 0; i < count; i++) {
-        var option = options[i];
-
-        $option = $("<option>", {value: option["type"], text: option["text"]});
-        if (preSelectedType == option["type"]) {
-            $option.prop({"selected": true});
-        }
-        $select.append($option);
+function addSegmentAnimated(animated, segment) {
+    if (animated) {
+        segment.hide();
+        $("#sortable").append(segment);
+        segment.slideDown(300);
+    }
+    else {
+        $("#sortable").append(segment);
     }
 
-    if (node.css('display') == 'none') {
-        $select.hide();
+    updateWatchdogs();
+    updateTask();
+}
+
+/**
+ * Remove a segment from the list
+ * @param {Boolean} animated Animated if true
+ * @param {Object} segment The segment to remove
+ */
+function removeSegmentAnimated(animated, segment) {
+    if (animated) {
+        segment.slideUp(300);
     }
-    node.after($select);
+    else {
+        segment.remove();
+        updateTask();
+    }
 }
 
 /**
@@ -47,27 +47,18 @@ function addTypeSelection(node, cssclass, preSelectedType) {
  *
  * This is where new types of input can be implemented for the admin interface.
  *
- * @param {String} containerName Which element to add this to (id name)
  * @param {String} inputType Which type of segment to add
  * @param {Object} data Data to prefill the segment with
  */
-function addInput(containerName, inputType, data) {
+function createSegment(inputType, data) {
 
     // First, we create a new list item
-    var newElement = document.createElement('li');
-    newElement.class = "ui-state-default";
-    newElement.id = "segment" + counter;
-    newElement.type = inputType;
-
-    // we add it to the container that goes by the id in 'containername' and store it as a jQuery variable
-    $("#" + containerName).append(newElement);
-    var item = $("#" + newElement.id);
-    if (!data || data["animate"]) {
-        item.hide();
-    }
+    var segment = $("<li>", {
+        type: inputType
+    });
 
     // add the little arrow icon to the left of each segment
-    item.append("<span class='ui-icon ui-icon-arrowthick-2-n-s'></span>");
+    segment.append("<span class='ui-icon ui-icon-arrowthick-2-n-s'></span>");
 
     /**
      * Add a textarea
@@ -90,7 +81,7 @@ function addInput(containerName, inputType, data) {
         }
 
         if (isComment) {
-            item.addClass("comment");
+            segment.addClass("comment");
         }
         $textarea = $("<textarea>", {
             cols: cols, rows: rows,
@@ -127,7 +118,7 @@ function addInput(containerName, inputType, data) {
             $textarea.addClass("source");
         }
 
-        item.append($textarea);
+        segment.append($textarea);
         addTypeSelection($textarea, cssClass, contentType);
     }
 
@@ -159,16 +150,14 @@ function addInput(containerName, inputType, data) {
             $input.addClass("comment");
         }
         if (position) {
-            console.log("pos:", position);
-
             $input.hide();
-            item.children("select").eq(position - 1).after($input);
+            segment.children("select").eq(position - 1).after($input);
             addTypeSelection($input, "inline", contentType);
-            $input.show('slow');
-            $input.next().show('slow');
+            $input.show(300);
+            $input.next().show(300);
         }
         else {
-            item.append($input);
+            segment.append($input);
             addTypeSelection($input, "inline", contentType);
         }
 
@@ -209,7 +198,7 @@ function addInput(containerName, inputType, data) {
                 '</span></i>');
             $addTextInputButton.click(function (e) {
                 e.preventDefault();
-                var numTextInputs = item.children("input").length;
+                var numTextInputs = segment.children("input").length;
                 addTextInput("Text", null, numTextInputs);
                 updateWatchdogs();
             });
@@ -224,8 +213,8 @@ function addInput(containerName, inputType, data) {
                 removeTextInput(1);
                 updateWatchdogs();
             });
-            item.append($addTextInputButton);
-            item.append($removeTextInputButton);
+            segment.append($addTextInputButton);
+            segment.append($removeTextInputButton);
 
             var answer = null
             solution = null;
@@ -250,64 +239,92 @@ function addInput(containerName, inputType, data) {
             else {
                 addTextInput("Text");
             }
-            item.append("<label for='answer'>Answer</label>");
+            segment.append("<label for='answer'>Answer</label>");
             $checkbox = $("<input>", {name: "answer", type: "checkbox"});
             if (solution) {
                 $checkbox.prop({"checked": true});
             }
-            item.append($checkbox);
+            segment.append($checkbox);
             break;
     }
 
     // add the delete button to the segment
-    item.append('<a href="#" class="delete" remove="' + newElement.id + '"><span class="fa-stack">' +
+    segment.append('<a href="#" class="delete"><span class="fa-stack">' +
         '<i class="fa fa-circle fa-stack-2x"></i>' +
         '<i class="fa fa-times fa-stack-1x fa-inverse"></i>' +
         '</span></i></a>');
 
-    // add hooks for delete button
+    return segment;
+}
+
+/**
+ * Add a selection drop down list, to choose the kind of text field
+ * @param node DOM object to append this to
+ * @param cssclass CSS class to give the drop down ('right' or 'inline')
+ * @param preSelectedType Which option to preselect
+ */
+function addTypeSelection(node, cssclass, preSelectedType) {
+    $select = $("<select>").addClass(cssclass);
+
+    var options = [
+        {"type": "text", "text": "Normal"},
+        {"type": "source", "text": "Source"}
+    ];
+
+    var count = options.length;
+
+    for (var i = 0; i < count; i++) {
+        var option = options[i];
+
+        $option = $("<option>", {value: option["type"], text: option["text"]});
+        if (preSelectedType == option["type"]) {
+            $option.prop({"selected": true});
+        }
+        $select.append($option);
+    }
+
+    if (node.css('display') == 'none') {
+        $select.hide();
+    }
+    node.after($select);
+}
+
+/**
+ * Makes sure, that all the text inputs, selects, textareas, buttons etc. have the right hooks set up
+ *
+ * All delete buttons should delete the segment they are in, text input should update the tasks JSON,
+ * changing the selects should update the text font and style or add the code editor. Stuff like that.
+ */
+function updateWatchdogs() {
+// mark input and textarea fields for automatic updating of hidden input field that stores the JSON
+    $("li input").addClass("watch");
+    $("li textarea").addClass("watch");
+    $("li select").addClass("watch");
+    $(".watch").change(function () {
+        updateTask();
+    });
+    $(".watch").keyup(function () {
+        updateTask();
+    });
+    $("select").change(function () {
+        var $prev = $(this).prev();
+        var selectedValue = $(this).find(":selected").val();
+        if (selectedValue == "source") {
+            $prev.addClass("source");
+            if ($prev.is("textarea.source")) {
+                transformTextAreaToACE($prev);
+            }
+        } else if (selectedValue == "text") {
+            $prev.removeClass("source");
+            if ($(this).prev().is("textarea.ace")) {
+                transformACEToTextarea($prev);
+            }
+        }
+    });
     $("a.delete").click(function (event) {
         event.preventDefault();
-        removeInput($(this).attr("remove"));
+        removeSegmentAnimated(true, $(this).parent("li"));
     });
-
-    function updateWatchdogs() {
-// mark input and textarea fields for automatic updating of hidden input field that stores the JSON
-        $("li input").addClass("watch");
-        $("li textarea").addClass("watch");
-        $("li select").addClass("watch");
-        $(".watch").change(function () {
-            updateTask();
-        });
-        $(".watch").keyup(function () {
-            updateTask();
-        });
-        $("select").change(function () {
-            var $prev = $(this).prev();
-            var selectedValue = $(this).find(":selected").val();
-            if (selectedValue == "source") {
-                $prev.addClass("source");
-                if ($prev.is("textarea.source")) {
-                    transformTextAreaToACE($prev);
-                }
-            } else if (selectedValue == "text") {
-                $prev.removeClass("source");
-                if ($(this).prev().is("textarea.ace")) {
-                    transformACEToTextarea($prev);
-                }
-            }
-        })
-        // update after inserting a new segment
-        updateTask();
-    }
-
-    updateWatchdogs();
-
-    counter++;
-
-    if (!data || data["animate"]) {
-        item.slideDown( "slow" );
-    }
 }
 
 /**
@@ -316,15 +333,6 @@ function addInput(containerName, inputType, data) {
 function updateTask() {
     var dict = exportValues();
     $("input[name='body_xml']").val(JSON.stringify(dict, null, 4));
-}
-
-/**
- * Remove a segment from the task
- * @param {String} name Which segment to remove
- */
-function removeInput(name) {
-    $("#" + name).remove();
-    updateTask();
 }
 
 /**
@@ -451,14 +459,16 @@ $(document).ready(function () {
 
     $("a.add").click(function (event) {
         event.preventDefault();
-        // call addInput() with the type that is in the "type" attribute of the <a> element
+
         var type = $(this).attr("type");
         var data = null;
         if (type == "comment") {
             type = "text";
-            data = {"comment": true, "content": "", "type": "text", "animate":true}
+            data = {"comment": true, "content": "", "type": "text", "animate": true}
         }
-        addInput("sortable", $(this).attr("type"), data);
+
+        var item = createSegment($(this).attr("type"), data);
+        addSegmentAnimated(true, item);
     });
 
     // set the hidden input fields content to the initial JSON string
@@ -498,7 +508,8 @@ function restoreFromJSON(json) {
 
     segments.forEach(function (segment, index, array) {
         var type = segment["type"];
-        addInput("sortable", type, segment);
+        var item = createSegment(type, segment);
+        addSegmentAnimated(false, item);
     });
 }
 
