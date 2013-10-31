@@ -15,6 +15,45 @@ this module should be the json backend of the code-quiz server
 """
 
 
+
+class DictContainer(object):
+    """
+    data structure to handle json data (dicts whose values are
+    dicts, lists or "flat objects")
+    """
+
+    def __init__(self, thedict, dc_name = 'unnamed'):
+        self.dc_name = dc_name
+        self.ext_dict = dict(thedict) # store a flat copy of external dict
+        self.ext_attributes = thedict.keys()
+        # only new keys are allowed
+        assert set(self.ext_attributes).intersection(self.__dict__.keys()) ==\
+                                                                        set()
+        self.__dict__.update(thedict)
+
+        self.deep_recursion()
+
+    def deep_recursion(self):
+        """
+        goes through external attributes and converts all dicts
+        (lurking in lists etc) to DictContainers
+        """
+
+        for aname in self.ext_attributes:
+            attr = getattr(self, aname)
+
+            if isinstance(attr, dict):
+                setattr(self, aname, DictContainer(attr, aname))
+            elif isinstance(attr, list):
+                for i, element in enumerate(attr):
+                    if isinstance(element, dict):
+                        name = "%s[%i]" %(aname, i)
+                        attr[i] = DictContainer(element, name)
+
+    def __repr__(self):
+        return "<DC:%s>" % self.dc_name
+
+
 class TopLevelElement(object):
     def __init__(self, element):
         self.tag = element.tag
@@ -241,20 +280,6 @@ class Segment(object):
     """
     This class models a json segment (of the segmentlist)
     """
-    def __init__(self, adict):
-        # TODO: This constructor should live in QuestionSegment
-        # -> dismiss the multi inheritance
-        items = adict.items()
-
-        # mark the name of the keys which will go to self.context later
-        # soulution should not be part of self.context
-        new_items = [('c_%s'%k, v) for k,v in items if not k.startswith('sol')]
-        self.__dict__.update(new_items)
-
-        assert 'solution' in adict
-        self.solution  = unicode(adict['solution'])
-
-        self.make_context()
 
     def __unicode__(self):
         return unicode( "<%s %s>" % (type(self), id(self) ) )
@@ -283,24 +308,76 @@ class Segment(object):
         this abstract method does nothing
         Segments which actually have a solution override this method
         """
+        pass
 
-        # hack to use multiple inheritance here (see QuestionSegment)
-        method_name = "_update_user_solution"
-        if hasattr(self, method_name):
-            the_method = getattr(self, method_name)
-#            IPS()
-            the_method(*args, **kwargs)
+def aux_ensure_sequence(arg):
+    """
+    if arg is not a sequence, return (arg,)
+    -> result is always iterable
+    """
+    if hasattr(arg, '__len__'):
+        return arg
+    else:
+        return (arg,)
+
+def aux_unified_solution_structure(solution):
+    """
+    some solutions are dictcontainers
+    some are lists of dictcontainers, some are (lists of) flat objects
+
+    always return a sequence of dictcontainers
+    """
+
+    solutions = aux_ensure_sequence(solution)
+    res = []
+
+    for s in solutions:
+        if isinstance(s, DictContainer):
+            assert hasattr(s, 'content')
+            res.append(s)
         else:
-            # no solution to update
-            pass
+            dc = DictContainer({'content':s}, 'flat_solution')
+            res.append(dc)
+
+    return res
 
 
-class QuestionSegment():
+# mutable global variable
+question_counter = [0]
+
+
+
+class QuestionSegment(Segment):
     """
     models anything with a solution
     """
 
-    def _update_user_solution(self, sol_dict, **kwargs):
+    def __init__(self, dc):
+        # probably obsolete
+
+        if 0:
+            items = dc.ext_dict.items()
+
+            # mark the name of the keys which will go to self.context later
+            # soulution should not be part of self.context
+            new_items = [('c_%s'%k, v) for k,v in items if not k.startswith('sol')]
+            self.__dict__.update(new_items)
+
+        question_counter[0] += 1
+        self.c_question_counter = question_counter[0]
+        self.solution  = aux_unified_solution_structure( dc.solution )
+        self.make_context()
+
+
+    def test_user_was_correct(self, user_solution):
+
+        res = []
+        for s in self.solution:
+            content = getattr(s, 'content', s)
+            res.append(user_solution == unicode(content))
+        return any(res)
+
+    def update_user_solution(self, sol_dict):
         """
         This function decides whether the users answer was correct and
         sets the respective attributes (css_class, printed_solution)
@@ -318,19 +395,21 @@ class QuestionSegment():
             user_solution =  aux_space_convert_for_lines(user_solution)
 
         # TODO: more sophisticated test here (multiple solutions)
-        self.user_was_correct = (user_solution == self.solution)
-        self.context['user_solution'] = user_solution
+        self.user_was_correct = self.test_user_was_correct(user_solution)
+        self.context['prefilled_text'] = user_solution
 
         if self.user_was_correct:
             self.context['css_class'] = "sol_right"
             self.context['printed_solution'] = "OK"
         else:
             self.context['css_class'] = "sol_wrong"
-            if self.solution == "":
+            # TODO: handle multiple solutions
+            if self.solution[0].content == "":
                 # !! LANG
                 self.context['printed_solution'] = "<empty string>"
             else:
-                self.context['printed_solution'] = self.solution
+
+                self.context['printed_solution'] = self.solution[0].content
 
 
 class Text(Segment):
@@ -340,20 +419,16 @@ class Text(Segment):
 
     template = 'tasks/txt.html'
 
-    def __init__(self, arg):
-        if isinstance(arg, unicode):
-            self.c_text = arg
-        elif isinstance(arg, list):
-            ## !! speed improvement potential:
-            assert all([isinstance(line, unicode) for line in arg])
-            self.c_text = "\n".join(arg)
-        else:
-            raise TypeError, "arg has the wrong type: %s" % type(arg)
+    def __init__(self, dc):
+
+        assert isinstance(dc.content, unicode)
+        self.c_text = dc.content
+        # List of unicode is not handled anymore
 
         self.c_multiline = "\n" in self.c_text
+        self.c_comment = getattr(dc, 'comment', False)
 
         self.make_context()
-
 
 
 class Src(Text):
@@ -361,25 +436,39 @@ class Src(Text):
     template = 'tasks/src.html'
     pass
 
-class LineInput(Segment, QuestionSegment):
-    template = 'tasks/line_input.html'
-    pass
+class InputField(QuestionSegment):
+    template = 'tasks/cq2_input_field.html'
+    def __init__(self, dc):
+        assert isinstance(dc.content, list)
 
-class CBox(Segment, QuestionSegment):
-    template = 'tasks/cbox.html'
+        self.c_text_slots = dc.content
 
-    def __init__(self, arg):
-        self.c_text_slot2 = "Label (Richtig)"
+        self.c_lines = dc.lines
+        self.c_prefilled_text = dc.answer.content[:4]
+
+        QuestionSegment.__init__(self, dc)
+
+class CBox(QuestionSegment):
+    template = 'tasks/cq2_cbox.html'
+
+    def __init__(self, dc):
+        self.c_text_slots = dc.content
         self.c_cbox_id = "123"
-        Segment.__init__(self, arg)
+
+        QuestionSegment.__init__(self, dc)
 
 
-
-
-
-class RadioList(Segment, QuestionSegment):
+# not yet implemented
+class RadioList(QuestionSegment):
     pass
 
+
+typestr_to_class_map = {'text': Text, 'source': Src,
+                        'input':InputField, 'check': CBox}
+
+
+# our json format "specification" by example
+# https://gist.github.com/leberwurstsaft/7158911
 
 def make_segment(thedict, idx):
     """
@@ -389,23 +478,16 @@ def make_segment(thedict, idx):
 
     assert isinstance(thedict, dict)
 
-    assert len(thedict) == 1
-    key, value = thedict.items()[0]
+    thetype  = thedict.get('type', None)
+    if thetype == None:
+        raise ValueError, "segment_dict should have key 'type'"
 
-    if key == "text":
-        s = Text(value)
-    elif key == "source":
-        s = Src(value)
+    theclass = typestr_to_class_map.get(thetype, None)
+    if thetype == None:
+        raise ValueError, "unknown type string: %s" % thetype
 
-    # !! second option is only for compatibility; should be removed soon
-    elif key == "cbox" or key == "check":
-        s = CBox(value)
-    elif key == "line_input" or key == "line":
-        s = LineInput(value)
-    elif key == "radio":
-        raise NotImplementedError, "radio buttons not yet implemented"
-    else:
-        raise ValueError, "unknown segment type from json: %s" % key
+    dc = DictContainer(thedict, thetype)
+    s = theclass(dc)
 
     s.set_idx(idx)
     return s
@@ -426,13 +508,13 @@ def debug_task():
 
 
 
-
 if __name__ == "__main__":
     path = "task1.json"
     with open(path, 'r') as myfile:
         content = myfile.read()
 
     rd = json.loads(content)
+
 
     dict_list = rd['segments']
 

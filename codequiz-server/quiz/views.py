@@ -14,6 +14,8 @@ from aux import xml_lib, json_lib
 from quiz.models import Task, TaskCollection
 
 
+
+# TODO: this is merely the same as the json_lib.DictContainer without deeprec.
 class myContainer(object):
     """
     just a simple data structure for storing objects as attributes
@@ -21,7 +23,6 @@ class myContainer(object):
 
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
-
 
 
 def render_toplevel_element(tle, user_sol_list=None):

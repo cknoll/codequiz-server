@@ -1,0 +1,29 @@
+<!-- ==> start: cq2_input_field.html -->
+
+        <div class="container" style="width: 100%; padding-top: 20pt">
+            
+            <div class="linenumber">
+                        {{question_counter}}.
+            </div>
+            <div class="cell">
+               {{ text_slots.0.content }}
+            </div>
+            <div class="cell">
+               {{ text_slots.1.content }}
+            </div>
+            <div class="cell">
+            
+                    <textarea name="le_idx_{{idx}}" cols="20" rows="{{lines}}" autocomplete="off">{{ prefilled_text }}</textarea>
+            
+            </div>
+            {% if print_solution %}
+                <div class="cell">
+                    <div class="{{ css_class }}">
+                        {{ printed_solution }}
+                    </div>
+                </div>
+            {% endif %}
+        
+        </div>
+
+<!-- ==> end: cq2_input_field.html -->

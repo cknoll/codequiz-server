@@ -1,14 +1,80 @@
-{ "segments": [
-{ "text": ["Hier steht viel Text." ,
-           "Der kann      viele Leerzeichen enthalten.",
-           "Und über mehrere Zeilen gehen."]
-},
-{"source": ["def func(x,y):",
-            "    pass"]
-},
-{ "check": { "statement": "sate", "question": "quest", "solution": true } },
-{ "line_input": { "text": "des", "source": "src", "solution": "sol" } },
-{"source": "hier steht source"         }
-] }
-
+{
+    "segments": [
+        {
+            "type": "source",
+            "content": "def bla(self):\n    pass"
+        },
+        {
+            "type": "text",
+            "content": "Tip, der erst <i>erscheint</i>, wenn die Fragen beantwortet wurden.",
+            "comment": true
+        },
+        {
+            "type": "input",
+            "lines": 2,
+            "content": [
+                {
+                    "content": "Korrigiere folgenden Code",
+                    "type": "normal"
+                },
+                {
+                    "content": "Ein Kommentar.",
+                    "type": "normal"
+                }
+            ],
+            "answer": {
+                    "content":"def hahaha(self),\n    pass",
+                    "type":"source"
+                },
+            "solution": [
+                {
+                    "content": "def hahaha(self):\n    pass",
+                    "type": "source"
+                },
+                {
+                    "content": "def hahaha2(self):\n    pass",
+                    "type": "source"
+                }
+            ]
+        },
+        {
+            "type": "input",
+            "lines": 2,
+            "content": [
+                {
+                    "content": "tippe die Zahlen von 1 bis 4",
+                    "type": "normal"
+                }
+            ],
+            "answer": {
+                    "content":"123",
+                    "type":"source"
+                },
+            "solution": [
+                {
+                    "content": "1234",
+                    "type": "source"
+                },
+                {
+                    "content": "def hahaha2(self):\n    pass",
+                    "type": "source"
+                }
+            ]
+        },
+        {
+            "type": "check",
+            "content": [
+                {
+                    "content": "def Hund():\n    print 'wau'",
+                    "type": "src"
+                },
+                {
+                    "content": "Richtig?",
+                    "type": "normal"
+                }
+            ],
+            "solution": false
+        }
+    ]
+}
 
