@@ -1,18 +1,13 @@
 <!-- ==> start: cbox.html -->
 
-        <div class="container" style="width: 100%; padding-top: 20pt">
+        <div class="row" style="width: 100%; padding-top: 20pt">
 
             <div class="linenumber">
                         {{question_counter}}.
             </div>
             
-            <div class="cell">
-               {{ text_slots.0.content }}
-            </div>
-            <div class="cell">
-               {{ text_slots.1.content }}
-            </div>
-
+            {% include "tasks/cq3_description_cells.html" with cells=text_slots %}
+            
             <div class="cell">
                     <label>
                         <input name="cbox_idx_{{ idx }}" type="checkbox" {% if user_solution == "True" %} checked="checked" {% endif %}>
@@ -22,9 +17,7 @@
             </div>
             {% if print_solution %}
                 <div class="cell">
-                    <div class="{{ css_class }}">
-                        {{ printed_solution }}
-                    </div>
+                    <pre class="{{ css_class }}">{{ printed_solution }}</pre>
                 </div>
             {% endif %}
         </div>

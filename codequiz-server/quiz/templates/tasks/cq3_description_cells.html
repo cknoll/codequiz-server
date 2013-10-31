@@ -1,0 +1,15 @@
+
+<!-- ==> start: cq3_description_cells.html -->
+        {% for cell in cells %}
+            {% if cell.type = "source" %}
+                <div class="cell">
+                    <pre class="src">{{ cell.content }}</pre>
+                </div>
+                {% else %}
+                <div class="cell">
+                    <span class="normal">{{ cell.content }}</span>
+                </div>
+                {% endif %}
+        {% endfor %}
+<!-- ==> end cq3_description_cells.html -->
+

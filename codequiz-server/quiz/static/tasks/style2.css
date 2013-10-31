@@ -219,15 +219,21 @@ a4aeb8 bg
 }
 
 .sol_right {
+    border: 1px solid;
+    border-color: #aaa;
+    padding: .5em;
     font-family: Fixedsys, Courier, monospace;
     color: #008000;
-    font-size: 80%;
+/*     font-size: 80%; */
 }
 
 .sol_wrong {
+    border: 1px solid;
+    border-color: #aaa;
+    padding: .5em;
     font-family: Fixedsys, Courier, monospace;
     color: #800000;
-    font-size: 80%;
+/*     font-size: 80%; */
 }
 
 #main_left img {

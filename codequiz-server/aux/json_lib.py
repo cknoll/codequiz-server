@@ -182,32 +182,9 @@ class Element(object):
         return 'xml:' + self.tag
 
 
-def aux_space_convert(string):
-    u"""
-    converts leading spaces into ␣
-    strips trailing spaces
-    """
-
-    assert "\n" not in string, "No multiline support here"
-
-    s2 = string.strip()
-    if s2 == '':
-        return s2
-    idx = string.index(s2[0])
-
-    leading_spaces = string[:idx]
-    # assumes utf8 file encoding:
-    brace = u"␣"  # .encode('utf8')
-    res = brace * len(leading_spaces) + s2
-    return res
-
-
-def aux_space_convert_for_lines(string):
-    u"""
-    multiline support of converting the leading spaces into ␣
-    """
-    lines = string.split("\n")
-    return "\n".join([aux_space_convert(line) for line in lines])
+def aux_preprocess_user_solution(us):
+    us = us.replace('\r', '')
+    return us
 
 
 def xml_to_py(xml_element):
@@ -360,7 +337,8 @@ class QuestionSegment(Segment):
 
             # mark the name of the keys which will go to self.context later
             # soulution should not be part of self.context
-            new_items = [('c_%s'%k, v) for k,v in items if not k.startswith('sol')]
+            new_items = [('c_%s'%k, v) for k,v in items \
+                                                if not k.startswith('sol')]
             self.__dict__.update(new_items)
 
         question_counter[0] += 1
@@ -374,6 +352,7 @@ class QuestionSegment(Segment):
         res = []
         for s in self.solution:
             content = getattr(s, 'content', s)
+#            IPS()
             res.append(user_solution == unicode(content))
         return any(res)
 
@@ -390,9 +369,9 @@ class QuestionSegment(Segment):
         # user_solution is just a string (not unicode)
         # TODO: test solutions with special characters
 
-        if 0:
-            # TODO : handle leading spaces properly (already in self.solution)
-            user_solution =  aux_space_convert_for_lines(user_solution)
+
+        # TODO : handle leading spaces properly (already in self.solution)
+        user_solution =  aux_preprocess_user_solution(user_solution)
 
         # TODO: more sophisticated test here (multiple solutions)
         self.user_was_correct = self.test_user_was_correct(user_solution)
@@ -408,8 +387,8 @@ class QuestionSegment(Segment):
                 # !! LANG
                 self.context['printed_solution'] = "<empty string>"
             else:
-
-                self.context['printed_solution'] = self.solution[0].content
+                print_sol = self.solution[0].content
+                self.context['printed_solution'] = print_sol
 
 
 class Text(Segment):
@@ -441,12 +420,21 @@ class InputField(QuestionSegment):
     def __init__(self, dc):
         assert isinstance(dc.content, list)
 
-        self.c_text_slots = dc.content
+        self.make_description_cells(dc.content)
 
         self.c_lines = dc.lines
-        self.c_prefilled_text = dc.answer.content[:4]
+        self.c_prefilled_text = dc.answer.content
 
         QuestionSegment.__init__(self, dc)
+
+    def make_description_cells(self, content):
+        self.c_text_slots = content
+
+        # currently this multiline attribute is not needed
+        for cell in self.c_text_slots:
+            if '\n' in cell.content:
+                cell.multiline = True
+
 
 class CBox(QuestionSegment):
     template = 'tasks/cq2_cbox.html'
@@ -502,6 +490,7 @@ def debug_task():
 
     dict_list = rd['segments']
 
+    question_counter[0] = 0
     seg_list = [make_segment(d, idx) for idx, d in enumerate(dict_list)]
 
     return seg_list
