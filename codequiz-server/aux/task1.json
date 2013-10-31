@@ -16,26 +16,51 @@
                 {
                     "content": "Korrigiere folgenden Code",
                     "type": "normal"
-                },
-                {
-                    "content": "Ein Kommentar.",
-                    "type": "normal"
                 }
             ],
             "answer": {
-                    "content":"def hahaha(self),\n    pass",
+                    "content":"def fnc1(self):\n    pass",
                     "type":"source"
                 },
             "solution": [
                 {
-                    "content": "def hahaha(self):\n    pass",
+                    "content": "def fnc1(self):\n    pass",
                     "type": "source"
                 },
                 {
-                    "content": "def hahaha2(self):\n    pass",
+                    "content": "def fnc2(self):\n    pass",
                     "type": "source"
                 }
             ]
+        },
+        {
+            "type": "input",
+            "lines": 2,
+            "content": [
+                {
+                    "content": "Korrigiere folgenden Code noch einmal",
+                    "type": "normal"
+                }
+            ],
+            "answer": {
+                    "content":"def fnc1(self):\n    pass",
+                    "type":"source"
+                },
+            "solution": [
+                {
+                    "content": "def fnc1(self):\n    pass",
+                    "type": "source"
+                },
+                {
+                    "content": "def fnc2(self):\n    pass",
+                    "type": "source"
+                }
+            ]
+        },
+        {
+            "type": "text",
+            "content": "Hier kommt nochmal ein Text, der zerstört aber das Table-layout",
+            "comment": false
         },
         {
             "type": "input",
@@ -66,7 +91,7 @@
             "content": [
                 {
                     "content": "def Hund():\n    print 'wau'",
-                    "type": "src"
+                    "type": "source"
                 },
                 {
                     "content": "Richtig?",

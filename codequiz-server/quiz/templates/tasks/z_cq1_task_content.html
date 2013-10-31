@@ -23,13 +23,13 @@
     <h2><span id="color1">Task:</span> "{{ mb.task.title }}"</h2>
 
     
+    <div  style="display: block;">
+    
     {% for s in mb.html_strings %}
-
         {{ s|safe }}
-        <br/>
     {% endfor %}
 
-    <br/>
+    </div>
 
     <!-- Buttons: -->
     <span style="display: block; text-align: right;">
