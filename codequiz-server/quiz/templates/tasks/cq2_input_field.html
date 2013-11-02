@@ -1,23 +1,34 @@
 <!-- ==> start: cq2_input_field.html -->
 
-        <div class="row" style="width: 100%; padding-top: 20pt">
+<!--         <div class="row" style="width: 100%; padding-top: 20pt"> -->
             
-            <div class="linenumber">{{question_counter}}.
-            </div>
-            {% include "tasks/cq3_description_cells.html" with cells=text_slots %}
-
-            <div class="cell">
-                    <textarea name="le_idx_{{idx}}" cols="20" rows="{{lines}}" autocomplete="off">{{ prefilled_text }}</textarea>
-            </div>
+<!--             <div class="grid_1"></div> -->
             
-            {% if print_solution %}
-                <div class="cell">
-                    <!--<div class="{{ css_class }}">-->
-                        <pre class="{{ css_class }}">{{ printed_solution }}</pre>
-<!--                     </div> -->
-                </div>
-            {% endif %}
+            
+            <div class="grid_5 alpha" id="pseudo_cell">
+            {{question_counter}}. &nbsp; 
+                {% if text_slots.0.type = "source" %}
+                    <pre class="src">{{ text_slots.0.content }}</pre>
+                {% else %}
+                    <span class="normal">{{ text_slots.0.content }}</span>
+                {% endif %}
+            </div>
         
-        </div>
+            <div class="grid_4" id="input_field">
+                    <textarea name="le_idx_{{idx}}" cols="27" rows="{{lines}}" autocomplete="off">{{ prefilled_text }}</textarea>
+            </div>
+            
+            <div class="grid_3 omega" id="pseudo_cell">
+            {% if print_solution %}
+                    <pre class="{{ css_class }}">{{ printed_solution }}</pre>
+                {% else %}
+                &nbsp;
+            
+            {% endif %}
+            </div>
+
+            <div class="clear">
+            </div>
+        
 
 <!-- ==> end: cq2_input_field.html -->

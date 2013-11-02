@@ -12,8 +12,9 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static 'tasks/style2.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'tasks/tabular_style.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'tasks/960_16_col.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'tasks/style2.css' %}"/>
 
     {# jQuery #}
     <script src="{{ STATIC_URL }}js/jquery.js" type="text/javascript"></script>
@@ -30,13 +31,14 @@
 
 <body>
 
-<div id="container">
+
+<div class="container_16">
     {% block header %}
     <div id="header_container">
-        <div id="header_left">
-            <h1>Code <span class="css_version">Quiz beta 0.2</span></h1>
+        <div class="grid_10" id="header_left">
+            <h1>Code<span id="color1">Quiz</span><span id="css_version">beta0.4</span></h1>
         </div>
-        <div id="header_right">
+        <div class="grid_6" id="header_right">
             <ul>
                 <li><a title="home" href="{% url 'quiz_ns:index' %}">home</a></li>
                 <li>|</li>
@@ -45,49 +47,52 @@
                 <li><a title="admin" href="{% url 'admin:index' %}">admin</a></li>
             </ul>
         </div>
+        <div class="clear"></div>
     </div>
     {% endblock %}
 
-    <div id="main_container">
-        <div id="main_left">
-        
-        {% block main_left %}
+        <div id="main_container">
+            
+            <div class="grid_12" id="main_left">
+            
+                {% block main_left %}
 
-           Main content
+                Main content
 
-        {% endblock %}
-        
-        </div>
+                {% endblock %}
+                
+            </div>
 
-        <!-- End of main_left -->
-
-        <div id="main_right">
-        
-        
-        {% block main_right %}
-
-           content of right colomn
-
-        {% endblock %}
+            <!-- End of main_left -->
 
             
+            <div class="grid_4" id="main_right">
+            
+            
+            {% block main_right %}
+
+            content of right column
+
+            {% endblock %}
+
+                
+            </div>
+            <div class="clear"></div>
+
+            <!-- End of main_right -->
         </div>
 
-        <!-- End of main_right -->
-
-        <div id="bottom"></div>
-    </div>
-
-    <div id="footer_container">
-        <div id="footer_left">
-            <p><a title="back to top" href="#container"><strong>^ back to top</strong></a></p>
+        <div id="footer_container">
+            <div id="footer_left">
+                <p><a title="back to top" href="#container"><strong>^ back to top</strong></a></p>
+            </div>
+            <div id="footer_right">
+                <p><a title="derby web design" href="http://www.tristarwebdesign.co.uk">template by <strong>tristar</strong></a>
+                </p>
+            </div>
         </div>
-        <div id="footer_right">
-            <p><a title="derby web design" href="http://www.tristarwebdesign.co.uk">template by <strong>tristar</strong></a>
-            </p>
-        </div>
-    </div>
 </div>
+<!-- end .container_16 -->
 
 </body>
 

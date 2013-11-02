@@ -11,34 +11,32 @@
 
 {% endif %}
 
-    <!-- protect against cross site reference forgery -->
-    {% csrf_token %} 
+        <!-- protect against cross site reference forgery -->
+        {% csrf_token %} 
 
-    <input type="hidden" name="meta_task_id" value="{{ mb.task.id }}">
-    <input type="hidden" name="meta_tc_id" value="{{ mb.tc_id }}">
-    <input type="hidden" name="meta_tc_task_id" value="{{ mb.tc_task_id }}">
-    
+        <input type="hidden" name="meta_task_id" value="{{ mb.task.id }}">
+        <input type="hidden" name="meta_tc_id" value="{{ mb.tc_id }}">
+        <input type="hidden" name="meta_tc_task_id" value="{{ mb.tc_task_id }}">
+        
 
 
-    <h2><span id="color1">Task:</span> "{{ mb.task.title }}"</h2>
+        <h2><span id="color1">Task:</span> "{{ mb.task.title }}"</h2>
 
-    
-    <div  style="display: block;">
-    
-    {% for s in mb.html_strings %}
-        {{ s|safe }}
-    {% endfor %}
+        
+        
+            {% for s in mb.html_strings %}
+                {{ s|safe }}
+            {% endfor %}
 
-    </div>
 
-    <!-- Buttons: -->
-    <span style="display: block; text-align: right;">
-    {% for bs in mb.button_strings %}
+        <!-- Buttons: -->
+        <span style="display: block; text-align: right;">
+        {% for bs in mb.button_strings %}
 
-        {{ bs|safe }}
+            {{ bs|safe }}
 
-    {% endfor %}
-    </span>
-    <br/>
+        {% endfor %}
+        </span>
+        <br/>
 
 </form>

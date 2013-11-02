@@ -1,25 +1,39 @@
 <!-- ==> start: cbox.html -->
 
-        <div class="row" style="width: 100%; padding-top: 20pt">
-
-            <div class="linenumber">
-                        {{question_counter}}.
+            <div class="grid_4 alpha" id="pseudo_cell">
+                {{question_counter}}. &nbsp; 
+                {% if text_slots.0.type = "source" %}
+                    <pre class="src cell_4">{{ text_slots.0.content }}</pre>
+                {% else %}
+                    <span class="normal">{{ text_slots.0.content }}</span>
+                {% endif %}
+                
             </div>
             
-            {% include "tasks/cq3_description_cells.html" with cells=text_slots %}
+            <div class="grid_4" id="pseudo_cell">
+            &nbsp;    
+                {% if text_slots.1.type = "source" %}
+                    <pre class="src">{{ text_slots.1.content }}</pre>
+                {% else %}
+                    <span class="normal">{{ text_slots.1.content }}</span>
+                {% endif %}
+                
+            </div>
             
-            <div class="cell">
+            <div class="grid_1" id="input_field">
                     <label>
                         <input name="cbox_idx_{{ idx }}" type="checkbox" {% if user_solution == "True" %} checked="checked" {% endif %}>
                     </label>
                     {# unchecked cboxes are not contained in the form data -> hidden companion#}
                     <input type="hidden" name="hidden_cbox_idx_{{ idx }}" value="foo">
             </div>
+            
+            <div class="grid_3 omega" id="pseudo_cell">
             {% if print_solution %}
-                <div class="cell">
-                    <pre class="{{ css_class }}">{{ printed_solution }}</pre>
-                </div>
+                <pre class="{{ css_class }}">{{ printed_solution }}</pre>
+            {% else %}
+                &nbsp;
             {% endif %}
-        </div>
+            </div>
 <!-- ==> end: cbox.html -->
 
