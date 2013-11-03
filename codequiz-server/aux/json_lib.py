@@ -481,6 +481,28 @@ def make_segment(thedict, idx):
     return s
 
 
+def preprocess_task_from_db(task):
+    """
+    this function takes a task object, comming from the database
+
+    * it parses the json and stores the result in .segment_list
+    * it sets the .solution_flag to False
+
+    """
+
+    rd = json.loads(task.body_xml) # TODO: rename this field (see models.py)
+
+    dict_list = rd['segments']
+
+    question_counter[0] = 0
+    task.segment_list = [make_segment(d, idx)
+                                for idx, d in enumerate(dict_list)]
+
+    task.solution_flag = False
+
+    # task is changed, no need to return anything
+    return None
+
 def debug_task():
     path = "aux/task1.json"
     with open(path, 'r') as myfile:

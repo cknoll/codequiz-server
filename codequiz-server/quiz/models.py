@@ -25,7 +25,7 @@ class Task(models.Model, TaggedModel):
     title = models.CharField(max_length=200)
     revision = models.IntegerField(default=0)
     pub_date = models.DateTimeField('Publish date', default=datetime.datetime.now)
-    body_xml = models.TextField('Body')
+    body_xml = models.TextField('Body') # TODO: -> rename to body_data
     tags = TaggableManager(blank=True)
 
 

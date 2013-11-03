@@ -64,15 +64,11 @@ def aux_get_task_from_tc_ids(tc_id, tc_task_id = None, next_task = False):
     return task
 
 
-def aux_get_json_task(task_id, next_task = False):
+
+def aux_get_json_task(task_id):
     """
     currently returns only pseudo stuff
     """
-
-    if next_task:
-        # !! This could lead to an error if task ids are 4, 5, 8,
-        # or at the end of course
-        task_id += 1 # TODO (are the tasks conscutive?)
 
 
     # for the moment return the pseodo task
@@ -88,7 +84,15 @@ def aux_get_json_task(task_id, next_task = False):
         segment_list = json_lib.debug_task()
         solution_flag = False
 
-    return pseudo_task
+
+
+    db_task = get_object_or_404(Task, pk=task_id)
+
+    if db_task.body_xml.startswith("<?xml"):
+        return pseudo_task
+    else:
+        json_lib.preprocess_task_from_db(db_task)
+        return db_task
 
 
 def debug_url_landing(request):
@@ -105,6 +109,21 @@ def debug_url_landing(request):
 
     return debug_task_process(request)
 
+def debug_explicit_task_view(request, task_id):
+    """
+    this view handles the rendering of a task outside of a TC
+    (e.g. in preview mode)
+    """
+    # TODO: this should be restricted to moderators (session management)
+
+    p = dict(request.POST) # POST itself is immutable
+    p['meta_task_id'] = task_id
+    p['meta_no_form'] = True # indicate that this data is "pseudo"
+    request.POST = p
+
+    IPS()
+
+    return debug_task_process(request)
 
 
 def get_task_to_process(post_dict):
@@ -125,6 +144,8 @@ def get_task_to_process(post_dict):
             tc_task_id = post_dict['meta_tc_task_id']
             task = aux_get_task_from_tc_ids(tc_id, tc_task_id, next_task = True)
         else:
+            # TODO:!! In explict mode there should not be a "next" button
+            raise Http404, "For explictly adressed tasks, there is no successor!"
             aux_get_json_task(task_id = task_id, next_task = True)
         return task
 
@@ -199,7 +220,7 @@ def debug_main_block_object(request, task):
 def debug1(request, tc_id=None, tc_task_id=None):
 
 
-    task = aux_get_json_task(task_id = 27)
+    task = aux_get_json_task(task_id = 12) # 12 is the test-json-task
 
     main_block = debug_main_block_object(request, task)
 
