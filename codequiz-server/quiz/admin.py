@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django import forms
 from django_ace import AceWidget
 
-from quiz.models import Task, TaskCollection, TC_Membership
+from quiz.models import Task, TaskCollection, TC_Membership, QuizResult
 
 
 class TC_MembershipInline(admin.TabularInline):
@@ -71,10 +71,14 @@ class TaskAdmin(admin.ModelAdmin):
         task.save()
 
 
+class QuizResultAdmin(admin.ModelAdmin):
+    list_display = ['date', 'hash']
+    list_display_links = ['date', 'hash']
+
 class TaskCollectionAdmin(admin.ModelAdmin):
     inlines = (TC_MembershipInline,)
 
 
 admin.site.register(Task, TaskAdmin)
 admin.site.register(TaskCollection, TaskCollectionAdmin)
-
+admin.site.register(QuizResult, QuizResultAdmin)

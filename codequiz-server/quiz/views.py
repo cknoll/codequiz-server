@@ -2,17 +2,15 @@
 
 from django.http import HttpResponse, Http404
 from django.template import Context, loader
-
 from django.template import RequestContext
-
 from django.shortcuts import render, get_object_or_404
+from datetime import *
+import hashlib
 
 from IPython import embed as IPS
 
 from aux import xml_lib, json_lib
-
-from quiz.models import Task, TaskCollection
-
+from quiz.models import Task, TaskCollection, QuizResult
 
 
 # TODO: this is merely the same as the json_lib.DictContainer without deeprec.
@@ -366,16 +364,60 @@ def tc_run_form_process(request, tc_id, tc_task_id):
 def tc_run_final_view(request, tc_id):
     tc = get_object_or_404(TaskCollection, pk=tc_id)
 
+    response = HttpResponse()
+
+    if "tc_task_id" not in request.session:
+        response.write("<p>You haven't even started the quiz yet.</p>")
+        return response
+
+    if "tc_id" in request.session:
+        if tc_id != request.session["tc_id"]:
+            response.write("<p>You can't switch task collections on your own.</p>")
+            return response
+
+    task_list = tc.tc_membership_set.order_by('ordering')
+    collection_length = len(task_list)
+    tc_task_id = request.session["tc_task_id"]
+    if tc_task_id < collection_length - 1:
+        response.write("<p>You're not done with the quiz yet.</p>")
+        return response
+
+    log = ""
+    if "log" in request.session:
+        log = request.session["log"]
+    log += "Show final page."
+
+    request.session.clear()
+
+    current_date = datetime.now()
+    date_iso8601 = current_date.isoformat(" ")
+    hash_string = compute_hash(log, date_iso8601)
+
+    quiz_result = QuizResult()
+    quiz_result.date = current_date
+    quiz_result.hash = hash_string
+    quiz_result.log = log
+    quiz_result.save()
+
     context_dict = dict(tc=tc)
+    context_dict["hash"] = hash_string
     context = Context(context_dict)
 
     return render(request, 'tasks/tc_run_final.html', context)
 
 
+def compute_hash(string, date):
+    result = hashlib.sha256(string + date).hexdigest()
+    return result
+
+
 def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
     """
-    tc_task_id is the relative position of the current task in the
-    current TaskCollection. NOT the task_id (pk of tasks)
+    render a task from a task collection (TC) by position in that TC
+
+    @param {int} tc_id: which task collection
+    @param tc_task_id: relative position of the task in the task collection. NOT the task_id (pk of tasks)
+    @param solution_flag: show solution or not?
     """
 
     tc_task_id = int(tc_task_id)
@@ -402,6 +444,43 @@ def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
 
     context_dict = dict(main_blocks=main_blocks, meta_blocks=meta_blocks)
     context = Context(context_dict)
+
+    response = HttpResponse()
+    if 'tc_task_id' in request.session:
+        session_tc_task_id = request.session['tc_task_id']
+        session_tc_id = request.session['tc_id']
+
+        if session_tc_id != tc_id:
+            response.write("<p>This is not the Task Collection you're looking for.</p>")
+            return response
+
+        if session_tc_task_id > tc_task_id:
+            response.write("<p>No backtracking!</p>")
+            return response
+
+        if (tc_task_id - session_tc_task_id) > 1:
+            response.write("<p>No skipping tasks!</p>")
+            return response
+
+    else:
+        if tc_task_id > 0:
+            response.write("<p>Need to start at the beginning.</p>")
+            return response
+
+    request.session['tc_id'] = tc_id
+    request.session['tc_task_id'] = tc_task_id
+
+    log = ""
+    if 'log' in request.session:
+        log = request.session['log']
+
+    log += "Show {solution} task {task} of collection {coll}.\n".format(
+        solution="solution of" if solution_flag else "",
+        task=str(tc_task_id),
+        coll=str(tc_id)
+    )
+    request.session["log"] = log
+    print(log)
 
     return render(request, 'tasks/cq0_main.html', context)
 
@@ -459,6 +538,16 @@ def task_collection_meta_block(request, tc):
 def task_collection_view(request, tc_id):
     tc = get_object_or_404(TaskCollection, pk=tc_id)
     tasks = tc.tasks.iterator()
+
+    # temporary hack to reset quiz progress
+    if "tc_task_id" in request.session:
+        del request.session["tc_task_id"]
+
+    log = ""
+    if "log" in request.session:
+        log = request.session["log"]
+    log += "--- Reset session to allow a new quiz. ---\n"
+    request.session["log"] = log
 
     context_dict = dict(task_list=tasks, tc=tc)
     context = Context(context_dict)
