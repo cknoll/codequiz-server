@@ -177,8 +177,9 @@ def debug_task_process(request):
     task = get_task_to_process(post)
 
     main_block = debug_main_block_object(request, task)
+    tmb = get_task_meta_block(request, task)
 
-    context_dict = dict(main_block=main_block)
+    context_dict = dict(main_block = main_block, task = task)
 
     # currently not really clear whats the difference between Context-Object
     # and dict ... anyway
@@ -304,30 +305,31 @@ def aux_task_user_solution(request, solution_flag):
 
     return user_solution
 
-
-def task_view(request, task_id, solution_flag=False):
-    """
-    Show a task by itself
-
-    Dirty workaround for now. Used only for previewing/debugging
-    """
-
-    tc_task_id = 0
-    tc_id = 1
-    tc = get_object_or_404(TaskCollection, pk=tc_id)
-
-    current_task = get_object_or_404(Task, pk=task_id)
-    current_task.solution_flag = solution_flag
-    current_task.tc_task_id = tc_task_id
-    current_task.tc = tc
-
-    # construct the main_blocks
-    main_blocks = [task_content_block(request, current_task, preview_only=True)]
-
-    context_dict = dict(main_blocks=main_blocks, meta_blocks=None)
-    context = Context(context_dict)
-
-    return render(request, 'tasks/cq0_main.html', context)
+## TODO: obsolete
+#def task_view(request, task_id, solution_flag=False):
+#    """
+#    Show a task by itself
+#
+#    Dirty workaround for now. Used only for previewing/debugging
+#    """
+#
+#    tc_task_id = 0
+#    tc_id = 1
+#    tc = get_object_or_404(TaskCollection, pk=tc_id)
+#
+#    current_task = get_object_or_404(Task, pk=task_id)
+#    current_task.solution_flag = solution_flag
+#    current_task.tc_task_id = tc_task_id
+#    current_task.tc = tc
+#
+#    # construct the main_blocks
+#    main_blocks = [task_content_block(request, current_task, preview_only=True)]
+#    tmb = [get_task_meta_block(request, current_task)]
+#
+#    context_dict = dict(main_blocks=main_blocks, meta_blocks=tmb)
+#    context = Context(context_dict)
+#
+#    return render(request, 'tasks/cq0_main.html', context)
 
 
 def next_task(request, task_id):
@@ -509,7 +511,7 @@ def task_content_block(request, task, preview_only=False):
     return template.render(RequestContext(request, context))
 
 
-def task_meta_block(request, task):
+def get_task_meta_block(request, task):
     """
     returns the rendered html for the meta-info-block for a task
     """
