@@ -1,10 +1,9 @@
 # coding=utf-8
 from django.contrib import admin
 from django.contrib.auth.models import User
-
 from django import forms
-from django_ace import AceWidget
 
+from builder import BuilderTextArea
 from quiz.models import Task, TaskCollection, TC_Membership, QuizResult
 
 
@@ -23,7 +22,7 @@ class TaskAdminForm(forms.ModelForm):
     class Meta:
         model = Task
         widgets = {
-            'body_xml': AceWidget(mode="xml", theme="solarized_light", width="100%")
+            'body_xml': BuilderTextArea()
         }
 
 
@@ -48,7 +47,7 @@ class TaskAdmin(admin.ModelAdmin):
                   'classes': ('collapse',)}),
     ]
 
-    # comment the following line in case of problems with Java-Script editor enhancement
+    # comment the following line in case of problems with Task Builder editor enhancement
     form = TaskAdminForm
 
     def save_model(self, request, task, form, change):

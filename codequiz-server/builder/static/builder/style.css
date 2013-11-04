@@ -1,0 +1,102 @@
+div.dynamic {
+    margin: 10px;
+    padding: 5px;
+    border-width: 1px;
+    border-color: #000000;
+}
+
+a.add {
+    margin: 5px;
+    padding: 5px;
+    background-color: #105cb6;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
+
+a.delete {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    text-decoration: none;
+
+    margin: 1px;
+    padding: 1px;
+    color: #9d1315;
+    font-size: 0.5em;
+}
+
+a.addinput {
+    color: #46ca35;
+    font-size: 0.5em;
+    margin-left: -1.5em;
+    position: relative;
+    top:-2px;
+}
+
+a.removeinput {
+    color: #9d1315;
+    font-size: 0.5em;
+    padding-right: 1em;
+    position: relative;
+    top:-2px;
+}
+
+#sortable {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+#sortable li {
+    list-style-type: none;
+    position: relative;
+    margin: 0 3px 3px 3px;
+    padding: 0.2em;
+    padding-left: 1.5em;
+    font-size: 1.4em;
+    width: 80%;
+    /*height: 18px;*/
+    background-color: #ddebff;
+}
+
+#sortable li span.ui-icon {
+    position: absolute;
+    margin-left: -1.3em;
+    margin-top: 0.2em
+}
+
+textarea.wide {
+    width: 89%;
+}
+
+textarea.source {
+    font-family: monospace;
+}
+
+input {
+    width: 160px;
+}
+
+input.source {
+    font-family: monospace;
+}
+
+input.comment {
+    background-color: #a4e68e;
+}
+
+#sortable li.comment {
+    background-color: #a4e68e;
+}
+
+select.right {
+    position: absolute;
+    right: 10px;
+    bottom: 3px;
+}
+
+select.inline {
+    margin-right: 20px;
+}
