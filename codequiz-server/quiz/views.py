@@ -119,7 +119,6 @@ def debug_explicit_task_view(request, task_id):
     p['meta_no_form'] = True # indicate that this data is "pseudo"
     request.POST = p
 
-    IPS()
 
     return debug_task_process(request)
 
