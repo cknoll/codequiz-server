@@ -3,9 +3,6 @@
 {# javascripts required by SliderVoteForm #}
 
 <h2>Task-Meta-Infos</h2>
-{% if error_message %}
-    <p><strong>{{ error_message }}</strong></p>
-{% endif %}
 
 {% load ratings_tags %}
 {% get_rating_form for task using 'difficulty' as rating_form_difficulty %}
@@ -14,7 +11,7 @@
 {% get_rating_score for task using 'quality' as score_quality %}
 
 
-<div class="container">
+<div class="table_container">
     <div class="row">
         <div class="cell">Title:</div>
         <div class="cell" style="width:180px"> {{ task.title }} </div>
@@ -79,6 +76,7 @@
             });
         };
 
+        {# TODO: !! This should be explained #}
         doSomething("difficultyratingform", "score_difficulty");
         doSomething("qualityratingform", "score_quality");
     });
