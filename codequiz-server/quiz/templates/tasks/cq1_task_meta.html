@@ -66,7 +66,13 @@
 <script type="text/javascript" charset="utf-8">
 
     $(document).ready(function () {
-        var doSomething = function (element, target) {
+        /**
+         * Dynamically updates the rating value and average after sending the vote
+         * (by clicking on the star rating widget)
+         * @param element which of the forms to hook up with the code
+         * @param target where to change the text
+         */
+        function updateRatingAverage(element, target) {
             $('#' + element).on("vote_submit", function (event, data) {
                 score_average = data["score_average"];
                 score_num = data["score_num_votes"];
@@ -74,9 +80,8 @@
             });
         };
 
-        {# TODO: !! This should be explained #}
-        doSomething("difficultyratingform", "score_difficulty");
-        doSomething("qualityratingform", "score_quality");
+        updateRatingAverage("difficultyratingform", "score_difficulty");
+        updateRatingAverage("qualityratingform", "score_quality");
     });
 
 </script>
