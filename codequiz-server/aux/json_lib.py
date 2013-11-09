@@ -381,10 +381,7 @@ class InputField(QuestionSegment):
 
         self.make_description_cells(dc.content)
 
-        # TODO: Taskbuilder should provide lines attribute
-        # see aux/task1.json
-        # self.c_lines = c.lines
-        self.c_lines = 3 # !! Hack: because not yet supported by taskbuilder
+        self.c_lines = len(dc.answer.content.splitlines())
         self.c_prefilled_text = dc.answer.content
 
         QuestionSegment.__init__(self, dc)
