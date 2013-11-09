@@ -285,13 +285,12 @@ def xml_to_py(xml_element):
     else:
         tmp_element_string = xml_element.text
 
-    attribute_list = child_list + [( 'text', tmp_element_string.strip() )]
+    attribute_list = child_list + [( 'text', tmp_element_string.strip())]
     attribute_list += [('tag', xml_element.tag)]
     attribute_list += xml_element.attrib.items()
     kwargs = dict(attribute_list)
     if not len(kwargs) == len(attribute_list):
-        raise ValueError, "duplicate in attribute_list. " \
-                          "This list should be unique: %s." % str(zip(*attribute_list)[0])
+        raise ValueError("duplicate in attribute_list. This list should be unique: %s." % str(zip(*attribute_list)[0]))
 
     this = Element(**kwargs)
 

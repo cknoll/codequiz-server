@@ -81,7 +81,6 @@ def aux_get_json_task(task_id):
         segment_list = json_lib.debug_task()
         solution_flag = False
 
-
     db_task = get_object_or_404(Task, pk=task_id)
 
     if db_task.body_xml.startswith("<?xml"):
@@ -139,7 +138,7 @@ def get_task_to_process(post_dict):
             task = aux_get_task_from_tc_ids(tc_id, tc_task_id, next_task=True)
         else:
             # TODO:!! In explict mode there should not be a "next" button
-            raise Http404, "For explictly adressed tasks, there is no successor!"
+            raise Http404("For explictly adressed tasks, there is no successor!")
             aux_get_json_task(task_id=task_id, next_task=True)
         return task
 
@@ -154,7 +153,7 @@ def get_task_to_process(post_dict):
 
         return task
     else:
-        raise Http404, "Unknown formular content."
+        raise Http404("Unknown formular content.")
 
 
 def debug_task_process(request):

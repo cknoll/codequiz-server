@@ -15,20 +15,19 @@ this module should be the json backend of the code-quiz server
 """
 
 
-
 class DictContainer(object):
     """
     data structure to handle json data (dicts whose values are
     dicts, lists or "flat objects")
     """
 
-    def __init__(self, thedict, dc_name = 'unnamed'):
+    def __init__(self, thedict, dc_name='unnamed'):
         self.dc_name = dc_name
         self.ext_dict = dict(thedict) # store a flat copy of external dict
         self.ext_attributes = thedict.keys()
         # only new keys are allowed
-        assert set(self.ext_attributes).intersection(self.__dict__.keys()) ==\
-                                                                        set()
+        assert set(self.ext_attributes).intersection(self.__dict__.keys()) == \
+               set()
         self.__dict__.update(thedict)
 
         self.deep_recursion()
@@ -47,139 +46,136 @@ class DictContainer(object):
             elif isinstance(attr, list):
                 for i, element in enumerate(attr):
                     if isinstance(element, dict):
-                        name = "%s[%i]" %(aname, i)
+                        name = "%s[%i]" % (aname, i)
                         attr[i] = DictContainer(element, name)
 
     def __repr__(self):
         return "<DC:%s>" % self.dc_name
 
 
-class TopLevelElement(object):
-    def __init__(self, element):
-        self.tag = element.tag
-        self.element = element
-        mapping = {'txt': self.process_txt,
-                   'src': self.process_src,
-                   'lelist': self.process_lelist,
-                   'cboxlist': self.process_cboxlist,
-                   'input_list': self.process_input_list,
-        }
-
-        # execute the appropriate method
-        mapping[self.tag]()
-
-        #print self.element.text
-        #print "multi:", self.context.get('multiline')
-
-    def process_txt(self):
-
-        self.template = 'tasks/txt.html'
-        self.context = {
-            'text': self.element.text,
-            'multiline': "\n" in self.element.text
-        }
-
-    def process_src(self):
-        self.template = 'tasks/src.html'
-        self.context = {
-            'text': self.element.text,
-            'multiline': "\n" in self.element.text
-        }
-
-    def process_lelist(self):
-        element_list, depths = zip(*[xml_to_py(xml_element) for xml_element in self.element])
-
-        self.template = 'tasks/le_list.html'
-        self.context = {
-            'le_list': element_list,
-        }
-
-    def process_input_list(self):
-        """
-        this list can contain checkboxes, line-edits and maybe more
-        """
-        input_list, depths = zip(*[xml_to_py(xml_element) for xml_element in self.element])
-
-        self.template = 'tasks/part_input_list.html'
-        self.context = dict(input_list=input_list)
-        #IPS()
-
-    def update_user_solution(self, sol_dict):
-        """
-        used to insert the user solution into the appropriate data structs
-        """
-        assert not self.tag == 'lelist', "Deprecated"
-
-        if self.tag in ['txt', 'src']:
-            return
-
-        assert self.tag == 'input_list', "unexpected Tag %s" % self.tag
-
-        if self.tag == 'input_list':
-            element_list = self.context['input_list']
-            assert len(sol_dict) == len(element_list)
-
-            # Challange: element_list is ordered
-            # sol_dict is not.
-            # -> we construct the keys live
-            for i, element in enumerate(element_list):
-                j = i + 1
-                key = element.get_type() + str(j)
-                #                IPS()
-                sol = sol_dict[key]
-                element.user_solution = sol
-                #print '>%s<:|%s|' % (repr(element.sol.text),  repr(sol))
-                element.user_correct = \
-                    (element.sol.text == aux_space_convert_for_lines(sol))
-
-                if element.user_correct:
-                    element.css_class = "sol_right"
-                    element.print_solution = "OK"
-                else:
-                    print element.sol.text.encode('utf8')
-                    element.css_class = "sol_wrong"
-                    if element.sol.text == "":
-                        # !! LANG
-                        element.print_solution = "[keine Änderung]"
-                    else:
-                        element.print_solution = element.sol.text
-
-
+#class TopLevelElement(object):
+#    def __init__(self, element):
+#        self.tag = element.tag
+#        self.element = element
+#        mapping = {'txt': self.process_txt,
+#                   'src': self.process_src,
+#                   'lelist': self.process_lelist,
+#                   'cboxlist': self.process_cboxlist,
+#                   'input_list': self.process_input_list,
+#        }
+#
+#        # execute the appropriate method
+#        mapping[self.tag]()
+#
+#        #print self.element.text
+#        #print "multi:", self.context.get('multiline')
+#
+#    def process_txt(self):
+#
+#        self.template = 'tasks/txt.html'
+#        self.context = {
+#            'text': self.element.text,
+#            'multiline': "\n" in self.element.text
+#        }
+#
+#    def process_src(self):
+#        self.template = 'tasks/src.html'
+#        self.context = {
+#            'text': self.element.text,
+#            'multiline': "\n" in self.element.text
+#        }
+#
+#    def process_lelist(self):
+#        element_list, depths = zip(*[xml_to_py(xml_element) for xml_element in self.element])
+#
+#        self.template = 'tasks/le_list.html'
+#        self.context = {
+#            'le_list': element_list,
+#        }
+#
+#    def process_input_list(self):
+#        """
+#        this list can contain checkboxes, line-edits and maybe more
+#        """
+#        input_list, depths = zip(*[xml_to_py(xml_element) for xml_element in self.element])
+#
+#        self.template = 'tasks/part_input_list.html'
+#        self.context = dict(input_list=input_list)
+#        #IPS()
+#
+#    def update_user_solution(self, sol_dict):
+#        """
+#        used to insert the user solution into the appropriate data structs
+#        """
+#        assert not self.tag == 'lelist', "Deprecated"
+#
+#        if self.tag in ['txt', 'src']:
+#            return
+#
+#        assert self.tag == 'input_list', "unexpected Tag %s" % self.tag
+#
+#        if self.tag == 'input_list':
+#            element_list = self.context['input_list']
+#            assert len(sol_dict) == len(element_list)
+#
+#            # Challange: element_list is ordered
+#            # sol_dict is not.
+#            # -> we construct the keys live
+#            for i, element in enumerate(element_list):
+#                j = i + 1
+#                key = element.get_type() + str(j)
+#                #                IPS()
+#                sol = sol_dict[key]
+#                element.user_solution = sol
+#                #print '>%s<:|%s|' % (repr(element.sol.text),  repr(sol))
+#                element.user_correct = \
+#                    (element.sol.text == aux_space_convert_for_lines(sol))
+#
+#                if element.user_correct:
+#                    element.css_class = "sol_right"
+#                    element.print_solution = "OK"
+#                else:
+#                    print element.sol.text.encode('utf8')
+#                    element.css_class = "sol_wrong"
+#                    if element.sol.text == "":
+#                        # !! LANG
+#                        element.print_solution = "[keine Änderung]"
+#                    else:
+#                        element.print_solution = element.sol.text
 
 
-
-class Element(object):
-    """
-    models an xml-Element which is not toplevel
-    """
-
-    def __init__(self, **kwargs):
-        self.__dict__.update(kwargs)
-
-        assert 'user_solution' not in self.__dict__
-        assert 'print_solution' not in self.__dict__
-        assert 'user_right' not in self.__dict__
-
-        # will be overwritten later
-        self.user_solution = ""
-        self.print_solution = ""  # will be overwritten later
-        self.css_class = "undefined_css_class"
-
-    def get_type(self):
-        """
-        determine which kind of element we have (le or cbox)
-        """
-
-        if hasattr(self, 'le'):
-            return 'le'
-        elif hasattr(self, 'cbox'):
-            return 'cbox'
-        else:
-        #            IPS()
-            raise ValueError("unknown xml-element-type")
-
-    def __repr__(self):
-        return 'xml:' + self.tag
+#class Element(object):
+#    """
+#    models an xml-Element which is not toplevel
+#    """
+#
+#    def __init__(self, **kwargs):
+#        self.__dict__.update(kwargs)
+#
+#        assert 'user_solution' not in self.__dict__
+#        assert 'print_solution' not in self.__dict__
+#        assert 'user_right' not in self.__dict__
+#
+#        # will be overwritten later
+#        self.user_solution = ""
+#        self.print_solution = ""  # will be overwritten later
+#        self.css_class = "undefined_css_class"
+#
+#    def get_type(self):
+#        """
+#        determine which kind of element we have (le or cbox)
+#        """
+#
+#        if hasattr(self, 'le'):
+#            return 'le'
+#        elif hasattr(self, 'cbox'):
+#            return 'cbox'
+#        else:
+#        #            IPS()
+#            raise ValueError("unknown xml-element-type")
+#
+#    def __repr__(self):
+#        return 'xml:' + self.tag
 
 
 def aux_preprocess_user_solution(us):
@@ -187,79 +183,44 @@ def aux_preprocess_user_solution(us):
     return us
 
 
-def xml_to_py(xml_element):
-    """
-    converts an xml element into a py Element object
-    """
-    child_list = []
-    depths = [-1]  # if no
-    for child in xml_element:
-        element_object, depth = xml_to_py(child)
-        child_list.append((child.tag, element_object))
-        depths.append(depth)
-
-    maxdepth = max(depths) + 1
-    if xml_element.text is None:
-        xml_element.text = ''  # allows .strip()
-
-
-    if xml_element.tag == "sol":
-        tmp_element_string = aux_space_convert_for_lines(xml_element.text)
-    else:
-        tmp_element_string = xml_element.text
-
-    attribute_list = child_list + [( 'text', tmp_element_string.strip() )]
-    attribute_list += [('tag', xml_element.tag)]
-    attribute_list += xml_element.attrib.items()
-    kwargs = dict(attribute_list)
-    if not len(kwargs) == len(attribute_list):
-        raise ValueError, "duplicate in attribute_list. " \
-                          "This list should be unique: %s." % str(zip(*attribute_list)[0])
-
-    this = Element(**kwargs)
-
-    return this, maxdepth
-
-
-class DictContainer(object):
-
-    def __init__(self, thedict, dc_name = 'unnamed'):
-        self.dc_name = dc_name
-        self.ext_attributes = thedict.keys()
-        # only new keys are allowed
-        assert set(self.ext_attributes).intersection(self.__dict__.keys()) ==\
-                                                                        set()
-        self.__dict__.update(thedict)
-
-        self.deep_recursion()
-
-    def deep_recursion(self):
-        """
-        goes through external attributes and converts all dicts
-        (lurking in lists etc) to DictContainers
-        """
-
-        for aname in self.ext_attributes:
-            attr = getattr(self, aname)
-
-            if isinstance(attr, dict):
-                setattr(self, aname, DictContainer(attr, aname))
-            elif isinstance(attr, list):
-                for i, element in enumerate(attr):
-                    if isinstance(element, dict):
-                        name = "%s[%i]" %(aname, i)
-                        attr[i] = DictContainer(element, name)
-
-    def __repr__(self):
-        return "<DC:%s>" % self.dc_name
+#def xml_to_py(xml_element):
+#    """
+#    converts an xml element into a py Element object
+#    """
+#    child_list = []
+#    depths = [-1]  # if no
+#    for child in xml_element:
+#        element_object, depth = xml_to_py(child)
+#        child_list.append((child.tag, element_object))
+#        depths.append(depth)
+#
+#    maxdepth = max(depths) + 1
+#    if xml_element.text is None:
+#        xml_element.text = ''  # allows .strip()
+#
+#    if xml_element.tag == "sol":
+#        tmp_element_string = aux_space_convert_for_lines(xml_element.text)
+#    else:
+#        tmp_element_string = xml_element.text
+#
+#    attribute_list = child_list + [( 'text', tmp_element_string.strip() )]
+#    attribute_list += [('tag', xml_element.tag)]
+#    attribute_list += xml_element.attrib.items()
+#    kwargs = dict(attribute_list)
+#    if not len(kwargs) == len(attribute_list):
+#        raise ValueError("duplicate in attribute_list. This list should be unique: %s." % str(zip(*attribute_list)[0]))
+#
+#    this = Element(**kwargs)
+#
+#    return this, maxdepth
 
 class Segment(object):
     """
-    This class models a json segment (of the segmentlist)
+    Models a JSON segment (of the segment list)
     """
 
     def __unicode__(self):
-        return unicode( "<%s %s>" % (type(self), id(self) ) )
+        return unicode("<%s %s>" % (type(self), id(self) ))
 
     def make_context(self):
         """
@@ -270,7 +231,6 @@ class Segment(object):
         """
 
         keys = [k for k in dir(self) if k.startswith('c_')]
-
 
         items = [(k.replace('c_', ''), getattr(self, k)) for k in keys]
         self.context = dict(items)
@@ -287,6 +247,7 @@ class Segment(object):
         """
         pass
 
+
 def aux_ensure_sequence(arg):
     """
     if arg is not a sequence, return (arg,)
@@ -296,6 +257,7 @@ def aux_ensure_sequence(arg):
         return arg
     else:
         return (arg,)
+
 
 def aux_unified_solution_structure(solution):
     """
@@ -313,15 +275,13 @@ def aux_unified_solution_structure(solution):
             assert hasattr(s, 'content')
             res.append(s)
         else:
-            dc = DictContainer({'content':s}, 'flat_solution')
+            dc = DictContainer({'content': s}, 'flat_solution')
             res.append(dc)
 
     return res
 
-
 # mutable global variable
 question_counter = [0]
-
 
 
 class QuestionSegment(Segment):
@@ -336,23 +296,22 @@ class QuestionSegment(Segment):
             items = dc.ext_dict.items()
 
             # mark the name of the keys which will go to self.context later
-            # soulution should not be part of self.context
-            new_items = [('c_%s'%k, v) for k,v in items \
-                                                if not k.startswith('sol')]
+            # solution should not be part of self.context
+            new_items = [('c_%s' % k, v) for k, v in items
+                         if not k.startswith('sol')]
             self.__dict__.update(new_items)
 
         question_counter[0] += 1
         self.c_question_counter = question_counter[0]
-        self.solution  = aux_unified_solution_structure( dc.solution )
+        self.solution = aux_unified_solution_structure(dc.solution)
         self.make_context()
-
 
     def test_user_was_correct(self, user_solution):
 
         res = []
         for s in self.solution:
             content = getattr(s, 'content', s)
-#            IPS()
+            #            IPS()
             res.append(user_solution == unicode(content))
         return any(res)
 
@@ -371,7 +330,7 @@ class QuestionSegment(Segment):
 
 
         # TODO : handle leading spaces properly (already in self.solution)
-        user_solution =  aux_preprocess_user_solution(user_solution)
+        user_solution = aux_preprocess_user_solution(user_solution)
 
         # TODO: more sophisticated test here (multiple solutions)
         self.user_was_correct = self.test_user_was_correct(user_solution)
@@ -399,7 +358,6 @@ class Text(Segment):
     template = 'tasks/txt.html'
 
     def __init__(self, dc):
-
         assert isinstance(dc.content, unicode)
         self.c_text = dc.content
         # List of unicode is not handled anymore
@@ -411,12 +369,13 @@ class Text(Segment):
 
 
 class Src(Text):
-
     template = 'tasks/src.html'
     pass
 
+
 class InputField(QuestionSegment):
     template = 'tasks/cq2_input_field.html'
+
     def __init__(self, dc):
         assert isinstance(dc.content, list)
 
@@ -448,14 +407,13 @@ class CBox(QuestionSegment):
 
         QuestionSegment.__init__(self, dc)
 
-
 # not yet implemented
 class RadioList(QuestionSegment):
     pass
 
 
 typestr_to_class_map = {'text': Text, 'source': Src,
-                        'input':InputField, 'check': CBox}
+                        'input': InputField, 'check': CBox}
 
 
 # our json format "specification" by example
@@ -469,13 +427,13 @@ def make_segment(thedict, idx):
 
     assert isinstance(thedict, dict)
 
-    thetype  = thedict.get('type', None)
+    thetype = thedict.get('type', None)
     if thetype == None:
-        raise ValueError, "segment_dict should have key 'type'"
+        raise ValueError("segment_dict should have key 'type'")
 
     theclass = typestr_to_class_map.get(thetype, None)
     if thetype == None:
-        raise ValueError, "unknown type string: %s" % thetype
+        raise ValueError("unknown type string: %s" % thetype)
 
     dc = DictContainer(thedict, thetype)
     s = theclass(dc)
@@ -486,25 +444,26 @@ def make_segment(thedict, idx):
 
 def preprocess_task_from_db(task):
     """
-    this function takes a task object, comming from the database
+    this function takes a task object, coming from the database
 
     * it parses the json and stores the result in .segment_list
     * it sets the .solution_flag to False
 
     """
 
-    rd = json.loads(task.body_xml) # TODO: rename this field (see models.py)
+    rd = json.loads(task.body_xml)  # TODO: rename this field (see models.py)
 
     dict_list = rd['segments']
 
     question_counter[0] = 0
     task.segment_list = [make_segment(d, idx)
-                                for idx, d in enumerate(dict_list)]
+                         for idx, d in enumerate(dict_list)]
 
     task.solution_flag = False
 
     # task is changed, no need to return anything
     return None
+
 
 def debug_task():
     path = "aux/task1.json"
@@ -521,7 +480,6 @@ def debug_task():
     return seg_list
 
 
-
 if __name__ == "__main__":
     path = "task1.json"
     with open(path, 'r') as myfile:
@@ -529,11 +487,9 @@ if __name__ == "__main__":
 
     rd = json.loads(content)
 
-
     dict_list = rd['segments']
 
     seg_list = [make_segment(d) for d in dict_list]
-
 
     IPS()
 
