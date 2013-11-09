@@ -7,7 +7,7 @@
             
             <div class="grid_5 alpha" id="pseudo_cell">
             {{question_counter}}. &nbsp; 
-                {% if text_slots.0.type = "source" %}
+                {% if text_slots.0.type == "source" %}
                     <pre class="src">{{ text_slots.0.content }}</pre>
                 {% else %}
                     <span class="normal">{{ text_slots.0.content }}</span>
