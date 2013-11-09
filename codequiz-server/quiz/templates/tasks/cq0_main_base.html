@@ -26,11 +26,11 @@
 
     {# part of jquery star rating plugin http://www.fyneworks.com/jquery/star-rating/ #}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}jquery-rating/jquery.rating.css"/>
-    <script type="text/javascript" src="{{ STATIC_URL}}jquery-rating/jquery.rating.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery-rating/jquery.rating.js"></script>
 
-{#  TODO: Add Font Awesome here, after merging the other branches#}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}font-awesome/css/font-awesome.min.css"/>
 
-    {% include "feedback/header.html" %}  {# to make the feedback form ajaxy #}
+    {% include "feedback/header.html" %} {# to make the feedback form ajaxy #}
     {% load mathjax %}
     {% mathjax_scripts %}
 </head>
@@ -40,63 +40,63 @@
 
 <div class="container_16">
     {% block header %}
-    <div id="header_container">
-        <div class="grid_10" id="header_left">
-            <h1>Code<span id="color1">Quiz</span><span id="css_version">beta0.4</span></h1>
+        <div id="header_container">
+            <div class="grid_10" id="header_left">
+                <h1>Code<span id="color1">Quiz</span><span id="css_version">beta0.4</span></h1>
+            </div>
+            <div class="grid_6" id="header_right">
+                <ul>
+                    <li><a title="home" href="{% url 'quiz_ns:index' %}">home</a></li>
+                    <li>|</li>
+                    <li><a class="active" title="quiz" href="{% url 'quiz_ns:task_collection_view' 1 %}">quiz</a></li>
+                    <li>|</li>
+                    <li><a title="admin" href="{% url 'admin:index' %}">admin</a></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
         </div>
-        <div class="grid_6" id="header_right">
-            <ul>
-                <li><a title="home" href="{% url 'quiz_ns:index' %}">home</a></li>
-                <li>|</li>
-                <li><a class="active" title="quiz" href="{% url 'quiz_ns:task_collection_view' 1 %}">quiz</a></li>
-                <li>|</li>
-                <li><a title="admin" href="{% url 'admin:index' %}">admin</a></li>
-            </ul>
-        </div>
-        <div class="clear"></div>
-    </div>
     {% endblock %}
 
-        <div id="main_container">
-            
-            <div class="grid_13" id="main_left">
-            
-                {% block main_left %}
+    <div id="main_container">
+
+        <div class="grid_13" id="main_left">
+
+            {% block main_left %}
 
                 Main content
 
-                {% endblock %}
-                
-            </div>
+            {% endblock %}
 
-            <!-- End of main_left -->
+        </div>
 
-            
-            <div class="grid_3" id="main_right">
-            
-            
+        <!-- End of main_left -->
+
+
+        <div class="grid_3" id="main_right">
+
+
             {% block main_right %}
 
-            content of right column
+                content of right column
 
             {% endblock %}
 
-                
-            </div>
-            <div class="clear"></div>
 
-            <!-- End of main_right -->
         </div>
+        <div class="clear"></div>
 
-        <div id="footer_container">
-            <div id="footer_left">
-                <p><a title="back to top" href="#container"><strong>^ back to top</strong></a></p>
-            </div>
-            <div id="footer_right">
-                <p><a title="derby web design" href="http://www.tristarwebdesign.co.uk">template by <strong>tristar</strong></a>
-                </p>
-            </div>
+        <!-- End of main_right -->
+    </div>
+
+    <div id="footer_container">
+        <div id="footer_left">
+            <p><a title="back to top" href="#container"><strong>^ back to top</strong></a></p>
         </div>
+        <div id="footer_right">
+            <p><a title="derby web design" href="http://www.tristarwebdesign.co.uk">template by <strong>tristar</strong></a>
+            </p>
+        </div>
+    </div>
 </div>
 <!-- end .container_16 -->
 

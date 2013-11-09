@@ -59,7 +59,7 @@
         <div class="cell"> {{ task.tags_as_string }} </div>
     </div>
     {# this is more or less a hack, since CSS table-cell doesn't have 'colspan' #}
-    <div style="display: table-caption; caption-side: bottom"><i class="item-pencil"></i><a href="#" onclick="return false;" id="feedback_link">Send feedback for this task</a></div>
+    <div style="display: table-caption; caption-side: bottom"><i class="fa fa-pencil"></i> <a href="#" onclick="return false;" id="feedback_link">Send feedback for this task</a></div>
 </div>
 
 {% include "feedback/button.html" %}
