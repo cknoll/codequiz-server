@@ -10,57 +10,55 @@
 {% get_rating_score for task using 'difficulty' as score_difficulty %}
 {% get_rating_score for task using 'quality' as score_quality %}
 
+<div class="clear"></div>
+<div class="grid_1 alpha">Title:</div>
+<div class="grid_3 omega"> {{ task.title }} </div>
 
-<div class="table_container">
-    <div class="row">
-        <div class="cell">Title:</div>
-        <div class="cell" style="width:180px"> {{ task.title }} </div>
-    </div>
-    <div class="row">
-        <div class="cell">ID:</div>
-        <div class="cell"> {{ task.id }} </div>
-    </div>
-    <div class="row">
-        <div class="cell">Author:</div>
-        <div class="cell"> {{ task.author }} </div>
-    </div>
-    <div class="row">
-        <div class="cell">Revision:</div>
-        <div class="cell"> {{ task.revision }} </div>
-    </div>
-    <div class="row">
-        <div class="cell">Quality:</div>
-        <div class="cell">
-            <form id="qualityratingform" action="{% url "ratings_vote" %}" class="ratings" method="post">
-                {% csrf_token %}
-                {{ rating_form_quality }}
-                <span id="score_quality"
-                      style="padding-cell: 5px">{{ score_quality.average }} ({{ score_quality.num_votes }})</span>
-                <span class="success" style="display: none;"></span>
-                <span class="error" style="display: none;">Errors...</span>
-            </form>
-        </div>
-    </div>
-    <div class="row">
-        <div class="cell">Difficulty:</div>
-        <div class="cell">
-            <form id="difficultyratingform" action="{% url "ratings_vote" %}" class="ratings" method="post">
-                {% csrf_token %}
-                {{ rating_form_difficulty }}
-                <span id="score_difficulty"
-                      style="padding-cell: 5px">{{ score_difficulty.average }} ({{ score_difficulty.num_votes }})</span>
-                <span class="success" style="display: none;"></span>
-                <span class="error" style="display: none;">Errors...</span>
-            </form>
-        </div>
-    </div>
-    <div class="row">
-        <div class="cell">Tags:</div>
-        <div class="cell"> {{ task.tags_as_string }} </div>
-    </div>
-    {# this is more or less a hack, since CSS table-cell doesn't have 'colspan' #}
-    <div style="display: table-caption; caption-side: bottom"><i class="fa fa-pencil"></i> <a href="#" onclick="return false;" id="feedback_link">Send feedback for this task</a></div>
+<div class="grid_1 alpha">ID:</div>
+<div class="grid_3 omega"> {{ task.id }} </div>
+
+<div class="grid_1 alpha">Author:</div>
+<div class="grid_3 omega"> {{ task.author }} </div>
+
+<div class="grid_1 alpha">Revision:</div>
+<div class="grid_3 omega"> {{ task.revision }} </div>
+
+<div class="grid_1 alpha">Quality:</div>
+<div class="grid_3 omega">
+    <form id="qualityratingform" action="{% url "ratings_vote" %}" class="ratings" method="post">
+        {% csrf_token %}
+        {{ rating_form_quality }}
+        <span id="score_quality" style="padding-left: 5px">
+            {{ score_quality.average }} ({{ score_quality.num_votes }})
+        </span>
+        <span class="success" style="display: none;"></span>
+        <span class="error" style="display: none;">Errors...</span>
+    </form>
 </div>
+
+<div class="grid_1 alpha">Difficulty:</div>
+<div class="grid_3 omega">
+    <form id="difficultyratingform" action="{% url "ratings_vote" %}" class="ratings" method="post">
+        {% csrf_token %}
+        {{ rating_form_difficulty }}
+        <span id="score_difficulty" style="padding-left: 5px">
+            {{ score_difficulty.average }} ({{ score_difficulty.num_votes }})
+        </span>
+        <span class="success" style="display: none;"></span>
+        <span class="error" style="display: none;">Errors...</span>
+    </form>
+</div>
+
+
+<div class="grid_1 alpha">Tags:</div>
+<div class="grid_3 omega"> {{ task.tags_as_string }} </div>
+
+<div class="grid_4 alpha omega" style="margin-top: 10px">
+    <i class="fa fa-pencil"></i> <a href="#" onclick="return false;" id="feedback_link">Send feedback for this task</a>
+</div>
+
+<div class="clear"></div>
+
 
 {% include "feedback/button.html" %}
 

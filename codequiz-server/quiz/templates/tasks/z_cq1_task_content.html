@@ -12,23 +12,18 @@
 {% endif %}
 
         <!-- protect against cross site reference forgery -->
-        {% csrf_token %} 
+        {% csrf_token %}
 
         <input type="hidden" name="meta_task_id" value="{{ mb.task.id }}">
         <input type="hidden" name="meta_tc_id" value="{{ mb.tc_id }}">
         <input type="hidden" name="meta_tc_task_id" value="{{ mb.tc_task_id }}">
-        
-
 
         <h2><span id="color1">Task:</span> "{{ mb.task.title }}"</h2>
 
-        
-        
             {% for s in mb.html_strings %}
                 {{ s|safe }}
                 <div class="clear"></div>
             {% endfor %}
-
 
         <!-- Buttons: -->
         <span style="display: block; text-align: right;">
