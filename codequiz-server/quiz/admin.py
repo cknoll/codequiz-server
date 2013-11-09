@@ -74,6 +74,7 @@ class QuizResultAdmin(admin.ModelAdmin):
     list_display = ['date', 'hash']
     list_display_links = ['date', 'hash']
 
+
 class TaskCollectionAdmin(admin.ModelAdmin):
     inlines = (TC_MembershipInline,)
 

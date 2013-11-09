@@ -21,5 +21,4 @@ urlpatterns = patterns('',
                        # debug mode
                        url(r'^task_process/$',
                            views.debug_task_process, name='debug_task_process'),
-
-)
+                       )

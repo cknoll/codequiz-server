@@ -48,7 +48,7 @@ def index(request):
     return task_collection_view(request, 1)
 
 
-def aux_get_task_from_tc_ids(tc_id, tc_task_id = None, next_task = False):
+def aux_get_task_from_tc_ids(tc_id, tc_task_id=None, next_task=False):
     """
     tc_task_id = None -> first task in this collection
     """
@@ -60,7 +60,6 @@ def aux_get_task_from_tc_ids(tc_id, tc_task_id = None, next_task = False):
     task.tc_id = tc_id
     task.tc_task_id = tc_task_id
     return task
-
 
 
 def aux_get_json_task(task_id):
@@ -83,7 +82,6 @@ def aux_get_json_task(task_id):
         solution_flag = False
 
 
-
     db_task = get_object_or_404(Task, pk=task_id)
 
     if db_task.body_xml.startswith("<?xml"):
@@ -104,8 +102,8 @@ def debug_url_landing(request):
     p['meta_no_form'] = True # indicate that this data is "pseudo"
     request.POST = p
 
-
     return debug_task_process(request)
+
 
 def debug_explicit_task_view(request, task_id):
     """
@@ -119,7 +117,6 @@ def debug_explicit_task_view(request, task_id):
     p['meta_no_form'] = True # indicate that this data is "pseudo"
     request.POST = p
 
-
     return debug_task_process(request)
 
 
@@ -132,33 +129,32 @@ def get_task_to_process(post_dict):
     task_id = post_dict['meta_task_id']
 
     if 'meta_no_form' in post_dict:
-        task =  aux_get_json_task(task_id = task_id)
+        task = aux_get_json_task(task_id=task_id)
         return task
 
     elif 'button_next' in post_dict:
         if post_dict.get('meta_tc_id', "") != "":
             tc_id = post_dict['meta_tc_id']
             tc_task_id = post_dict['meta_tc_task_id']
-            task = aux_get_task_from_tc_ids(tc_id, tc_task_id, next_task = True)
+            task = aux_get_task_from_tc_ids(tc_id, tc_task_id, next_task=True)
         else:
             # TODO:!! In explict mode there should not be a "next" button
             raise Http404, "For explictly adressed tasks, there is no successor!"
-            aux_get_json_task(task_id = task_id, next_task = True)
+            aux_get_json_task(task_id=task_id, next_task=True)
         return task
 
     elif 'button_result' in post_dict:
-        if  post_dict.get('meta_tc_id', "") != "":
+        if post_dict.get('meta_tc_id', "") != "":
             tc_id = post_dict['meta_tc_id']
             tc_task_id = post_dict['meta_tc_task_id']
             task = aux_get_task_from_tc_ids(tc_id, tc_task_id)
         else:
-            task = aux_get_json_task(task_id = task_id)
+            task = aux_get_json_task(task_id=task_id)
         task.solution_flag = True
 
         return task
     else:
         raise Http404, "Unknown formular content."
-
 
 
 def debug_task_process(request):
@@ -179,15 +175,13 @@ def debug_task_process(request):
     main_block = debug_main_block_object(request, task)
     tmb = get_task_meta_block(request, task)
 
-    context_dict = dict(main_block = main_block, task = task)
+    context_dict = dict(main_block=main_block, task=task)
 
     # currently not really clear whats the difference between Context-Object
     # and dict ... anyway
     context = Context(context_dict)
 
-
     return render(request, 'tasks/cq0_main_simple.html', context)
-
 
 
 def debug_main_block_object(request, task):
@@ -207,7 +201,7 @@ def debug_main_block_object(request, task):
     html_strings = [render_toplevel_element(tle, user_solution) for tle in segment_list]
 
     res = myContainer(task=task, button_strings=button_strings,
-                        html_strings=html_strings)
+                      html_strings=html_strings)
 
     res.debug_flag = True
     res.tc_id = ""
@@ -215,10 +209,9 @@ def debug_main_block_object(request, task):
 
     return res
 
+
 def debug1(request, tc_id=None, tc_task_id=None):
-
-
-    task = aux_get_json_task(task_id = 12) # 12 is the test-json-task
+    task = aux_get_json_task(task_id=12) # 12 is the test-json-task
 
     main_block = debug_main_block_object(request, task)
 
@@ -232,10 +225,7 @@ def debug1(request, tc_id=None, tc_task_id=None):
     # and dict ... anyway
     context = Context(context_dict)
 
-
     return render(request, 'tasks/cq0_main_simple.html', context)
-
-
 
 
 def get_button(button_type):
@@ -278,11 +268,10 @@ def get_solutions_from_post(request):
     items = le_solution + checkbox_results
 
     new_items = []
-    for k,v in items:
+    for k, v in items:
         assert '_idx_' in k
         idx = k.split('_idx_')[-1]
-        new_items.append( (int(idx), v) )
-
+        new_items.append((int(idx), v))
 
     res = dict(new_items)
     return res
