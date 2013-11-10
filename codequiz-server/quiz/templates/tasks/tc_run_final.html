@@ -2,10 +2,10 @@
 {% load staticfiles %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'tasks/style2.css' %}"/>
-
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}font-awesome/css/font-awesome.min.css"/>
 
 <div class="centered " style="width:500px">
-    <h1>Congratulations!</h1>
+    <h1><i class="fa fa-flag-checkered fa-4x"></i>Congratulations!</h1>
     <p>You completed the test: "{{ tc.title }}" with {{ tc.number_of_tasks }} tasks.</p>
     <p>To prove that you've completed it, show this receipt to your tutor:</p>
     <p style="font-size: 18pt">{{ hash }}</p>

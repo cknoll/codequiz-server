@@ -3,6 +3,7 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'tasks/style2.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'tasks/tabular_style.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}font-awesome/css/font-awesome.min.css"/>
 
 
 <div class="centered" style="width:400px">
@@ -29,10 +30,11 @@
         <input type="hidden" name="meta_tc_id" value="{{tc.id}}">
         {# this is before the first task -> 0 #}
         <input type="hidden" name="meta_tc_task_id" value="0">
-        <input type="submit" name="button_next" value="Start Task Collection" />
+
+        <button type="submit" class="button" name="button_next" style="width:200pt">
+                Start Task Collection <i class="fa fa-caret-right fa-2x pull-right"></i>
+        </button>
         </form>
-        
-<!--     <a class="button" style="width:200pt" href="{% url 'quiz_ns:tc_run_view2'%}">Start this test!</a> -->
 
     {% else %}
         <p>No tasks are available.</p>
