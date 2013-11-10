@@ -352,13 +352,19 @@ function exportValues() {
          * Extracts a text area type of input, whose key will be the type of the <li> its contained in
          */
         function extractTextArea() {
-            var $firstChild = li.children("textarea").last();
+            var $firstChild = li.children("textarea").first();
             var $typeSelect = $firstChild.next();
             var isComment = li.attr("type") == "comment";
             var dict = {
-                "content": $firstChild.text(),
+                "content": $firstChild.val(),
                 "type": $typeSelect.val(),
             };
+
+            // workaround for strange bug, where after switching from normal to source (ACE) the changed text isn't saved
+            if ($typeSelect.val()=="source") {
+                dict["content"] = $firstChild.text();
+            }
+
             if (isComment) {
                 dict["comment"] = true;
             }
@@ -458,7 +464,7 @@ $(document).ready(function () {
         .append("<a class='add' href='#' type='comment'>Comment</a>")
         .append("<a class='add' href='#' type='input'>Line Entry</a>")
         .append("<a class='add' href='#' type='check'>Check</a>")
-        .append("<input type='hidden' name='body_data'>");
+        .append("<input type='hidden' name='body_data' value='abs'>");
 
     $("a.add").click(function (event) {
         event.preventDefault();
@@ -482,7 +488,9 @@ $(document).ready(function () {
         restoreFromJSON(JSON.parse(jsonString));
     }
 
-    transformTextAreaToACE($("textarea.source"));
+    if ($("textarea.source").length > 0) {
+        transformTextAreaToACE($("textarea.source"));
+    }
 
     $("#task_form").submit(function (event) {
         updateTask();
