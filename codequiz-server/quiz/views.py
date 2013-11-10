@@ -125,7 +125,7 @@ def get_task_to_process(post_dict):
     and returns the corresponding object
     """
 
-    task_id = post_dict['meta_task_id']
+    task_id = post_dict.get('meta_task_id', None)
 
     if 'meta_no_form' in post_dict:
         task = aux_get_json_task(task_id=task_id)
@@ -396,6 +396,19 @@ def compute_hash(string, date):
     return result
 
 
+def tc_run_view2(request):
+    """
+
+    """
+    post_dict = request.POST
+    IPS()
+    get_task_to_process(post_dict)
+
+
+    return "Test"
+
+
+
 def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
     """
     render a task from a task collection (TC) by position in that TC
@@ -538,6 +551,9 @@ def task_collection_view(request, tc_id):
 
     context_dict = dict(task_list=tasks, tc=tc)
     context = Context(context_dict)
+
+    #post_dict = dict(request.POST)
+    request.session['meta_tc_id'] = unicode(tc_id)
 
     return render(request, 'tasks/task_collection.html', context)
 

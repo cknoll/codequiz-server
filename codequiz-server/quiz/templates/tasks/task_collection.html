@@ -9,7 +9,8 @@
     <h1>Test: {{ tc.title }}</h1>
 
     <div class="small">
-        Author: {{ tc.author }}
+        Author: {{ tc.author }}<br>
+        ID: {{ tc.id }}
     </div>
 
     {% if task_list %}
@@ -23,7 +24,15 @@
             {% endfor %}
         </div>
         <br/>
-        <a class="button" style="width:200pt" href="{% url 'quiz_ns:tc_run_view' tc.id 0 %}">Start this test!</a>
+        <form action="{% url 'quiz_ns:tc_run_view2' %}" method="post" autocomplete="off">
+        {% csrf_token %}
+        <input type="hidden" name="meta_tc_id" value="{{tc.id}}">
+        {# this is before the first task -> 0 #}
+        <input type="hidden" name="meta_tc_task_id" value="0">
+        <input type="submit" name="button_next" value="Start Task Collection" />
+        </form>
+        
+<!--     <a class="button" style="width:200pt" href="{% url 'quiz_ns:tc_run_view2'%}">Start this test!</a> -->
 
     {% else %}
         <p>No tasks are available.</p>
