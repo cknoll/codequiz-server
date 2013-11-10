@@ -23,20 +23,18 @@ class myContainer(object):
         self.__dict__.update(kwargs)
 
 
-def render_toplevel_element(tle, user_sol_list=None):
-    # TODO: rename to tle to segment
-    template = loader.get_template(tle.template)
+def render_segment(segment, user_sol_list=None):
+    template = loader.get_template(segment.template)
     if user_sol_list is None:
-        tle.context.update({'print_solution': False})
+        segment.context.update({'print_solution': False})
     else:
-        tle.context.update({'print_solution': True})
-        tle.update_user_solution(user_sol_list)
-    return template.render(Context(tle.context))
+        segment.context.update({'print_solution': True})
+        segment.update_user_solution(user_sol_list)
+    return template.render(Context(segment.context))
 
 
 def index_old(request):
     task_list = Task.objects.order_by('pub_date')[:5]
-    #raise Http404, "Ach wie schade"
     return render(request, 'tasks/index.html', dict(task_list=task_list))
 
 
@@ -197,7 +195,7 @@ def debug_main_block_object(request, task):
     user_solution = aux_task_user_solution(request, task.solution_flag)
 
     button_strings = aux_task_button_strings(task.solution_flag)
-    html_strings = [render_toplevel_element(tle, user_solution) for tle in segment_list]
+    html_strings = [render_segment(segment, user_solution) for segment in segment_list]
 
     res = myContainer(task=task, button_strings=button_strings,
                       html_strings=html_strings)
@@ -235,15 +233,15 @@ def get_button(button_type):
     return button_template.render(bContext)
 
 
-def aux_get_tle_list_from_task(task):
+def aux_get_segment_list_from_task(task):
     """
-    returns list of top level elements (tle) of the task-xml
+    returns list of segments
     """
     root = xml_lib.load_xml(task.body_data)
 
-    tle_list = xml_lib.split_xml_root(root)
+    segments = xml_lib.split_xml_root(root)
 
-    return tle_list
+    return segments
 
 
 def get_solutions_from_post(request):
@@ -481,14 +479,14 @@ def task_content_block(request, task, preview_only=False):
     @return the rendered html for the content of a task
     """
 
-    tle_list = aux_get_tle_list_from_task(task)
+    segments = aux_get_segment_list_from_task(task)
 
     if not preview_only:
         button_strings = aux_task_button_strings(task.solution_flag)
     else:
         button_strings = None
     user_solution = aux_task_user_solution(request, task.solution_flag)
-    html_strings = [render_toplevel_element(tle, user_solution) for tle in tle_list]
+    html_strings = [render_segment(segment, user_solution) for segment in segments]
 
     context_dict = dict(task=task, button_strings=button_strings,
                         html_strings=html_strings)
