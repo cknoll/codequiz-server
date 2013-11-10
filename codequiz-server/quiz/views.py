@@ -30,6 +30,8 @@ def render_segment(segment, user_sol_list=None):
     else:
         segment.context.update({'print_solution': True})
         segment.update_user_solution(user_sol_list)
+
+    print("template", segment.template)
     return template.render(Context(segment.context))
 
 
@@ -194,7 +196,7 @@ def debug_main_block_object(request, task):
 
     user_solution = aux_task_user_solution(request, task.solution_flag)
 
-    button_strings = aux_task_button_strings(task.solution_flag)
+    button_strings = aux_task_button_strings(['result'])
     html_strings = [render_segment(segment, user_solution) for segment in segment_list]
 
     res = myContainer(task=task, button_strings=button_strings,
@@ -274,12 +276,8 @@ def get_solutions_from_post(request):
     return res
 
 
-def aux_task_button_strings(solution_flag):
-    if not solution_flag:
-        button_strings = [get_button(t) for t in ['result']]
-    else:
-        button_strings = [get_button(t) for t in ['result', 'next']]
-
+def aux_task_button_strings(button_list):
+    button_strings = [get_button(t) for t in button_list]
     return button_strings
 
 
@@ -472,19 +470,21 @@ def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
     return render(request, 'tasks/cq0_main.html', context)
 
 
-def task_content_block(request, task, preview_only=False):
+def task_content_block(request, task):
     """
     @param task: the task to render
-    @param preview_only: True disables rendering of buttons
     @return the rendered html for the content of a task
     """
 
     segments = aux_get_segment_list_from_task(task)
 
-    if not preview_only:
-        button_strings = aux_task_button_strings(task.solution_flag)
+    if task.solution_flag:
+        button_list = ['result', 'next']
     else:
-        button_strings = None
+        button_list = ['result']
+
+    button_strings = aux_task_button_strings(task.solution_flag)
+
     user_solution = aux_task_user_solution(request, task.solution_flag)
     html_strings = [render_segment(segment, user_solution) for segment in segments]
 

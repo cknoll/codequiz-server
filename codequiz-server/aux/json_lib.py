@@ -21,14 +21,14 @@ class DictContainer(object):
     dicts, lists or "flat objects")
     """
 
-    def __init__(self, thedict, dc_name='unnamed'):
+    def __init__(self, segment_dict, dc_name='unnamed'):
         self.dc_name = dc_name
-        self.ext_dict = dict(thedict) # store a flat copy of external dict
-        self.ext_attributes = thedict.keys()
+        self.ext_dict = dict(segment_dict) # store a flat copy of external dict
+        self.ext_attributes = segment_dict.keys()
         # only new keys are allowed
         assert set(self.ext_attributes).intersection(self.__dict__.keys()) == \
                set()
-        self.__dict__.update(thedict)
+        self.__dict__.update(segment_dict)
 
         self.deep_recursion()
 
@@ -214,6 +214,7 @@ class Text(Segment):
 
 class Src(Text):
     template = 'tasks/src.html'
+
     pass
 
 
@@ -260,24 +261,24 @@ typestr_to_class_map = {'text': Text, 'source': Src,
 # our json format "specification" by example
 # https://gist.github.com/leberwurstsaft/7158911
 
-def make_segment(thedict, idx):
+def make_segment(segment_dict, idx):
     """
-    :thedict:   dictionary from json parser
+    :segment_dict:   dictionary from json parser
     :idx:       number (index) in the segment-list
     """
 
-    assert isinstance(thedict, dict)
+    assert isinstance(segment_dict, dict)
 
-    thetype = thedict.get('type', None)
-    if thetype == None:
+    segment_type = segment_dict.get('type', None)
+    if segment_type == None:
         raise ValueError("segment_dict should have key 'type'")
 
-    theclass = typestr_to_class_map.get(thetype, None)
-    if thetype == None:
-        raise ValueError("unknown type string: %s" % thetype)
+    segment_class = typestr_to_class_map.get(segment_type, None)
+    if segment_type == None:
+        raise ValueError("unknown type string: %s" % segment_type)
 
-    dc = DictContainer(thedict, thetype)
-    s = theclass(dc)
+    dc = DictContainer(segment_dict, segment_type)
+    s = segment_class(dc)
 
     s.set_idx(idx)
     return s

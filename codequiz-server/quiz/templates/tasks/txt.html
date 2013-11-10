@@ -1,5 +1,13 @@
 <!-- ==> start: txt.html -->
 
-<p>{{text|safe}}</p>
+{% if comment %}
+    <div class="comment">
+{% endif %}
+
+<p>{{ text|safe }}</p>
+
+{% if comment %}
+    </div>
+{% endif %}
 
 <!-- ==> end: txt.html -->
