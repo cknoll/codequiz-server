@@ -24,7 +24,7 @@ function addSegmentAnimated(animated, segment) {
     }
 
     updateWatchdogs();
-    updateTask();
+//    updateTask();
 }
 
 /**
@@ -34,11 +34,14 @@ function addSegmentAnimated(animated, segment) {
  */
 function removeSegmentAnimated(animated, segment) {
     if (animated) {
-        segment.slideUp(300);
+        segment.slideUp(300, function () {
+            segment.remove();
+//            updateTask();
+        });
     }
     else {
         segment.remove();
-        updateTask();
+//        updateTask();
     }
 }
 
@@ -82,6 +85,7 @@ function createSegment(inputType, data) {
 
         if (isComment) {
             segment.addClass("comment");
+            segment.attr("type", "comment");
         }
         $textarea = $("<textarea>", {
             cols: cols, rows: rows,
@@ -164,8 +168,6 @@ function createSegment(inputType, data) {
     }
 
     // depending on the type of segment we want to insert, add some input fields
-    // there's quite some type/null/undefined checking going on, unfortunately,
-    // to cleanly support both cases (new segments and loaded segments)
     switch (inputType) {
         case 'text':
             addTextArea(inputType, "Text...", data, 100, "right");
@@ -296,16 +298,6 @@ function addTypeSelection(node, cssclass, preSelectedType) {
  * changing the selects should update the text font and style or add the code editor. Stuff like that.
  */
 function updateWatchdogs() {
-// mark input and textarea fields for automatic updating of hidden input field that stores the JSON
-    $("li input").addClass("watch");
-    $("li textarea").addClass("watch");
-    $("li select").addClass("watch");
-    $(".watch").change(function () {
-        updateTask();
-    });
-    $(".watch").keyup(function () {
-        updateTask();
-    });
     $("select").change(function () {
         var $prev = $(this).prev();
         var selectedValue = $(this).find(":selected").val();
@@ -316,15 +308,26 @@ function updateWatchdogs() {
             }
         } else if (selectedValue == "text") {
             $prev.removeClass("source");
-            if ($(this).prev().is("textarea.ace")) {
+            if ($prev.is("textarea.ace")) {
                 transformACEToTextarea($prev);
             }
         }
     });
+
     $("a.delete").click(function (event) {
         event.preventDefault();
         removeSegmentAnimated(true, $(this).parent("li"));
     });
+
+//    // mark input and textarea fields for automatic updating of hidden input field that stores the JSON
+//    $("li input, li textarea, li select").addClass("watch");
+//    console.log("watch", $(".watch"));
+//    $(".watch").change(function () {
+//        updateTask();
+//    });
+//    $(".watch").keyup(function () {
+//        updateTask();
+//    });
 }
 
 /**
@@ -349,11 +352,11 @@ function exportValues() {
          * Extracts a text area type of input, whose key will be the type of the <li> its contained in
          */
         function extractTextArea() {
-            var $firstChild = li.children("textarea").first();
+            var $firstChild = li.children("textarea").last();
             var $typeSelect = $firstChild.next();
             var isComment = li.attr("type") == "comment";
             var dict = {
-                "content": $firstChild.val(),
+                "content": $firstChild.text(),
                 "type": $typeSelect.val(),
             };
             if (isComment) {
@@ -480,19 +483,29 @@ $(document).ready(function () {
     }
 
     transformTextAreaToACE($("textarea.source"));
+
+    $("#task_form").submit(function (event) {
+        updateTask();
+        return;
+    });
 });
 
+/**
+ * Convert a textarea into an ACE editor
+ * @param textarea
+ */
 function transformTextAreaToACE(textarea) {
     var content = textarea.val();
 
     textarea.filter(".source").not(".ace").not(".no-ace").acedInitTA({theme: 'solarized_light', mode: 'python'});
     textarea.addClass("ace");
-    textarea.data('ace-div').acedSession().on("change", function () {
-        updateTask();
-    });
     textarea.data('ace-div').acedSession().setValue(content);
 }
 
+/**
+ * Remove ACE editor from a textarea
+ * @param textarea
+ */
 function transformACEToTextarea(textarea) {
     textarea.filter(".ace").acedRemoveFromTA();
     textarea.filter(".ace").removeClass("ace");
@@ -528,7 +541,7 @@ $(function () {
             $(ui.placeholder).hide().show(300);
         },
         stop: function (event, ui) {
-            updateTask();
+//            updateTask();
         }
     });
 });
