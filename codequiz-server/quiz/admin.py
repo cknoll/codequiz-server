@@ -22,7 +22,7 @@ class TaskAdminForm(forms.ModelForm):
     class Meta:
         model = Task
         widgets = {
-            'body_xml': BuilderTextArea()
+            'body_data': BuilderTextArea()
         }
 
 
@@ -41,7 +41,7 @@ class TaskAdmin(admin.ModelAdmin):
     list_filter = ['author']
 
     fieldsets = [
-        (None, {'fields': ['title', 'body_xml', 'tags']}),
+        (None, {'fields': ['title', 'body_data', 'tags']}),
         ('Date', {'fields': ['pub_date'],
                   'description': 'Wird automatisch auf aktuelle Zeit gesetzt, kann aber geändert werden',
                   'classes': ('collapse',)}),

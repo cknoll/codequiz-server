@@ -332,7 +332,7 @@ function updateWatchdogs() {
  */
 function updateTask() {
     var dict = exportValues();
-    $("input[name='body_xml']").val(JSON.stringify(dict, null, 4));
+    $("input[name='body_data']").val(JSON.stringify(dict, null, 4));
 }
 
 /**
@@ -455,7 +455,7 @@ $(document).ready(function () {
         .append("<a class='add' href='#' type='comment'>Comment</a>")
         .append("<a class='add' href='#' type='input'>Line Entry</a>")
         .append("<a class='add' href='#' type='check'>Check</a>")
-        .append("<input type='hidden' name='body_xml'>");
+        .append("<input type='hidden' name='body_data'>");
 
     $("a.add").click(function (event) {
         event.preventDefault();
@@ -472,7 +472,7 @@ $(document).ready(function () {
     });
 
     // set the hidden input fields content to the initial JSON string
-    $("input[name='body_xml']").val(jsonString);
+    $("input[name='body_data']").val(jsonString);
 
     // check if it really is a JSON string and is defined and has a length
     if (typeof jsonString !== 'undefined' && jsonString.length > 0 && jsonString.charAt(0) == "{") {

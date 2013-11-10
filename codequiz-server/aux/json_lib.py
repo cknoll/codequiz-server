@@ -292,7 +292,7 @@ def preprocess_task_from_db(task):
 
     """
 
-    rd = json.loads(task.body_xml)  # TODO: rename this field (see models.py)
+    rd = json.loads(task.body_data)
 
     dict_list = rd['segments']
 

@@ -26,7 +26,7 @@ class Task(models.Model, TaggedModel):
     title = models.CharField(max_length=200)
     revision = models.IntegerField(default=0)
     pub_date = models.DateTimeField('Publish date', default=datetime.datetime.now)
-    body_xml = models.TextField('Body')  # TODO: -> rename to body_data
+    body_data = models.TextField('Body', db_column='body_xml')
     tags = TaggableManager(blank=True)
 
     def get_absolute_url(self):

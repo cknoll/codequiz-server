@@ -83,7 +83,7 @@ def aux_get_json_task(task_id):
 
     db_task = get_object_or_404(Task, pk=task_id)
 
-    if db_task.body_xml.startswith("<?xml"):
+    if db_task.body_data.startswith("<?xml"):
         return pseudo_task
     else:
         json_lib.preprocess_task_from_db(db_task)
@@ -239,7 +239,7 @@ def aux_get_tle_list_from_task(task):
     """
     returns list of top level elements (tle) of the task-xml
     """
-    root = xml_lib.load_xml(task.body_xml)
+    root = xml_lib.load_xml(task.body_data)
 
     tle_list = xml_lib.split_xml_root(root)
 
