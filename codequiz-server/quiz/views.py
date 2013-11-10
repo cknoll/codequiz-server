@@ -23,6 +23,9 @@ class myContainer(object):
         self.__dict__.update(kwargs)
 
 
+class TC_Finished(ValueError):
+    pass
+
 def render_segment(segment, user_sol_list=None):
     template = loader.get_template(segment.template)
     if user_sol_list is None:
@@ -53,18 +56,37 @@ def aux_get_task_from_tc_ids(tc_id, tc_task_id=None, next_task=False):
     tc_task_id = None -> first task in this collection
     """
 
-    # TODO !! get the real task_id
-    task_id = 0
-    task = aux_get_json_task(task_id)
+    tc = get_object_or_404(TaskCollection, pk=tc_id)
 
-    task.tc_id = tc_id
-    task.tc_task_id = tc_task_id
-    return task
+    if next_task:
+        tc_task_id = int(tc_task_id) + 1
+    else:
+        tc_task_id = int(tc_task_id)
+
+    ordered_task_list = tc.tc_membership_set.order_by('ordering')
+    tc.len = len(ordered_task_list)
+
+
+    # TODO: prevent confusion with 1 (database) and 0 (list) as first index
+    if tc_task_id > len(ordered_task_list):
+        raise TC_Finished
+
+    current_task = ordered_task_list[tc_task_id-1].task
+
+    # TODO: redundance with aux_get_json_task??
+    json_lib.preprocess_task_from_db(current_task)
+    current_task.tc_id = tc_id
+    current_task.tc_task_id = tc_task_id
+
+    return current_task
+
+
+
 
 
 def aux_get_json_task(task_id):
     """
-    currently returns only pseudo stuff
+    currently returns pseudo stuff if the body starts with xml
     """
 
 
@@ -136,10 +158,11 @@ def get_task_to_process(post_dict):
             tc_id = post_dict['meta_tc_id']
             tc_task_id = post_dict['meta_tc_task_id']
             task = aux_get_task_from_tc_ids(tc_id, tc_task_id, next_task=True)
+            task.solution_flag = False
         else:
             # TODO:!! In explict mode there should not be a "next" button
             raise Http404("For explictly adressed tasks, there is no successor!")
-            aux_get_json_task(task_id=task_id, next_task=True)
+            #aux_get_json_task(task_id=task_id, next_task=True)
         return task
 
     elif 'button_result' in post_dict:
@@ -148,6 +171,7 @@ def get_task_to_process(post_dict):
             tc_task_id = post_dict['meta_tc_task_id']
             task = aux_get_task_from_tc_ids(tc_id, tc_task_id)
         else:
+            # this is for the explicit mode
             task = aux_get_json_task(task_id=task_id)
         task.solution_flag = True
 
@@ -172,7 +196,7 @@ def debug_task_process(request):
     task = get_task_to_process(post)
 
     main_block = debug_main_block_object(request, task)
-    tmb = task_meta_block(request, task)
+    #tmb = task_meta_block(request, task)
 
     context_dict = dict(main_block=main_block, task=task)
 
@@ -196,7 +220,12 @@ def debug_main_block_object(request, task):
 
     user_solution = aux_task_user_solution(request, task.solution_flag)
 
-    button_strings = aux_task_button_strings(['result'])
+    if task.solution_flag:
+        button_list = ['result', 'next']
+    else:
+        button_list = ['result']
+
+    button_strings = aux_task_button_strings(button_list)
     html_strings = [render_segment(segment, user_solution) for segment in segment_list]
 
     res = myContainer(task=task, button_strings=button_strings,
@@ -232,6 +261,8 @@ def get_button(button_type):
     button_template = loader.get_template('tasks/task_buttons1.html')
     bContext = Context({
         'button_type': button_type, })
+
+    #!!++
     return button_template.render(bContext)
 
 
@@ -326,7 +357,7 @@ def next_task(request, task_id):
 
 def form_result_view(request, task_id):
     post = request.POST
-    #IPS()
+    1/0 # deprecated
     if 'next' in post:
         return next_task(request, task_id)
     elif 'result' in post:
@@ -346,6 +377,7 @@ def tc_run_form_process(request, tc_id, tc_task_id):
         return tc_run_view(request, tc_id, tc_task_id, solution_flag=True)
 
 
+# is also used by new (json) workfolw
 def tc_run_final_view(request, tc_id):
     tc = get_object_or_404(TaskCollection, pk=tc_id)
 
@@ -401,12 +433,40 @@ def tc_run_view2(request):
 
     """
     post_dict = request.POST
-    IPS()
-    get_task_to_process(post_dict)
+    try:
+        task = get_task_to_process(post_dict)
+    except TC_Finished:
+        tc_id = request.POST['meta_tc_id']
+        return tc_run_final_view(request, tc_id)
 
 
-    return "Test"
+    request.session['tc_id'] = task.tc_id
+    request.session['tc_task_id'] = task.tc_task_id
 
+    log = ""
+    if 'log' in request.session:
+        log = request.session['log']
+
+    log += "Show {solution} task {task} of collection {coll}.\n".format(
+        solution="solution of" if task.solution_flag else "",
+        task=str(task.tc_task_id),
+        coll=str(task.tc_id)
+    )
+    request.session["log"] = log
+    print(log)
+
+
+
+    main_block = debug_main_block_object(request, task)
+    main_block.tc_run_flag = True # trigger the correct url in the template
+    main_block.tc_id = task.tc_id
+    main_block.tc_task_id = task.tc_task_id
+
+
+    context_dict = dict(main_block=main_block, task=task)
+    context = Context(context_dict)
+
+    return render(request, 'tasks/cq0_main_simple.html', context)
 
 
 def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
@@ -417,6 +477,8 @@ def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
     @param tc_task_id: relative position of the task in the task collection. NOT the task_id (pk of tasks)
     @param solution_flag: show solution or not?
     """
+
+    1/0 # this fucntion is deprecated and should not be called
 
     tc_task_id = int(tc_task_id)
     tc = get_object_or_404(TaskCollection, pk=tc_id)

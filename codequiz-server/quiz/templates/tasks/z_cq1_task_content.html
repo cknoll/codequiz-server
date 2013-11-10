@@ -3,9 +3,11 @@
 {# This debug stuff should be removed with version 0.4 (xml dismissed) #}
 
 <form action="
-        {% if mb.debug_flag %}
+        {% if mb.tc_run_flag %}
+        {% url 'quiz_ns:tc_run_view2' %}
+        {% elif mb.debug_flag %}
         {% url 'quiz_ns:debug_task_process' %}
-        {% else %}
+        {% else %} {# old url !! to be removed #}
         {% url 'quiz_ns:task_form_process' mb.task.id %}
         {% endif %}"
       method="post" autocomplete="off">
