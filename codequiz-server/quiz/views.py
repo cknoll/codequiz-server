@@ -172,7 +172,7 @@ def debug_task_process(request):
     task = get_task_to_process(post)
 
     main_block = debug_main_block_object(request, task)
-    tmb = get_task_meta_block(request, task)
+    tmb = task_meta_block(request, task)
 
     context_dict = dict(main_block=main_block, task=task)
 
@@ -499,7 +499,7 @@ def task_content_block(request, task, preview_only=False):
     return template.render(RequestContext(request, context))
 
 
-def get_task_meta_block(request, task):
+def task_meta_block(request, task):
     """
     returns the rendered html for the meta-info-block for a task
     """
