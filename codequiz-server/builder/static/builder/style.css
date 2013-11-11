@@ -13,7 +13,6 @@ a.add {
     border-radius: 5px;
 }
 
-
 a.delete {
     position: absolute;
     right: 5px;
@@ -31,7 +30,7 @@ a.addinput {
     font-size: 0.5em;
     margin-left: -1.5em;
     position: relative;
-    top:-2px;
+    top: -2px;
 }
 
 a.removeinput {
@@ -39,7 +38,7 @@ a.removeinput {
     font-size: 0.5em;
     padding-right: 1em;
     position: relative;
-    top:-2px;
+    top: -2px;
 }
 
 #sortable {
@@ -99,4 +98,8 @@ select.right {
 
 select.inline {
     margin-right: 20px;
+}
+
+.handle {
+    cursor: move;
 }
