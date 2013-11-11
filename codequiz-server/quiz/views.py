@@ -34,7 +34,6 @@ def render_segment(segment, user_sol_list=None):
         segment.context.update({'print_solution': True})
         segment.update_user_solution(user_sol_list)
 
-    print("template", segment.template)
     return template.render(Context(segment.context))
 
 
@@ -88,28 +87,10 @@ def aux_get_json_task(task_id):
     """
     currently returns pseudo stuff if the body starts with xml
     """
-
-
-    # for the moment return the pseodo task
-    class pseudo_task():
-        """
-        pseudo task, because json currently comes from a file and
-        not a database
-        """
-        id = task_id
-        title = "0815-Test-Task"
-        author = "Wilhelm, das Kind"
-        tags_as_string = "no tags"
-        segment_list = json_lib.debug_task()
-        solution_flag = False
-
     db_task = get_object_or_404(Task, pk=task_id)
+    json_lib.preprocess_task_from_db(db_task)
 
-    if db_task.body_data.startswith("<?xml"):
-        return pseudo_task
-    else:
-        json_lib.preprocess_task_from_db(db_task)
-        return db_task
+    return db_task
 
 
 def debug_url_landing(request):
@@ -119,7 +100,7 @@ def debug_url_landing(request):
     """
 
     p = dict(request.POST) # POST itself is immutable
-    p['meta_task_id'] = "23"
+    p['meta_task_id'] = "12"
     p['meta_no_form'] = True # indicate that this data is "pseudo"
     request.POST = p
 
@@ -160,7 +141,6 @@ def get_task_to_process(post_dict):
             task = aux_get_task_from_tc_ids(tc_id, tc_task_id, next_task=True)
             task.solution_flag = False
         else:
-            # TODO:!! In explict mode there should not be a "next" button
             raise Http404("For explictly adressed tasks, there is no successor!")
             #aux_get_json_task(task_id=task_id, next_task=True)
         return task
@@ -319,32 +299,6 @@ def aux_task_user_solution(request, solution_flag):
         user_solution = get_solutions_from_post(request)
 
     return user_solution
-
-## TODO: obsolete
-#def task_view(request, task_id, solution_flag=False):
-#    """
-#    Show a task by itself
-#
-#    Dirty workaround for now. Used only for previewing/debugging
-#    """
-#
-#    tc_task_id = 0
-#    tc_id = 1
-#    tc = get_object_or_404(TaskCollection, pk=tc_id)
-#
-#    current_task = get_object_or_404(Task, pk=task_id)
-#    current_task.solution_flag = solution_flag
-#    current_task.tc_task_id = tc_task_id
-#    current_task.tc = tc
-#
-#    # construct the main_blocks
-#    main_blocks = [task_content_block(request, current_task, preview_only=True)]
-#    tmb = [get_task_meta_block(request, current_task)]
-#
-#    context_dict = dict(main_blocks=main_blocks, meta_blocks=tmb)
-#    context = Context(context_dict)
-#
-#    return render(request, 'tasks/cq0_main.html', context)
 
 
 def next_task(request, task_id):
@@ -540,9 +494,8 @@ def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
         coll=str(tc_id)
     )
     request.session["log"] = log
-    print(log)
 
-    return render(request, 'tasks/cq0_main.html', context)
+    return render(request, 'tasks/cq0_main_base.html', context)
 
 
 def task_content_block(request, task):
@@ -620,6 +573,6 @@ def task_collection_view(request, tc_id):
     return render(request, 'tasks/task_collection.html', context)
 
 
-def task_view0(request, task_id):
+def task_view(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
     return render(request, 'tasks/task_detail.html', dict(task=task))
