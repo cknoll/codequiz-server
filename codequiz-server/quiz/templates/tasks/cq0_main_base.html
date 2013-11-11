@@ -12,9 +12,9 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/tabular_style.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/1152_16_col.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/style2.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/tabular_style.css?{% now "U" %}"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/1152_16_col.css?{% now "U" %}"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/style2.css?{% now "U" %}"/>
 
     {# jQuery #}
     <script type="text/javascript" src="{{ STATIC_URL }}jquery/jquery-1.10.2.min.js"></script>
