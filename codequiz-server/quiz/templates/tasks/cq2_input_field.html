@@ -11,20 +11,17 @@
         <span class="normal">{{ text_slots.0.content }}</span>
     {% endif %}
 </div>
-<div class="grid_4" id="input_field">
+<div class="grid_4{% if not print_solution %} suffix_4 omega{% endif %}" id="input_field">
     <textarea class="disablecopypaste" style="width: 100%" name="le_idx_{{ idx }}" rows="{{ lines }}"
               autocomplete="off">{{ prefilled_text }}</textarea>
 </div>
-<div class="grid_4 omega">
-    {% if print_solution %}
+
+{% if print_solution %}
+    <div class="grid_4 omega">
         <pre class="{{ css_class }}">{{ printed_solution }}</pre>
-    {% else %}
-        &nbsp;
-    {% endif %}
-</div>
+    </div>
+{% endif %}
 
-<div class="clear">
-</div>
-
+<div class="clear"></div>
 
 <!-- ==> end: cq2_input_field.html -->
