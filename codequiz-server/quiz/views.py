@@ -26,6 +26,7 @@ class myContainer(object):
 class TC_Finished(ValueError):
     pass
 
+
 def render_segment(segment, user_sol_list=None):
     template = loader.get_template(segment.template)
     if user_sol_list is None:
@@ -62,7 +63,7 @@ def aux_get_task_from_tc_ids(tc_id, tc_task_id=None, next_task=False):
     if tc_task_id > len(ordered_task_list):
         raise TC_Finished
 
-    current_task = ordered_task_list[tc_task_id-1].task
+    current_task = ordered_task_list[tc_task_id - 1].task
 
     # TODO: redundance with aux_get_json_task??
     json_lib.preprocess_task_from_db(current_task)
@@ -70,9 +71,6 @@ def aux_get_task_from_tc_ids(tc_id, tc_task_id=None, next_task=False):
     current_task.tc_task_id = tc_task_id
 
     return current_task
-
-
-
 
 
 def aux_get_json_task(task_id):
@@ -303,7 +301,7 @@ def next_task(request, task_id):
 
 def form_result_view(request, task_id):
     post = request.POST
-    1/0 # deprecated
+    1 / 0 # deprecated
     if 'next' in post:
         return next_task(request, task_id)
     elif 'result' in post:
@@ -321,7 +319,6 @@ def tc_run_form_process(request, tc_id, tc_task_id):
 
     elif 'result' in post:
         return tc_run_view(request, tc_id, tc_task_id, solution_flag=True)
-
 
 # is also used by new (json) workfolw
 def tc_run_final_view(request, tc_id):
@@ -385,7 +382,6 @@ def tc_run_view2(request):
         tc_id = request.POST['meta_tc_id']
         return tc_run_final_view(request, tc_id)
 
-
     request.session['tc_id'] = task.tc_id
     request.session['tc_task_id'] = task.tc_task_id
 
@@ -401,13 +397,10 @@ def tc_run_view2(request):
     request.session["log"] = log
     print(log)
 
-
-
     main_block = debug_main_block_object(request, task)
     main_block.tc_run_flag = True # trigger the correct url in the template
     main_block.tc_id = task.tc_id
     main_block.tc_task_id = task.tc_task_id
-
 
     context_dict = dict(main_block=main_block, task=task)
     context = Context(context_dict)
@@ -424,7 +417,7 @@ def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
     @param solution_flag: show solution or not?
     """
 
-    1/0 # this fucntion is deprecated and should not be called
+    1 / 0 # this fucntion is deprecated and should not be called
 
     tc_task_id = int(tc_task_id)
     tc = get_object_or_404(TaskCollection, pk=tc_id)
