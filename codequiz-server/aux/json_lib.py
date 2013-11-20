@@ -57,6 +57,33 @@ def aux_preprocess_user_solution(us):
     us = us.replace('\r', '')
     return us
 
+#TODO: Unit-Tests
+#TODO: obvious problem: "x = 'Hello World'" -> "x='HelloWorld'"
+# This gets more involved if multiline strings are considered
+def aux_remove_needless_spaces(string):
+    """
+    converts "x =  8 +3" into "x=8+3"
+
+    this makes solution checking independend of spacing flavour
+    """
+
+    lines = string.split('\n')
+    new_lines = []
+    for line in lines:
+        stripped = line.strip()
+        if stripped == "":
+            new_lines.append(line)
+        else:
+            spaces_canceld = stripped.replace(" ", "")
+            new_lines.append(line.replace(stripped, spaces_canceld))
+
+    result = "\n".join(new_lines).rstrip()
+    assert type(string) == type(result)
+    return result
+
+
+
+
 
 class Segment(object):
     """
@@ -152,13 +179,23 @@ class QuestionSegment(Segment):
 
     def test_user_was_correct(self, user_solution):
 
+        user_test_solution = aux_remove_needless_spaces(user_solution)
+
         res = []
         for s in self.solution:
-            # TODO: rememove the default arg here (implement unit test before)
+            # TODO: rememove the default args here (implement unit test before)
             # because solutions now has a unified_solution_structure
-            content = getattr(s, 'content', s)
-            #            IPS()
-            res.append(user_solution == unicode(content))
+            content = unicode( getattr(s, 'content', s) )
+            # space replacement only should take place for code
+            sol_type = getattr(s, 'type', 'text')
+
+            if sol_type == "source":
+                test_content = aux_remove_needless_spaces(content)
+                res.append(user_test_solution == test_content)
+            else:
+                # no internal spaces have are removed
+                res.append(user_solution == content)
+
         return any(res)
 
     def update_user_solution(self, sol_dict):
