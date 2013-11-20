@@ -1,7 +1,7 @@
 <!-- ==> start: index.html -->
 {% load staticfiles %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'tasks/style.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/style.css?{% now "U" %}"/>
 
 
 <div class="klasse1">

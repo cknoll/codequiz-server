@@ -1,8 +1,8 @@
 <!-- ==> start: task_collection.html -->
 {% load staticfiles %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'tasks/style2.css' %}"/>
-<link rel="stylesheet" type="text/css" href="{% static 'tasks/tabular_style.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/style2.css?{% now "U" %}"/>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/tabular_style.css"/>
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}font-awesome/css/font-awesome.min.css"/>
 
 

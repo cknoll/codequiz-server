@@ -1,7 +1,7 @@
 <!-- ==> start: tc_run_final.html -->
 {% load staticfiles %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'tasks/style2.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/style2.css?{% now "U" %}"/>
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}font-awesome/css/font-awesome.min.css"/>
 
 <div class="centered " style="width:500px">
