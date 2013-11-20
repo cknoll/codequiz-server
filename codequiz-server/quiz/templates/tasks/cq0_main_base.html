@@ -56,33 +56,33 @@
     {% endblock %}
 
     <div id="main_container">
-    {% block main %}
+        {% block main %}
 
-        <div class="grid_12">
+            <div class="grid_12">
 
-            {% block main_left %}
+                {% block main_left %}
 
-                Main content
+                    Main content
 
-            {% endblock %}
+                {% endblock %}
 
-        </div>
+            </div>
 
-        <!-- End of main_left -->
+            <!-- End of main_left -->
 
-        <div class="grid_4">
+            <div class="grid_4">
 
-            {% block main_right %}
+                {% block main_right %}
 
-                content of right column
+                    content of right column
 
-            {% endblock %}
+                {% endblock %}
 
-        </div>
-        <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
 
-        <!-- End of main_right -->
-    {% endblock %}
+            <!-- End of main_right -->
+        {% endblock %}
     </div>
 
     <div id="footer_container">
@@ -90,7 +90,7 @@
             <p><a title="back to top" href="#"><i class="fa fa-arrow-circle-up"></i> back to top</a></p>
         </div>
         <div id="footer_right">
-                <p>&copy; 2013 Carsten Knoll</p>
+            <p><a title="home" href="{% url 'quiz_ns:imprint' %}"><i class="fa fa-info"></i> Imprint / Impressum</a></p>
         </div>
     </div>
 </div>

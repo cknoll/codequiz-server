@@ -3,7 +3,7 @@
 from django.http import HttpResponse, Http404
 from django.template import Context, loader
 from django.template import RequestContext
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, render_to_response, get_object_or_404
 from datetime import *
 import hashlib
 
@@ -42,8 +42,9 @@ def index_old(request):
     return render(request, 'tasks/index.html', dict(task_list=task_list))
 
 
-def index(request):
-    return render(request, 'tasks/cq0_index.html')
+def simple(request, **kwargs):
+    text = loader.get_template(kwargs['template']).render(RequestContext(request))
+    return render(request, 'tasks/cq0_simple.html', dict(pagecontent=text))
 
 
 def aux_get_task_from_tc_ids(tc_id, tc_task_id=None, next_task=False):

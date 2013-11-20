@@ -4,7 +4,7 @@ body {
     padding: 0;
     background: #FFF;
     font-size: 75%;
-    font-family: "arial", "verdana", "tahoma", "georgia", "trebuchet ms";
+    font-family: "arial", "verdana", "tahoma", "georgia", "trebuchet ms",serif;
     color: #666;
 }
 
@@ -119,18 +119,8 @@ input[type="submit"]:hover {
     font-size: 220%;
     font-weight: normal;
     color: #F90;
-    /*     color: #0b2a51; */
-    /*color: #F90;*/
     letter-spacing: -1px;
 }
-
-/*
-#header_left h1 span {
-    color: #0b2a51;*/
-/*     color: #8594a8; */
-/*color: #FFC875;*/
-/*  font-weight: normal;
-}*/
 
 #header_right {
     float: left;
@@ -198,8 +188,7 @@ pre {
 }
 
 .src {
-    border: 1px solid;
-    border-color: #aaa;
+    border: 1px solid #aaa;
     /*     padding: .5em; */
     /*     background-color:#eaeaea; */
     font-family: Fixedsys, Courier, monospace;
@@ -212,8 +201,7 @@ pre {
 }
 
 .sol_right {
-    border: 1px solid;
-    border-color: #aaa;
+    border: 1px solid #aaa;
     padding: .5em;
     font-family: Fixedsys, Courier, monospace;
     color: #008000;
@@ -241,12 +229,9 @@ pre {
 
 #main_container h2, h3 {
     margin: 0 0 15px 0;
-    /*padding: 0px 15px;*/
     font-size: 140%;
     font-weight: normal;
     color: #0b2a51;
-    /*  color: #F90; */
-    /* orange */
     border-bottom: 1px solid #E5E5E5;
 }
 
