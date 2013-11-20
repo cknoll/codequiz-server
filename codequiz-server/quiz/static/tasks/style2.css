@@ -136,6 +136,8 @@ img {
 
 pre {
     background-color: #ffffcc;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 #css_version {
@@ -149,7 +151,7 @@ pre {
     color: #233f62;
 }
 
-#pseudo_cell {
+.pseudo_cell {
     vertical-align: top;
 }
 

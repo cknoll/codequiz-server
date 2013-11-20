@@ -1,20 +1,21 @@
 <!-- ==> start: cq2_input_field.html -->
 
-<div class="grid_4 alpha" id="pseudo_cell">
-    {{ question_counter }}. &nbsp;
+<div class="grid_4 alpha">
+    <div style="margin-left:-110px;text-align: right; width:100px; float: left">
+        {{ question_counter }}.
+    </div>
+
     {% if text_slots.0.type == "source" %}
         <pre class="src">{{ text_slots.0.content }}</pre>
     {% else %}
         <span class="normal">{{ text_slots.0.content }}</span>
     {% endif %}
 </div>
-
 <div class="grid_4" id="input_field">
-    <textarea class="disablecopypaste" name="le_idx_{{ idx }}" cols="27" rows="{{ lines }}"
+    <textarea class="disablecopypaste" style="width: 100%" name="le_idx_{{ idx }}" rows="{{ lines }}"
               autocomplete="off">{{ prefilled_text }}</textarea>
 </div>
-
-<div class="grid_4 omega" id="pseudo_cell">
+<div class="grid_4 omega">
     {% if print_solution %}
         <pre class="{{ css_class }}">{{ printed_solution }}</pre>
     {% else %}
