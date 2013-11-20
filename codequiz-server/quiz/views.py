@@ -37,11 +37,6 @@ def render_segment(segment, user_sol_list=None):
     return template.render(Context(segment.context))
 
 
-def index_old(request):
-    task_list = Task.objects.order_by('pub_date')[:5]
-    return render(request, 'tasks/index.html', dict(task_list=task_list))
-
-
 def simple(request, **kwargs):
     text = loader.get_template(kwargs['template']).render(RequestContext(request))
     return render(request, 'tasks/cq0_simple.html', dict(pagecontent=text))
