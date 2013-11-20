@@ -35,10 +35,10 @@ class TaskAdmin(admin.ModelAdmin):
     """
     list_display = ['id', 'title', 'pub_date', 'revision']
     list_display_links = ['title']
-    search_fields = ['title', 'tags']
+    search_fields = ['title']
     date_hierarchy = 'pub_date'
     inlines = (TC_MembershipInline,)
-    list_filter = ['author']
+    list_filter = ['author', 'tags']
 
     fieldsets = [
         (None, {'fields': ['title', 'body_data', 'tags']}),

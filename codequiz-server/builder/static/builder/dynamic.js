@@ -61,7 +61,7 @@ function createSegment(inputType, data) {
     });
 
     // add the little arrow icon to the left of each segment
-    segment.append("<span class='ui-icon ui-icon-arrowthick-2-n-s'></span>");
+    segment.append("<span class='ui-icon ui-icon-arrowthick-2-n-s handle'></span>");
 
     /**
      * Add a textarea
@@ -361,7 +361,7 @@ function exportValues() {
             };
 
             // workaround for strange bug, where after switching from normal to source (ACE) the changed text isn't saved
-            if ($typeSelect.val()=="source") {
+            if ($typeSelect.val() == "source") {
                 dict["content"] = $firstChild.text();
             }
 
@@ -542,14 +542,13 @@ $(function () {
         placeholder: "ui-state-highlight",
         forcePlaceholderSize: true,
         opacity: 0.5,
+        handle: ".handle",
+        cursor: "move",
         start: function (e, ui) {
             $(ui.placeholder).hide(300);
         },
         change: function (e, ui) {
             $(ui.placeholder).hide().show(300);
-        },
-        stop: function (event, ui) {
-//            updateTask();
         }
     });
 });
