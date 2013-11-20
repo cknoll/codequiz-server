@@ -4,7 +4,7 @@ from django.conf.urls import patterns, url
 from quiz import views
 
 urlpatterns = patterns('',
-                       url(r'^$', views.simple, kwargs={"template":"index.html"}, name='index'),
+                       url(r'^$', views.index, kwargs={"template":"index.html"}, name='index'),
                        url(r'^about$', views.simple, kwargs={"template":"about.html"}, name='about'),
                        url(r'^debug1$', views.debug1, name='debug1'),
                        #url(r'^task/view/(?P<task_id>\d+)/$', views.task_view, name='task_view'),

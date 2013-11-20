@@ -43,6 +43,10 @@ def simple(request, **kwargs):
     return render(request, 'tasks/cq0_simple.html', dict(pagecontent=text))
 
 
+def index(request):
+    return simple(request, template="index.html")
+
+
 def aux_get_task_from_tc_ids(tc_id, tc_task_id=None, next_task=False):
     """
     tc_task_id = None -> first task in this collection
