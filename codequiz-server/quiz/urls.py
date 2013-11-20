@@ -5,9 +5,7 @@ from quiz import views
 
 urlpatterns = patterns('',
                        url(r'^$', views.simple, kwargs={"template":"index.html"}, name='index'),
-                       url(r'^imprint$', views.simple, kwargs={"template":"imprint.html"}, name='imprint'),
-                       url(r'^disclaimer$', views.simple, kwargs={"template":"disclaimer.html"}, name='disclaimer'),
-                       url(r'^privacy$', views.simple, kwargs={"template":"privacy.html"}, name='privacy'),
+                       url(r'^about$', views.simple, kwargs={"template":"about.html"}, name='about'),
                        url(r'^debug1$', views.debug1, name='debug1'),
                        #url(r'^task/view/(?P<task_id>\d+)/$', views.task_view, name='task_view'),
                        #url(r'^test/run/(?P<tc_id>\d+)/(?P<tc_task_id>\d+)/$', views.tc_run_view, name='tc_run_view'), # old one
