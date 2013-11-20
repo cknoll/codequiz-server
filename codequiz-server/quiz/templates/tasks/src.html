@@ -1,11 +1,10 @@
 <!-- ==> start: src.html -->
 {% if multiline %}
-    <pre class="src{% if comment %} comment {% endif %}">
-        {{ text }}
-    </pre>
+    <pre class="src{% if comment %} comment {% endif %}">{{ text }}</pre>
 {% else %}
     <span class="src{% if comment %} comment {% endif %}">
         {{ text }}
     </span>
 {% endif %}
+<br/>
 <!-- ==> end: src.html -->
