@@ -43,11 +43,7 @@ def index_old(request):
 
 
 def index(request):
-    """
-    temporary solution for the python lecture 2013/07/08
-    """
-
-    return task_collection_view(request, 1)
+    return render(request, 'tasks/cq0_index.html')
 
 
 def aux_get_task_from_tc_ids(tc_id, tc_task_id=None, next_task=False):
