@@ -154,6 +154,8 @@ class QuestionSegment(Segment):
 
         res = []
         for s in self.solution:
+            # TODO: rememove the default arg here (implement unit test before)
+            # because solutions now has a unified_solution_structure
             content = getattr(s, 'content', s)
             #            IPS()
             res.append(user_solution == unicode(content))
@@ -307,6 +309,7 @@ def preprocess_task_from_db(task):
     return None
 
 
+#TODO: obsolete
 def debug_task():
     path = "aux/task1.json"
     with open(path, 'r') as myfile:
