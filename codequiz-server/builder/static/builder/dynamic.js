@@ -335,7 +335,7 @@ function updateWatchdogs() {
  */
 function updateTask() {
     var dict = exportValues();
-    $("input[name='body_data']").val(JSON.stringify(dict, null, 4));
+    $("input[name='body_data']").val(JSON.stringify(dict));
 }
 
 /**
@@ -499,15 +499,20 @@ $(document).ready(function () {
 });
 
 /**
- * Convert a textarea into an ACE editor
- * @param textarea
+ * Convert textareas into ACE editors
+ * @param textareas
  */
-function transformTextAreaToACE(textarea) {
-    var content = textarea.val();
+function transformTextAreaToACE(textareas) {
+    var $filtered_textareas = textareas.filter(".source").not(".ace").not(".no-ace");
 
-    textarea.filter(".source").not(".ace").not(".no-ace").acedInitTA({theme: 'solarized_light', mode: 'python'});
-    textarea.addClass("ace");
-    textarea.data('ace-div').acedSession().setValue(content);
+    $.each($filtered_textareas, function (index, value) {
+        var textarea = $filtered_textareas.eq(index);
+        var content = textarea.val();
+
+        textarea.acedInitTA({theme: 'solarized_light', mode: 'python'});
+        textarea.addClass("ace");
+        textarea.data('ace-div').acedSession().setValue(content);
+    });
 }
 
 /**
