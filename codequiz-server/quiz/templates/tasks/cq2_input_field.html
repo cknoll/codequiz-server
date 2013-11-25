@@ -4,11 +4,10 @@
     <div style="margin-left:-110px;text-align: right; width:100px; float: left">
         {{ question_counter }}.
     </div>
-
     {% if text_slots.0.type == "source" %}
         <pre class="src">{{ text_slots.0.content }}</pre>
     {% else %}
-        <span class="normal">{{ text_slots.0.content | safe }}</span>
+        <span class="normal">{{ text_slots.0.content|safe }}</span>
     {% endif %}
 </div>
 <div class="grid_4{% if not print_solution %} suffix_4 omega{% endif %}" id="input_field">
