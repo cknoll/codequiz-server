@@ -5,7 +5,7 @@ from django import forms
 
 from builder import BuilderTextArea
 from quiz.models import Task, TaskCollection, TC_Membership, QuizResult
-
+from django.core.urlresolvers import reverse
 
 class TC_MembershipInline(admin.TabularInline):
     model = TC_Membership
@@ -33,7 +33,14 @@ class TaskAdmin(admin.ModelAdmin):
     includes a filter by author, more meta data in the list view, hides unnecessary fields,
     replaces the text field element with a sophisticated code editor
     """
-    list_display = ['id', 'title', 'pub_date', 'revision']
+
+    def direct_link(self, obj):
+        return '<a href="'+ reverse('quiz_ns:explicit_task_view',  kwargs={'task_id': obj.id}) +'">Preview…</a>'
+
+    direct_link.short_description = ''
+    direct_link.allow_tags = True
+
+    list_display = ['id', 'title', 'pub_date', 'revision', 'direct_link']
     list_display_links = ['title']
     search_fields = ['title']
     date_hierarchy = 'pub_date'
