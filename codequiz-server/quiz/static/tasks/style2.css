@@ -178,10 +178,6 @@ pre {
     color: #233f62;
 }
 
-.pseudo_cell {
-    vertical-align: top;
-}
-
 #input_field {
     text-align: right;
     /*     color: #233f62; */

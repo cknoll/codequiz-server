@@ -1,39 +1,27 @@
 <!-- ==> start: cbox.html -->
 
-            <div class="grid_4 alpha" id="pseudo_cell">
-                {{question_counter}}. &nbsp; 
-                {% if text_slots.0.type = "source" %}
-                    <pre class="src cell_4">{{ text_slots.0.content }}</pre>
-                {% else %}
-                    <span class="normal">{{ text_slots.0.content }}</span>
-                {% endif %}
-                
-            </div>
-            
-            <div class="grid_3" id="pseudo_cell">
-            &nbsp;    
-                {% if text_slots.1.type = "source" %}
-                    <pre class="src">{{ text_slots.1.content }}</pre>
-                {% else %}
-                    <span class="normal">{{ text_slots.1.content }}</span>
-                {% endif %}
-                
-            </div>
-            
-            <div class="grid_1" id="input_field">
-                    <label>
-                        <input name="cbox_idx_{{ idx }}" type="checkbox" {% if user_solution == "True" %} checked="checked" {% endif %}>
-                    </label>
-                    {# unchecked cboxes are not contained in the form data -> hidden companion#}
-                    <input type="hidden" name="hidden_cbox_idx_{{ idx }}" value="foo">
-            </div>
-            
-            <div class="grid_4 omega" id="pseudo_cell">
-            {% if print_solution %}
-                <pre class="{{ css_class }}">{{ printed_solution }}</pre>
-            {% else %}
-                &nbsp;
-            {% endif %}
-            </div>
+<div class="grid_4 alpha">
+    <div style="margin-left:-110px;text-align: right; width:100px; float: left">
+        {{ question_counter }}.
+    </div>
+
+    {% if text_slots.0.type == "source" %}
+        <pre class="src cell_4">{{ text_slots.0.content }}</pre>
+    {% else %}
+        <span class="normal">{{ text_slots.0.content | safe }}</span>
+    {% endif %}
+
+</div>
+
+<div class="grid_4{% if not print_solution %} suffix_4 omega{% endif %}" id="input_field">
+    <input name="answer_{{ idx }}" type="checkbox" {% if user_solution == "on" %} checked="checked" {% endif %}>
+</div>
+
+{% if print_solution %}
+    <div class="grid_4 omega" id="pseudo_cell">
+        <pre class="{{ css_class }}">{{ printed_solution }}</pre>
+    </div>
+{% endif %}
+
 <!-- ==> end: cbox.html -->
 

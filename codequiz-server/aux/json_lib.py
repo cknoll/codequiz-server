@@ -53,9 +53,9 @@ class DictContainer(object):
         return "<DC:%s>" % self.dc_name
 
 
-def aux_preprocess_user_solution(us):
-    us = us.replace('\r', '')
-    return us
+def aux_remove_carriage_returns(solution):
+    solution = solution.replace('\r', '')
+    return solution
 
 #TODO: Unit-Tests
 #TODO: obvious problem: "x = 'Hello World'" -> "x='HelloWorld'"
@@ -185,16 +185,21 @@ class QuestionSegment(Segment):
         for s in self.solution:
             # TODO: rememove the default args here (implement unit test before)
             # because solutions now has a unified_solution_structure
-            content = unicode( getattr(s, 'content', s) )
+            solution_content = unicode( getattr(s, 'content', s) )
             # space replacement only should take place for code
-            sol_type = getattr(s, 'type', 'text')
+            sol_type = getattr(s, 'type', 'normal')
 
             if sol_type == "source":
-                test_content = aux_remove_needless_spaces(content)
-                res.append(user_test_solution == test_content)
-            else:
-                # no internal spaces have are removed
-                res.append(user_solution == content)
+                solution_content = aux_remove_needless_spaces(solution_content)
+
+            if solution_content in ("True", "False"):
+                if user_solution == "on":
+                    user_solution = "True"
+                else:
+                    user_solution = "False"
+            print("compare user: %s with task: %s" % (user_solution, solution_content))
+
+            res.append(user_solution == solution_content)
 
         return any(res)
 
@@ -213,11 +218,14 @@ class QuestionSegment(Segment):
 
 
         # TODO : handle leading spaces properly (already in self.solution)
-        user_solution = aux_preprocess_user_solution(user_solution)
+        user_solution = aux_remove_carriage_returns(user_solution)
+
+        print("solution for segment %d: %s (%s)" % (self.idx, user_solution, self.solution))
 
         # TODO: more sophisticated test here (multiple solutions)
         self.user_was_correct = self.test_user_was_correct(user_solution)
         self.context['prefilled_text'] = user_solution
+        self.context['user_solution'] = user_solution
 
         if self.user_was_correct:
             self.context['css_class'] = "sol_right"
@@ -293,8 +301,10 @@ class RadioList(QuestionSegment):
     pass
 
 
-typestr_to_class_map = {'text': Text, 'source': Src,
-                        'input': InputField, 'check': CBox}
+typestr_to_class_map = {'text': Text,
+                        'source': Src,
+                        'input': InputField,
+                        'check': CBox}
 
 
 # our json format "specification" by example

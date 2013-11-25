@@ -123,7 +123,7 @@ def get_task_to_process(post_dict):
     """
 
     task_id = post_dict.get('meta_task_id', None)
-
+    # TODO: simplify!
     if 'meta_no_form' in post_dict:
         task = aux_get_json_task(task_id=task_id)
         return task
@@ -194,6 +194,26 @@ def debug_main_block_object(request, task):
 
     user_solution = aux_task_user_solution(request, task.solution_flag)
 
+    # build a list of expected solutions, to compare received solutions to
+    # and fill the missing ones with empty strings
+    if user_solution is not None:
+        expected_solutions = []
+        question_index = 0
+
+        for segment in segment_list:
+            expected_solutions.append(question_index)
+            question_index += 1
+        user_solution_keys = user_solution.keys()
+        missing_solutions = []
+        for sol in expected_solutions:
+            if sol not in user_solution:
+                missing_solutions.append((sol, ""))
+        user_solution.update(dict(missing_solutions))
+
+        print("missing", missing_solutions)
+        print("all", user_solution)
+
+
     if task.solution_flag:
         button_list = ['result', 'next']
     else:
@@ -256,29 +276,11 @@ def get_solutions_from_post(request):
     items = request.POST.items()
     items.sort()
 
-    le_solution = [(k, v) for k, v in items if k.startswith('le')]
+    print("items", items)
 
-    # Problem: unchecked cboxes are not contained in request.POST
-    # solution: every cbox has a hidden companion with the name:
-    # hidden_<cbox_name>
+    transformed_items = [(int(k.split("_")[1]), v) for k, v in items if k.startswith("answer")]
 
-    checkbox_names = [k[7:] for k, v in items if k.startswith('hidden_cbox')]
-
-    #create a list of tuples like [('cbox1', 'True'), ('cbox2', 'False')]
-    checkbox_results = [(cbn, str(cbn in request.POST)) for cbn in checkbox_names]
-
-    # new keys: just the index (number after '_idx_'-part of the name)
-
-    items = le_solution + checkbox_results
-
-    new_items = []
-    for k, v in items:
-        assert '_idx_' in k
-        idx = k.split('_idx_')[-1]
-        new_items.append((int(idx), v))
-
-    res = dict(new_items)
-    return res
+    return dict(transformed_items)
 
 
 def aux_task_button_strings(button_list):
