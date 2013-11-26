@@ -103,3 +103,7 @@ select.inline {
 .handle {
     cursor: move;
 }
+
+.mce-panel:not(.mce-edit-area) {
+    width: 89% !important;
+}

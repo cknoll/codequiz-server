@@ -20,6 +20,7 @@ class BuilderTextArea(Textarea):
         js = (
             'jquery/jquery-1.10.2.min.js',
             'jquery/jquery-ui-1.10.3.custom.min.js',
+            'tinymce/tinymce.min.js',
             'ace/ace.js',
             'ace/require.js',
             'builder/aced.js',

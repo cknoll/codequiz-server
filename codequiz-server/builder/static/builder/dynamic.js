@@ -6,8 +6,6 @@ String.prototype.lineCount = function () {
     return this.lines().length;
 }
 
-//var $ = django.jQuery;  // bind Djangos jQuery to the shortcut "$", or else not much will work
-
 /**
  * Add a segment to the list
  * @param {Boolean} animated Animated if true
@@ -24,7 +22,6 @@ function addSegmentAnimated(animated, segment) {
     }
 
     updateWatchdogs();
-//    updateTask();
 }
 
 /**
@@ -36,12 +33,10 @@ function removeSegmentAnimated(animated, segment) {
     if (animated) {
         segment.slideUp(300, function () {
             segment.remove();
-//            updateTask();
         });
     }
     else {
         segment.remove();
-//        updateTask();
     }
 }
 
@@ -164,7 +159,6 @@ function createSegment(inputType, data) {
             segment.append($input);
             addTypeSelection($input, "inline", contentType);
         }
-
     }
 
     // depending on the type of segment we want to insert, add some input fields
@@ -304,12 +298,16 @@ function updateWatchdogs() {
         if (selectedValue == "source") {
             $prev.addClass("source");
             if ($prev.is("textarea.source")) {
+                transformFromMCE($prev);
+
                 transformTextAreaToACE($prev);
             }
         } else if (selectedValue == "text") {
             $prev.removeClass("source");
             if ($prev.is("textarea.ace")) {
                 transformACEToTextarea($prev);
+
+                transformToMCE($prev);
             }
         }
     });
@@ -318,22 +316,16 @@ function updateWatchdogs() {
         event.preventDefault();
         removeSegmentAnimated(true, $(this).parent("li"));
     });
-
-//    // mark input and textarea fields for automatic updating of hidden input field that stores the JSON
-//    $("li input, li textarea, li select").addClass("watch");
-//    console.log("watch", $(".watch"));
-//    $(".watch").change(function () {
-//        updateTask();
-//    });
-//    $(".watch").keyup(function () {
-//        updateTask();
-//    });
 }
 
 /**
  * update the hidden input field that holds the generated JSON
  */
 function updateTask() {
+    $.each($("textarea.wide").not(".source"), function (index, value) {
+        $(this).tinymce().save();
+    });
+
     var dict = exportValues();
     $("input[name='body_data']").val(JSON.stringify(dict));
 }
@@ -492,6 +484,10 @@ $(document).ready(function () {
         transformTextAreaToACE($("textarea.source"));
     }
 
+    if ($("textarea.wide").not(".source").length > 0) {
+        transformToMCE($("textarea.wide").not(".source"));
+    }
+
     $("#task_form").submit(function (event) {
         updateTask();
         return;
@@ -524,6 +520,32 @@ function transformACEToTextarea(textarea) {
     textarea.filter(".ace").removeClass("ace");
 }
 
+function transformToMCE(textareas) {
+    textareas.each(function () {
+        $(this).attr('id', Math.random().toString());
+
+        var editarea = $(this).attr("id");
+
+        var ed = new tinymce.Editor(editarea, {
+            inline: false,
+            mode: "textareas",
+            plugins: [
+                "charmap fullscreen link paste wordcount anchor insertdatetime lists preview searchreplace table"
+            ],
+            toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link",
+            statusbar: false,
+            menubar: false
+        }, tinymce.EditorManager);
+        ed.render();
+
+        $("div.mce-tinymce").css({"display": ""}); // hack, to remove strange empty lines before and after editor
+    });
+}
+
+function transformFromMCE(textarea) {
+    textarea.tinymce().remove();
+}
+
 /**
  * Builds up the segment list from the JSON object that describes it
  *
@@ -550,10 +572,29 @@ $(function () {
         handle: ".handle",
         cursor: "move",
         start: function (e, ui) {
+            var textareaID = $(ui.item).find('textarea.wide').not("source").attr('id');
+            if (textareaID) {
+                tinyMCE.execCommand('mceRemoveEditor', false, textareaID);
+            }
+
             $(ui.placeholder).hide(300);
         },
         change: function (e, ui) {
             $(ui.placeholder).hide().show(300);
+        },
+        stop: function (e, ui) {
+            var textarea = $(ui.item).find('textarea.wide').not("source");
+            var textareaID = textarea.attr('id');
+            if (textareaID) {
+                console.log("ta id", textareaID);
+
+                var ed = $('#'+textareaID).tinymce();
+                var content = $('#'+textareaID).html();
+                ed.remove();
+                textarea.html(content);
+
+                transformToMCE(textarea);
+            }
         }
     });
 });
