@@ -19,7 +19,7 @@
     <input type="hidden" name="meta_tc_id" value="{{ mb.tc_id }}">
     <input type="hidden" name="meta_tc_task_id" value="{{ mb.tc_task_id }}">
 
-    <h2><span id="color1">Task:</span> "{{ mb.task.title }}"</h2>
+    <h2><span class="color1">Task:</span> "{{ mb.task.title }}"</h2>
 
     {% for s in mb.html_strings %}
         {{ s|safe }}

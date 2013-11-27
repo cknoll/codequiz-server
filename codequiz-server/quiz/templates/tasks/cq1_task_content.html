@@ -5,7 +5,7 @@
 
     {% csrf_token %} <!-- protect against cross site reference forgery -->
 
-    <h2><span id="color1">Task:</span> "{{ task.title }}"</h2>
+    <h2><span class="color1">Task:</span> "{{ task.title }}"</h2>
 
     {% if error_message %}
         <p><strong>{{ error_message }}</strong></p>

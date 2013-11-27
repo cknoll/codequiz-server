@@ -13,12 +13,12 @@
 
 </div>
 
-<div class="grid_4{% if not print_solution %} suffix_4 omega{% endif %}" id="input_field">
+<div class="input_field grid_4{% if not print_solution %} suffix_4 omega{% endif %}">
     <input name="answer_{{ idx }}" type="checkbox" {% if user_solution == "on" %} checked="checked" {% endif %}>
 </div>
 
 {% if print_solution %}
-    <div class="grid_4 omega" id="pseudo_cell">
+    <div class="grid_4 omega">
         <pre class="{{ css_class }}">{{ printed_solution }}</pre>
     </div>
 {% endif %}

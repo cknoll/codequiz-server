@@ -167,6 +167,14 @@ pre {
     padding: 2px;
 }
 
+textarea {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 2px;
+    border: 1px solid #aaa;
+    resize:vertical;
+}
+
 #css_version {
     font-size: 50%;
     /*     color: #F90; */
@@ -174,20 +182,33 @@ pre {
     font-weight: normal;
 }
 
-#color1 {
+.color1 {
     color: #233f62;
 }
 
-#input_field {
+.input_field {
     text-align: right;
     /*     color: #233f62; */
 }
 
 .src {
     border: 1px solid #aaa;
-    /*     padding: .5em; */
-    /*     background-color:#eaeaea; */
     font-family: Fixedsys, Courier, monospace;
+    line-height: 1em;
+}
+
+/* for gap text, dashed line instead of frame around input field */
+input.gap {
+    background-color: transparent;
+    border-style: dashed;
+    border-width: 0px 0px 1px 0px;
+    border-color: black;
+    box-shadow: none !important;
+}
+
+/* no glowing outline, when editing */
+input.gap:focus {
+    outline: none;
 }
 
 .cell_4 {
