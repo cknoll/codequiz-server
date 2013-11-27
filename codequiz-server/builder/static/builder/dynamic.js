@@ -82,7 +82,7 @@ function createSegment(inputType, data) {
             segment.addClass("comment");
             segment.attr("type", "comment");
         }
-        $textarea = $("<textarea>", {
+        var $textarea = $("<textarea>", {
             cols: cols, rows: rows,
             placeholder: placeHolder,
             text: content
@@ -119,6 +119,7 @@ function createSegment(inputType, data) {
 
         segment.append($textarea);
         addTypeSelection($textarea, cssClass, contentType);
+        return $textarea;
     }
 
     /**
@@ -164,15 +165,15 @@ function createSegment(inputType, data) {
     // depending on the type of segment we want to insert, add some input fields
     switch (inputType) {
         case 'text':
-            addTextArea(inputType, "Text...", data, 100, "right");
-            break;
-
-        case 'source':
-            addTextArea(inputType, "Text...", data, 100, "right");
+            var $textarea = addTextArea(inputType, "Text...", data, 100, "right");
+            // make newly added textarea a tinyMCE editor
+            transformToMCE($textarea);
             break;
 
         case 'comment':
-            addTextArea(inputType, "Comment...", data, 100, "right");
+            var $textarea = addTextArea(inputType, "Comment...", data, 100, "right");
+            // make newly added textarea a tinyMCE editor
+            transformToMCE($textarea);
             break;
 
         case 'input':
@@ -484,10 +485,6 @@ $(document).ready(function () {
         transformTextAreaToACE($("textarea.source"));
     }
 
-    if ($("textarea.wide").not(".source").length > 0) {
-        transformToMCE($("textarea.wide").not(".source"));
-    }
-
     $("#task_form").submit(function (event) {
         updateTask();
         return;
@@ -521,25 +518,29 @@ function transformACEToTextarea(textarea) {
 }
 
 function transformToMCE(textareas) {
-    textareas.each(function () {
-        $(this).attr('id', Math.random().toString());
+    // the delay is a hack to make sure textarea is really added before transforming it.
+    // strange that this is necessary, because it really shouldn't...
+    setTimeout(function () {
+        textareas.each(function () {
+            $(this).attr('id', Math.random().toString());
 
-        var editarea = $(this).attr("id");
+            var editarea = $(this).attr("id");
 
-        var ed = new tinymce.Editor(editarea, {
-            inline: false,
-            mode: "textareas",
-            plugins: [
-                "charmap fullscreen link paste wordcount anchor insertdatetime lists preview searchreplace table"
-            ],
-            toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link",
-            statusbar: false,
-            menubar: false
-        }, tinymce.EditorManager);
-        ed.render();
+            var ed = new tinymce.Editor(editarea, {
+                inline: false,
+                mode: "textareas",
+                plugins: [
+                    "charmap fullscreen link paste wordcount anchor insertdatetime lists preview searchreplace table"
+                ],
+                toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link",
+                statusbar: false,
+                menubar: false
+            }, tinymce.EditorManager);
+            ed.render();
 
-        $("div.mce-tinymce").css({"display": ""}); // hack, to remove strange empty lines before and after editor
-    });
+            $("div.mce-tinymce").css({"display": ""}); // hack, to remove strange empty lines before and after editor
+        });
+    }, 1);
 }
 
 function transformFromMCE(textarea) {
@@ -583,13 +584,13 @@ $(function () {
             $(ui.placeholder).hide().show(300);
         },
         stop: function (e, ui) {
-            var textarea = $(ui.item).find('textarea.wide').not("source");
+            var textarea = $(ui.item).find('textarea.wide').not("source").first();
             var textareaID = textarea.attr('id');
             if (textareaID) {
-                console.log("ta id", textareaID);
+                var $ta = $('#' + textareaID);
+                var ed = $ta.tinymce();
+                var content = $ta.html();
 
-                var ed = $('#'+textareaID).tinymce();
-                var content = $('#'+textareaID).html();
                 ed.remove();
                 textarea.html(content);
 
