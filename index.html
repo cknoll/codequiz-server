@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Slate is a responsive theme for GitHub Pages" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>CodeQuiz : An automated coding skill quiz app for django</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/cknoll/codequiz-server">View on GitHub</a>
+
+          <h1 id="project_title">CodeQuiz</h1>
+          <h2 id="project_tagline">An automated coding skill quiz app for django</h2>
+
+          <section id="downloads">
+            <a class="zip_download_link" href="#">Download this project as a .zip file</a>
+            <a class="tar_download_link" href="#">Download this project as a tar.gz file</a>
+          </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>Dependencies</h2>
+        <h3>Django apps</h3>
+        <p>If you don't have these modules already:</p>
+        <ul>
+          <li><code>django-generic-ratings</code></li>
+          <li><code>django-jquery</code></li>
+          <li><code>django-taggit-autosuggest</code></li>
+          <li><code>django-feedback</code> (don't use pip for this one, it's included in the repo)</li>
+          <li><code>Django-MathJax</code></li>
+          <li><code>django-ace</code> (also: don't use pip, it's too old, therefore it's included)</li>
+        </ul>
+
+        <em>(optional: <code>pip install ipython</code>)</em>
+
+        <h3>jQuery and Plugins</h3>
+        <ul>
+          <li>jQuery Star Rating Plugin</li>
+          <li>You need jQuery + jQueryUI as well</li>
+          <li>All of this is already in the repository, or linked from an external source. No need to add anything.</li>
+        </ul>
+
+        <h3>Deployment info</h3>
+        <p>To deploy the static files on the production server, you have to set the right path for <code>STATIC_ROOT</code> in <code>codequiz/static_root.py</code>, then run <code>python&nbsp;manage.py&nbsp;collectstatic</code>. In <code>settings.py</code> there is some code that will conditionally load the server specific setting, which should not be in the git repository.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Slate theme maintained by <a href="https://github.com/jsncostello">Jason Costello</a></p>
+      </footer>
+    </div>
+
+  </body>
+</html>
