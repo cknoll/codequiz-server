@@ -455,7 +455,7 @@ $(document).ready(function () {
     $("#builderbuttons")
         .append("<a class='add' href='#' type='text'>Text</a>")
         .append("<a class='add' href='#' type='comment'>Comment</a>")
-        .append("<a class='add' href='#' type='input'>Line Entry</a>")
+        .append("<a class='add' href='#' type='input'>Input Field</a>")
         .append("<a class='add' href='#' type='check'>Check</a>")
         .append("<input type='hidden' name='body_data' value='abs'>");
 
