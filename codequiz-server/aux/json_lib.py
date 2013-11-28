@@ -4,14 +4,12 @@ import re
 import xml.etree.ElementTree as ET
 
 import json
+import shlex
 
 from IPython import embed as IPS
 
 """
-Currently, the body of a task is stored in a custom xml format.
--> better: json
-
-this module should be the json backend of the code-quiz server
+this module is the json backend of the code-quiz server
 """
 
 
@@ -58,15 +56,15 @@ def aux_remove_carriage_returns(solution):
     return solution
 
 #TODO: Unit-Tests
-#TODO: obvious problem: "x = 'Hello World'" -> "x='HelloWorld'"
 # This gets more involved if multiline strings are considered
 def aux_remove_needless_spaces(string):
     """
-    converts "x =  8 +3" into "x=8+3"
-
-    this makes solution checking independend of spacing flavour
+    converts "x =  8 +3" into "x = 8 + 3"
+    preserves spaces inside quotes, adds one space inside parentheses on each side, removes extra spaces
+    applying this treatment to both user input and given solution makes a good test for sameness disregarding whitespace
     """
 
+    print("before", string)
     lines = string.split('\n')
     new_lines = []
     for line in lines:
@@ -74,15 +72,19 @@ def aux_remove_needless_spaces(string):
         if stripped == "":
             new_lines.append(line)
         else:
-            spaces_canceld = stripped.replace(" ", "")
-            new_lines.append(line.replace(stripped, spaces_canceld))
+            # :DOC: http://pymotw.com/2/shlex/
+            lexer = shlex.shlex(stripped)
+            tokens = []
+            for token in lexer:
+                tokens.append(token)
+            line_spaces_removed = " ".join(tokens)
 
-    result = "\n".join(new_lines).rstrip()
+            new_lines.append(line_spaces_removed)
+
+    result = u"\n".join(new_lines).rstrip()
+    print("after", result)
     assert type(string) == type(result)
     return result
-
-
-
 
 
 class Segment(object):
@@ -179,25 +181,23 @@ class QuestionSegment(Segment):
 
     def test_user_was_correct(self, user_solution):
 
-        user_test_solution = aux_remove_needless_spaces(user_solution)
-
         res = []
         for s in self.solution:
-            # TODO: rememove the default args here (implement unit test before)
+            # TODO: remove the default args here (implement unit test before)
             # because solutions now has a unified_solution_structure
-            solution_content = unicode( getattr(s, 'content', s) )
+            solution_content = unicode(getattr(s, 'content', s))
             # space replacement only should take place for code
             sol_type = getattr(s, 'type', 'normal')
 
             if sol_type == "source":
                 solution_content = aux_remove_needless_spaces(solution_content)
+                user_solution = aux_remove_needless_spaces(user_solution)
 
             if solution_content in ("True", "False"):
                 if user_solution == "on":
                     user_solution = "True"
                 else:
                     user_solution = "False"
-            print("compare user: %s with task: %s" % (user_solution, solution_content))
 
             res.append(user_solution == solution_content)
 
@@ -354,7 +354,6 @@ def preprocess_task_from_db(task):
 
     # task is changed, no need to return anything
     return None
-
 
 #TODO: obsolete
 def debug_task():
