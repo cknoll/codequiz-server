@@ -2,9 +2,9 @@
 
 <div class="grid_12 alpha omega" style="padding: 0.5em 0px">
     {% if multiline %}
-        <pre class="src{% if comment %} comment {% endif %}">{{ text }}</pre>
+        <pre class="source{% if comment %} comment {% endif %}">{{ text }}</pre>
     {% else %}
-        <span class="src{% if comment %} comment {% endif %}">
+        <span class="source{% if comment %} comment {% endif %}">
         {{ text }}
     </span>
     {% endif %}

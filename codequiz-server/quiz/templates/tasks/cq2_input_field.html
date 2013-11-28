@@ -5,19 +5,19 @@
         {{ question_counter }}.
     </div>
     {% if text_slots.0.type == "source" %}
-        <pre class="src">{{ text_slots.0.content }}</pre>
+        <pre class="source">{{ text_slots.0.content }}</pre>
     {% else %}
         <span class="normal">{{ text_slots.0.content|safe }}</span>
     {% endif %}
 </div>
 <div class="input_field grid_4{% if not print_solution %} suffix_4 omega{% endif %}">
-    <textarea class="disablecopypaste" style="width: 100%" name="answer_{{ idx }}" rows="{{ lines }}"
+    <textarea class="disablecopypaste {{ answer_class }}" style="width: 100%" name="answer_{{ idx }}" rows="{{ lines }}"
               autocomplete="off">{{ prefilled_text }}</textarea>
 </div>
 
 {% if print_solution %}
     <div class="grid_4 omega">
-        <pre class="{{ css_class }}">{{ printed_solution }}</pre>
+        <pre class="{{ css_class }} {{ solution_class }}">{{ printed_solution }}</pre>
     </div>
 {% endif %}
 

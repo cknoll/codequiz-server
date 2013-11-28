@@ -165,6 +165,13 @@ pre {
     margin-top: 0px;
     margin-bottom: 0px;
     padding: 2px;
+    font-size: 1em;
+    line-height: 1em;
+}
+
+.source {
+    border: 1px solid #aaa;
+    font-family: Fixedsys, Courier, monospace;
 }
 
 textarea {
@@ -173,6 +180,12 @@ textarea {
     padding: 2px;
     border: 1px solid #aaa;
     resize:vertical;
+    font-size: 12px;
+    line-height: 12px;
+}
+
+textarea.source {
+    font-family: Fixedsys, Courier, monospace;
 }
 
 #css_version {
@@ -191,11 +204,7 @@ textarea {
     /*     color: #233f62; */
 }
 
-.src {
-    border: 1px solid #aaa;
-    font-family: Fixedsys, Courier, monospace;
-    line-height: 1em;
-}
+
 
 /* for gap text, dashed line instead of frame around input field */
 input.gap {
@@ -218,20 +227,17 @@ input.gap:focus {
 }
 
 .sol_right {
-    border: 1px solid #aaa;
-    padding: .5em;
+    border: 1px solid #21781e;
     font-family: Fixedsys, Courier, monospace;
-    color: #008000;
-
-    /*     font-size: 80%; */
+    color: black;
+    background-color: #9dff7c;
 }
 
 .sol_wrong {
-    border: 1px solid #aaa;
-    padding: .5em;
+    border: 1px solid #941214;
     font-family: Fixedsys, Courier, monospace;
-    color: #800000;
-    font-size: 90%;
+    color: white;
+    background-color: #c65543;
 }
 
 #main_container {
