@@ -187,6 +187,10 @@ function createSegment(inputType, data) {
             // make newly added textarea a tinyMCE editor
             transformToMCE($textarea);
             break;
+            
+        case 'source':
+            var $textarea = addTextArea(inputType, "Source...", data, 100, "right");
+            break;
 
         case 'source':
             var $textarea = addTextArea(segment, inputType, "Source...", data, 100, "right");
