@@ -62,9 +62,9 @@ function createSegment(inputType, data) {
      * Add a textarea
      * @param {String} type The kind of textarea (currently only distinguishes "text" and "comment")
      */
-    function addTextArea(type, placeHolder, textareaData, cols, cssClass) {
+    function addTextArea(node, type, placeHolder, textareaData, cols, cssClass, position) {
         var content = "";
-        var contentType = "";
+        var contentType = type;
         var rows = 1;
         var isComment;
         if (textareaData) {
@@ -74,13 +74,13 @@ function createSegment(inputType, data) {
             isComment = textareaData["comment"];
         }
 
-        if (cols > 20) {
+        if (cols > 25) {
             rows = 5;
         }
 
         if (isComment) {
-            segment.addClass("comment");
-            segment.attr("type", "comment");
+            node.addClass("comment");
+            node.attr("type", "comment");
         }
         var $textarea = $("<textarea>", {
             cols: cols, rows: rows,
@@ -88,7 +88,7 @@ function createSegment(inputType, data) {
             text: content
         });
 
-        if (cols > 20) {
+        if (cols > 25) {
             $textarea.addClass("wide");
         }
         else {
@@ -117,9 +117,27 @@ function createSegment(inputType, data) {
             $textarea.addClass("source");
         }
 
-        segment.append($textarea);
-        addTypeSelection($textarea, cssClass, contentType);
+        if (position) {
+            $textarea.hide();
+            node.children("select").eq(position - 1).after($textarea);
+            addTypeSelection($textarea, cssClass, contentType);
+            $textarea.slideDown(300);
+            $textarea.next().slideDown(300);
+        }
+        else {
+            node.append($textarea);
+            addTypeSelection($textarea, cssClass, contentType);
+        }
         return $textarea;
+    }
+
+    function removeTextAreaAnimated(textarea) {
+        var typeSelection = textarea.next();
+        typeSelection.slideUp(300);
+        textarea.slideUp(300, function () {
+            textarea.remove();
+            typeSelection.remove();
+        });
     }
 
     /**
@@ -127,7 +145,7 @@ function createSegment(inputType, data) {
      * @param {String} key The key to retrieve data from JSON
      * @param {String} placeHolder Placeholder text for the input field
      */
-    function addTextInput(placeHolder, inputData, position) {
+    function addTextInput(node, placeHolder, inputData, position) {
         var content = "";
         var contentType = "";
         var isComment;
@@ -151,13 +169,13 @@ function createSegment(inputType, data) {
         }
         if (position) {
             $input.hide();
-            segment.children("select").eq(position - 1).after($input);
+            node.children("select").eq(position - 1).after($input);
             addTypeSelection($input, "inline", contentType);
             $input.show(300);
             $input.next().show(300);
         }
         else {
-            segment.append($input);
+            node.append($input);
             addTypeSelection($input, "inline", contentType);
         }
     }
@@ -165,83 +183,146 @@ function createSegment(inputType, data) {
     // depending on the type of segment we want to insert, add some input fields
     switch (inputType) {
         case 'text':
-            var $textarea = addTextArea(inputType, "Text...", data, 100, "right");
+            var $textarea = addTextArea(segment, inputType, "Text...", data, 100, "right");
             // make newly added textarea a tinyMCE editor
             transformToMCE($textarea);
             break;
 
+        case 'source':
+            var $textarea = addTextArea(segment, inputType, "Source...", data, 100, "right");
+            $textarea.addClass("source");
+            setTimeout(function () {
+                transformTextAreaToACE($textarea);
+            }, 1); // delay of 1 msec, somehow necessary, a hack in my opinion
+            break;
+
         case 'comment':
-            var $textarea = addTextArea(inputType, "Comment...", data, 100, "right");
+            var $textarea = addTextArea(segment, inputType, "Comment...", data, 100, "right");
             // make newly added textarea a tinyMCE editor
             transformToMCE($textarea);
             break;
 
         case 'input':
+        {
+            var $div = $("<div>");
+            $div.addClass("column");
+            $div.css({"width": "30%"});
+            segment.append($div);
+
             if (data) {
                 var content = data["content"];
                 var count = content.length;
                 for (var i = 0; i < count; i++) {
-                    addTextInput("Text", content[i]);
+                    addTextArea($div, "text", "Text", content[i], 25, "inline");
                 }
             }
             else {
-                addTextInput("Text");
+                addTextArea($div, "text", "Text", "", 25, "inline");
             }
 
-            var $addTextInputButton = $('<a href="#" class="addinput">');
-            $addTextInputButton.append('<span class="fa-stack">' +
-                '<i class="fa fa-circle fa-stack-2x"></i>' +
-                '<i class="fa fa-plus fa-stack-1x fa-inverse"></i>' +
-                '</span></i>');
-            $addTextInputButton.click(function (e) {
-                e.preventDefault();
-                var numTextInputs = segment.children("input").length;
-                addTextInput("Text", null, numTextInputs);
-                updateWatchdogs();
-            });
-
-            var $removeTextInputButton = $('<a href="#" class="removeinput">');
-            $removeTextInputButton.append('<span class="fa-stack">' +
-                '<i class="fa fa-circle fa-stack-2x"></i>' +
-                '<i class="fa fa-minus fa-stack-1x fa-inverse"></i>' +
-                '</span></i>');
-            $removeTextInputButton.click(function (e) {
-                e.preventDefault();
-                removeTextInput(1);
-                updateWatchdogs();
-            });
-            segment.append($addTextInputButton);
-            segment.append($removeTextInputButton);
+            $div = $("<div>");
+            $div.addClass("column");
+            $div.css({"width": "30%"});
+            segment.append($div);
 
             var answer = null
-            solution = null;
+            var solution = null;
             if (data) {
                 answer = data["answer"];
                 solution = data["solution"];
             }
-            addTextArea("text", "Answer", answer, 20, "inline");
-            addTextArea("text", "Solution", solution, 20, "inline");
+
+            addTextArea($div, "text", "Answer", answer, 25, "inline");
+
+            $div = $("<div>");
+            $div.addClass("column");
+            $div.css({"width": "35%"});
+            segment.append($div);
+
+            if (solution) {
+                var count = solution.length;
+                if (solution instanceof Array) {
+                    for (var i = 0; i < count; i++) {
+                        addTextArea($div, "text", "Solution", solution[i], 25, "inline");
+                    }
+                }
+                else {
+                    addTextArea($div, "text", "Solution", solution, 25, "inline");
+                }
+            }
+            else {
+                addTextArea($div, "text", "Solution", "", 25, "inline");
+            }
+
+            var $addSolutionInputButton = $('<a href="#" class="addinput">');
+            $addSolutionInputButton.append('<span class="fa-stack">' +
+                '<i class="fa fa-circle fa-stack-2x"></i>' +
+                '<i class="fa fa-plus fa-stack-1x fa-inverse"></i>' +
+                '</span></i>');
+            $addSolutionInputButton.click(function (e) {
+                e.preventDefault();
+                var $node = $(this).parent();
+                var numSolutionInputs = $node.children("textarea").length;
+                addTextArea($node, "text", "Solution", "", 25, "inline", numSolutionInputs);
+                updateWatchdogs();
+            });
+
+            var $removeSolutionInputButton = $('<a href="#" class="removeinput">');
+            $removeSolutionInputButton.append('<span class="fa-stack">' +
+                '<i class="fa fa-circle fa-stack-2x"></i>' +
+                '<i class="fa fa-minus fa-stack-1x fa-inverse"></i>' +
+                '</span></i>');
+            $removeSolutionInputButton.click(function (e) {
+                e.preventDefault();
+                var $node = $(this).parent();
+                removeTextAreaAnimated($node.children("textarea").last());
+                updateWatchdogs();
+            });
+            $div.append($addSolutionInputButton);
+            $div.append($removeSolutionInputButton);
+
+            $div = $("<div>");
+            $div.addClass("clear");
+            segment.append($div);
+
             break;
+        }
 
         case 'check':
+            var $div = $("<div>");
+            $div.addClass("column");
+            $div.css({"width": "30%"});
+            segment.append($div);
+
             var solution = false;
             if (data) {
                 var content = data["content"];
                 var count = content.length;
                 for (var i = 0; i < count; i++) {
-                    addTextInput("Text", content[i]);
+                    addTextArea($div, "text", "Text", content[i], 25, "inline");
                 }
                 solution = data["solution"];
             }
             else {
-                addTextInput("Text");
+                addTextArea($div, "text", "Text", "", 25, "inline");
             }
-            segment.append("<label for='answer'>Answer</label>");
+
+            $div = $("<div>");
+            $div.addClass("column");
+            $div.css({"width": "30%"});
+            segment.append($div);
+
+            $div.append("<label for='answer'>Answer</label>");
             $checkbox = $("<input>", {name: "answer", type: "checkbox"});
             if (solution) {
                 $checkbox.prop({"checked": true});
             }
-            segment.append($checkbox);
+            $div.append($checkbox);
+
+            $div = $("<div>");
+            $div.addClass("clear");
+            segment.append($div);
+
             break;
     }
 
@@ -391,44 +472,44 @@ function exportValues() {
                 break;
 
             case 'input':
-                var content = [];
-                var $inputs = $(this).children("input");
-                var count = $inputs.length;
-                for (var i = 0; i < count; i++) {
-                    content.push(extractInput($inputs.eq(i)));
-                }
+                var $divs = $(this).children("div");
 
-                var $textareas = $(this).children("textarea");
+                var content = [extractInput($divs.eq(0).children("textarea").first())];
 
-                var $answer = $textareas.eq(0);
+                var $answer = $divs.eq(1).children("textarea").first();
                 var answerDict = {
                     "content": $answer.val(),
                     "type": $answer.next().val()
                 }
 
-                var $solution = $textareas.eq(1);
-                var solutionDict = {
-                    "content": $solution.val(),
-                    "type": $solution.next().val()
+                var $solutions = $divs.eq(2).children("textarea");
+                var solutions = [];
+
+                var count = $solutions.length;
+                for (var i = 0; i < count; i++) {
+                    var $solution = $solutions.eq(i);
+                    var solutionDict = {
+                        "content": $solution.val(),
+                        "type": $solution.next().val()
+                    }
+                    solutions.push(solutionDict);
                 }
 
                 segments.push({
                     "type": "input",
                     "content": content,
                     "answer": answerDict,
-                    "solution": solutionDict
+                    "solution": solutions
                 });
                 break;
 
             case 'check':
-                var content = [];
-                var $inputs = $(this).children("input[type='text']");
-                var count = $inputs.length;
-                for (var i = 0; i < count; i++) {
-                    content.push(extractInput($inputs.eq(i)));
-                }
+                var $divs = $(this).children("div");
 
-                var solution = $(this).children("input[type='checkbox']").first().is(':checked');
+                var content = [extractInput($divs.eq(0).children("textarea").first())];
+
+
+                var solution = $divs.eq(1).children("input[type='checkbox']").first().is(':checked');
 
                 segments.push({
                     "type": "check",
@@ -454,6 +535,7 @@ $(document).ready(function () {
 
     $("#builderbuttons")
         .append("<a class='add' href='#' type='text'>Text</a>")
+        .append("<a class='add' href='#' type='source'>Source</a>")
         .append("<a class='add' href='#' type='comment'>Comment</a>")
         .append("<a class='add' href='#' type='input'>Input Field</a>")
         .append("<a class='add' href='#' type='check'>Check</a>")
@@ -479,10 +561,6 @@ $(document).ready(function () {
     // check if it really is a JSON string and is defined and has a length
     if (typeof jsonString !== 'undefined' && jsonString.length > 0 && jsonString.charAt(0) == "{") {
         restoreFromJSON(JSON.parse(jsonString));
-    }
-
-    if ($("textarea.source").length > 0) {
-        transformTextAreaToACE($("textarea.source"));
     }
 
     $("#task_form").submit(function (event) {
