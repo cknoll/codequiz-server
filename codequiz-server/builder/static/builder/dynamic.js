@@ -530,11 +530,45 @@ function transformToMCE(textareas) {
                 inline: false,
                 mode: "textareas",
                 plugins: [
-                    "charmap fullscreen link paste wordcount anchor insertdatetime lists preview searchreplace table"
+                    "charmap code fullscreen link lists nonbreaking paste preview searchreplace table textcolor"
                 ],
-                toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link",
+                toolbar: "undo redo bold italic codebutton charmap styleselect searchreplace bullist numlist table link fullscreen code",
                 statusbar: false,
-                menubar: false
+                menubar: false,
+                setup: function (editor) {
+                    // Add a custom button
+                    editor.addButton('codebutton', {
+                        title: 'Insert Code',
+                        text: '<code>',
+                        onclick: function () {
+                            editor.focus();
+                            var selection = editor.selection;
+                            var content = selection.getContent();
+                            var node = selection.getNode();
+                            var name = node.nodeName;
+
+                            function stripCodeTag(node) {
+                                content = node.innerHTML;
+                                node.remove();
+                                selection.setContent(content);
+                            }
+
+                            if (content.length > 0) {
+                                if (name == "CODE") {
+                                    stripCodeTag(node);
+                                }
+                                else {
+                                    selection.setContent('<code>' + content + '</code>');
+                                }
+                            }
+                            else {
+                                if (name == "CODE") {
+                                    stripCodeTag(node);
+                                }
+                            }
+                        }
+                    });
+                }
             }, tinymce.EditorManager);
             ed.render();
 

@@ -104,6 +104,6 @@ select.inline {
     cursor: move;
 }
 
-.mce-panel:not(.mce-edit-area) {
+.mce-panel:not(.mce-edit-area):not(.mce-floatpanel) {
     width: 89% !important;
 }
