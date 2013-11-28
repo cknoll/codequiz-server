@@ -274,7 +274,12 @@ class InputField(QuestionSegment):
         self.make_description_cells(dc.content)
 
         self.c_lines = len(dc.answer.content.splitlines())
+        if self.c_lines == 0:
+            self.c_lines = 1
+
         self.c_prefilled_text = dc.answer.content
+        self.c_answer_class = dc.answer.type
+        self.c_solution_class = dc.solution.type;
 
         QuestionSegment.__init__(self, dc)
 
