@@ -55,7 +55,8 @@ def aux_remove_carriage_returns(solution):
     solution = solution.replace('\r', '')
     return solution
 
-#TODO: Unit-Tests
+
+# TODO: Unit-Tests
 # This gets more involved if multiline strings are considered
 def aux_remove_needless_spaces(string):
     """
@@ -64,7 +65,6 @@ def aux_remove_needless_spaces(string):
     applying this treatment to both user input and given solution makes a good test for sameness disregarding whitespace
     """
 
-    print("before", string)
     lines = string.split('\n')
     new_lines = []
     for line in lines:
@@ -75,14 +75,19 @@ def aux_remove_needless_spaces(string):
             # :DOC: http://pymotw.com/2/shlex/
             lexer = shlex.shlex(stripped)
             tokens = []
-            for token in lexer:
-                tokens.append(token)
+
+            try:
+                for token in lexer:
+                    tokens.append(token)
+            except ValueError, err:
+                tokens = ["___|||___|||___|||___|||___" + str(err)]  # definitely not the solution
+
             line_spaces_removed = " ".join(tokens)
 
             new_lines.append(line_spaces_removed)
 
     result = u"\n".join(new_lines).rstrip()
-    print("after", result)
+
     assert type(string) == type(result)
     return result
 
@@ -216,11 +221,8 @@ class QuestionSegment(Segment):
         # user_solution is just a string (not unicode)
         # TODO: test solutions with special characters
 
-
         # TODO : handle leading spaces properly (already in self.solution)
         user_solution = aux_remove_carriage_returns(user_solution)
-
-        print("solution for segment %d: %s (%s)" % (self.idx, user_solution, self.solution))
 
         # TODO: more sophisticated test here (multiple solutions)
         self.user_was_correct = self.test_user_was_correct(user_solution)
