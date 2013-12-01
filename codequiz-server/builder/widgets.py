@@ -13,6 +13,7 @@ class BuilderTextArea(Textarea):
         css = {
             'all': (
                 'builder/style.css',
+                'builder/1152_16_10_10.css',
                 'jquery/smoothness/jquery-ui.css',
                 'font-awesome/css/font-awesome.min.css'
             )

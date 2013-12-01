@@ -56,7 +56,7 @@ function createSegment(inputType, data) {
     });
 
     // add the little arrow icon to the left of each segment
-    segment.append("<span class='ui-icon ui-icon-arrowthick-2-n-s handle'></span>");
+    segment.append("<div class='grid_1'><span class='ui-icon ui-icon-arrowthick-2-n-s handle'></span></div>");
 
     /**
      * Add a textarea
@@ -79,7 +79,7 @@ function createSegment(inputType, data) {
         }
 
         if (isComment) {
-            node.addClass("comment");
+            node.parentsUntil("ul", "li").addClass("comment");  // all parents until but except "ul", filtered by "li"
             node.attr("type", "comment");
         }
         var $textarea = $("<textarea>", {
@@ -183,13 +183,16 @@ function createSegment(inputType, data) {
     // depending on the type of segment we want to insert, add some input fields
     switch (inputType) {
         case 'text':
-            var $textarea = addTextArea(segment, inputType, "Text...", data, 100, "right");
-            // make newly added textarea a tinyMCE editor
-            transformToMCE($textarea);
+            var $grid_div = $("<div class='grid_14'>");
+            segment.append($grid_div);
+            var $textarea = addTextArea($grid_div, inputType, "Text...", data, 100, "right");
+            transformToMCE($textarea);  // make newly added textarea a tinyMCE editor
             break;
 
         case 'source':
-            var $textarea = addTextArea(segment, inputType, "Source...", data, 100, "right");
+            var $grid_div = $("<div class='grid_14'>");
+            segment.append($grid_div);
+            var $textarea = addTextArea($grid_div, inputType, "Source...", data, 100, "right");
             $textarea.addClass("source");
             setTimeout(function () {
                 transformTextAreaToACE($textarea);
@@ -197,33 +200,30 @@ function createSegment(inputType, data) {
             break;
 
         case 'comment':
-            var $textarea = addTextArea(segment, inputType, "Comment...", data, 100, "right");
-            // make newly added textarea a tinyMCE editor
-            transformToMCE($textarea);
+            var $grid_div = $("<div class='grid_14'>");
+            segment.append($grid_div);
+            var $textarea = addTextArea($grid_div, inputType, "Comment...", data, 100, "right");
+            transformToMCE($textarea);  // make newly added textarea a tinyMCE editor
             break;
 
         case 'input':
         {
-            var $div = $("<div>");
-            $div.addClass("column");
-            $div.css({"width": "30%"});
-            segment.append($div);
+            var $grid_div = $("<div class='grid_4'>");
+            segment.append($grid_div);
 
             if (data) {
                 var content = data["content"];
                 var count = content.length;
                 for (var i = 0; i < count; i++) {
-                    addTextArea($div, "text", "Text", content[i], 25, "inline");
+                    addTextArea($grid_div, "text", "Text", content[i], 25, "inline");
                 }
             }
             else {
-                addTextArea($div, "text", "Text", "", 25, "inline");
+                addTextArea($grid_div, "text", "Text", "", 25, "inline");
             }
 
-            $div = $("<div>");
-            $div.addClass("column");
-            $div.css({"width": "30%"});
-            segment.append($div);
+            $grid_div = $("<div class='grid_4'>");
+            segment.append($grid_div);
 
             var answer = null
             var solution = null;
@@ -232,26 +232,24 @@ function createSegment(inputType, data) {
                 solution = data["solution"];
             }
 
-            addTextArea($div, "text", "Answer", answer, 25, "inline");
+            addTextArea($grid_div, "text", "Answer", answer, 25, "inline");
 
-            $div = $("<div>");
-            $div.addClass("column");
-            $div.css({"width": "35%"});
-            segment.append($div);
+            $grid_div = $("<div class='grid_5'>");
+            segment.append($grid_div);
 
             if (solution) {
                 var count = solution.length;
                 if (solution instanceof Array) {
                     for (var i = 0; i < count; i++) {
-                        addTextArea($div, "text", "Solution", solution[i], 25, "inline");
+                        addTextArea($grid_div, "text", "Solution", solution[i], 25, "inline");
                     }
                 }
                 else {
-                    addTextArea($div, "text", "Solution", solution, 25, "inline");
+                    addTextArea($grid_div, "text", "Solution", solution, 25, "inline");
                 }
             }
             else {
-                addTextArea($div, "text", "Solution", "", 25, "inline");
+                addTextArea($grid_div, "text", "Solution", "", 25, "inline");
             }
 
             var $addSolutionInputButton = $('<a href="#" class="addinput">');
@@ -278,53 +276,43 @@ function createSegment(inputType, data) {
                 removeTextAreaAnimated($node.children("textarea").last());
                 updateWatchdogs();
             });
-            $div.append($addSolutionInputButton);
-            $div.append($removeSolutionInputButton);
-
-            $div = $("<div>");
-            $div.addClass("clear");
-            segment.append($div);
+            $grid_div.append($addSolutionInputButton);
+            $grid_div.append($removeSolutionInputButton);
 
             break;
         }
 
         case 'check':
-            var $div = $("<div>");
-            $div.addClass("column");
-            $div.css({"width": "30%"});
-            segment.append($div);
+            var $grid_div = $("<div class='grid_5'>");
+            segment.append($grid_div);
 
             var solution = false;
             if (data) {
                 var content = data["content"];
                 var count = content.length;
                 for (var i = 0; i < count; i++) {
-                    addTextArea($div, "text", "Text", content[i], 25, "inline");
+                    addTextArea($grid_div, "text", "Text", content[i], 25, "inline");
                 }
                 solution = data["solution"];
             }
             else {
-                addTextArea($div, "text", "Text", "", 25, "inline");
+                addTextArea($grid_div, "text", "Text", "", 25, "inline");
             }
 
-            $div = $("<div>");
-            $div.addClass("column");
-            $div.css({"width": "30%"});
-            segment.append($div);
+            $grid_div = $("<div class='grid_5'>");
+            segment.append($grid_div);
 
-            $div.append("<label for='answer'>Answer</label>");
+            $grid_div.append("<label for='answer'>Answer</label>");
             $checkbox = $("<input>", {name: "answer", type: "checkbox"});
             if (solution) {
                 $checkbox.prop({"checked": true});
             }
-            $div.append($checkbox);
-
-            $div = $("<div>");
-            $div.addClass("clear");
-            segment.append($div);
+            $grid_div.append($checkbox);
 
             break;
     }
+
+    segment.append("<div class='clear'>");
 
     // add the delete button to the segment
     segment.append('<a href="#" class="delete"><span class="fa-stack">' +
@@ -426,17 +414,19 @@ function exportValues() {
          * Extracts a text area type of input, whose key will be the type of the <li> its contained in
          */
         function extractTextArea() {
-            var $firstChild = li.children("textarea").first();
-            var $typeSelect = $firstChild.next();
+            $div = li.children("div").eq(1); // the first div is for the up/down arrow, the second contains the textarea
+            var $textArea = $div.children("textarea").first();
+
+            var $typeSelect = $textArea.next();
             var isComment = li.attr("type") == "comment";
             var dict = {
-                "content": $firstChild.val(),
+                "content": $textArea.val(),
                 "type": $typeSelect.val(),
             };
 
             // workaround for strange bug, where after switching from normal to source (ACE) the changed text isn't saved
             if ($typeSelect.val() == "source") {
-                dict["content"] = $firstChild.text();
+                dict["content"] = $textArea.text();
             }
 
             if (isComment) {
@@ -451,10 +441,6 @@ function exportValues() {
                 "content": node.val(),
                 "type": $select.val()
             };
-            var isComment = node.attr("type") == "comment";
-            if (isComment) {
-                dict["comment"] = true;
-            }
             return dict;
         }
 
@@ -474,42 +460,34 @@ function exportValues() {
             case 'input':
                 var $divs = $(this).children("div");
 
-                var content = [extractInput($divs.eq(0).children("textarea").first())];
+                var content = [extractInput($divs.eq(1).children("textarea").first())];
 
-                var $answer = $divs.eq(1).children("textarea").first();
-                var answerDict = {
-                    "content": $answer.val(),
-                    "type": $answer.next().val()
-                }
+                var $answer = $divs.eq(2).children("textarea").first();
+                var answerDict = extractInput($answer);
 
-                var $solutions = $divs.eq(2).children("textarea");
-                var solutions = [];
+                var $solutionTextAreas = $divs.eq(3).children("textarea");
+                var solutionDicts = [];
 
-                var count = $solutions.length;
+                var count = $solutionTextAreas.length;
                 for (var i = 0; i < count; i++) {
-                    var $solution = $solutions.eq(i);
-                    var solutionDict = {
-                        "content": $solution.val(),
-                        "type": $solution.next().val()
-                    }
-                    solutions.push(solutionDict);
+                    var solutionDict = extractInput($solutionTextAreas.eq(i));
+                    solutionDicts.push(solutionDict);
                 }
 
                 segments.push({
                     "type": "input",
                     "content": content,
                     "answer": answerDict,
-                    "solution": solutions
+                    "solution": solutionDicts
                 });
                 break;
 
             case 'check':
                 var $divs = $(this).children("div");
 
-                var content = [extractInput($divs.eq(0).children("textarea").first())];
+                var content = [extractInput($divs.eq(1).children("textarea").first())];
 
-
-                var solution = $divs.eq(1).children("input[type='checkbox']").first().is(':checked');
+                var solution = $divs.eq(2).children("input[type='checkbox']").first().is(':checked');
 
                 segments.push({
                     "type": "check",
@@ -529,9 +507,10 @@ $(document).ready(function () {
     // store the JSON string from the original textarea widget (i.e. the one from the DB)
     var jsonString = $("textarea.builder").val();
 
-    $("textarea.builder").replaceWith("<div style='margin-left:10em'><ul id='sortable' style='width: 100%'></ul></div>");
+    $("textarea.builder").replaceWith("<div class='container_16' id='grid_container' style='margin-left:10em'></div>");
+    $("#grid_container").append("<ul id='sortable' style='width: 100%'></ul>");
 
-    $("#sortable").after("<div id='builderbuttons' style='margin-top:1em'></div>");
+    $("#sortable").after("<div class='grid_16' id='builderbuttons' style='margin-top:1em'></div>");
 
     $("#builderbuttons")
         .append("<a class='add' href='#' type='text'>Text</a>")
@@ -548,7 +527,7 @@ $(document).ready(function () {
         var data = null;
         if (type == "comment") {
             type = "text";
-            data = {"comment": true, "content": "", "type": "text", "animate": true}
+            data = {"comment": true, "content": "", "type": "text"}
         }
 
         var item = createSegment($(this).attr("type"), data);
