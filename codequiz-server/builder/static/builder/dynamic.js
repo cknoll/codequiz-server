@@ -589,7 +589,7 @@ function transformToMCE(textareas) {
                 plugins: [
                     "charmap code fullscreen link lists nonbreaking paste preview searchreplace table textcolor"
                 ],
-                toolbar: "undo redo bold italic codebutton charmap styleselect searchreplace bullist numlist table link fullscreen code",
+                toolbar: "undo redo bold italic codebutton mathbutton charmap styleselect searchreplace bullist numlist table link fullscreen code",
                 statusbar: false,
                 menubar: false,
                 setup: function (editor) {
@@ -598,31 +598,53 @@ function transformToMCE(textareas) {
                         title: 'Insert Code',
                         text: '<code>',
                         onclick: function () {
-                            editor.focus();
-                            var selection = editor.selection;
-                            var content = selection.getContent();
-                            var node = selection.getNode();
-                            var name = node.nodeName;
+                            editor.undoManager.transact(function () {
+                                editor.focus();
+                                var selection = editor.selection;
+                                var content = selection.getContent();
+                                var node = selection.getNode();
+                                var name = node.nodeName;
 
-                            function stripCodeTag(node) {
-                                content = node.innerHTML;
-                                node.remove();
-                                selection.setContent(content);
-                            }
+                                function stripCodeTag(node) {
+                                    content = node.innerHTML;
+                                    node.remove();
+                                    selection.setContent(content);
+                                }
 
-                            if (content.length > 0) {
-                                if (name == "CODE") {
-                                    stripCodeTag(node);
+                                if (content.length > 0) {
+                                    if (name == "CODE") {
+                                        editor.undoManager.add();
+                                        stripCodeTag(node);
+                                    }
+                                    else {
+                                        editor.undoManager.add();
+                                        selection.setContent('<code>' + content + '</code>');
+                                    }
                                 }
                                 else {
-                                    selection.setContent('<code>' + content + '</code>');
+                                    if (name == "CODE") {
+                                        editor.undoManager.add();
+                                        stripCodeTag(node);
+                                    }
                                 }
-                            }
-                            else {
-                                if (name == "CODE") {
-                                    stripCodeTag(node);
-                                }
-                            }
+                            });
+                        }
+                    });
+                    editor.addButton('mathbutton', {
+                        title: 'Insert $$',
+                        text: '$...$',
+                        onclick: function () {
+                            editor.undoManager.transact(function () {
+                                editor.focus();
+                                var selection = editor.selection;
+                                var content = selection.getContent();
+                                var node = selection.getNode();
+                                var name = node.nodeName;
+                                var range = selection.getRng();
+
+                                selection.setContent('$' + content + '$');
+                                selection.setRng(range);
+                            });
                         }
                     });
                 }
