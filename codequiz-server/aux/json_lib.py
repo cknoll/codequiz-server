@@ -305,7 +305,6 @@ class CBox(QuestionSegment):
 
     def __init__(self, dc):
         self.c_text_slots = dc.content
-        self.c_cbox_id = "123"
 
         QuestionSegment.__init__(self, dc)
 
