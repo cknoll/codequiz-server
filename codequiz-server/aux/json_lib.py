@@ -281,7 +281,13 @@ class InputField(QuestionSegment):
 
         self.c_prefilled_text = dc.answer.content
         self.c_answer_class = dc.answer.type
-        self.c_solution_class = dc.solution.type;
+
+        # TODO: this is suboptimal, we need a way to let the template know what "type" each solution is (source, normal)
+        #       or do we? Not necessarily, since it most likely is of the same type for each, then this would suffice...
+        if type(dc.solution) == list:
+            self.c_solution_class = dc.solution[0].type
+        else:
+            self.c_solution_class = dc.solution.type;
 
         QuestionSegment.__init__(self, dc)
 
@@ -303,7 +309,8 @@ class CBox(QuestionSegment):
 
         QuestionSegment.__init__(self, dc)
 
-# not yet implemented
+
+# TODO: implement Radio type
 class RadioList(QuestionSegment):
     pass
 
