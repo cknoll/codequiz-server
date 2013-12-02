@@ -207,10 +207,7 @@ textarea.source {
 
 .input_field {
     text-align: right;
-    /*     color: #233f62; */
 }
-
-
 
 /* for gap text, dashed line instead of frame around input field */
 input.gap {

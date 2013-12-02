@@ -8,3 +8,10 @@ code, tt {
     font-family: Fixedsys, Courier, monospace;
     font-weight: bold;
 }
+gap {
+    background-color: transparent;
+    border-style: dashed;
+    border-width: 0px 0px 1px 0px;
+    border-color: black;
+    box-shadow: none !important;
+}

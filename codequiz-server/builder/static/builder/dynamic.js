@@ -589,7 +589,7 @@ function transformToMCE(textareas) {
                 plugins: [
                     "charmap code fullscreen link lists nonbreaking paste preview searchreplace table textcolor"
                 ],
-                toolbar: "undo redo bold italic codebutton mathbutton charmap styleselect searchreplace bullist numlist table link fullscreen code",
+                toolbar: "undo redo bold italic codebutton mathbutton gapbutton charmap styleselect searchreplace bullist numlist table link fullscreen code",
                 statusbar: false,
                 menubar: false,
                 setup: function (editor) {
@@ -643,6 +643,27 @@ function transformToMCE(textareas) {
                                 var range = selection.getRng();
 
                                 selection.setContent('$' + content + '$');
+                                selection.setRng(range);
+                            });
+                        }
+                    });
+                    editor.addButton('gapbutton', {
+                        title: 'Insert gap to fill',
+                        text: '¶__¶',
+                        onclick: function () {
+                            editor.undoManager.transact(function () {
+                                editor.focus();
+                                var selection = editor.selection;
+                                var content = selection.getContent();
+                                var node = selection.getNode();
+                                var name = node.nodeName;
+                                var range = selection.getRng();
+
+                                selection.setContent('<gap>¶' + content + '|' + content + '¶</gap>');
+
+                                var node = range.commonAncestorContainer.childNodes[range.endOffset - 1];
+                                range.setStart(node, 1);
+                                range.setEnd(node, 1 + content.length);
                                 selection.setRng(range);
                             });
                         }
