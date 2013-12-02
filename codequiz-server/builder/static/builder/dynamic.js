@@ -306,7 +306,7 @@ function createSegment(inputType, data) {
             segment.append($grid_div);
 
             $grid_div.append("<label for='answer'>Answer</label>");
-            $checkbox = $("<input>", {name: "answer", type: "checkbox"});
+            var $checkbox = $("<input>", {name: "answer", type: "checkbox"});
             if (solution) {
                 $checkbox.prop({"checked": true});
             }
@@ -333,7 +333,7 @@ function createSegment(inputType, data) {
  * @param preSelectedType Which option to preselect
  */
 function addTypeSelection(node, cssclass, preSelectedType) {
-    $select = $("<select>").addClass(cssclass);
+    var $select = $("<select>").addClass(cssclass);
 
     var options = [
         {"type": "text", "text": "Normal"},
@@ -345,7 +345,7 @@ function addTypeSelection(node, cssclass, preSelectedType) {
     for (var i = 0; i < count; i++) {
         var option = options[i];
 
-        $option = $("<option>", {value: option["type"], text: option["text"]});
+        var $option = $("<option>", {value: option["type"], text: option["text"]});
         if (preSelectedType == option["type"]) {
             $option.prop({"selected": true});
         }
@@ -418,7 +418,7 @@ function exportValues() {
          * Extracts a text area type of input, whose key will be the type of the <li> its contained in
          */
         function extractTextArea() {
-            $div = li.children("div").eq(1); // the first div is for the up/down arrow, the second contains the textarea
+            var $div = li.children("div").eq(1); // the first div is for the up/down arrow, the second contains the textarea
             var $textArea = $div.children("textarea").first();
 
             var type = li.attr("type");
