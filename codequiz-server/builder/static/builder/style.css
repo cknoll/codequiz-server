@@ -6,6 +6,9 @@ a.add {
     color: #ffffff;
     border-radius: 5px;
 }
+a.add.gray {
+    background-color: #b6b6b4;
+}
 
 /* Segment delete button (little white cross on red) */
 a.delete {
@@ -99,11 +102,20 @@ textarea.source {
     background-color: #a4e68e;
 }
 
+/* gray background to indicate a comment segment */
+#sortable li.gap-fill {
+    background-color: #b6b6b4;
+}
+
 /* make right aligned select boxes cling to the right */
 select.right {
     position: absolute;
     right: 10px;
     bottom: 3px;
+}
+
+select.none {
+    display: none;
 }
 
 .handle {

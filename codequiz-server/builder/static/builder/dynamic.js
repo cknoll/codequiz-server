@@ -80,8 +80,11 @@ function createSegment(inputType, data) {
 
         if (isComment) {
             node.parentsUntil("ul", "li").addClass("comment");  // all parents until but except "ul", filtered by "li"
-            node.attr("type", "comment");
         }
+        if (type == 'gap-fill-text') {
+            node.parentsUntil("ul", "li").addClass("gap-fill");
+        }
+
         var $textarea = $("<textarea>", {
             cols: cols, rows: rows,
             placeholder: placeHolder,
@@ -199,10 +202,10 @@ function createSegment(inputType, data) {
             }, 1); // delay of 1 msec, somehow necessary, a hack in my opinion
             break;
 
-        case 'comment':
+        case 'gap-fill-text':
             var $grid_div = $("<div class='grid_14'>");
             segment.append($grid_div);
-            var $textarea = addTextArea($grid_div, inputType, "Comment...", data, 100, "right");
+            var $textarea = addTextArea($grid_div, inputType, "Comment...", data, 100, "none");
             transformToMCE($textarea);  // make newly added textarea a tinyMCE editor
             break;
 
@@ -326,7 +329,7 @@ function createSegment(inputType, data) {
 /**
  * Add a selection drop down list, to choose the kind of text field
  * @param node DOM object to append this to
- * @param cssclass CSS class to give the drop down ('right' or 'inline')
+ * @param cssclass CSS class to give the drop down ('right' or 'inline' or 'none' to skip)
  * @param preSelectedType Which option to preselect
  */
 function addTypeSelection(node, cssclass, preSelectedType) {
@@ -365,18 +368,19 @@ function updateWatchdogs() {
     $("select").change(function () {
         var $prev = $(this).prev();
         var selectedValue = $(this).find(":selected").val();
+
+        $(this).parentsUntil("ul", "li").attr("type", selectedValue);
+
         if (selectedValue == "source") {
             $prev.addClass("source");
             if ($prev.is("textarea.source")) {
                 transformFromMCE($prev);
-
                 transformTextAreaToACE($prev);
             }
         } else if (selectedValue == "text") {
             $prev.removeClass("source");
             if ($prev.is("textarea.ace")) {
                 transformACEToTextarea($prev);
-
                 transformToMCE($prev);
             }
         }
@@ -417,19 +421,19 @@ function exportValues() {
             $div = li.children("div").eq(1); // the first div is for the up/down arrow, the second contains the textarea
             var $textArea = $div.children("textarea").first();
 
-            var $typeSelect = $textArea.next();
-            var isComment = li.attr("type") == "comment";
+            var type = li.attr("type");
             var dict = {
                 "content": $textArea.val(),
-                "type": $typeSelect.val(),
+                "type": type,
             };
 
             // workaround for strange bug, where after switching from normal to source (ACE) the changed text isn't saved
+            var $typeSelect = $(this).next();
             if ($typeSelect.val() == "source") {
                 dict["content"] = $textArea.text();
             }
 
-            if (isComment) {
+            if (li.hasClass("comment")) {
                 dict["comment"] = true;
             }
             segments.push(dict);
@@ -453,7 +457,7 @@ function exportValues() {
                 extractTextArea();
                 break;
 
-            case 'comment':
+            case 'gap-fill-text':
                 extractTextArea();
                 break;
 
@@ -515,6 +519,7 @@ $(document).ready(function () {
     $("#builderbuttons")
         .append("<a class='add' href='#' type='text'>Text</a>")
         .append("<a class='add' href='#' type='source'>Source</a>")
+        .append("<a class='add gray' href='#' type='gap-fill-text'>Gap Text</a>")
         .append("<a class='add' href='#' type='comment'>Comment</a>")
         .append("<a class='add' href='#' type='input'>Input Field</a>")
         .append("<a class='add' href='#' type='check'>Check</a>")
@@ -527,10 +532,10 @@ $(document).ready(function () {
         var data = null;
         if (type == "comment") {
             type = "text";
-            data = {"comment": true, "content": "", "type": "text"}
+            data = {"comment": true, "content": "", "type": type}
         }
 
-        var item = createSegment($(this).attr("type"), data);
+        var item = createSegment(type, data);
         addSegmentAnimated(true, item);
     });
 
