@@ -96,6 +96,7 @@ class TaggableManager(RelatedField, Field):
         else:
             self.set_attributes_from_name(name)
         self.model = cls
+
         cls._meta.add_field(self)
         setattr(cls, name, self)
         if not cls._meta.abstract:
@@ -108,6 +109,7 @@ class TaggableManager(RelatedField, Field):
                 )
             else:
                 self.post_through_setup(cls)
+
 
     def __lt__(self, other):
         """
@@ -125,10 +127,13 @@ class TaggableManager(RelatedField, Field):
         self.rel.to = self.through._meta.get_field("tag").rel.to
         self.related = RelatedObject(self.through, cls, self)
         if self.use_gfk:
-            self.__class__._related_name_counter += 1
-            related_name = '+%d' % self.__class__._related_name_counter
-            tagged_items = GenericRelation(self.through, related_name=related_name)
+            tagged_items = GenericRelation(self.through)
             tagged_items.contribute_to_class(cls, 'tagged_items')
+
+            for rel in cls._meta.local_many_to_many:
+                if isinstance(rel, TaggableManager) and rel.use_gfk and rel != self:
+                    raise ValueError('You can only have one TaggableManager per model'
+                        ' using generic relations.')
 
     def save_form_data(self, instance, value):
         getattr(instance, self.name).set(*value)
@@ -202,52 +207,6 @@ class TaggableManager(RelatedField, Field):
             extra_where = " AND %s.%s IN (%s)" % (qn(alias_to_join), qn(extra_col), ','.join(['%s']*len(content_type_ids)))
             params = content_type_ids
         return extra_where, params
-
-    def _get_mm_case_path_info(self, direct=False):
-        pathinfos = []
-        linkfield1 = self.through._meta.get_field_by_name('content_object')[0]
-        linkfield2 = self.through._meta.get_field_by_name(self.m2m_reverse_field_name())[0]
-        if direct:
-            join1infos, _, _, _ = linkfield1.get_reverse_path_info()
-            join2infos, opts, target, final = linkfield2.get_path_info()
-        else:
-            join1infos, _, _, _ = linkfield2.get_reverse_path_info()
-            join2infos, opts, target, final = linkfield1.get_path_info()
-        pathinfos.extend(join1infos)
-        pathinfos.extend(join2infos)
-        return pathinfos, opts, target, final
-
-    def _get_gfk_case_path_info(self, direct=False):
-        pathinfos = []
-        from_field = self.model._meta.pk
-        opts = self.through._meta
-        object_id_field = opts.get_field_by_name('object_id')[0]
-        linkfield = self.through._meta.get_field_by_name(self.m2m_reverse_field_name())[0]
-        if direct:
-            join1infos = [PathInfo(from_field, object_id_field, self.model._meta, opts, self, True, False)]
-            join2infos, opts, target, final = linkfield.get_path_info()
-        else:
-            join1infos, _, _, _ = linkfield.get_reverse_path_info()
-            join2infos = [PathInfo(object_id_field, from_field, opts, self.model._meta, self, True, False)]
-            target = from_field
-            final = self
-            opts = self.model._meta
-
-        pathinfos.extend(join1infos)
-        pathinfos.extend(join2infos)
-        return pathinfos, opts, target, final
-
-    def get_path_info(self):
-        if self.use_gfk:
-            return self._get_gfk_case_path_info(direct=True)
-        else:
-            return self._get_mm_case_path_info(direct=True)
-
-    def get_reverse_path_info(self):
-        if self.use_gfk:
-            return self._get_gfk_case_path_info(direct=False)
-        else:
-            return self._get_mm_case_path_info(direct=False)
 
     # This and all the methods till the end of class are only used in django >= 1.6
     def _get_mm_case_path_info(self, direct=False):
@@ -337,7 +296,7 @@ class _TaggableManager(models.Manager):
     def get_prefetch_query_set(self, instances, queryset = None):
         if queryset is not None:
             raise ValueError("Custom queryset can't be used for this lookup.")
-        
+
         instance = instances[0]
         from django.db import connections
         db = self._db or router.db_for_read(instance.__class__, instance=instance)
