@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from django import forms
-from django.contrib.sites.models import Site
 
 from feedback.models import Feedback
 

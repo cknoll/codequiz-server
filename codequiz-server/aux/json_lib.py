@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import re
-import xml.etree.ElementTree as ET
-
 import json
 import shlex
 
@@ -114,7 +111,7 @@ class Segment(object):
         self.context = dict(items)
 
     def set_idx(self, idx):
-        assert self.context.get('idx') == None
+        assert self.context.get('idx') is None
         self.context['idx'] = idx # for the template
         self.idx = idx # for update_user_solution
 
@@ -287,7 +284,7 @@ class InputField(QuestionSegment):
         if type(dc.solution) == list:
             self.c_solution_class = dc.solution[0].type
         else:
-            self.c_solution_class = dc.solution.type;
+            self.c_solution_class = dc.solution.type
 
         QuestionSegment.__init__(self, dc)
 
@@ -332,11 +329,11 @@ def make_segment(segment_dict, idx):
     assert isinstance(segment_dict, dict)
 
     segment_type = segment_dict.get('type', None)
-    if segment_type == None:
+    if segment_type is None:
         raise ValueError("segment_dict should have key 'type'")
 
     segment_class = typestr_to_class_map.get(segment_type, None)
-    if segment_type == None:
+    if segment_type is None:
         raise ValueError("unknown type string: %s" % segment_type)
 
     dc = DictContainer(segment_dict, segment_type)

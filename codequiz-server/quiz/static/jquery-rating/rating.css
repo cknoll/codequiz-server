@@ -29,18 +29,18 @@
 .cancel a {background: url(delete.gif) no-repeat 0 -16px;}
 
 .star,
-.star a {background: url(star.gif) no-repeat 0 0px;}
+.star a {background: url(star.gif) no-repeat 0 0;}
 .star-left,
-.star-left a {background: url(star-left.gif) no-repeat 0 0px;}
+.star-left a {background: url(star-left.gif) no-repeat 0 0;}
 .star-right,
-.star-right a {background: url(star-right.gif) no-repeat 0 0px;}
+.star-right a {background: url(star-right.gif) no-repeat 0 0;}
 	
 .cancel a,
 .star a {
 	display: block;
 	width: 100%;
 	height: 100%;
-	background-position: 0 0px;
+	background-position: 0 0;
 }
 
 div.rating div.on a {

@@ -71,7 +71,7 @@ from ratings.forms import StarVoteForm
 
 class CustomRatingHandler(RatingHandler):
     score_range = (0.5, 5)
-    score_step = (0.5)
+    score_step = 0.5
     can_delete_vote = False      # default is True
     form_class = StarVoteForm
     allow_anonymous = True       # default is False

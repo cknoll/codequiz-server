@@ -1,6 +1,6 @@
 body {
     min-width: 960px;
-    margin: 0 0 30px 0px;
+    margin: 0 0 30px 0;
     padding: 0;
     background: #FFF;
     font-size: 75%;
@@ -21,13 +21,13 @@ img {
 }
 
 .small {
-    font-size: 10;
+    font-size: small;
 }
 
 .button {
-    -moz-box-shadow: inset 0px 1px 0px 0px #fceaca;
-    -webkit-box-shadow: inset 0px 1px 0px 0px #fceaca;
-    box-shadow: inset 0px 1px 0px 0px #fceaca;
+    -moz-box-shadow: inset 0 1px 0 0 #fceaca;
+    -webkit-box-shadow: inset 0 1px 0 0 #fceaca;
+    box-shadow: inset 0 1px 0 0 #fceaca;
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ff9900), color-stop(1, #eeaf41));
     background: -moz-linear-gradient(center top, #ff9900 5%, #eeaf41 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffce79', endColorstr='#eeaf41');
@@ -35,7 +35,7 @@ img {
     -webkit-border-radius: 18px;
     -moz-border-radius: 18px;
     border-radius: 18px;
-    text-indent: 0px;
+    text-indent: 0;
     border: 1px solid #eeb44f;
     display: inline-block;
     color: #ffffff;
@@ -48,7 +48,7 @@ img {
     width: 100px;
     text-decoration: none;
     text-align: center;
-    text-shadow: 1px 1px 0px #ce8e28;
+    text-shadow: 1px 1px 0 #ce8e28;
 }
 
 .button:hover {
@@ -65,7 +65,7 @@ img {
 
 input[type="submit"] {
   -moz-border-radius: 10px;
-  -moz-box-shadow: #d6d6d6 0px 3px 3px;
+  -moz-box-shadow: #d6d6d6 0 3px 3px;
   -moz-transition: all 0.2s ease;
   -ms-transition: all 0.2s ease;
   -o-transition: all 0.2s ease;
@@ -80,11 +80,11 @@ input[type="submit"] {
   background-image: linear-gradient(0deg, #eeaf41, #ff9900);
   border-radius: 10px;
   border: 1px solid #e67d00;
-  box-shadow: #d6d6d6 0px 3px 3px;
+  box-shadow: #d6d6d6 0 3px 3px;
   color: #ffffff;
   display: inline-block;
   font-size: 1em;
-  margin: 0px 0px 10px 0px;
+  margin: 0 0 10px 0;
   padding: 3px;
   text-decoration: none;
   transition: all 0.2s ease;
@@ -114,7 +114,7 @@ input[type="submit"]:hover {
 }
 
 #header_left h1 {
-    margin: 28px 0 0 0px;
+    margin: 28px 0 0 0;
     padding: 0;
     font-size: 220%;
     font-weight: normal;
@@ -162,8 +162,8 @@ input[type="submit"]:hover {
 
 pre {
     background-color: #ffffcc;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
     padding: 2px;
     font-size: 1em;
     line-height: 1em;
@@ -181,8 +181,8 @@ code, tt {
 }
 
 textarea {
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
     padding: 2px;
     border: 1px solid #aaa;
     resize:vertical;
@@ -213,7 +213,7 @@ textarea.source {
 input.gap {
     background-color: transparent;
     border-style: dashed;
-    border-width: 0px 0px 1px 0px;
+    border-width: 0 0 1px 0;
     border-color: black;
     box-shadow: none !important;
 }

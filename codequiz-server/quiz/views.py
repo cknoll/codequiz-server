@@ -305,18 +305,6 @@ def next_task(request, task_id):
     return task_view(request, new_id)
 
 
-def form_result_view(request, task_id):
-    post = request.POST
-    1 / 0 # deprecated
-    if 'next' in post:
-        return next_task(request, task_id)
-    elif 'result' in post:
-        return task_view(request, task_id, solution_flag=True)
-    else:
-        # this should not happen
-        return task_view(request, task_id)
-
-
 def tc_run_form_process(request, tc_id, tc_task_id):
     post = request.POST
     if 'next' in post:
@@ -326,7 +314,8 @@ def tc_run_form_process(request, tc_id, tc_task_id):
     elif 'result' in post:
         return tc_run_view(request, tc_id, tc_task_id, solution_flag=True)
 
-# is also used by new (json) workfolw
+
+# is also used by new (json) workflow
 def tc_run_final_view(request, tc_id):
     tc = get_object_or_404(TaskCollection, pk=tc_id)
 
@@ -414,81 +403,6 @@ def tc_run_view2(request):
     return render(request, 'tasks/cq0_main_simple.html', context)
 
 
-def tc_run_view(request, tc_id, tc_task_id, solution_flag=False):
-    """
-    render a task from a task collection (TC) by position in that TC
-
-    @param {int} tc_id: which task collection
-    @param tc_task_id: relative position of the task in the task collection. NOT the task_id (pk of tasks)
-    @param solution_flag: show solution or not?
-    """
-
-    1 / 0 # this fucntion is deprecated and should not be called
-
-    tc_task_id = int(tc_task_id)
-    tc = get_object_or_404(TaskCollection, pk=tc_id)
-
-    ordered_task_list = tc.tc_membership_set.order_by('ordering')
-    tc.len = len(ordered_task_list)
-
-    if tc_task_id >= len(ordered_task_list):
-        return tc_run_final_view(request, tc_id)
-
-    current_task = ordered_task_list[tc_task_id].task
-    current_task.tc_len = len(ordered_task_list)
-    current_task.solution_flag = solution_flag
-    current_task.tc_task_id = tc_task_id
-    current_task.tc = tc
-
-    # construct the main_blocks
-    main_blocks = [task_content_block(request, current_task)]
-
-    # construct the meta_blocks
-    meta_blocks = [task_meta_block(request, current_task)]
-    meta_blocks += [task_collection_meta_block(request, tc)]
-
-    context_dict = dict(main_blocks=main_blocks, meta_blocks=meta_blocks)
-    context = Context(context_dict)
-
-    response = HttpResponse()
-    if 'tc_task_id' in request.session:
-        session_tc_task_id = request.session['tc_task_id']
-        session_tc_id = request.session['tc_id']
-
-        if session_tc_id != tc_id:
-            response.write("<p>This is not the Task Collection you're looking for.</p>")
-            return response
-
-        if session_tc_task_id > tc_task_id:
-            response.write("<p>No backtracking!</p>")
-            return response
-
-        if (tc_task_id - session_tc_task_id) > 1:
-            response.write("<p>No skipping tasks!</p>")
-            return response
-
-    else:
-        if tc_task_id > 0:
-            response.write("<p>Need to start at the beginning.</p>")
-            return response
-
-    request.session['tc_id'] = tc_id
-    request.session['tc_task_id'] = tc_task_id
-
-    log = ""
-    if 'log' in request.session:
-        log = request.session['log']
-
-    log += "Show {solution} task {task} of collection {coll}.\n".format(
-        solution="solution of" if solution_flag else "",
-        task=str(tc_task_id),
-        coll=str(tc_id)
-    )
-    request.session["log"] = log
-
-    return render(request, 'tasks/cq0_main_base.html', context)
-
-
 def task_content_block(request, task):
     """
     @param task: the task to render
@@ -562,8 +476,3 @@ def task_collection_view(request, tc_id):
     request.session['meta_tc_id'] = unicode(tc_id)
 
     return render(request, 'tasks/task_collection.html', context)
-
-
-def task_view(request, task_id):
-    task = get_object_or_404(Task, pk=task_id)
-    return render(request, 'tasks/task_detail.html', dict(task=task))

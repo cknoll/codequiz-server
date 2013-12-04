@@ -9,5 +9,5 @@ setup(
     license='',
     author='leberwurstsaft',
     author_email='',
-    description='', requires=['django, django-taggit, django-taggit-autosuggest']
+    description='', requires=['django, django-taggit, django-taggit-autosuggest', 'IPython']
 )

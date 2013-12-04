@@ -44,7 +44,7 @@ class FeedbackAdmin(admin.ModelAdmin):
         return '%s' % feedback_lines[0] + dots
 
     def show_email(self, obj):
-        if (obj.email):
+        if obj.email:
             url = obj.email
             subject = "Regarding your Feedback on Task \"%s\"" % obj.task.title
             body = "\n" + str(obj.date) + "\n\n" + obj.text
