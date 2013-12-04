@@ -3,5 +3,5 @@ version = (1, 0, 0)
 
 
 def get_version():
-    """returns a pep complient version number"""
+    """returns a pep compliant version number"""
     return '.'.join(str(i) for i in version)

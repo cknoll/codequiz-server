@@ -60,7 +60,14 @@ function createSegment(inputType, data) {
 
     /**
      * Add a textarea
+     * @param node Where to add the textarea
      * @param {String} type The kind of textarea (currently only distinguishes "text" and "comment")
+     * @param {String} placeHolder
+     * @param {Object} textareaData Dictionary object, loaded from DB
+     * @param {int} cols
+     * @param {String} cssClass Where to put the select box (inline, right, none)
+     * @param {int} position Offset to insert the textarea at (dynamically adding more textareas using a button)
+     * @returns {$|*|jQuery|HTMLElement}
      */
     function addTextArea(node, type, placeHolder, textareaData, cols, cssClass, position) {
         var content = "";
@@ -143,59 +150,21 @@ function createSegment(inputType, data) {
         });
     }
 
-    /**
-     * Add a text input field and a type selection next to it
-     * @param {String} key The key to retrieve data from JSON
-     * @param {String} placeHolder Placeholder text for the input field
-     */
-    function addTextInput(node, placeHolder, inputData, position) {
-        var content = "";
-        var contentType = "";
-        var isComment;
-        var lines = 1;
-        if (inputData) {
-            content = inputData["content"];
-            contentType = inputData["type"];
-            isComment = inputData["comment"];
-        }
-
-        var $input = $("<input>", {
-            type: "text",
-            placeholder: placeHolder,
-            value: content
-        });
-        if (contentType == "source") {
-            $input.addClass("source");
-        }
-        if (isComment) {
-            $input.addClass("comment");
-        }
-        if (position) {
-            $input.hide();
-            node.children("select").eq(position - 1).after($input);
-            addTypeSelection($input, "inline", contentType);
-            $input.show(300);
-            $input.next().show(300);
-        }
-        else {
-            node.append($input);
-            addTypeSelection($input, "inline", contentType);
-        }
-    }
-
+    var $grid_div;
+    var $textarea;
     // depending on the type of segment we want to insert, add some input fields
     switch (inputType) {
         case 'text':
-            var $grid_div = $("<div class='grid_14'>");
+            $grid_div = $("<div class='grid_14'>");
             segment.append($grid_div);
-            var $textarea = addTextArea($grid_div, inputType, "Text...", data, 100, "right");
+            $textarea = addTextArea($grid_div, inputType, "Text...", data, 100, "right");
             transformToMCE($textarea);  // make newly added textarea a tinyMCE editor
             break;
 
         case 'source':
-            var $grid_div = $("<div class='grid_14'>");
+            $grid_div = $("<div class='grid_14'>");
             segment.append($grid_div);
-            var $textarea = addTextArea($grid_div, inputType, "Source...", data, 100, "right");
+            $textarea = addTextArea($grid_div, inputType, "Source...", data, 100, "right");
             $textarea.addClass("source");
             setTimeout(function () {
                 transformTextAreaToACE($textarea);
@@ -203,15 +172,15 @@ function createSegment(inputType, data) {
             break;
 
         case 'gap-fill-text':
-            var $grid_div = $("<div class='grid_14'>");
+            $grid_div = $("<div class='grid_14'>");
             segment.append($grid_div);
-            var $textarea = addTextArea($grid_div, inputType, "Comment...", data, 100, "none");
+            $textarea = addTextArea($grid_div, inputType, "Comment...", data, 100, "none");
             transformToMCE($textarea);  // make newly added textarea a tinyMCE editor
             break;
 
         case 'input':
         {
-            var $grid_div = $("<div class='grid_4'>");
+            $grid_div = $("<div class='grid_4'>");
             segment.append($grid_div);
 
             if (data) {
@@ -228,7 +197,7 @@ function createSegment(inputType, data) {
             $grid_div = $("<div class='grid_4'>");
             segment.append($grid_div);
 
-            var answer = null
+            var answer = null;
             var solution = null;
             if (data) {
                 answer = data["answer"];
@@ -286,7 +255,7 @@ function createSegment(inputType, data) {
         }
 
         case 'check':
-            var $grid_div = $("<div class='grid_5'>");
+            $grid_div = $("<div class='grid_5'>");
             segment.append($grid_div);
 
             var solution = false;
@@ -396,7 +365,7 @@ function updateWatchdogs() {
  * update the hidden input field that holds the generated JSON
  */
 function updateTask() {
-    $.each($("textarea.wide").not(".source"), function (index, value) {
+    $.each($("textarea.wide").not(".source"), function () {
         $(this).tinymce().save();
     });
 
@@ -411,7 +380,7 @@ function updateTask() {
 function exportValues() {
     var segments = [];
 
-    $("#sortable li").each(function (number, obj) {
+    $("#sortable").find("li").each(function (number, obj) {
         var li = $(this);
 
         /**
@@ -424,7 +393,7 @@ function exportValues() {
             var type = li.attr("type");
             var dict = {
                 "content": $textArea.val(),
-                "type": type,
+                "type": type
             };
 
             // workaround for strange bug, where after switching from normal to source (ACE) the changed text isn't saved
@@ -440,12 +409,10 @@ function exportValues() {
         }
 
         function extractInput(node) {
-            var $select = node.next();
-            var dict = {
+            return {
                 "content": node.val(),
-                "type": $select.val()
+                "type": node.next()
             };
-            return dict;
         }
 
         switch (obj.type) {
@@ -509,9 +476,10 @@ function exportValues() {
 // This block gets called by jQuery as soon as the DOM is ready
 $(document).ready(function () {
     // store the JSON string from the original textarea widget (i.e. the one from the DB)
-    var jsonString = $("textarea.builder").val();
+    var $textarea = $("textarea.builder");
+    var jsonString = $textarea.val();
 
-    $("textarea.builder").replaceWith("<div class='container_16' id='grid_container' style='margin-left:10em'></div>");
+    $textarea.replaceWith("<div class='container_16' id='grid_container' style='margin-left:10em'></div>");
     $("#grid_container").append("<ul id='sortable' style='width: 100%'></ul>");
 
     $("#sortable").after("<div class='grid_16' id='builderbuttons' style='margin-top:1em'></div>");
@@ -547,7 +515,7 @@ $(document).ready(function () {
         restoreFromJSON(JSON.parse(jsonString));
     }
 
-    $("#task_form").submit(function (event) {
+    $("#task_form").submit(function () {
         updateTask();
         return;
     });
@@ -643,8 +611,6 @@ function transformToMCE(textareas) {
                                 editor.focus();
                                 var selection = editor.selection;
                                 var content = selection.getContent();
-                                var node = selection.getNode();
-                                var name = node.nodeName;
                                 var range = selection.getRng();
 
                                 selection.setContent('$' + content + '$');
@@ -660,8 +626,6 @@ function transformToMCE(textareas) {
                                 editor.focus();
                                 var selection = editor.selection;
                                 var content = selection.getContent();
-                                var node = selection.getNode();
-                                var name = node.nodeName;
                                 var range = selection.getRng();
 
                                 selection.setContent('<gap>¶' + content + '|' + content + '¶</gap>');

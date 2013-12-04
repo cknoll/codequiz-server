@@ -40,7 +40,7 @@ $.fn.extend({
     },
     acedRemoveFromTA: function () {
         return this.each(function () {
-            var div, editor, ta;
+            var div, ta;
             ta = $(this);
             ta.show();
             div = ta.data("ace-div");
