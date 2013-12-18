@@ -17,8 +17,7 @@ class TaggedModel:
 
         @return: all tags in one comma separated string
         """
-        stringified = ", ".join([str(x) for x in self.tags.names()])
-        return stringified
+        return ", ".join([str(x) for x in self.tags.names()])
 
 
 class Task(models.Model, TaggedModel):
@@ -30,8 +29,7 @@ class Task(models.Model, TaggedModel):
     tags = TaggableManager(blank=True)
 
     def get_absolute_url(self):
-        path = reverse('quiz_ns:task_view', args=[str(self.id)])
-        return path
+        return reverse('quiz_ns:task_view', args=[str(self.id)])
 
 
 class QuizResult(models.Model):
@@ -62,7 +60,7 @@ class TaskCollection(models.Model, TaggedModel):
     tasks = models.ManyToManyField(Task, through='TC_Membership')
 
     def number_of_tasks(self):
-        return len(self.tc_membership_set.all())
+        return len(self.tasks.count())
 
 
 class TC_Membership(models.Model):
@@ -73,7 +71,7 @@ class TC_Membership(models.Model):
 
     task = models.ForeignKey(Task)
     group = models.ForeignKey(TaskCollection)
-    ordering = models.FloatField()
+    ordering = models.PositiveIntegerField()
 
 # register model classes for django-generic-ratings
 from ratings.handlers import ratings, RatingHandler
