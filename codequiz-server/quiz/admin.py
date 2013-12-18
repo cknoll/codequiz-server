@@ -83,7 +83,21 @@ class QuizResultAdmin(admin.ModelAdmin):
 
 
 class TaskCollectionAdmin(admin.ModelAdmin):
+    def direct_link(self, obj):
+        return '<a href="'+ reverse('quiz_ns:task_collection_view',  kwargs={'tc_id': obj.id}) +'">Run Collection…</a>'
+
+    direct_link.short_description = ''
+    direct_link.allow_tags = True
+
+    list_display = ['id', 'title', 'num_tasks', 'direct_link']
+    list_display_links = ['title']
+    search_fields = ['title']
+
     inlines = (TC_MembershipInline,)
+
+    def num_tasks(self, obj):
+        return obj.tasks.count()
+    num_tasks.short_description = "Number of tasks"
 
 
 admin.site.register(Task, TaskAdmin)

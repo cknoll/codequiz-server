@@ -47,6 +47,17 @@ class TaskCollection(models.Model, TaggedModel):
     author = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
     tags = TaggableManager(blank=True)
+    EXAM_MODE_NONE = 0
+    EXAM_MODE_NO_SOLUTIONS = 1
+    EXAM_MODE_NO_RESULTS = 2
+    EXAM_MODE_CHOICES = (
+        (EXAM_MODE_NONE, 'No Exam'),
+        (EXAM_MODE_NO_SOLUTIONS, 'No Solutions, only Right/Wrong'),
+        (EXAM_MODE_NO_RESULTS, 'No Results, just continue quiz'),
+    )
+    exam_mode = models.IntegerField(max_length=1,
+                                    choices=EXAM_MODE_CHOICES,
+                                    default=EXAM_MODE_NONE)
 
     tasks = models.ManyToManyField(Task, through='TC_Membership')
 
