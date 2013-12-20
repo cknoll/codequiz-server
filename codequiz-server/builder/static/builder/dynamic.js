@@ -41,6 +41,98 @@ function removeSegmentAnimated(animated, segment) {
 }
 
 /**
+ * Add a textarea
+ * @param node Where to add the textarea
+ * @param {String} type The kind of textarea (currently only distinguishes "text" and "comment")
+ * @param {String} placeHolder
+ * @param {Object} textareaData Dictionary object, loaded from DB
+ * @param {int} cols
+ * @param {String} cssClass Where to put the select box (inline, right, none)
+ * @param {int} position Offset to insert the textarea at (dynamically adding more textareas using a button)
+ * @returns {$|*|jQuery|HTMLElement}
+ */
+function addTextArea(node, type, placeHolder, textareaData, cols, cssClass, position) {
+    var content = "";
+    var contentType = type;
+    var rows = 1;
+    var isComment;
+    if (textareaData) {
+        content = textareaData["content"];
+        contentType = textareaData["type"];
+        rows = content.lineCount();
+        isComment = textareaData["comment"];
+    }
+
+    if (cols > 25) {
+        rows = 5;
+    }
+
+    if (isComment) {
+        node.parentsUntil("ul", "li").addClass("comment");  // all parents until but except "ul", filtered by "li"
+    }
+    if (type == 'gap-fill-text') {
+        node.parentsUntil("ul", "li").addClass("gap-fill");
+    }
+
+    var $textarea = $("<textarea>", {
+        cols: cols, rows: rows,
+        placeholder: placeHolder,
+        text: content
+    });
+
+    if (cols > 25) {
+        $textarea.addClass("wide");
+    }
+    else {
+        $textarea.addClass("no-ace");
+    }
+
+    function updateLines() {
+        var rows = $(this).attr("rows");
+        var lines = $(this).val().lineCount();
+        if (lines != rows) {
+            if ($(this).hasClass('wide')) {
+                lines = Math.max(5, lines);
+            }
+            $(this).attr("rows", lines);
+        }
+    }
+
+    $textarea.change(function () {
+        updateLines.call(this);
+    });
+    $textarea.keyup(function () {
+        updateLines.call(this);
+    });
+
+    if (contentType == "source") {
+        $textarea.addClass("source");
+    }
+
+    if (position) {
+        $textarea.hide();
+        node.children("select").eq(position - 1).after($textarea);
+        addTypeSelection($textarea, cssClass, contentType);
+        $textarea.slideDown(300);
+        $textarea.next().slideDown(300);
+    }
+    else {
+        node.append($textarea);
+        addTypeSelection($textarea, cssClass, contentType);
+    }
+    return $textarea;
+}
+
+function removeTextAreaAnimated(textarea) {
+    var typeSelection = textarea.next();
+    typeSelection.slideUp(300);
+    textarea.slideUp(300, function () {
+        textarea.remove();
+        typeSelection.remove();
+    });
+}
+
+/**
  * Adds a segment to the task definition
  *
  * This is where new types of input can be implemented for the admin interface.
@@ -57,98 +149,6 @@ function createSegment(inputType, data) {
 
     // add the little arrow icon to the left of each segment
     segment.append("<div class='grid_1'><span class='ui-icon ui-icon-arrowthick-2-n-s handle'></span></div>");
-
-    /**
-     * Add a textarea
-     * @param node Where to add the textarea
-     * @param {String} type The kind of textarea (currently only distinguishes "text" and "comment")
-     * @param {String} placeHolder
-     * @param {Object} textareaData Dictionary object, loaded from DB
-     * @param {int} cols
-     * @param {String} cssClass Where to put the select box (inline, right, none)
-     * @param {int} position Offset to insert the textarea at (dynamically adding more textareas using a button)
-     * @returns {$|*|jQuery|HTMLElement}
-     */
-    function addTextArea(node, type, placeHolder, textareaData, cols, cssClass, position) {
-        var content = "";
-        var contentType = type;
-        var rows = 1;
-        var isComment;
-        if (textareaData) {
-            content = textareaData["content"];
-            contentType = textareaData["type"];
-            rows = content.lineCount();
-            isComment = textareaData["comment"];
-        }
-
-        if (cols > 25) {
-            rows = 5;
-        }
-
-        if (isComment) {
-            node.parentsUntil("ul", "li").addClass("comment");  // all parents until but except "ul", filtered by "li"
-        }
-        if (type == 'gap-fill-text') {
-            node.parentsUntil("ul", "li").addClass("gap-fill");
-        }
-
-        var $textarea = $("<textarea>", {
-            cols: cols, rows: rows,
-            placeholder: placeHolder,
-            text: content
-        });
-
-        if (cols > 25) {
-            $textarea.addClass("wide");
-        }
-        else {
-            $textarea.addClass("no-ace");
-        }
-
-        function updateLines() {
-            var rows = $(this).attr("rows");
-            var lines = $(this).val().lineCount();
-            if (lines != rows) {
-                if ($(this).hasClass('wide')) {
-                    lines = Math.max(5, lines);
-                }
-                $(this).attr("rows", lines);
-            }
-        }
-
-        $textarea.change(function () {
-            updateLines.call(this);
-        });
-        $textarea.keyup(function () {
-            updateLines.call(this);
-        });
-
-        if (contentType == "source") {
-            $textarea.addClass("source");
-        }
-
-        if (position) {
-            $textarea.hide();
-            node.children("select").eq(position - 1).after($textarea);
-            addTypeSelection($textarea, cssClass, contentType);
-            $textarea.slideDown(300);
-            $textarea.next().slideDown(300);
-        }
-        else {
-            node.append($textarea);
-            addTypeSelection($textarea, cssClass, contentType);
-        }
-        return $textarea;
-    }
-
-    function removeTextAreaAnimated(textarea) {
-        var typeSelection = textarea.next();
-        typeSelection.slideUp(300);
-        textarea.slideUp(300, function () {
-            textarea.remove();
-            typeSelection.remove();
-        });
-    }
 
     var $grid_div;
     var $textarea;

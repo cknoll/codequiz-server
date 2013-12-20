@@ -128,7 +128,7 @@ class TaskCollectionAdmin(admin.ModelAdmin):
         js = (
             "jquery/jquery-1.10.2.min.js",
             "jquery/jquery-ui-1.10.3.custom.min.js",
-            "tasks/sortable-inline.js",
+            "tasks/sortable-inline-admin.js",
         )
 
 
