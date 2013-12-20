@@ -62,6 +62,12 @@ class TaskCollection(models.Model, TaggedModel):
     def number_of_tasks(self):
         return len(self.tasks.count())
 
+    def should_give_solution(self):
+        return self.exam_mode in (self.EXAM_MODE_NONE,)
+
+    def should_give_feedback(self):
+        return self.exam_mode in (self.EXAM_MODE_NONE, self.EXAM_MODE_NO_SOLUTIONS)
+
 
 class TC_Membership(models.Model):
     """

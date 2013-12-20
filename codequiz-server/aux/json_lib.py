@@ -95,7 +95,7 @@ class Segment(object):
     """
 
     def __unicode__(self):
-        return unicode("<%s %s>" % (type(self), id(self) ))
+        return unicode("<%s %s>" % (type(self), id(self)))
 
     def make_context(self):
         """
@@ -166,7 +166,6 @@ class QuestionSegment(Segment):
 
     def __init__(self, dc):
         # probably obsolete
-
         if 0:
             items = dc.ext_dict.items()
 
@@ -222,6 +221,7 @@ class QuestionSegment(Segment):
         user_solution = aux_remove_carriage_returns(user_solution)
 
         # TODO: more sophisticated test here (multiple solutions)
+        # I believe this is already the case... (pit)
         self.user_was_correct = self.test_user_was_correct(user_solution)
         self.context['prefilled_text'] = user_solution
         self.context['user_solution'] = user_solution
@@ -337,13 +337,13 @@ def make_segment(segment_dict, idx):
         raise ValueError("unknown type string: %s" % segment_type)
 
     dc = DictContainer(segment_dict, segment_type)
-    s = segment_class(dc)
+    segment = segment_class(dc)
 
-    s.set_idx(idx)
-    return s
+    segment.set_idx(idx)
+    return segment
 
 
-def preprocess_task_from_db(task):
+def preprocess_task_from_db(task, tc):
     """
     this function takes a task object, coming from the database
 
@@ -357,8 +357,7 @@ def preprocess_task_from_db(task):
     dict_list = rd['segments']
 
     question_counter[0] = 0
-    task.segment_list = [make_segment(d, idx)
-                         for idx, d in enumerate(dict_list)]
+    task.segment_list = [make_segment(dict, idx) for idx, dict in enumerate(dict_list)]
 
     task.solution_flag = False
 

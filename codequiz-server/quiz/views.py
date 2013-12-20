@@ -27,18 +27,30 @@ class TC_Finished(ValueError):
     pass
 
 
-def render_segment(segment, user_sol_list=None):
+def render_segment(segment, user_sol_list=None, tc=None):
     template = loader.get_template(segment.template)
-    if user_sol_list is None:
-        segment.context.update({'print_solution': False})
-    else:
-        segment.context.update({'print_solution': True})
+    print_solution = False
+    print_feedback = False
+
+    if user_sol_list is not None:
+        if tc is not None:
+            print_feedback = tc.should_give_feedback()
+            print_solution = tc.should_give_solution()
+        else:
+            print_feedback = True
+            print_solution = True
+
+        segment.context.update({'print_feedback': print_feedback})
+        segment.context.update({'print_solution': print_solution})
         segment.update_user_solution(user_sol_list)
 
     return template.render(Context(segment.context))
 
 
 def simple(request, **kwargs):
+    """
+    Renders a single page with the HTML contents from the kwarg 'template' (html file path)
+    """
     text = loader.get_template(kwargs['template']).render(RequestContext(request))
     return render(request, 'tasks/cq0_simple.html', dict(pagecontent=text))
 
@@ -219,8 +231,11 @@ def debug_main_block_object(request, task):
     else:
         button_list = ['result']
 
+    tc_id = task.tc_id
+    tc = get_object_or_404(TaskCollection, pk=tc_id)
+
     button_strings = aux_task_button_strings(button_list)
-    html_strings = [render_segment(segment, user_solution) for segment in segment_list]
+    html_strings = [render_segment(segment, user_solution, tc) for segment in segment_list]
 
     res = myContainer(task=task, button_strings=button_strings,
                       html_strings=html_strings)
