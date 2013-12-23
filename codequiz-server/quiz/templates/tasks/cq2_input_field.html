@@ -10,6 +10,7 @@
         <span class="normal">{{ text_slots.0.content|safe }}</span>
     {% endif %}
 </div>
+
 <div class="input_field grid_4{% if not print_feedback %} suffix_4 omega{% endif %}{% if not text_slots.0.content %} pull_4{% endif %}">
     <textarea class="disablecopypaste {{ answer_class }}" style="width: 100%" name="answer_{{ idx }}" rows="{{ lines }}"
               autocomplete="off">{{ prefilled_text }}</textarea>

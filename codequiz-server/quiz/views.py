@@ -127,6 +127,17 @@ def debug_explicit_task_view(request, task_id):
 
     return debug_task_process(request)
 
+def get_taskcollection_from_post_dict(post_dict):
+    """
+    This function determines which task collection is referenced in the POST content
+    and returns the corresponding object
+    """
+    tc_id = post_dict["meta_tc_id"]
+    tc = None
+    if tc_id:
+        tc = get_object_or_404(TaskCollection, pk=tc_id)
+    return tc
+
 
 def get_task_to_process(post_dict):
     """
@@ -168,7 +179,7 @@ def get_task_to_process(post_dict):
 
 def debug_task_process(request):
     """
-    # currently this docstring describes the striven situation
+    # currently this docstring describes the situation we want
 
     This function is the main entry point for rendering a task
     all relevant data (task_id, tc_task_id etc) is obtained via request.POST
@@ -180,14 +191,12 @@ def debug_task_process(request):
         # this happens if the form_process url is opend directly
         return debug_url_landing(request)
     task = get_task_to_process(post)
+    tc = get_taskcollection_from_post_dict(post)
 
     main_block = debug_main_block_object(request, task)
-    #tmb = task_meta_block(request, task)
 
-    context_dict = dict(main_block=main_block, task=task)
+    context_dict = dict(main_block=main_block, task=task, tc=tc)
 
-    # currently not really clear whats the difference between Context-Object
-    # and dict ... anyway
     context = Context(context_dict)
 
     return render(request, 'tasks/cq0_main_simple.html', context)
@@ -225,7 +234,6 @@ def debug_main_block_object(request, task):
         print("missing", missing_solutions)
         print("all", user_solution)
 
-
     if task.solution_flag:
         button_list = ['result', 'next']
     else:
@@ -245,24 +253,6 @@ def debug_main_block_object(request, task):
     res.tc_task_id = ""
 
     return res
-
-
-def debug1(request, tc_id=None, tc_task_id=None):
-    task = aux_get_json_task(task_id=12) # 12 is the test-json-task
-
-    main_block = debug_main_block_object(request, task)
-
-    # say to the template that we are in debug (i.e. testing) mode
-
-
-
-    context_dict = dict(main_block=main_block)
-
-    # currently not really clear whats the difference between Context-Object
-    # and dict ... anyway
-    context = Context(context_dict)
-
-    return render(request, 'tasks/cq0_main_simple.html', context)
 
 
 def get_button(button_type):
@@ -408,11 +398,13 @@ def tc_run_view2(request):
     print(log)
 
     main_block = debug_main_block_object(request, task)
-    main_block.tc_run_flag = True # trigger the correct url in the template
+    main_block.tc_run_flag = True  # trigger the correct url in the template
     main_block.tc_id = task.tc_id
     main_block.tc_task_id = task.tc_task_id
 
-    context_dict = dict(main_block=main_block, task=task)
+    tc = get_object_or_404(TaskCollection, pk=task.tc_id)
+
+    context_dict = dict(main_block=main_block, task=task, tc=tc)
     context = Context(context_dict)
 
     return render(request, 'tasks/cq0_main_simple.html', context)

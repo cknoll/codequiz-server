@@ -10,16 +10,21 @@
     {% else %}
         <span class="normal">{{ text_slots.0.content|safe }}</span>
     {% endif %}
-
 </div>
 
-<div class="input_field grid_4{% if not print_solution %} suffix_4 omega{% endif %}">
+<div class="input_field grid_4{% if not print_feedback %} suffix_4 omega{% endif %}{% if not text_slots.0.content %} pull_4{% endif %}">
     <input name="answer_{{ idx }}" type="checkbox" {% if user_solution == "on" %} checked="checked" {% endif %}>
 </div>
 
-{% if print_solution %}
-    <div class="grid_4 omega">
-        <pre class="{{ css_class }}">{{ printed_solution }}</pre>
+{% if print_feedback %}
+    <div class="grid_4 omega{% if not text_slots.0.content %} pull_4{% endif %}">
+        {% if print_solution %}
+            <pre class="{{ css_class }}">{{ printed_solution }}</pre>
+        {% else %}
+            <span style="color: red">
+                <i class="fa {% if css_class == 'sol_wrong' %}fa-times{% else %}fa-thumbs-o-up{% endif %} {{ css_class }}"></i>
+            </span>
+        {% endif %}
     </div>
 {% endif %}
 <div class="clear"></div>

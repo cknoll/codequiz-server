@@ -58,27 +58,20 @@
 
     <div id="main_container">
         {% block main %}
-
-            <div class="grid_12">
-
+            <div class="grid_12" style="position: relative;">
                 {% block main_left %}
 
                     Main content
 
                 {% endblock %}
-
             </div>
 
             <!-- End of main_left -->
 
             <div class="grid_4">
-
                 {% block main_right %}
-
                     content of right column
-
                 {% endblock %}
-
             </div>
             <div class="clear"></div>
 
@@ -90,6 +83,11 @@
         <div id="footer_left">
             <p><a title="back to top" href="#"><i class="fa fa-arrow-circle-up"></i> back to top</a></p>
         </div>
+        {% block progress %}
+            <div style="position: relative; top: 12px; left:25%; width: 50%">
+                {% include "tasks/z_cq1_taskcollection_progress.html" %}
+            </div>
+        {% endblock %}
         <div id="footer_right">
 
         </div>
