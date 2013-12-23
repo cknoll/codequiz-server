@@ -15,13 +15,14 @@ function addSegmentAnimated(animated, segment) {
     if (animated) {
         segment.hide();
         $("#sortable").append(segment);
-        segment.slideDown(300);
+        segment.slideDown(300, function() {
+            updateWatchdogs();
+        });
     }
     else {
         $("#sortable").append(segment);
+        updateWatchdogs();
     }
-
-    updateWatchdogs();
 }
 
 /**
@@ -38,6 +39,11 @@ function removeSegmentAnimated(animated, segment) {
     else {
         segment.remove();
     }
+}
+
+function duplicateSegmentAnimated(animated, segment) {
+    $clonedSegment = segment.clone(true, true);
+    addSegmentAnimated(animated, $clonedSegment);
 }
 
 /**
@@ -148,7 +154,7 @@ function createSegment(inputType, data) {
     });
 
     // add the little arrow icon to the left of each segment
-    segment.append("<div class='grid_1'><span class='ui-icon ui-icon-arrowthick-2-n-s handle'></span></div>");
+    segment.append("<div class='grid_1' style='width:10pt; margin-left:-10pt; font-size:1.3em'><i class='fa fa-unsorted handle'></i></div>");
 
     var $grid_div;
     var $textarea;
@@ -292,6 +298,12 @@ function createSegment(inputType, data) {
         '<i class="fa fa-times fa-stack-1x fa-inverse"></i>' +
         '</span></i></a>');
 
+    // add the clone button
+    segment.append('<a href="#" class="duplicate"><span class="fa-stack">' +
+        '<i class="fa fa-circle fa-stack-2x"></i>' +
+        '<i class="fa fa-copy fa-stack-1x fa-inverse"></i>' +
+        '</span></i></a>');
+
     return segment;
 }
 
@@ -334,7 +346,7 @@ function addTypeSelection(node, cssclass, preSelectedType) {
  * changing the selects should update the text font and style or add the code editor. Stuff like that.
  */
 function updateWatchdogs() {
-    $("select").change(function () {
+    $("select").unbind("change").change(function () {
         var $prev = $(this).prev();
         var selectedValue = $(this).find(":selected").val();
 
@@ -359,9 +371,14 @@ function updateWatchdogs() {
         }
     });
 
-    $("a.delete").click(function (event) {
+    $("a.delete").unbind("click").click(function (event) {
         event.preventDefault();
         removeSegmentAnimated(true, $(this).parent("li"));
+    });
+
+    $("a.duplicate").unbind("click").click(function (event) {
+        event.preventDefault();
+        duplicateSegmentAnimated(true, $(this).parent("li"));
     });
 }
 
@@ -707,3 +724,28 @@ $(function () {
         }
     });
 });
+
+// Textarea and select clone() bug workaround | Spencer Tipping
+// Licensed under the terms of the MIT source code license
+
+// Motivation.
+// jQuery's clone() method works in most cases, but it fails to copy the value of textareas and select elements. This patch replaces jQuery's clone() method with a wrapper that fills in the
+// values after the fact.
+
+// An interesting error case submitted by Piotr Przybył: If two <select> options had the same value, the clone() method would select the wrong one in the cloned box. The fix, suggested by Piotr
+// and implemented here, is to use the selectedIndex property on the <select> box itself rather than relying on jQuery's value-based val().
+
+(function (original) {
+  jQuery.fn.clone = function () {
+    var result           = original.apply(this, arguments),
+        my_textareas     = this.find('textarea').add(this.filter('textarea')),
+        result_textareas = result.find('textarea').add(result.filter('textarea')),
+        my_selects       = this.find('select').add(this.filter('select')),
+        result_selects   = result.find('select').add(result.filter('select'));
+
+    for (var i = 0, l = my_textareas.length; i < l; ++i) $(result_textareas[i]).val($(my_textareas[i]).val());
+    for (var i = 0, l = my_selects.length;   i < l; ++i) result_selects[i].selectedIndex = my_selects[i].selectedIndex;
+
+    return result;
+  };
+}) (jQuery.fn.clone);

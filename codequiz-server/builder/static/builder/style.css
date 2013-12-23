@@ -14,19 +14,32 @@ a.add.gray {
 a.delete {
     position: absolute;
     right: 5px;
-    top: 5px;
+    top: 3px;
     text-decoration: none;
 
     margin: 1px;
     padding: 1px;
     color: #9d1315;
-    font-size: 0.5em;
+    font-size: 0.7em;
+}
+
+/* Segment clone button (little file copy icon) */
+a.duplicate {
+    position: absolute;
+    right: 28px;
+    top: 3px;
+    text-decoration: none;
+
+    margin: 1px;
+    padding: 1px;
+    color: #009d8a;
+    font-size: 0.7em;
 }
 
 /* Green plus icon */
 a.addinput {
     color: #46ca35;
-    font-size: 0.5em;
+    font-size: 0.7em;
     margin-left: 1.5em;
     position: absolute;
     top: 5px;
@@ -35,7 +48,7 @@ a.addinput {
 /* Red minus icon */
 a.removeinput {
     color: #9d1315;
-    font-size: 0.5em;
+    font-size: 0.7em;
     margin-left: 3.5em;
     position: absolute;
     top: 5px;
