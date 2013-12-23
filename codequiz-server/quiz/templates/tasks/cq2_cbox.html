@@ -6,7 +6,7 @@
     </div>
 
     {% if text_slots.0.type == "source" %}
-        <pre class="source cell_4">{{ text_slots.0.content }}</pre>
+        <pre class="source">{{ text_slots.0.content }}</pre>
     {% else %}
         <span class="normal">{{ text_slots.0.content|safe }}</span>
     {% endif %}

@@ -174,6 +174,15 @@ pre {
     font-family: Fixedsys, Courier, monospace;
 }
 
+span.source {
+    background-color: #ffffcc;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 2px;
+    font-size: 1em;
+    line-height: 1em;
+}
+
 code, tt {
     font-size: 9pt;
     font-weight: bold;
@@ -221,11 +230,6 @@ input.gap {
 /* no glowing outline, when editing */
 input.gap:focus {
     outline: none;
-}
-
-.cell_4 {
-    display: inline-block;
-    width: 180px;
 }
 
 i.sol_wrong {
