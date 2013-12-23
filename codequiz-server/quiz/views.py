@@ -82,7 +82,7 @@ def aux_get_task_from_tc_ids(tc_id, tc_task_id=None, next_task=False):
     current_task = ordered_task_list[tc_task_id - 1].task
 
     # TODO: redundance with aux_get_json_task??
-    json_lib.preprocess_task_from_db(current_task)
+    json_lib.preprocess_task_from_db(current_task, tc)
     current_task.tc_id = tc_id
     current_task.tc_task_id = tc_task_id
 

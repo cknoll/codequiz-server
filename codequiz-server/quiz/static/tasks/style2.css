@@ -228,14 +228,24 @@ input.gap:focus {
     width: 180px;
 }
 
-.sol_right {
+i.sol_wrong {
+    color:#941214;
+    font-size: 1.5em;
+}
+
+i.sol_right {
+    color: #33a821;
+    font-size: 1.5em;
+}
+
+pre.sol_right {
     border: 1px solid #21781e;
     font-family: Fixedsys, Courier, monospace;
     color: black;
     background-color: #9dff7c;
 }
 
-.sol_wrong {
+pre.sol_wrong {
     border: 1px solid #941214;
     font-family: Fixedsys, Courier, monospace;
     color: white;
