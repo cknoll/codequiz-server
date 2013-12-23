@@ -94,7 +94,7 @@ def aux_get_json_task(task_id):
     currently returns pseudo stuff if the body starts with xml
     """
     db_task = get_object_or_404(Task, pk=task_id)
-    json_lib.preprocess_task_from_db(db_task)
+    json_lib.preprocess_task_from_db(db_task, tc=None)
 
     return db_task
 
@@ -132,10 +132,11 @@ def get_taskcollection_from_post_dict(post_dict):
     This function determines which task collection is referenced in the POST content
     and returns the corresponding object
     """
-    tc_id = post_dict["meta_tc_id"]
     tc = None
-    if tc_id:
-        tc = get_object_or_404(TaskCollection, pk=tc_id)
+    if "meta_tc_id" in post_dict:
+        tc_id = post_dict["meta_tc_id"]
+        if tc_id:
+            tc = get_object_or_404(TaskCollection, pk=tc_id)
     return tc
 
 
@@ -239,8 +240,15 @@ def debug_main_block_object(request, task):
     else:
         button_list = ['result']
 
-    tc_id = task.tc_id
-    tc = get_object_or_404(TaskCollection, pk=tc_id)
+    try:
+        tc_id = task.tc_id
+    except AttributeError, err:
+        tc_id = None
+
+    if tc_id:
+        tc = get_object_or_404(TaskCollection, pk=tc_id)
+    else:
+        tc = None
 
     button_strings = aux_task_button_strings(button_list)
     html_strings = [render_segment(segment, user_solution, tc) for segment in segment_list]
