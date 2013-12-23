@@ -411,7 +411,7 @@ function exportValues() {
         function extractInput(node) {
             return {
                 "content": node.val(),
-                "type": node.next()
+                "type": node.next().val()
             };
         }
 
