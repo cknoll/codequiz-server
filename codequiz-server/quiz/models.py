@@ -60,7 +60,7 @@ class TaskCollection(models.Model, TaggedModel):
     tasks = models.ManyToManyField(Task, through='TC_Membership')
 
     def number_of_tasks(self):
-        return len(self.tasks.count())
+        return self.tasks.count()
 
     def should_give_solution(self):
         return self.exam_mode in (self.EXAM_MODE_NONE,)
