@@ -61,7 +61,6 @@ def aux_remove_needless_spaces(string):
     preserves spaces inside quotes, adds one space inside parentheses on each side, removes extra spaces
     applying this treatment to both user input and given solution makes a good test for sameness disregarding whitespace
     """
-
     lines = string.split('\n')
     new_lines = []
     for line in lines:
@@ -70,20 +69,22 @@ def aux_remove_needless_spaces(string):
             new_lines.append(line)
         else:
             # :DOC: http://pymotw.com/2/shlex/
-            lexer = shlex.shlex(stripped)
+            # encoding 'iso-8859-1' because it is being used in the database, apparently...
+            # should maybe be read from the database configuration, somehow...
+            lexer = shlex.shlex(stripped.encode("iso-8859-1"))
             tokens = []
 
             try:
                 for token in lexer:
-                    tokens.append(token)
+                    tokens.append(token.decode("iso-8859-1"))
             except ValueError, err:
-                tokens = ["___|||___|||___|||___|||___" + str(err)]  # definitely not the solution
+                tokens = [u"___|||___|||___|||___|||___" + unicode(err)]  # definitely not the solution
 
             line_spaces_removed = " ".join(tokens)
 
             new_lines.append(line_spaces_removed)
 
-    result = u"\n".join(new_lines).rstrip()
+    result = "\n".join(new_lines).rstrip()
 
     assert type(string) == type(result)
     return result
