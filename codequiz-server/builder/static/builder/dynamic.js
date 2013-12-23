@@ -338,7 +338,11 @@ function updateWatchdogs() {
         var $prev = $(this).prev();
         var selectedValue = $(this).find(":selected").val();
 
-        $(this).parentsUntil("ul", "li").attr("type", selectedValue);
+        var $parentListItem = $(this).parentsUntil("ul", "li");
+        if ($parentListItem.attr("type") == "text"
+            || $parentListItem.attr("type") == "source") {
+            $parentListItem.attr("type", selectedValue);
+        }
 
         if (selectedValue == "source") {
             $prev.addClass("source");
@@ -647,7 +651,8 @@ function transformToMCE(textareas) {
 }
 
 function transformFromMCE(textarea) {
-    textarea.tinymce().remove();
+    var $filtered_textareas = textarea.filter(".source").filter(".ace");
+    $filtered_textareas.tinymce().remove();
 }
 
 /**
