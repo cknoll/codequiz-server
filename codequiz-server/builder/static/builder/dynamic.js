@@ -702,7 +702,7 @@ $(function () {
             if (textareaID) {
                 tinyMCE.execCommand('mceRemoveEditor', false, textareaID);
             }
-
+            ui.placeholder.height(ui.item.height());
             $(ui.placeholder).hide(300);
         },
         change: function (e, ui) {
