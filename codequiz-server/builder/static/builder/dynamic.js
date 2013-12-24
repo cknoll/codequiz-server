@@ -11,10 +11,16 @@ String.prototype.lineCount = function () {
  * @param {Boolean} animated Animated if true
  * @param {Object} segment The segment to append
  */
-function addSegmentAnimated(animated, segment) {
+function addSegmentAnimated(animated, segment, sibling) {
     if (animated) {
         segment.hide();
-        $("#sortable").append(segment);
+
+        if (sibling) {
+            sibling.after(segment);
+        }
+        else {
+            $("#sortable").append(segment);
+        }
         segment.slideDown(300, function () {
             updateWatchdogs();
         });
@@ -43,9 +49,10 @@ function removeSegmentAnimated(animated, segment) {
 
 function duplicateSegmentAnimated(animated, segment) {
     var $clonedSegment;
-
     var type = segment.attr("type");
-    if ($.inArray(type, ["text", "source", "gap-text", "comment"])) {
+
+    var arr = ["text", "source", "gap-fill-text", "comment"];
+    if ($.inArray(type, arr) >= 0) {
         $.each($("textarea.wide").not(".source"), function () {
             $(this).tinymce().save();
         });
@@ -57,7 +64,7 @@ function duplicateSegmentAnimated(animated, segment) {
         $clonedSegment = segment.clone(true, false);
     }
 
-    addSegmentAnimated(animated, $clonedSegment);
+    addSegmentAnimated(animated, $clonedSegment, segment);
 }
 
 /**
