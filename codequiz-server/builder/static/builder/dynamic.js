@@ -15,7 +15,7 @@ function addSegmentAnimated(animated, segment) {
     if (animated) {
         segment.hide();
         $("#sortable").append(segment);
-        segment.slideDown(300, function() {
+        segment.slideDown(300, function () {
             updateWatchdogs();
         });
     }
@@ -668,8 +668,15 @@ function transformToMCE(textareas) {
 }
 
 function transformFromMCE(textarea) {
-    var $filtered_textareas = textarea.filter(".source").filter(".ace");
-    $filtered_textareas.tinymce().remove();
+    var $filtered_textareas = textarea.filter(".source");
+
+    $filtered_textareas.each(function () {
+        var $li = $(this).parentsUntil("ul", "li");
+        var type = $li.attr("type");
+        if (type == "text" || type == "source") {
+            $filtered_textareas.tinymce().remove();
+        }
+    });
 }
 
 /**
@@ -736,16 +743,16 @@ $(function () {
 // and implemented here, is to use the selectedIndex property on the <select> box itself rather than relying on jQuery's value-based val().
 
 (function (original) {
-  jQuery.fn.clone = function () {
-    var result           = original.apply(this, arguments),
-        my_textareas     = this.find('textarea').add(this.filter('textarea')),
-        result_textareas = result.find('textarea').add(result.filter('textarea')),
-        my_selects       = this.find('select').add(this.filter('select')),
-        result_selects   = result.find('select').add(result.filter('select'));
+    jQuery.fn.clone = function () {
+        var result = original.apply(this, arguments),
+            my_textareas = this.find('textarea').add(this.filter('textarea')),
+            result_textareas = result.find('textarea').add(result.filter('textarea')),
+            my_selects = this.find('select').add(this.filter('select')),
+            result_selects = result.find('select').add(result.filter('select'));
 
-    for (var i = 0, l = my_textareas.length; i < l; ++i) $(result_textareas[i]).val($(my_textareas[i]).val());
-    for (var i = 0, l = my_selects.length;   i < l; ++i) result_selects[i].selectedIndex = my_selects[i].selectedIndex;
+        for (var i = 0, l = my_textareas.length; i < l; ++i) $(result_textareas[i]).val($(my_textareas[i]).val());
+        for (var i = 0, l = my_selects.length; i < l; ++i) result_selects[i].selectedIndex = my_selects[i].selectedIndex;
 
-    return result;
-  };
-}) (jQuery.fn.clone);
+        return result;
+    };
+})(jQuery.fn.clone);
