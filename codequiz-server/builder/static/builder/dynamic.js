@@ -42,7 +42,21 @@ function removeSegmentAnimated(animated, segment) {
 }
 
 function duplicateSegmentAnimated(animated, segment) {
-    $clonedSegment = segment.clone(true, true);
+    var $clonedSegment;
+
+    var type = segment.attr("type");
+    if ($.inArray(type, ["text", "source", "gap-text", "comment"])) {
+        $.each($("textarea.wide").not(".source"), function () {
+            $(this).tinymce().save();
+        });
+
+        var data = extractTextArea(segment);
+        $clonedSegment = createSegment(type, data);
+    }
+    else {
+        $clonedSegment = segment.clone(true, false);
+    }
+
     addSegmentAnimated(animated, $clonedSegment);
 }
 
@@ -350,12 +364,6 @@ function updateWatchdogs() {
         var $prev = $(this).prev();
         var selectedValue = $(this).find(":selected").val();
 
-        var $parentListItem = $(this).parentsUntil("ul", "li");
-        if ($parentListItem.attr("type") == "text"
-            || $parentListItem.attr("type") == "source") {
-            $parentListItem.attr("type", selectedValue);
-        }
-
         if (selectedValue == "source") {
             $prev.addClass("source");
             if ($prev.is("textarea.source")) {
@@ -368,6 +376,12 @@ function updateWatchdogs() {
                 transformACEToTextarea($prev);
                 transformToMCE($prev);
             }
+        }
+
+        var $parentListItem = $(this).parentsUntil("ul", "li");
+        if ($parentListItem.attr("type") == "text"
+            || $parentListItem.attr("type") == "source") {
+            $parentListItem.attr("type", selectedValue);
         }
     });
 
@@ -395,6 +409,39 @@ function updateTask() {
 }
 
 /**
+ * Extracts a text area type of input, whose key will be the type of the <li> its contained in
+ */
+function extractTextArea(node) {
+    var $div = node.children("div").eq(1); // the first div is for the up/down arrow, the second contains the textarea
+    var $textArea = $div.children("textarea").first();
+
+    var type = node.attr("type");
+    var dict = {
+        "content": $textArea.val(),
+        "type": type
+    };
+
+    // workaround for strange bug, where after switching from normal to source (ACE) the changed text isn't saved
+    var $typeSelect = $(this).next();
+    if ($typeSelect.val() == "source") {
+        dict["content"] = $textArea.text();
+    }
+
+    if (node.hasClass("comment")) {
+        dict["comment"] = true;
+    }
+
+    return dict;
+}
+
+function extractInput(node) {
+    return {
+        "content": node.val(),
+        "type": node.next().val()
+    };
+}
+
+/**
  * Walks over all the segments and builds a dictionary/JSON object
  * @returns {{segments: Array}}
  */
@@ -404,49 +451,20 @@ function exportValues() {
     $("#sortable").find("li").each(function (number, obj) {
         var li = $(this);
 
-        /**
-         * Extracts a text area type of input, whose key will be the type of the <li> its contained in
-         */
-        function extractTextArea() {
-            var $div = li.children("div").eq(1); // the first div is for the up/down arrow, the second contains the textarea
-            var $textArea = $div.children("textarea").first();
-
-            var type = li.attr("type");
-            var dict = {
-                "content": $textArea.val(),
-                "type": type
-            };
-
-            // workaround for strange bug, where after switching from normal to source (ACE) the changed text isn't saved
-            var $typeSelect = $(this).next();
-            if ($typeSelect.val() == "source") {
-                dict["content"] = $textArea.text();
-            }
-
-            if (li.hasClass("comment")) {
-                dict["comment"] = true;
-            }
-            segments.push(dict);
-        }
-
-        function extractInput(node) {
-            return {
-                "content": node.val(),
-                "type": node.next().val()
-            };
-        }
-
         switch (obj.type) {
             case 'text':
-                extractTextArea();
+                var dict = extractTextArea(li);
+                segments.push(dict);
                 break;
 
             case 'source':
-                extractTextArea();
+                var dict = extractTextArea(li);
+                segments.push(dict);
                 break;
 
             case 'gap-fill-text':
-                extractTextArea();
+                var dict = extractTextArea(li);
+                segments.push(dict);
                 break;
 
             case 'input':
@@ -661,20 +679,19 @@ function transformToMCE(textareas) {
                 }
             }, tinymce.EditorManager);
             ed.render();
-
-            $("div.mce-tinymce").css({"display": ""}); // hack, to remove strange empty lines before and after editor
         });
+        $("div.mce-tinymce").css({"display": ""}); // hack, to remove strange empty lines before and after editor
     }, 1);
 }
 
 function transformFromMCE(textarea) {
-    var $filtered_textareas = textarea.filter(".source");
+    var $filtered_textareas = textarea;
 
     $filtered_textareas.each(function () {
         var $li = $(this).parentsUntil("ul", "li");
         var type = $li.attr("type");
         if (type == "text" || type == "source") {
-            $filtered_textareas.tinymce().remove();
+            $(this).tinymce().remove();
         }
     });
 }
