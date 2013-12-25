@@ -28,8 +28,8 @@
         <form action="{% url 'quiz_ns:tc_run_view' %}" method="post" autocomplete="off">
         {% csrf_token %}
         <input type="hidden" name="meta_tc_id" value="{{tc.id}}">
-        {# this is before the first task -> 0 #}
-        <input type="hidden" name="meta_tc_task_id" value="0">
+
+        <input type="hidden" name="meta_tc_task_id" value="-1"> {# this is before the first task -> 0 #}
 
         <button type="submit" class="button" name="button_next" style="width:200pt">
                 Start Task Collection <i class="fa fa-caret-right fa-2x pull-right"></i>

@@ -4,7 +4,7 @@
 
 {% if tc %}
     {% for i in tc.number_of_tasks|get_range %}
-        {% if i < task.tc_task_id %}
+        {% if i <= task.tc_task_id %}
             <i class="fa fa-dot-circle-o"></i>
         {% else %}
             <i class="fa fa-circle-o"></i>

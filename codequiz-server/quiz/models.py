@@ -68,6 +68,9 @@ class TaskCollection(models.Model, TaggedModel):
     def should_give_feedback(self):
         return self.exam_mode in (self.EXAM_MODE_NONE, self.EXAM_MODE_NO_SOLUTIONS)
 
+    def ordered_tasks(self):
+        return [membership_object.task for membership_object in self.tc_membership_set.order_by('ordering')]
+
 
 class TC_Membership(models.Model):
     """

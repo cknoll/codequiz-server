@@ -344,7 +344,7 @@ def make_segment(segment_dict, idx):
     return segment
 
 
-def preprocess_task_from_db(task, tc):
+def preprocess_task_from_db(task):
     """
     this function takes a task object, coming from the database
 
@@ -359,10 +359,8 @@ def preprocess_task_from_db(task, tc):
 
     question_counter[0] = 0
     task.segment_list = [make_segment(dict, idx) for idx, dict in enumerate(dict_list)]
-
     task.solution_flag = False
 
-    # task is changed, no need to return anything
     return None
 
 #TODO: obsolete

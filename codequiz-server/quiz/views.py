@@ -3,7 +3,7 @@
 from django.http import HttpResponse, Http404, HttpResponseForbidden
 from django.template import Context, loader
 from django.template import RequestContext
-from django.shortcuts import render, render_to_response, get_object_or_404
+from django.shortcuts import render, render_to_response, get_object_or_404, redirect
 from datetime import *
 import hashlib
 
@@ -80,17 +80,13 @@ def aux_get_task_from_tc_ids(tc_id, tc_task_id=None, next_task=False):
     else:
         tc_task_id = int(tc_task_id)
 
-    ordered_task_list = tc.tc_membership_set.order_by('ordering')
-    tc.len = len(ordered_task_list)
-
-    # TODO: prevent confusion with 1 (database) and 0 (list) as first index
-    if tc_task_id > len(ordered_task_list):
+    if tc_task_id >= tc.number_of_tasks():
         raise TC_Finished
 
-    current_task = ordered_task_list[tc_task_id - 1].task
+    ordered_task_list = tc.ordered_tasks()
+    task_id = ordered_task_list[tc_task_id].id
+    current_task = aux_get_json_task(task_id)
 
-    # TODO: redundance with aux_get_json_task??
-    json_lib.preprocess_task_from_db(current_task, tc)
     current_task.tc_id = tc_id
     current_task.tc_task_id = tc_task_id
 
@@ -99,10 +95,11 @@ def aux_get_task_from_tc_ids(tc_id, tc_task_id=None, next_task=False):
 
 def aux_get_json_task(task_id):
     """
-    currently returns pseudo stuff if the body starts with xml
+    Fetch Task object and preprocess JSON task description into segments
+    @task_id {int} ID of task
     """
     db_task = get_object_or_404(Task, pk=task_id)
-    json_lib.preprocess_task_from_db(db_task, tc=None)
+    json_lib.preprocess_task_from_db(db_task)
 
     return db_task
 
@@ -113,7 +110,7 @@ def debug_url_landing(request):
     in case just a simple url is opend
     """
 
-    p = dict(request.POST) # POST itself is immutable
+    p = dict(request.POST)  # POST itself is immutable
     p['meta_task_id'] = "12"
     p['meta_no_form'] = True # indicate that this data is "pseudo"
     request.POST = p
@@ -156,6 +153,9 @@ def get_task_to_process(post_dict):
     """
 
     task_id = post_dict.get('meta_task_id', None)
+    tc_id = post_dict.get('meta_tc_id', None)
+    tc_task_id = post_dict.get('meta_tc_task_id', None)
+
     # TODO: simplify!
     if 'meta_no_form' in post_dict:
         task = aux_get_json_task(task_id=task_id)
@@ -165,7 +165,7 @@ def get_task_to_process(post_dict):
         next_task_flag = False
         solution_flag = False
 
-        if post_dict.get('meta_tc_id', "") != "":
+        if tc_id:
             if 'button_next' in post_dict:
                 next_task_flag = True
 
@@ -174,16 +174,16 @@ def get_task_to_process(post_dict):
             else:
                 raise Http404("Unknown form content.")
 
-            tc_id = post_dict['meta_tc_id']
-            tc_task_id = post_dict['meta_tc_task_id']
-            task = aux_get_task_from_tc_ids(tc_id, tc_task_id, next_task=next_task_flag)
+            if int(tc_id) <= 0:
+                task = aux_get_json_task(task_id=task_id)
+            else:
+                task = aux_get_task_from_tc_ids(int(tc_id), tc_task_id, next_task=next_task_flag)
             task.solution_flag = solution_flag
 
         else:
-            if 'button_next' in post_dict:
-                raise Http404("For explictly adressed tasks, there is no successor!")
-            elif 'button_result' in post_dict:
+            if 'button_result' in post_dict:
                 task = aux_get_json_task(task_id=task_id)
+                task.solution_flag = True
 
         return task
 
@@ -242,13 +242,7 @@ def debug_main_block_object(request, task):
                 missing_solutions.append((sol, ""))
         user_solution.update(dict(missing_solutions))
 
-        print("missing", missing_solutions)
-        print("all", user_solution)
-
-    if task.solution_flag:
-        button_list = ['result', 'next']
-    else:
-        button_list = ['result']
+    button_list = []
 
     try:
         tc_id = task.tc_id
@@ -257,14 +251,21 @@ def debug_main_block_object(request, task):
 
     if tc_id:
         tc = get_object_or_404(TaskCollection, pk=tc_id)
+
+        if tc.should_give_feedback():
+            button_list.append("result")
+
+        if task.solution_flag or not tc.should_give_feedback():
+            button_list.append("next")
+
     else:
         tc = None
+        button_list.append("result")  # this only occurs in explicit mode
 
     button_strings = aux_task_button_strings(button_list)
     html_strings = [render_segment(segment, user_solution, tc) for segment in segment_list]
 
-    res = myContainer(task=task, button_strings=button_strings,
-                      html_strings=html_strings)
+    res = myContainer(task=task, button_strings=button_strings, html_strings=html_strings)
 
     res.debug_flag = True
     res.tc_id = ""
@@ -284,11 +285,6 @@ def get_button(button_type):
 
 
 def get_solutions_from_post(request):
-    """
-    Generate a dictionary with expected form fields including the checkboxes
-
-    Reason: Checkbox input values are not sent by the HTML form when they are not checked (to save some bytes...)
-    """
     items = request.POST.items()
     items.sort()
 
@@ -329,9 +325,9 @@ def tc_run_form_process(request, tc_id, tc_task_id):
         return tc_run_view(request, tc_id, tc_task_id, solution_flag=True)
 
     else:
-        return NotAllowedResponse()
+        return redirect('quiz_ns:index', )
 
-# is also used by new (json) workflow
+
 def tc_run_final_view(request, tc_id):
     tc = get_object_or_404(TaskCollection, pk=tc_id)
 
@@ -342,14 +338,12 @@ def tc_run_final_view(request, tc_id):
         return response
 
     if "tc_id" in request.session:
-        if tc_id != request.session["tc_id"]:
+        if int(tc_id) != request.session["tc_id"]:
             response.write("<p>You can't switch task collections on your own.</p>")
             return response
 
-    task_list = tc.tc_membership_set.order_by('ordering')
-    collection_length = len(task_list)
     tc_task_id = request.session["tc_task_id"]
-    if tc_task_id < collection_length - 1:
+    if tc_task_id < tc.number_of_tasks() - 1:
         response.write("<p>You're not done with the quiz yet.</p>")
         return response
 
@@ -391,21 +385,20 @@ def tc_run_view(request):
     if len(post_dict) <= 0:
         if request.session.has_key("tc_id") and request.session.has_key("tc_task_id"):
 
-            tc_id = int(request.session['tc_id'])
-            tc_task_id = int(request.session['tc_task_id'])
+            meta_tc_id = request.session['tc_id']
+            meta_tc_task_id = request.session['tc_task_id']
 
-            print("tc_id: ", tc_id)
-            print("tc_task_id: ", tc_task_id)
-
-            post_dict = {
-                'button_next': '',
-                'meta_tc_id': tc_id,
-                'meta_tc_task_id': tc_task_id - 1
-            }
-            task = get_task_to_process(post_dict)
+            if meta_tc_id is None or meta_tc_task_id is None:
+                return redirect('quiz_ns:index', )
+            else:
+                post_dict = {
+                    'button_next': '',
+                    'meta_tc_id': int(meta_tc_id),
+                    'meta_tc_task_id': int(meta_tc_task_id) - 1
+                }
 
         else:
-            return NotAllowedResponse()
+            return redirect('quiz_ns:index', )
 
     try:
         task = get_task_to_process(post_dict)
@@ -413,8 +406,11 @@ def tc_run_view(request):
         tc_id = request.POST['meta_tc_id']
         return tc_run_final_view(request, tc_id)
 
-    request.session['tc_id'] = task.tc_id
-    request.session['tc_task_id'] = task.tc_task_id
+    tc_id = getattr(task, "tc_id", None)
+    tc_task_id = getattr(task, "tc_task_id", None)
+
+    request.session['tc_id'] = tc_id
+    request.session['tc_task_id'] = tc_task_id
 
     log = ""
     if 'log' in request.session:
@@ -422,17 +418,17 @@ def tc_run_view(request):
 
     log += "Show {solution} task {task} of collection {coll}.\n".format(
         solution="solution of" if task.solution_flag else "",
-        task=str(task.tc_task_id),
-        coll=str(task.tc_id)
+        task=str(tc_task_id),
+        coll=str(tc_id)
     )
     request.session["log"] = log
 
     main_block = debug_main_block_object(request, task)
     main_block.tc_run_flag = True  # trigger the correct url in the template
-    main_block.tc_id = task.tc_id
-    main_block.tc_task_id = task.tc_task_id
+    main_block.tc_id = tc_id
+    main_block.tc_task_id = tc_task_id
 
-    tc = get_object_or_404(TaskCollection, pk=task.tc_id)
+    tc = None if not tc_id else get_object_or_404(TaskCollection, pk=tc_id)
 
     context_dict = dict(main_block=main_block, task=task, tc=tc)
     context = Context(context_dict)
