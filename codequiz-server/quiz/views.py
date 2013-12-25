@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseForbidden
 from django.template import Context, loader
 from django.template import RequestContext
 from django.shortcuts import render, render_to_response, get_object_or_404
@@ -25,6 +25,15 @@ class myContainer(object):
 
 class TC_Finished(ValueError):
     pass
+
+
+class NotAllowedResponse(HttpResponseForbidden):
+    def __init__(self, content=None):
+        super(HttpResponseForbidden, self).__init__(content)
+        if not content:
+            self.content = "You're not allowed to be here."
+        else:
+            self.content = content
 
 
 def render_segment(segment, user_sol_list=None, tc=None):
@@ -74,7 +83,6 @@ def aux_get_task_from_tc_ids(tc_id, tc_task_id=None, next_task=False):
     ordered_task_list = tc.tc_membership_set.order_by('ordering')
     tc.len = len(ordered_task_list)
 
-
     # TODO: prevent confusion with 1 (database) and 0 (list) as first index
     if tc_task_id > len(ordered_task_list):
         raise TC_Finished
@@ -113,7 +121,7 @@ def debug_url_landing(request):
     return debug_task_process(request)
 
 
-def debug_explicit_task_view(request, task_id):
+def explicit_task_view(request, task_id):
     """
     this view handles the rendering of a task outside of a TC
     (e.g. in preview mode)
@@ -126,6 +134,7 @@ def debug_explicit_task_view(request, task_id):
     request.POST = p
 
     return debug_task_process(request)
+
 
 def get_taskcollection_from_post_dict(post_dict):
     """
@@ -152,30 +161,31 @@ def get_task_to_process(post_dict):
         task = aux_get_json_task(task_id=task_id)
         return task
 
-    elif 'button_next' in post_dict:
-        if post_dict.get('meta_tc_id', "") != "":
-            tc_id = post_dict['meta_tc_id']
-            tc_task_id = post_dict['meta_tc_task_id']
-            task = aux_get_task_from_tc_ids(tc_id, tc_task_id, next_task=True)
-            task.solution_flag = False
-        else:
-            raise Http404("For explictly adressed tasks, there is no successor!")
-            #aux_get_json_task(task_id=task_id, next_task=True)
-        return task
-
-    elif 'button_result' in post_dict:
-        if post_dict.get('meta_tc_id', "") != "":
-            tc_id = post_dict['meta_tc_id']
-            tc_task_id = post_dict['meta_tc_task_id']
-            task = aux_get_task_from_tc_ids(tc_id, tc_task_id)
-        else:
-            # this is for the explicit mode
-            task = aux_get_json_task(task_id=task_id)
-        task.solution_flag = True
-
-        return task
     else:
-        raise Http404("Unknown formular content.")
+        next_task_flag = False
+        solution_flag = False
+
+        if post_dict.get('meta_tc_id', "") != "":
+            if 'button_next' in post_dict:
+                next_task_flag = True
+
+            elif 'button_result' in post_dict:
+                solution_flag = True
+            else:
+                raise Http404("Unknown form content.")
+
+            tc_id = post_dict['meta_tc_id']
+            tc_task_id = post_dict['meta_tc_task_id']
+            task = aux_get_task_from_tc_ids(tc_id, tc_task_id, next_task=next_task_flag)
+            task.solution_flag = solution_flag
+
+        else:
+            if 'button_next' in post_dict:
+                raise Http404("For explictly adressed tasks, there is no successor!")
+            elif 'button_result' in post_dict:
+                task = aux_get_json_task(task_id=task_id)
+
+        return task
 
 
 def debug_task_process(request):
@@ -273,23 +283,14 @@ def get_button(button_type):
     return button_template.render(bContext)
 
 
-def aux_get_segment_list_from_task(task):
-    """
-    returns list of segments
-    """
-    root = xml_lib.load_xml(task.body_data)
-
-    segments = xml_lib.split_xml_root(root)
-
-    return segments
-
-
 def get_solutions_from_post(request):
-    # TODO: this function probably could be simplified
+    """
+    Generate a dictionary with expected form fields including the checkboxes
+
+    Reason: Checkbox input values are not sent by the HTML form when they are not checked (to save some bytes...)
+    """
     items = request.POST.items()
     items.sort()
-
-    print("items", items)
 
     transformed_items = [(int(k.split("_")[1]), v) for k, v in items if k.startswith("answer")]
 
@@ -327,6 +328,8 @@ def tc_run_form_process(request, tc_id, tc_task_id):
     elif 'result' in post:
         return tc_run_view(request, tc_id, tc_task_id, solution_flag=True)
 
+    else:
+        return NotAllowedResponse()
 
 # is also used by new (json) workflow
 def tc_run_final_view(request, tc_id):
@@ -379,11 +382,31 @@ def compute_hash(string, date):
     return result
 
 
-def tc_run_view2(request):
+def tc_run_view(request):
     """
 
     """
     post_dict = request.POST
+
+    if len(post_dict) <= 0:
+        if request.session.has_key("tc_id") and request.session.has_key("tc_task_id"):
+
+            tc_id = int(request.session['tc_id'])
+            tc_task_id = int(request.session['tc_task_id'])
+
+            print("tc_id: ", tc_id)
+            print("tc_task_id: ", tc_task_id)
+
+            post_dict = {
+                'button_next': '',
+                'meta_tc_id': tc_id,
+                'meta_tc_task_id': tc_task_id - 1
+            }
+            task = get_task_to_process(post_dict)
+
+        else:
+            return NotAllowedResponse()
+
     try:
         task = get_task_to_process(post_dict)
     except TC_Finished:
@@ -403,7 +426,6 @@ def tc_run_view2(request):
         coll=str(task.tc_id)
     )
     request.session["log"] = log
-    print(log)
 
     main_block = debug_main_block_object(request, task)
     main_block.tc_run_flag = True  # trigger the correct url in the template
@@ -416,58 +438,6 @@ def tc_run_view2(request):
     context = Context(context_dict)
 
     return render(request, 'tasks/cq0_main_simple.html', context)
-
-
-def task_content_block(request, task):
-    """
-    @param task: the task to render
-    @return the rendered html for the content of a task
-    """
-
-    segments = aux_get_segment_list_from_task(task)
-
-    if task.solution_flag:
-        button_list = ['result', 'next']
-    else:
-        button_list = ['result']
-
-    button_strings = aux_task_button_strings(task.solution_flag)
-
-    user_solution = aux_task_user_solution(request, task.solution_flag)
-    html_strings = [render_segment(segment, user_solution) for segment in segments]
-
-    context_dict = dict(task=task, button_strings=button_strings,
-                        html_strings=html_strings)
-
-    context = Context(context_dict)
-    template = loader.get_template('tasks/cq1_task_content.html')
-
-    return template.render(RequestContext(request, context))
-
-
-def task_meta_block(request, task):
-    """
-    returns the rendered html for the meta-info-block for a task
-    """
-
-    context_dict = dict(task=task)
-
-    context = RequestContext(request, context_dict)
-    tmpl = loader.get_template('tasks/cq1_task_meta.html')
-
-    return tmpl.render(context)
-
-
-def task_collection_meta_block(request, tc):
-    """
-    returns the rendered html for the meta-info-block for a task collection
-    """
-
-    context_dict = dict(tc=tc)
-    context = Context(context_dict)
-    tmpl = loader.get_template('tasks/cq1_taskcollection_meta.html')
-
-    return tmpl.render(context)
 
 
 def task_collection_view(request, tc_id):

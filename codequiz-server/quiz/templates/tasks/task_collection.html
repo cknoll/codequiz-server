@@ -25,7 +25,7 @@
             {% endfor %}
         </div>
         <br/>
-        <form action="{% url 'quiz_ns:tc_run_view2' %}" method="post" autocomplete="off">
+        <form action="{% url 'quiz_ns:tc_run_view' %}" method="post" autocomplete="off">
         {% csrf_token %}
         <input type="hidden" name="meta_tc_id" value="{{tc.id}}">
         {# this is before the first task -> 0 #}

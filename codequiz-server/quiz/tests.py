@@ -33,8 +33,3 @@ class URLTest(TestCase):
     def test_explicit_by_task_id(self):
         response = self.client.get('/quiz/explicit/12/')
         self.assertEqual(response.status_code, 200)
-
-    def test_task_process(self):
-        response = self.client.get('/quiz/task_process/')
-        self.assertEqual(response.status_code, 200)
-
