@@ -1,0 +1,14 @@
+{% extends "tasks/cq0_main_base.html" %}
+{# This template is used to render a task independed of a task_collection #}
+
+<!-- begin cq0_main_simple.html  -->
+
+{% block main_left %}
+    {% include "tasks/z_cq1_task_content.html" with mb=main_block %}
+{% endblock main_left %}
+
+{% block main_right %}
+    {% include "tasks/cq1_task_meta.html" %}
+{% endblock main_right %}
+
+<!-- end cq0_main_simple.html  -->

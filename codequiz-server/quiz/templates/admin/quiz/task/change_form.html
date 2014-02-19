@@ -1,0 +1,11 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+{% block object-tools %}
+{% if change %}{% if not is_popup %}
+<ul class="object-tools">
+	<li><a class="historylink" href="history/">{% trans "History" %}</a></li>
+{% if has_absolute_url %}
+	<li><a class="viewsitelink" href="{% url 'quiz_ns:explicit_task_view' object_id %}">{% trans "View on site" %}</a></li>
+{% endif%}</ul>
+{% endif %}{% endif %}
+{% endblock %}

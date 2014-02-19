@@ -1,15 +1,17 @@
 <!-- ==> start: task_collection.html -->
 {% load staticfiles %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'tasks/style2.css' %}"/>
-<link rel="stylesheet" type="text/css" href="{% static 'tasks/tabular_style.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/style2.css?{% now "U" %}"/>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/tabular_style.css"/>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}font-awesome/css/font-awesome.min.css"/>
 
 
 <div class="centered" style="width:400px">
     <h1>Test: {{ tc.title }}</h1>
 
     <div class="small">
-        Author: {{ tc.author }}
+        Author: {{ tc.author }}<br>
+        ID: {{ tc.id }}
     </div>
 
     {% if task_list %}
@@ -23,7 +25,16 @@
             {% endfor %}
         </div>
         <br/>
-        <a class="button" style="width:200pt" href="{% url 'quiz_ns:tc_run_view' tc.id 0 %}">Start this test!</a>
+        <form action="{% url 'quiz_ns:tc_run_view' %}" method="post" autocomplete="off">
+        {% csrf_token %}
+        <input type="hidden" name="meta_tc_id" value="{{tc.id}}">
+
+        <input type="hidden" name="meta_tc_task_id" value="-1"> {# this is before the first task -> 0 #}
+
+        <button type="submit" class="button" name="button_next" style="width:200pt">
+                Start Task Collection <i class="fa fa-caret-right fa-2x pull-right"></i>
+        </button>
+        </form>
 
     {% else %}
         <p>No tasks are available.</p>

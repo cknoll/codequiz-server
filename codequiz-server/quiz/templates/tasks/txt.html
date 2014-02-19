@@ -1,5 +1,15 @@
 <!-- ==> start: txt.html -->
 
-<p>{{text|safe}}</p>
+<div class="grid_12 alpha omega" style="padding: 0.5em 0px">
+    {% if comment %}
+        <div class="comment">
+    {% endif %}
+
+    {{ text|safe }}
+
+    {% if comment %}
+        </div>
+    {% endif %}
+</div>
 
 <!-- ==> end: txt.html -->

@@ -1,7 +1,12 @@
 <!-- ==> start: src.html -->
-{% if multiline %}
-    <pre class="src">{{ text }}</pre>
-{% else %}
-    <span class="src"> {{ text }} </span>
-{% endif %}
+
+<div class="grid_12 alpha omega" style="padding: 0.5em 0px">
+    {% if multiline %}
+        <pre class="source{% if comment %} comment {% endif %}">{{ text }}</pre>
+    {% else %}
+        <span class="source{% if comment %} comment {% endif %}">
+        {{ text }}
+    </span>
+    {% endif %}
+</div>
 <!-- ==> end: src.html -->

@@ -1,0 +1,136 @@
+/* Segment add buttons */
+a.add {
+    margin: 5px;
+    padding: 5px;
+    background-color: #105cb6;
+    color: #ffffff;
+    border-radius: 5px;
+}
+a.add.gray {
+    background-color: #b6b6b4;
+}
+
+/* Segment delete button (little white cross on red) */
+a.delete {
+    position: absolute;
+    right: 5px;
+    top: 3px;
+    text-decoration: none;
+
+    margin: 1px;
+    padding: 1px;
+    color: #9d1315;
+    font-size: 0.7em;
+}
+
+/* Segment clone button (little file copy icon) */
+a.duplicate {
+    position: absolute;
+    right: 28px;
+    top: 3px;
+    text-decoration: none;
+
+    margin: 1px;
+    padding: 1px;
+    color: #009d8a;
+    font-size: 0.7em;
+}
+
+/* Green plus icon */
+a.addinput {
+    color: #46ca35;
+    font-size: 0.7em;
+    margin-left: 1.5em;
+    position: absolute;
+    top: 5px;
+}
+
+/* Red minus icon */
+a.removeinput {
+    color: #9d1315;
+    font-size: 0.7em;
+    margin-left: 3.5em;
+    position: absolute;
+    top: 5px;
+}
+
+/* The jQuery UI Sortable container */
+#sortable {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+#sortable li {
+    list-style-type: none;
+    position: relative;
+    margin: 0 3px 3px 3px;
+    padding: 0.2em 0.2em 0.2em 1.5em;
+    font-size: 1.4em;
+    background-color: #ddebff;
+}
+
+/* the little up/down arrow that indicates drag and drop */
+#sortable li span.ui-icon {
+    position: absolute;
+    margin-left: -1.3em;
+    margin-top: 0.2em
+}
+
+/* inside the grid, style the textarea and selects to fit without line break */
+div.grid_5 textarea {
+    width:70%;
+    min-height: 16px;
+    resize: vertical;
+}
+
+div.grid_5 select {
+    min-height: 16px;
+}
+
+div.grid_4 textarea {
+    width:70%;
+    min-height: 16px;
+    resize: vertical;
+}
+
+div.grid_4 select {
+    min-height: 16px;
+}
+
+/* make the full width textareas actually full width (not just x chars wide) */
+textarea.wide {
+    width: 100%;
+}
+
+/* show monospace font for textareas (that are not ACE) */
+textarea.source {
+    font-family: monospace;
+    font-size: 0.8em;
+}
+
+/* green background to indicate a comment segment */
+#sortable li.comment {
+    background-color: #a4e68e;
+}
+
+/* gray background to indicate a comment segment */
+#sortable li.gap-fill {
+    background-color: #b6b6b4;
+}
+
+/* make right aligned select boxes cling to the right */
+select.right {
+    position: absolute;
+    right: 10px;
+    bottom: 3px;
+}
+
+select.none {
+    display: none;
+}
+
+.handle {
+    cursor: move;
+}

@@ -1,0 +1,33 @@
+<!-- ==> start: cq2_input_field.html -->
+
+<div class="grid_4 alpha">
+    <div style="margin-left:-110px;text-align: right; width:100px; float: left">
+        {{ question_counter }}.
+    </div>
+    {% if text_slots.0.type == "source" %}
+        <pre class="source">{{ text_slots.0.content }}</pre>
+    {% else %}
+        <span class="normal">{{ text_slots.0.content|safe }}</span>
+    {% endif %}
+</div>
+
+<div class="input_field grid_4{% if not print_feedback %} suffix_4 omega{% endif %}{% if not text_slots.0.content %} pull_4{% endif %}">
+    <textarea class="disablecopypaste {{ answer_class }}" style="width: 100%" name="answer_{{ idx }}" rows="{{ lines }}"
+              autocomplete="off">{{ prefilled_text }}</textarea>
+</div>
+
+{% if print_feedback %}
+    <div class="grid_4 omega{% if not text_slots.0.content %} pull_4{% endif %}">
+        {% if print_solution %}
+            <pre class="{{ css_class }} {{ solution_class }}">{{ printed_solution }}</pre>
+        {% else %}
+            <span style="color: red">
+                <i class="fa {% if css_class == 'sol_wrong' %}fa-times{% else %}fa-thumbs-o-up{% endif %} {{ css_class }}"></i>
+            </span>
+        {% endif %}
+    </div>
+{% endif %}
+
+<div class="clear"></div>
+
+<!-- ==> end: cq2_input_field.html -->

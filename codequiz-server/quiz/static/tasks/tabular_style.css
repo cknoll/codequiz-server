@@ -1,4 +1,4 @@
-div.container {
+div.table_container {
     display: table;
 }
 
@@ -10,16 +10,18 @@ div.cell {
     display: table-cell;
     padding-right: 20px;
     padding-bottom: 5px;
+    vertical-align: top;
+/*     text-align: left; */
 }
 
 div.cell p {
     margin: 1px 1px;
 }
 
-div.linenumber {
+/*div.linenumber {
     display: table-cell;
     padding-right: 25px;
     width: 20pt;
-}
+}*/
 
 

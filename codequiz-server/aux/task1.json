@@ -1,0 +1,102 @@
+{
+    "segments": [
+        {
+            "type": "source",
+            "content": "def bla(self):\n    pass"
+        },
+        {
+            "type": "text",
+            "content": "Tip, der erst <i>erscheint</i>, wenn die Fragen beantwortet wurden.",
+            "comment": true
+        },
+        {
+            "type": "input",
+            "content": [
+                {
+                    "content": "Korrigiere folgenden Code",
+                    "type": "normal"
+                }
+            ],
+            "answer": {
+                    "content":"def fnc1(self):\n    pass",
+                    "type":"source"
+                },
+            "solution": [
+                {
+                    "content": "def fnc1(self):\n    pass",
+                    "type": "source"
+                },
+                {
+                    "content": "def fnc2(self):\n    pass",
+                    "type": "source"
+                }
+            ]
+        },
+        {
+            "type": "input",
+            "content": [
+                {
+                    "content": "Korrigiere folgenden Code noch einmal",
+                    "type": "normal"
+                }
+            ],
+            "answer": {
+                    "content":"def fnc1(self):\n    pass",
+                    "type":"source"
+                },
+            "solution": [
+                {
+                    "content": "def fnc1(self):\n    pass",
+                    "type": "source"
+                },
+                {
+                    "content": "def fnc2(self):\n    pass",
+                    "type": "source"
+                }
+            ]
+        },
+        {
+            "type": "text",
+            "content": "Hier kommt nochmal ein Text, der zerstört aber das Table-layout",
+            "comment": false
+        },
+        {
+            "type": "input",
+            "content": [
+                {
+                    "content": "tippe die Zahlen von 1 bis 4",
+                    "type": "normal"
+                }
+            ],
+            "answer": {
+                    "content":"123",
+                    "type":"source"
+                },
+            "solution": [
+                {
+                    "content": "1234",
+                    "type": "source"
+                },
+                {
+                    "content": "def hahaha2(self):\n    pass",
+                    "type": "source"
+                }
+            ]
+        },
+        {
+            "type": "check",
+            "content": [
+                {
+                    "content": "def Hund():\n    print 'wau'",
+                    "type": "source"
+                },
+                {
+                    "content": "Richtig?",
+                    "type": "normal"
+                }
+            ],
+            "solution": false
+        }
+    ]
+}
+
