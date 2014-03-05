@@ -174,6 +174,7 @@ def get_task_to_process(post_dict):
             else:
                 raise Http404("Unknown form content.")
 
+            # TODO: hier kam ein Fehler, im preview modus
             if int(tc_id) <= 0:
                 task = aux_get_json_task(task_id=task_id)
             else:
