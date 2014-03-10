@@ -462,7 +462,6 @@ function exportValues() {
             case 'text':
                 var dict = extractTextArea(li);
                 segments.push(dict);
-                console.log(dict);
                 break;
 
             case 'source':
