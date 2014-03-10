@@ -116,7 +116,7 @@ textarea.source {
 }
 
 /* gray background to indicate a comment segment */
-#sortable li.gap-fill {
+#sortable li.gap-fill-text {
     background-color: #b6b6b4;
 }
 
