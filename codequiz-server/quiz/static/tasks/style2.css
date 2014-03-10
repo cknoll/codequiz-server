@@ -174,6 +174,25 @@ pre {
     font-family: Fixedsys, Courier, monospace;
 }
 
+div.comment p {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 5px;
+    margin-left: 20px;
+    background-color: #c4eeb6;
+}
+
+div.comment:before {
+    content: "\f0eb"; /* light bulb, see  http://astronautweb.co/snippet/font-awesome/ */
+    font-family: FontAwesome;
+    text-decoration: inherit;
+    color: #75e12e;
+    font-size: 18px;
+    padding-right: 0.5em;
+    position: relative;
+    top:20pt;
+}
+
 span.source {
     background-color: #ffffcc;
     margin-top: 0;
