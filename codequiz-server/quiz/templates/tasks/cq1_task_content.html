@@ -11,16 +11,16 @@
         <p><strong>{{ error_message }}</strong></p>
     {% endif %}
 
-    {% for s in html_strings %}
-        {{ s|safe }}
+    {% for html_string in html_strings %}
+        {{ html_string|safe }}
     {% endfor %}
 
     <br/>
 
     <!-- Buttons: -->
     <span style="display: block; text-align: right;">
-    {% for bs in button_strings %}
-        {{ bs|safe }}
+    {% for button_string in button_strings %}
+        {{ button_string|safe }}
     {% endfor %}
     </span>
     <br/>

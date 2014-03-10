@@ -46,6 +46,7 @@ def render_segment(segment, user_sol_list=None, tc=None):
             print_feedback = tc.should_give_feedback()
             print_solution = tc.should_give_solution()
         else:
+            # this is not inside a TC, but rather a single task --> show solutions and feedback!
             print_feedback = True
             print_solution = True
 
@@ -263,7 +264,7 @@ def debug_main_block_object(request, task):
         button_list.append("result")  # this only occurs in explicit mode
 
     button_strings = aux_task_button_strings(button_list)
-    html_strings = [render_segment(segment, user_solution, tc) for segment in segment_list]
+    html_strings = [render_segment(segment, user_solution, tc) for segment in filter_segment_list(segment_list, tc, task.solution_flag)]
 
     res = myContainer(task=task, button_strings=button_strings, html_strings=html_strings)
 
@@ -272,6 +273,18 @@ def debug_main_block_object(request, task):
     res.tc_task_id = ""
 
     return res
+
+
+def filter_segment_list(segment_list, tc, solution_flag):
+    if tc:
+        should_show_comments = tc.should_give_feedback()
+    else:
+        should_show_comments = True
+
+    if should_show_comments and solution_flag:
+        return segment_list
+    else:
+        return filter(lambda s: not (hasattr(s, "c_comment") and s.c_comment), segment_list)
 
 
 def get_button(button_type):
