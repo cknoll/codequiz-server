@@ -98,7 +98,7 @@ function addTextArea(node, type, placeHolder, textareaData, cols, cssClass, posi
         node.parentsUntil("ul", "li").addClass("comment");  // all parents until but except "ul", filtered by "li"
     }
     if (type == 'gap-fill-text') {
-        node.parentsUntil("ul", "li").addClass("gap-fill");
+        node.parentsUntil("ul", "li").addClass("gap-fill-text");
     }
 
     var $textarea = $("<textarea>", {
@@ -462,6 +462,7 @@ function exportValues() {
             case 'text':
                 var dict = extractTextArea(li);
                 segments.push(dict);
+                console.log(dict);
                 break;
 
             case 'source':
@@ -471,7 +472,36 @@ function exportValues() {
 
             case 'gap-fill-text':
                 var dict = extractTextArea(li);
-                segments.push(dict);
+
+                // parse text, create solutions from it
+                var pattern = /(&para;).*?\|.*?\1/g;
+
+                var matches = dict["content"].match(pattern);
+
+                var solutionDicts = [];
+
+                for (var i = 0; i < matches.length; i++) {
+                    var gapText = matches[i];
+                    var strippedText = gapText.replace(new RegExp("&para;", 'g'), "");
+
+                    var parts = strippedText.split("|");
+                    var solutionPart = parts[1];
+                    var solutions = solutionPart.split(",");
+
+                    solutionDicts.push({
+                        "type": "gapTextSolution",
+                        "answer": parts[0],
+                        "solutions": solutions
+                    });
+                }
+
+                console.log(solutionDicts);
+
+                segments.push({
+                    "content": dict["content"],
+                    "type": "gap-fill-text",
+                    "solutions": solutionDicts
+                });
                 break;
 
             case 'input':

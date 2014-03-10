@@ -18,7 +18,7 @@ class DictContainer(object):
 
     def __init__(self, segment_dict, dc_name='unnamed'):
         self.dc_name = dc_name
-        self.ext_dict = dict(segment_dict) # store a flat copy of external dict
+        self.ext_dict = dict(segment_dict)  # store a flat copy of external dict
         self.ext_attributes = segment_dict.keys()
         # only new keys are allowed
         assert set(self.ext_attributes).intersection(self.__dict__.keys()) == \
@@ -113,8 +113,8 @@ class Segment(object):
 
     def set_idx(self, idx):
         assert self.context.get('idx') is None
-        self.context['idx'] = idx # for the template
-        self.idx = idx # for update_user_solution
+        self.context['idx'] = idx  # for the template
+        self.idx = idx  # for update_user_solution
 
     def update_user_solution(self, *args, **kwargs):
         """
@@ -259,6 +259,40 @@ class Text(Segment):
         self.make_context()
 
 
+class GapText(QuestionSegment):
+    """
+    Models a text with gaps
+    """
+    template = 'tasks/gaptext.html'
+
+    def __init__(self, dc):
+        assert isinstance(dc.content, unicode)
+        text = dc.content
+
+        # build list of <input> fields to insert
+        input_fields = []
+        for sol_dict in dc.solutions:
+            answer = sol_dict.answer
+            solutions = getattr(sol_dict, 'solutions', None)
+            longest_solution = max(solutions, key=len)
+
+            input_field = "<input class='gap' type='text' size='{length}' value='{prefill}'>".format(prefill=answer,
+                                                                                                     length=len(longest_solution))
+
+            input_fields.append(input_field)
+
+        # parse text and insert <input> fields instead of "¶" symbol separators
+        import re
+
+        pattern = r"(&para;).*?\1"
+        text = reduce(lambda x, y: re.sub(pattern, str(y), x, 1), input_fields, text)
+
+        self.c_text = text;
+        self.c_solutions = dc.solutions
+
+        self.make_context()
+
+
 class Src(Text):
     template = 'tasks/src.html'
 
@@ -315,7 +349,8 @@ class RadioList(QuestionSegment):
 typestr_to_class_map = {'text': Text,
                         'source': Src,
                         'input': InputField,
-                        'check': CBox}
+                        'check': CBox,
+                        'gap-fill-text': GapText}
 
 
 # our json format "specification" by example
@@ -334,8 +369,6 @@ def make_segment(segment_dict, idx):
         raise ValueError("segment_dict should have key 'type'")
 
     segment_class = typestr_to_class_map.get(segment_type, None)
-    if segment_type is None:
-        raise ValueError("unknown type string: %s" % segment_type)
 
     dc = DictContainer(segment_dict, segment_type)
     segment = segment_class(dc)
@@ -362,6 +395,7 @@ def preprocess_task_from_db(task):
     task.solution_flag = False
 
     return None
+
 
 #TODO: obsolete
 def debug_task():

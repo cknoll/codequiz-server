@@ -220,6 +220,9 @@ textarea.source {
 
 /* for gap text, dashed line instead of frame around input field */
 input.gap {
+    font-family: arial, verdana, tahoma, georgia, 'trebuchet ms', serif;
+    font-size: 10pt;
+    font-weight: normal;
     background-color: transparent;
     border-style: dashed;
     border-width: 0 0 1px 0;
@@ -230,6 +233,7 @@ input.gap {
 /* no glowing outline, when editing */
 input.gap:focus {
     outline: none;
+    background-color: #ffffcc;
 }
 
 i.sol_wrong {
