@@ -52,7 +52,9 @@ def render_segment(segment, user_sol_list=None, tc=None):
 
         segment.context.update({'print_feedback': print_feedback})
         segment.context.update({'print_solution': print_solution})
-        segment.update_user_solution(user_sol_list)
+
+        if not isinstance(segment, json_lib.GapText):
+            segment.update_user_solution(user_sol_list)
 
     return template.render(Context(segment.context))
 
