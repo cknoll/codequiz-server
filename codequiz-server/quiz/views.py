@@ -115,7 +115,7 @@ def debug_url_landing(request):
 
     p = dict(request.POST)  # POST itself is immutable
     p['meta_task_id'] = "12"
-    p['meta_no_form'] = True # indicate that this data is "pseudo"
+    p['meta_no_form'] = True  # indicate that this data is "pseudo"
     request.POST = p
 
     return debug_task_process(request)
@@ -128,9 +128,9 @@ def explicit_task_view(request, task_id):
     """
     # TODO: this should be restricted to moderators (session management)
 
-    p = dict(request.POST) # POST itself is immutable
+    p = dict(request.POST)  # POST itself is immutable
     p['meta_task_id'] = task_id
-    p['meta_no_form'] = True # indicate that this data is "pseudo"
+    p['meta_no_form'] = True  # indicate that this data is "pseudo"
     request.POST = p
 
     return debug_task_process(request)
@@ -168,7 +168,8 @@ def get_task_to_process(post_dict):
         next_task_flag = False
         solution_flag = False
 
-        if tc_id:
+        if tc_id and not tc_id == u'None':  # FIXME Somehow the tc_id sometimes is a unicode that says None.
+            # FIXME Somewhere this is wrongly being set (in the dict, probably).
             if 'button_next' in post_dict:
                 next_task_flag = True
 
@@ -266,7 +267,8 @@ def debug_main_block_object(request, task):
         button_list.append("result")  # this only occurs in explicit mode
 
     button_strings = aux_task_button_strings(button_list)
-    html_strings = [render_segment(segment, user_solution, tc) for segment in filter_segment_list(segment_list, tc, task.solution_flag)]
+    html_strings = [render_segment(segment, user_solution, tc) for segment in
+                    filter_segment_list(segment_list, tc, task.solution_flag)]
 
     res = myContainer(task=task, button_strings=button_strings, html_strings=html_strings)
 
@@ -322,18 +324,10 @@ def aux_task_user_solution(request, solution_flag):
     return user_solution
 
 
-def next_task(request, task_id):
-    """
-    returns the next task in current test
-    """
-    new_id = str(int(task_id) + 1)
-    return task_view(request, new_id)
-
-
 def tc_run_form_process(request, tc_id, tc_task_id):
     post = request.POST
     if 'next' in post:
-        next_id = u"%i" % ( int(tc_task_id) + 1)
+        next_id = u"%i" % (int(tc_task_id) + 1)
         return tc_run_view(request, tc_id, next_id, solution_flag=False)
 
     elif 'result' in post:

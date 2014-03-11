@@ -90,40 +90,6 @@ def aux_remove_needless_spaces(string):
     return result
 
 
-class Segment(object):
-    """
-    Models a JSON segment (of the segment list)
-    """
-
-    def __unicode__(self):
-        return unicode("<%s %s>" % (type(self), id(self)))
-
-    def make_context(self):
-        """
-        every segment needs a context attribute where the rendering data
-        is  contained
-
-        this method creates it
-        """
-
-        keys = [k for k in dir(self) if k.startswith('c_')]
-
-        items = [(k.replace('c_', ''), getattr(self, k)) for k in keys]
-        self.context = dict(items)
-
-    def set_idx(self, idx):
-        assert self.context.get('idx') is None
-        self.context['idx'] = idx  # for the template
-        self.idx = idx  # for update_user_solution
-
-    def update_user_solution(self, *args, **kwargs):
-        """
-        this abstract method does nothing
-        Segments which actually have a solution override this method
-        """
-        pass
-
-
 def aux_ensure_sequence(arg):
     """
     if arg is not a sequence, return (arg,)
@@ -156,8 +122,103 @@ def aux_unified_solution_structure(solution):
 
     return res
 
+# ---------------------- Segments ------------------------
 # mutable global variable
 question_counter = [0]
+
+
+def increment_question_counter():
+    question_counter[0] += 1
+
+
+class SegmentFactory(object):
+    def make_segment(self, segment_dict, idx):
+        """
+        Return the right Segment subclass
+
+        :param segment_dict: DictContainer (has to contain a key named 'type')
+        :return: Segment subclass
+        """
+        assert isinstance(segment_dict, dict)
+
+        segment_type = segment_dict.get('type', None)
+        if segment_type is None:
+            raise ValueError("dc should have key 'type'")
+
+        dc = DictContainer(segment_dict, segment_type)
+
+        if segment_type == "text":
+            segment = Text(dc)
+        elif segment_type == "source":
+            segment = Src(dc)
+        elif segment_type == "input":
+            segment = InputField(dc)
+        elif segment_type == "check":
+            segment = CBox(dc)
+        elif segment_type == "gap-fill-text":
+            segment = GapText(dc)
+        else:
+            raise ValueError("Unknown segment type: %s" % segment_type)
+
+        segment.set_idx(idx)
+        return segment
+
+
+class Segment(object):
+    """
+    Models a JSON segment (of the segment list)
+    """
+
+    def __init__(self):
+        self.context = None
+        self.idx = 0
+
+    def __unicode__(self):
+        return unicode("<%s %s>" % (type(self), id(self)))
+
+    def make_context(self):
+        """
+        every segment needs a context attribute where the rendering data
+        is  contained
+
+        this method creates it
+        """
+
+        keys = [k for k in dir(self) if k.startswith('c_')]
+
+        items = [(k.replace('c_', ''), getattr(self, k)) for k in keys]
+        self.context = dict(items)
+
+    def set_idx(self, idx):
+        assert self.context.get('idx') is None
+        self.context['idx'] = idx  # for the template
+        self.idx = idx  # for update_user_solution
+
+    def update_user_solution(self, *args, **kwargs):
+        """Override in subclasses!"""
+        pass
+
+
+class Text(Segment):
+    """
+    Models Text (and Source) Segments
+    """
+
+    template = 'tasks/txt.html'
+
+    def __init__(self, dc):
+        super(Text, self).__init__()
+        assert isinstance(dc.content, unicode)
+        self.c_text = dc.content
+        self.c_multiline = "\n" in self.c_text
+        self.c_comment = getattr(dc, 'comment', False)
+        self.make_context()
+
+
+class Src(Text):
+    template = 'tasks/src.html'
+
+    pass
 
 
 class QuestionSegment(Segment):
@@ -166,7 +227,7 @@ class QuestionSegment(Segment):
     """
 
     def __init__(self, dc):
-        # probably obsolete
+        super(QuestionSegment, self).__init__()
         if 0:
             items = dc.ext_dict.items()
 
@@ -176,7 +237,9 @@ class QuestionSegment(Segment):
                          if not k.startswith('sol')]
             self.__dict__.update(new_items)
 
-        question_counter[0] += 1
+        increment_question_counter()
+
+        self.user_was_correct = False
         self.c_question_counter = question_counter[0]
         self.solution = aux_unified_solution_structure(dc.solution)
         self.make_context()
@@ -241,24 +304,6 @@ class QuestionSegment(Segment):
                 self.context['printed_solution'] = print_sol
 
 
-class Text(Segment):
-    """
-    Models Text (and Source) Segments
-    """
-
-    template = 'tasks/txt.html'
-
-    def __init__(self, dc):
-        assert isinstance(dc.content, unicode)
-        self.c_text = dc.content
-        # List of unicode is not handled anymore
-
-        self.c_multiline = "\n" in self.c_text
-        self.c_comment = getattr(dc, 'comment', False)
-
-        self.make_context()
-
-
 class GapText(QuestionSegment):
     """
     Models a text with gaps
@@ -266,10 +311,10 @@ class GapText(QuestionSegment):
     template = 'tasks/gaptext.html'
 
     def __init__(self, dc):
+        super(GapText, self).__init__(dc)
         assert isinstance(dc.content, unicode)
         text = dc.content
 
-        # build list of <input> fields to insert
         input_fields = []
         for sol_dict in dc.solutions:
             answer = sol_dict.answer
@@ -277,34 +322,26 @@ class GapText(QuestionSegment):
             longest_solution = max(solutions, key=len)
 
             input_field = "<input class='gap' type='text' size='{length}' value='{prefill}'>".format(prefill=answer,
-                                                                                                     length=len(longest_solution))
+                                                                                                     length=len(
+                                                                                                         longest_solution))
 
             input_fields.append(input_field)
 
-        # parse text and insert <input> fields instead of "¶" symbol separators
         import re
 
         pattern = r"(&para;).*?\1"
         text = reduce(lambda x, y: re.sub(pattern, str(y), x, 1), input_fields, text)
-
-        self.c_text = text;
+        self.c_text = text
         self.c_solutions = dc.solutions
-
         self.make_context()
-
-
-class Src(Text):
-    template = 'tasks/src.html'
-
-    pass
 
 
 class InputField(QuestionSegment):
     template = 'tasks/cq2_input_field.html'
 
     def __init__(self, dc):
-        assert isinstance(dc.content, list)
 
+        assert isinstance(dc.content, list)
         self.make_description_cells(dc.content)
 
         self.c_lines = len(dc.answer.content.splitlines())
@@ -313,15 +350,14 @@ class InputField(QuestionSegment):
 
         self.c_prefilled_text = dc.answer.content
         self.c_answer_class = dc.answer.type
+        self.c_text_slots = None
 
-        # TODO: this is suboptimal, we need a way to let the template know what "type" each solution is (source, normal)
-        #       or do we? Not necessarily, since it most likely is of the same type for each, then this would suffice...
         if type(dc.solution) == list:
             self.c_solution_class = dc.solution[0].type
         else:
             self.c_solution_class = dc.solution.type
 
-        QuestionSegment.__init__(self, dc)
+        super(InputField, self).__init__(dc)
 
     def make_description_cells(self, content):
         self.c_text_slots = content
@@ -337,8 +373,7 @@ class CBox(QuestionSegment):
 
     def __init__(self, dc):
         self.c_text_slots = dc.content
-
-        QuestionSegment.__init__(self, dc)
+        super(CBox, self).__init__(dc)
 
 
 # TODO: implement Radio type
@@ -346,35 +381,8 @@ class RadioList(QuestionSegment):
     pass
 
 
-typestr_to_class_map = {'text': Text,
-                        'source': Src,
-                        'input': InputField,
-                        'check': CBox,
-                        'gap-fill-text': GapText}
-
-
 # our json format "specification" by example
 # https://gist.github.com/leberwurstsaft/7158911
-
-def make_segment(segment_dict, idx):
-    """
-    :segment_dict:   dictionary from json parser
-    :idx:       number (index) in the segment-list
-    """
-
-    assert isinstance(segment_dict, dict)
-
-    segment_type = segment_dict.get('type', None)
-    if segment_type is None:
-        raise ValueError("segment_dict should have key 'type'")
-
-    segment_class = typestr_to_class_map.get(segment_type, None)
-
-    dc = DictContainer(segment_dict, segment_type)
-    segment = segment_class(dc)
-
-    segment.set_idx(idx)
-    return segment
 
 
 def preprocess_task_from_db(task):
@@ -386,43 +394,12 @@ def preprocess_task_from_db(task):
 
     """
 
-    rd = json.loads(task.body_data)
+    body_data = json.loads(task.body_data)
 
-    dict_list = rd['segments']
+    dict_list = body_data['segments']
 
     question_counter[0] = 0
-    task.segment_list = [make_segment(dict, idx) for idx, dict in enumerate(dict_list)]
+    task.segment_list = [SegmentFactory().make_segment(segment_dict, idx) for idx, segment_dict in enumerate(dict_list)]
     task.solution_flag = False
 
     return None
-
-
-#TODO: obsolete
-def debug_task():
-    path = "aux/task1.json"
-    with open(path, 'r') as myfile:
-        content = myfile.read()
-
-    rd = json.loads(content)
-
-    dict_list = rd['segments']
-
-    question_counter[0] = 0
-    seg_list = [make_segment(d, idx) for idx, d in enumerate(dict_list)]
-
-    return seg_list
-
-
-if __name__ == "__main__":
-    path = "task1.json"
-    with open(path, 'r') as myfile:
-        content = myfile.read()
-
-    rd = json.loads(content)
-
-    dict_list = rd['segments']
-
-    seg_list = [make_segment(d) for d in dict_list]
-
-    IPS()
-
