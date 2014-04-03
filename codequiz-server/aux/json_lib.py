@@ -21,8 +21,7 @@ class DictContainer(object):
         self.ext_dict = dict(segment_dict)  # store a flat copy of external dict
         self.ext_attributes = segment_dict.keys()
         # only new keys are allowed
-        assert set(self.ext_attributes).intersection(self.__dict__.keys()) == \
-               set()
+        assert set(self.ext_attributes).intersection(self.__dict__.keys()) == set()
         self.__dict__.update(segment_dict)
 
         self.deep_recursion()
@@ -131,37 +130,36 @@ def increment_question_counter():
     question_counter[0] += 1
 
 
-class SegmentFactory(object):
-    def make_segment(self, segment_dict, idx):
-        """
-        Return the right Segment subclass
+def make_segment(segment_dict, idx):
+    """
+    Return the right Segment subclass
 
-        :param segment_dict: DictContainer (has to contain a key named 'type')
-        :return: Segment subclass
-        """
-        assert isinstance(segment_dict, dict)
+    :param segment_dict: DictContainer (has to contain a key named 'type')
+    :return: Segment subclass
+    """
+    assert isinstance(segment_dict, dict)
 
-        segment_type = segment_dict.get('type', None)
-        if segment_type is None:
-            raise ValueError("dc should have key 'type'")
+    segment_type = segment_dict.get('type', None)
+    if segment_type is None:
+        raise ValueError("dc should have key 'type'")
 
-        dc = DictContainer(segment_dict, segment_type)
+    dc = DictContainer(segment_dict, segment_type)
 
-        if segment_type == "text":
-            segment = Text(dc)
-        elif segment_type == "source":
-            segment = Src(dc)
-        elif segment_type == "input":
-            segment = InputField(dc)
-        elif segment_type == "check":
-            segment = CBox(dc)
-        elif segment_type == "gap-fill-text":
-            segment = GapText(dc)
-        else:
-            raise ValueError("Unknown segment type: %s" % segment_type)
+    if segment_type == "text":
+        segment = Text(dc)
+    elif segment_type == "source":
+        segment = Src(dc)
+    elif segment_type == "input":
+        segment = InputField(dc)
+    elif segment_type == "check":
+        segment = CBox(dc)
+    elif segment_type == "gap-fill-text":
+        segment = GapText(dc)
+    else:
+        raise ValueError("Unknown segment type: %s" % segment_type)
 
-        segment.set_idx(idx)
-        return segment
+    segment.set_idx(idx)
+    return segment
 
 
 class Segment(object):
@@ -321,9 +319,9 @@ class GapText(QuestionSegment):
             solutions = getattr(sol_dict, 'solutions', None)
             longest_solution = max(solutions, key=len)
 
-            input_field = "<input class='gap' type='text' size='{length}' value='{prefill}'>".format(prefill=answer,
-                                                                                                     length=len(
-                                                                                                         longest_solution))
+            input_field = "<input class='gap' type='text' size='{length}' value='{prefill}'>"
+            input_field = input_field.format(prefill=answer,
+                                             length=len(longest_solution))
 
             input_fields.append(input_field)
 
@@ -399,7 +397,7 @@ def preprocess_task_from_db(task):
     dict_list = body_data['segments']
 
     question_counter[0] = 0
-    task.segment_list = [SegmentFactory().make_segment(segment_dict, idx) for idx, segment_dict in enumerate(dict_list)]
+    task.segment_list = [make_segment(segment_dict, idx) for idx, segment_dict in enumerate(dict_list)]
     task.solution_flag = False
 
     return None

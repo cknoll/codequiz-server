@@ -233,13 +233,8 @@ def debug_main_block_object(request, task):
     # build a list of expected solutions, to compare received solutions to
     # and fill the missing ones with empty strings
     if user_solution is not None:
-        expected_solutions = []
-        question_index = 0
+        expected_solutions = range(0, len(segment_list))
 
-        for segment in segment_list:
-            expected_solutions.append(question_index)
-            question_index += 1
-        user_solution_keys = user_solution.keys()
         missing_solutions = []
         for sol in expected_solutions:
             if sol not in user_solution:
@@ -328,10 +323,11 @@ def tc_run_form_process(request, tc_id, tc_task_id):
     post = request.POST
     if 'next' in post:
         next_id = u"%i" % (int(tc_task_id) + 1)
-        return tc_run_view(request, tc_id, next_id, solution_flag=False)
+        return tc_run_view(request, tc_id, next_id, solution_flag=False)  # FIXME Verify this method is used at all
+                                                                          # FIXME Number of arguments isn't valid here
 
     elif 'result' in post:
-        return tc_run_view(request, tc_id, tc_task_id, solution_flag=True)
+        return tc_run_view(request, tc_id, tc_task_id, solution_flag=True) # FIXME same problem as above --^
 
     else:
         return redirect('quiz_ns:index', )
@@ -392,7 +388,7 @@ def tc_run_view(request):
     post_dict = request.POST
 
     if len(post_dict) <= 0:
-        if request.session.has_key("tc_id") and request.session.has_key("tc_task_id"):
+        if "tc_id" in request.session and "tc_task_id" in request.session:
 
             meta_tc_id = request.session['tc_id']
             meta_tc_task_id = request.session['tc_task_id']
