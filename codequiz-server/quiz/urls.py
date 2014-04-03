@@ -13,4 +13,4 @@ urlpatterns = patterns('',
                        # view for showing a specific task outside of a tc
                        # TODO: this should be restricted to moderators
                        url(r'^explicit/(?P<task_id>\d+)/$', views.explicit_task_view, name='explicit_task_view'),
-)
+                       )

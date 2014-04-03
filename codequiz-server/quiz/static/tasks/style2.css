@@ -243,9 +243,8 @@ input.gap {
     font-size: 10pt;
     font-weight: normal;
     background-color: transparent;
-    border-style: dashed;
-    border-width: 0 0 1px 0;
-    border-color: black;
+    border: 0 dashed black;
+    border-bottom-width: 1px;
     box-shadow: none !important;
 }
 
