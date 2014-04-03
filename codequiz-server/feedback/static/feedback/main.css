@@ -2,8 +2,7 @@
 #feedback_button {
     position:fixed;
     top:40%;
-    background-repeat:no-repeat;
-    background-position:50% 50%;
+    background: no-repeat 50% 50%;
     cursor:pointer;
 }
 

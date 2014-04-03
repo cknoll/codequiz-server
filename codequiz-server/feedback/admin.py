@@ -33,17 +33,20 @@ class FeedbackAdmin(admin.ModelAdmin):
     list_filter = ('task__author', TaskFilter, 'answered')
     ordering = ['-date']
 
-    def task_name(self, obj):
+    @staticmethod
+    def task_name(obj):
         return '%s' % obj.task.title
 
-    def feedback_text(self, obj):
+    @staticmethod
+    def feedback_text(obj):
         feedback_lines = obj.text.splitlines()
         dots = ""
         if len(feedback_lines) > 1:
             dots = " ..."
         return '%s' % feedback_lines[0] + dots
 
-    def show_email(self, obj):
+    @staticmethod
+    def show_email(obj):
         if obj.email:
             url = obj.email
             subject = "Regarding your Feedback on Task \"%s\"" % obj.task.title

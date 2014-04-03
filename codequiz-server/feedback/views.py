@@ -38,7 +38,7 @@ class FeedbackView(CreateView):
                     [settings.FEEDBACK_EMAIL],
                     fail_silently=False,
                 )
-            except:
+            except StandardError:
                 return HttpResponse(json.dumps({'error': _('Failed to send email')}))
         return HttpResponse(json.dumps({}))
 

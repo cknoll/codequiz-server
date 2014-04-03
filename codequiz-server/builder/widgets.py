@@ -1,5 +1,6 @@
 from django.forms import Textarea
 
+
 class BuilderTextArea(Textarea):
 
     def __init__(self, attrs=None):

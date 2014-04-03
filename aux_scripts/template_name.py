@@ -16,7 +16,7 @@ def add_comments(fname):
     with open(fname, 'r') as myfile:
         lines = myfile.readlines()
 
-    c1 = "<!-- ==> start: %s -->\n" % (fname)
+    c1 = "<!-- ==> start: %s -->\n" % fname
     c2 = "<!-- ==> end: %s -->\n" % (fname)
 
     if not lines[0] == c1:
