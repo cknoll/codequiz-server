@@ -35,8 +35,7 @@ class TaskAdmin(admin.ModelAdmin):
     replaces the text field element with a sophisticated code editor
     """
 
-    @staticmethod
-    def direct_link(obj):
+    def direct_link(self, obj):
         return '<a href="' + reverse('quiz_ns:explicit_task_view', kwargs={'task_id': obj.id}) + '">Preview…</a>'
 
     direct_link.short_description = ''
@@ -85,8 +84,8 @@ class QuizResultAdmin(admin.ModelAdmin):
 
 
 class TaskCollectionAdmin(admin.ModelAdmin):
-    @staticmethod
-    def direct_link(obj):
+
+    def direct_link(self, obj):
         return '<a href="' + reverse('quiz_ns:task_collection_view', kwargs={'tc_id': obj.id}) + '">Run Collection…</a>'
 
     direct_link.short_description = ''
@@ -104,8 +103,7 @@ class TaskCollectionAdmin(admin.ModelAdmin):
         (None, {'fields': ['title', 'exam_mode', 'tags']}),
     ]
 
-    @staticmethod
-    def num_tasks(obj):
+    def num_tasks(self, obj):
         return obj.tasks.count()
 
     num_tasks.short_description = "Number of tasks"

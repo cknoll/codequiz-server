@@ -33,20 +33,17 @@ class FeedbackAdmin(admin.ModelAdmin):
     list_filter = ('task__author', TaskFilter, 'answered')
     ordering = ['-date']
 
-    @staticmethod
-    def task_name(obj):
+    def task_name(self, obj):
         return '%s' % obj.task.title
 
-    @staticmethod
-    def feedback_text(obj):
+    def feedback_text(self, obj):
         feedback_lines = obj.text.splitlines()
         dots = ""
         if len(feedback_lines) > 1:
             dots = " ..."
         return '%s' % feedback_lines[0] + dots
 
-    @staticmethod
-    def show_email(obj):
+    def show_email(self, obj):
         if obj.email:
             url = obj.email
             subject = "Regarding your Feedback on Task \"%s\"" % obj.task.title
@@ -74,8 +71,3 @@ class FeedbackAdmin(admin.ModelAdmin):
     readonly_fields = ('show_email', 'text')
 
 admin.site.register(Feedback, FeedbackAdmin)
-
-
-
-
-# vim: et sw=4 sts=4
