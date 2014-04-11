@@ -334,7 +334,7 @@ def make_segment(segment_dict, idx):
         raise ValueError("segment_dict should have key 'type'")
 
     segment_class = typestr_to_class_map.get(segment_type, None)
-    if segment_type is None:
+    if segment_class is None:
         raise ValueError("unknown type string: %s" % segment_type)
 
     dc = DictContainer(segment_dict, segment_type)
