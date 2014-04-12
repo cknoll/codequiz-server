@@ -499,7 +499,7 @@ function exportValues() {
                 segments.push({
                     "content": dict["content"],
                     "type": "gap-fill-text",
-                    "solutions": solutionDicts
+                    "solution": solutionDicts
                 });
                 break;
 
