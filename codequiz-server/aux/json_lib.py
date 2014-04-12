@@ -471,6 +471,7 @@ class InputField(QuestionSegment):
     def __init__(self, dc):
 
         assert isinstance(dc.content, list)
+        self.c_text_slots = None
         self.make_description_cells(dc.content)
 
         self.c_lines = len(dc.answer.content.splitlines())
@@ -479,7 +480,6 @@ class InputField(QuestionSegment):
 
         self.c_prefilled_text = dc.answer.content
         self.c_answer_class = dc.answer.type
-        self.c_text_slots = None
 
         if type(dc.solution) == list:
             self.c_solution_class = dc.solution[0].type
