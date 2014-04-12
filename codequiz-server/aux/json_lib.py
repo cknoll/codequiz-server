@@ -2,6 +2,7 @@
 
 import json
 import shlex
+import re
 
 from IPython import embed as IPS
 
@@ -16,7 +17,9 @@ class DictContainer(object):
     dicts, lists or "flat objects")
     """
 
-    def __init__(self, segment_dict, dc_name='unnamed'):
+    def __init__(self, segment_dict=None, dc_name='unnamed'):
+        if segment_dict is None:
+            segment_dict = {}
         self.dc_name = dc_name
         self.ext_dict = dict(segment_dict)  # store a flat copy of external dict
         self.ext_attributes = segment_dict.keys()
@@ -100,26 +103,87 @@ def aux_ensure_sequence(arg):
         return (arg,)
 
 
-def aux_unified_solution_structure(solution):
+class AttributeList(list):
     """
-    some solutions are dictcontainers
-    some are lists of dictcontainers, some are (lists of) flat objects
+    This is a list to which we can attatch some attributes:
 
-    always return a sequence of dictcontainers
+    L1 = []
+    L1.name "Adam" # will not work
+
+    L2 = AttributeList()
+    L2.name "Eve" # will work
+    """
+    pass # just deriving the class is already enough
+
+
+class Solution(object):
+    """
+    This class models the solution-related information to one segment.
+
+    Most segments have one input field (with multiple possible solutions).
+    GapText however has multiple input fields, each with multiple solutions.
+
+    -> Any soltution consists of parts. Each part corresponds to an input
+    formular field.
+
     """
 
-    solutions = aux_ensure_sequence(solution)
-    res = []
+    def __init__(self, dc):
+        self.parts=[]
+        self.type=dc.type
 
-    for s in solutions:
-        if isinstance(s, DictContainer):
-            assert hasattr(s, 'content')
-            res.append(s)
+        if not self.type == "gap-fill-text":
+            # there is only one part
+            # (should be a sequence of dict_containers)
+            tmp_part = aux_ensure_sequence(dc.solution)
+
+            self.parts.append(tmp_part)
+
+            # test assumptions
+            for sol_dc in self.parts[0]:
+                assert isinstance(sol_dc, DictContainer)
+                assert hasattr(sol_dc, 'content')
+
         else:
-            dc = DictContainer({'content': s}, 'flat_solution')
-            res.append(dc)
+            self._process_gt(dc)
 
-    return res
+
+    def _process_gt(self, dc):
+        """
+        convert the solution-sequence of a gap-fill-text-Segment to parts
+        """
+        for i, part_solution in enumerate(dc.solution):
+            tmp_part = AttributeList()
+            for j,s in enumerate(part_solution.solutions):
+                # convert into DC
+                name = "sol_%i_%i_%i" % (dc.idx, i, j)
+                sol_dc = DictContainer({"content": s}, name)
+                tmp_part.append(sol_dc)
+                tmp_part.answer = part_solution.answer
+            self.parts.append(tmp_part)
+
+    def get_printed_solution(self):
+        """
+        returns the appropriate data for the printed solution
+        (in case user was wrong) which goes to the context-dict
+        """
+
+        #TODO: pass multiple solutions to the context dict
+        # could be shown with mouse-over etc.
+        if not self.type == "gap-fill-text":
+            assert len(self.parts) == 1
+            printed_sol = self.parts[0][0].content
+
+            if printed_sol == "":
+                printed_sol = "<empty string>"
+
+            return printed_sol
+        else:
+            res = []
+            for p in self.parts:
+                res.append(p[0].content)
+            return res
+
 
 # ---------------------- Segments ------------------------
 # mutable global variable
@@ -144,6 +208,7 @@ def make_segment(segment_dict, idx):
         raise ValueError("dc should have key 'type'")
 
     dc = DictContainer(segment_dict, segment_type)
+    dc.idx = idx
 
     if segment_type == "text":
         segment = Text(dc)
@@ -239,30 +304,32 @@ class QuestionSegment(Segment):
 
         self.user_was_correct = False
         self.c_question_counter = question_counter[0]
-        self.solution = aux_unified_solution_structure(dc.solution)
+
+        self.solution = Solution(dc)
         self.make_context()
 
     def test_user_was_correct(self, user_solution):
 
         res = []
-        for s in self.solution:
-            # TODO: remove the default args here (implement unit test before)
-            # because solutions now has a unified_solution_structure
-            solution_content = unicode(getattr(s, 'content', s))
-            # space replacement only should take place for code
-            sol_type = getattr(s, 'type', 'normal')
+        for part in self.solution.parts:
+            for s in part:
+                # TODO: remove the default args here (implement unit test before)
+                # because solutions now has a unified_solution_structure
+                solution_content = unicode(getattr(s, 'content', s))
+                # space replacement only should take place for code
+                sol_type = getattr(s, 'type', 'normal')
 
-            if sol_type == "source":
-                solution_content = aux_remove_needless_spaces(solution_content)
-                user_solution = aux_remove_needless_spaces(user_solution)
+                if sol_type == "source":
+                    solution_content = aux_remove_needless_spaces(solution_content)
+                    user_solution = aux_remove_needless_spaces(user_solution)
 
-            if solution_content in ("True", "False"):
-                if user_solution == "on":
-                    user_solution = "True"
-                else:
-                    user_solution = "False"
+                if solution_content in ("True", "False"):
+                    if user_solution == "on":
+                        user_solution = "True"
+                    else:
+                        user_solution = "False"
 
-            res.append(user_solution == solution_content)
+                res.append(user_solution == solution_content)
 
         return any(res)
 
@@ -273,65 +340,129 @@ class QuestionSegment(Segment):
         """
 
         # get the matching solution for this segment
-        user_solution = sol_dict[self.idx]
+        user_solution = sol_dict[unicode(self.idx)]
 
-        # !! encoding?
-        # user_solution is just a string (not unicode)
-        # TODO: test solutions with special characters
-
-        # TODO : handle leading spaces properly (already in self.solution)
         user_solution = aux_remove_carriage_returns(user_solution)
 
-        # TODO: more sophisticated test here (multiple solutions)
-        # I believe this is already the case... (pit)
-        self.user_was_correct = self.test_user_was_correct(user_solution)
         self.context['prefilled_text'] = user_solution
         self.context['user_solution'] = user_solution
+
+        self.user_was_correct = self.test_user_was_correct(user_solution)
 
         if self.user_was_correct:
             self.context['css_class'] = "sol_right"
             self.context['printed_solution'] = "OK"
         else:
             self.context['css_class'] = "sol_wrong"
-            # TODO: handle multiple solutions
-            if self.solution[0].content == "":
-                # !! LANG
-                self.context['printed_solution'] = "<empty string>"
-            else:
-                print_sol = self.solution[0].content
-                self.context['printed_solution'] = print_sol
+            self.context['printed_solution'] = \
+                                self.solution.get_printed_solution()
 
 
 class GapText(QuestionSegment):
     """
     Models a text with gaps
+    implements its own rendering and solution_handling methods
     """
     template = 'tasks/gaptext.html'
 
     def __init__(self, dc):
         super(GapText, self).__init__(dc)
         assert isinstance(dc.content, unicode)
-        text = dc.content
+        self.raw_text = dc.content
+        self.idx = dc.idx
 
-        input_fields = []
-        for sol_dict in dc.solutions:
-            answer = sol_dict.answer
-            solutions = getattr(sol_dict, 'solutions', None)
-            longest_solution = max(solutions, key=len)
 
-            input_field = "<input class='gap' type='text' size='{length}' value='{prefill}'>"
-            input_field = input_field.format(prefill=answer,
-                                             length=len(longest_solution))
+        self.render_text_with_fields()
+        self.make_context()
 
-            input_fields.append(input_field)
+    def render_text_with_fields(self, css=None, sol=None):
+        """
+        render the gap-fill-text
+        :css: optional list of addtional css classes
+              (eg. "gap_right or "gap_wrong")
+        :sol: optional list of print_solutions
+        """
+        N = len(self.solution.parts)
 
-        import re
+        field_data_list = self._get_field_data()
+        assert len(field_data_list) == N
+
+        if css is None:
+            css = ['']*N
+        assert len(css) == N
+        css_list = ["gap {add}".format(add=c).strip() for c in css]
+
+        if not sol is None:
+            assert len(sol) == N
+            prefill_list = sol
+        else:
+            prefill_list = [fd.answer for fd in field_data_list]
+
+        field_str = "<input class='{css_class}' type='text' "\
+                            "size='{length}' value='{prefill}' name='{name}'>"
+
+        rendered_fields = []
+        for fd, css, pf in zip(field_data_list, css_list, prefill_list):
+            tmp = field_str.format(css_class=css, length=fd.longest_solution,
+                                              prefill=pf, name=fd.name)
+            rendered_fields.append(tmp)
 
         pattern = r"(&para;).*?\1"
-        text = reduce(lambda x, y: re.sub(pattern, str(y), x, 1), input_fields, text)
+        text = reduce(lambda x, y: re.sub(pattern, str(y), x, 1), rendered_fields, self.raw_text)
+
         self.c_text = text
-        self.c_solutions = dc.solutions
-        self.make_context()
+        return text
+
+    def _get_field_data(self):
+        """
+        assembles the data (name, length, default value) for every field of
+        the gap text
+        """
+
+        # we need the length of the solution-strings for the input fields
+        field_data_list = []
+        for i, part in enumerate(self.solution.parts):
+
+            field_data = DictContainer()
+            field_data.answer = part.answer
+
+            sol_lengths = [len(sol.content) for sol in part]
+            field_data.longest_solution = max(sol_lengths)
+
+            field_data.name = \
+                            "answer_{idx}:{part}".format(idx =self.idx, part=i)
+
+            field_data_list.append(field_data)
+        return field_data_list
+
+
+    def update_user_solution(self, sol_dict):
+        """
+        This function decides whether the users answer was correct and
+        sets the respective attributes (css_class, printed_solution)
+
+        special version for gap-fill-text
+        """
+
+        # get the matching solution for this segment
+        start = "{idx}:".format(idx = self.idx)
+        user_solutions = [(k, v) for k,v in sol_dict.items() \
+                                                if k.startswith(start)]
+
+        user_solutions.sort(key = lambda t:t[0])
+        keys, sol_values = zip(*user_solutions)
+
+
+        assert len(sol_values) == len(self.solution.parts)
+        sol_lists = [[dc.content for dc in p] for p in self.solution.parts]
+        user_results = [sv in sl for sv, sl in zip(sol_values, sol_lists)]
+
+        css = ['gap_right' if r else "gap_wrong" for r in user_results]
+        printed_solutions = self.solution.get_printed_solution()
+
+        # write the detail information directly into the text
+        txt = self.render_text_with_fields(css, printed_solutions)
+        self.context['text'] = txt
 
 
 class InputField(QuestionSegment):

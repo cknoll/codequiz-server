@@ -248,6 +248,14 @@ input.gap {
     box-shadow: none !important;
 }
 
+input.gap.gap_right {
+    background-color: #99ff99;
+}
+
+input.gap.gap_wrong {
+    background-color: #ff9999;
+}
+
 /* no glowing outline, when editing */
 input.gap:focus {
     outline: none;

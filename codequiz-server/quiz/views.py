@@ -53,8 +53,7 @@ def render_segment(segment, user_sol_list=None, tc=None):
         segment.context.update({'print_feedback': print_feedback})
         segment.context.update({'print_solution': print_solution})
 
-        if not isinstance(segment, json_lib.GapText):
-            segment.update_user_solution(user_sol_list)
+        segment.update_user_solution(user_sol_list)
 
     return template.render(Context(segment.context))
 
@@ -230,15 +229,17 @@ def debug_main_block_object(request, task):
 
     user_solution = aux_task_user_solution(request, task.solution_flag)
 
+
     # build a list of expected solutions, to compare received solutions to
     # and fill the missing ones with empty strings
+    # TODO: This block seems obsolete
     if user_solution is not None:
         expected_solutions = range(0, len(segment_list))
 
         missing_solutions = []
         for sol in expected_solutions:
-            if sol not in user_solution:
-                missing_solutions.append((sol, ""))
+            if unicode(sol) not in user_solution:
+                missing_solutions.append((unicode(sol), u""))
         user_solution.update(dict(missing_solutions))
 
     button_list = []
@@ -300,8 +301,7 @@ def get_solutions_from_post(request):
     items = request.POST.items()
     items.sort()
 
-    transformed_items = [(int(k.split("_")[1]), v) for k, v in items if k.startswith("answer")]
-
+    transformed_items = [(k.split("_")[1], v) for k, v in items if k.startswith("answer")]
     return dict(transformed_items)
 
 
