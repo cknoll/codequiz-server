@@ -82,6 +82,7 @@ include(os.path.join(BASE_PATH, 'static_root.py'))
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
+# for development:  '/static/'
 STATIC_URL = '/static/'
 
 # Additional locations of static files

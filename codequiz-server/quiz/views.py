@@ -12,6 +12,11 @@ from IPython import embed as IPS
 from aux import xml_lib, json_lib
 from quiz.models import Task, TaskCollection, QuizResult
 
+"""
+Some general notes:
+tc means task collection
+"""
+
 
 # TODO: this is merely the same as the json_lib.DictContainer without deeprec.
 class myContainer(object):
@@ -167,7 +172,8 @@ def get_task_to_process(post_dict):
         next_task_flag = False
         solution_flag = False
 
-        if tc_id and not tc_id == u'None':  # FIXME Somehow the tc_id sometimes is a unicode that says None.
+        if tc_id and not tc_id == u'None':
+            # FIXME Somehow the tc_id sometimes is a unicode that says None.
             # FIXME Somewhere this is wrongly being set (in the dict, probably).
             if 'button_next' in post_dict:
                 next_task_flag = True
@@ -191,6 +197,8 @@ def get_task_to_process(post_dict):
         return task
 
 
+## This is the main function responsible for processing one task
+# TODO: should be renamed
 def debug_task_process(request):
     """
     # currently this docstring describes the situation we want
@@ -211,8 +219,11 @@ def debug_task_process(request):
 
     context_dict = dict(main_block=main_block, task=task, tc=tc)
 
-    context = Context(context_dict)
+    # context = Context(context_dict)
+    context = RequestContext(request, context_dict)
 
+    # return render(request, 'tasks/cq0_main_simple.html', context_dict)
+    # return render(request, 'tasks/debug/db_cq0_main_base.html', context)
     return render(request, 'tasks/cq0_main_simple.html', context)
 
 
@@ -383,7 +394,7 @@ def compute_hash(string, date):
 
 def tc_run_view(request):
     """
-
+    Here we land after clicking on 'Result'
     """
     post_dict = request.POST
 
@@ -436,7 +447,8 @@ def tc_run_view(request):
     tc = None if not tc_id else get_object_or_404(TaskCollection, pk=tc_id)
 
     context_dict = dict(main_block=main_block, task=task, tc=tc)
-    context = Context(context_dict)
+    # context = Context(context_dict)
+    context = RequestContext(request, context_dict)
 
     return render(request, 'tasks/cq0_main_simple.html', context)
 
