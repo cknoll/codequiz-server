@@ -123,7 +123,7 @@ class Solution(object):
     Most segments have one input field (with multiple possible solutions).
     GapText however has multiple input fields, each with multiple solutions.
 
-    -> Any soltution consists of parts. Each part corresponds to an input
+    -> Any solution consists of parts. Each part corresponds to an input
     formular field.
 
     """
@@ -141,12 +141,12 @@ class Solution(object):
 
             # test assumptions
             for sol_dc in self.parts[0]:
+                IPS()
                 assert isinstance(sol_dc, DictContainer)
                 assert hasattr(sol_dc, 'content')
 
         else:
             self._process_gt(dc)
-
 
     def _process_gt(self, dc):
         """
@@ -307,6 +307,7 @@ class QuestionSegment(Segment):
 
         self.solution = Solution(dc)
         self.make_context()
+        self.c_text = None
 
     def test_user_was_correct(self, user_solution):
 
@@ -355,7 +356,7 @@ class QuestionSegment(Segment):
         else:
             self.context['css_class'] = "sol_wrong"
             self.context['printed_solution'] = \
-                                self.solution.get_printed_solution()
+                self.solution.get_printed_solution()
 
 
 class GapText(QuestionSegment):
@@ -370,7 +371,6 @@ class GapText(QuestionSegment):
         assert isinstance(dc.content, unicode)
         self.raw_text = dc.content
         self.idx = dc.idx
-
 
         self.render_text_with_fields()
         self.make_context()
@@ -399,12 +399,12 @@ class GapText(QuestionSegment):
             prefill_list = [fd.answer for fd in field_data_list]
 
         field_str = "<input class='{css_class}' type='text' "\
-                            "size='{length}' value='{prefill}' name='{name}'>"
+            "size='{length}' value='{prefill}' name='{name}'>"
 
         rendered_fields = []
         for fd, css, pf in zip(field_data_list, css_list, prefill_list):
             tmp = field_str.format(css_class=css, length=fd.longest_solution,
-                                              prefill=pf, name=fd.name)
+                                   prefill=pf, name=fd.name)
             rendered_fields.append(tmp)
 
         pattern = r"(&para;).*?\1"
@@ -430,11 +430,10 @@ class GapText(QuestionSegment):
             field_data.longest_solution = max(sol_lengths)
 
             field_data.name = \
-                            "answer_{idx}:{part}".format(idx =self.idx, part=i)
+                "answer_{idx}:{part}".format(idx =self.idx, part=i)
 
             field_data_list.append(field_data)
         return field_data_list
-
 
     def update_user_solution(self, sol_dict):
         """
@@ -446,12 +445,11 @@ class GapText(QuestionSegment):
 
         # get the matching solution for this segment
         start = "{idx}:".format(idx = self.idx)
-        user_solutions = [(k, v) for k,v in sol_dict.items() \
-                                                if k.startswith(start)]
+        user_solutions = [(k, v) for k, v in sol_dict.items()
+                          if k.startswith(start)]
 
-        user_solutions.sort(key = lambda t:t[0])
+        user_solutions.sort(key = lambda t: t[0])
         keys, sol_values = zip(*user_solutions)
-
 
         assert len(sol_values) == len(self.solution.parts)
         sol_lists = [[dc.content for dc in p] for p in self.solution.parts]
