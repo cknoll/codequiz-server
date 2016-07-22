@@ -196,6 +196,12 @@ def get_task_to_process(post_dict):
 
         return task
 
+def template_debug(request):
+
+    context_dict = dict()
+    context = RequestContext(request, context_dict)
+
+    return render(request, 'tasks/debug/db_cq0_main_base.html', context)
 
 ## This is the main function responsible for processing one task
 # TODO: should be renamed

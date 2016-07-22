@@ -5,6 +5,11 @@
 {# This template is the base for all top level templates which provide a view of a task #}
 {# it operates with ++ blocks ++ #}
 
+<!--mathjax-->
+    {% load mathjax %}
+    {% mathjax_scripts %}
+<!--mathjax end -->
+
 <!--template_comment: static:{{ STATIC_URL }}|-->
 {% block template_comment %}
 <!--db_cq0_main_base.html (not overwritten) -->
@@ -12,5 +17,8 @@
 
 
 {{ STATIC_URL }}
+
+
+$$x + \alpha = y^2$$
 
 </html>
