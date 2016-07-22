@@ -22,6 +22,7 @@ class TaskAdminForm(forms.ModelForm):
 
     class Meta:
         model = Task
+        fields = '__all__'
         widgets = {
             'body_data': BuilderTextArea()
         }
