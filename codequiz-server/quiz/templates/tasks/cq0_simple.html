@@ -1,9 +1,10 @@
 {% extends "tasks/cq0_main_base.html" %}
-
-
 {# This template is used to render the home page, imprint and other simple, single pages #}
 
-<!-- begin cq0_simple.html  -->
+
+{% block template_comment %}
+<!-- begin cq0_simple.html  static:{{ STATIC_URL }}|-->
+{% endblock template_comment %}
 
 {#{% block header %}#}
 {# maybe override the buttons at the top? otherwise, delete this whole block #}
