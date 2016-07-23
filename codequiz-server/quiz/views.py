@@ -335,8 +335,9 @@ def aux_task_user_solution(request, solution_flag):
 
     return user_solution
 
-
+# FIXME: remove
 def tc_run_form_process(request, tc_id, tc_task_id):
+    1/0
     post = request.POST
     if 'next' in post:
         next_id = u"%i" % (int(tc_task_id) + 1)
@@ -388,7 +389,7 @@ def tc_run_final_view(request, tc_id):
 
     context_dict = dict(tc=tc)
     context_dict["hash"] = hash_string
-    context = Context(context_dict)
+    context =RequestContext(request, context_dict)
 
     return render(request, 'tasks/tc_run_final.html', context)
 
@@ -474,7 +475,7 @@ def task_collection_view(request, tc_id):
     request.session["log"] = log
 
     context_dict = dict(task_list=tasks, tc=tc)
-    context = Context(context_dict)
+    context =RequestContext(request, context_dict)
 
     #post_dict = dict(request.POST)
     request.session['meta_tc_id'] = unicode(tc_id)
