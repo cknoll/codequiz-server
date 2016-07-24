@@ -100,7 +100,7 @@ def aux_ensure_sequence(arg):
     if hasattr(arg, '__len__'):
         return arg
     else:
-        return (arg,)
+        return (arg, )
 
 
 class AttributeList(list):
@@ -113,7 +113,7 @@ class AttributeList(list):
     L2 = AttributeList()
     L2.name "Eve" # will work
     """
-    pass # just deriving the class is already enough
+    pass  # just deriving the class is already enough
 
 
 class Solution(object):
@@ -129,8 +129,8 @@ class Solution(object):
     """
 
     def __init__(self, dc):
-        self.parts=[]
-        self.type=dc.type
+        self.parts = []
+        self.type = dc.type
 
         if not self.type == "gap-fill-text":
             # there is only one part
@@ -139,9 +139,12 @@ class Solution(object):
 
             self.parts.append(tmp_part)
 
+            assert len(self.parts) == 1
+
             # test assumptions
             for sol_dc in self.parts[0]:
-                IPS()
+                print sol_dc
+                #IPS()
                 assert isinstance(sol_dc, DictContainer)
                 assert hasattr(sol_dc, 'content')
 
@@ -199,6 +202,7 @@ def make_segment(segment_dict, idx):
     Return the right Segment subclass
 
     :param segment_dict: DictContainer (has to contain a key named 'type')
+    :param idx: reference index (used when rendering the template)
     :return: Segment subclass
     """
     assert isinstance(segment_dict, dict)
@@ -209,6 +213,9 @@ def make_segment(segment_dict, idx):
 
     dc = DictContainer(segment_dict, segment_type)
     dc.idx = idx
+
+    #print "\n"*3, segment_type, "\n"*3
+    #IPS()
 
     if segment_type == "text":
         segment = Text(dc)
@@ -526,7 +533,39 @@ def preprocess_task_from_db(task):
     dict_list = body_data['segments']
 
     question_counter[0] = 0
-    task.segment_list = [make_segment(segment_dict, idx) for idx, segment_dict in enumerate(dict_list)]
+    task.segment_list = []
+    for idx, segment_dict in enumerate(dict_list):
+        # TODO: make this hack bosolete by fixing the data
+        print segment_dict
+        aux_cbox_dc_workarround(segment_dict)
+        print segment_dict
+        print "\n"*3
+        task.segment_list.append( make_segment(segment_dict, idx) )
     task.solution_flag = False
 
     return None
+
+
+def aux_cbox_dc_workarround(segment_dict):
+    """
+    Due to changes in data format in the past we have the following situation for CBox segments:
+
+    ...
+    'solution': True
+    ...
+
+    But it should be
+
+    'solution': [{'content': 'True', 'type': 'bool'}]
+
+    This function makes the conversion. In the future the data should be
+    corrected in first place (via admin interface)
+    """
+
+    for key, value in segment_dict.items():
+        if key == u'solution':
+            pass
+            #IPS()
+        if key == u'solution' and isinstance(value, bool):
+            new_value = [{u'content': unicode(value), u'type': u'bool'}]
+            segment_dict[key] = new_value

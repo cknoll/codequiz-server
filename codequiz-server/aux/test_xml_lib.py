@@ -1,6 +1,13 @@
 import xml_lib
 import unittest
 
+def say_file():
+    import inspect, os
+    print "Setting up:", inspect.getfile(inspect.currentframe())
+    
+say_file()
+
+
 class Test_xml_lib(unittest.TestCase):
 
     def setUp(self):

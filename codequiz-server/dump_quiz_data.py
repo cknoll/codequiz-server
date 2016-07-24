@@ -36,6 +36,8 @@ def gen_model_report(model):
 if __name__ == "__main__":
 
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "codequiz.settings")
+    import django
+    django.setup()
 
     import quiz.models as dm
     from django.db import models

@@ -114,11 +114,11 @@ def aux_get_json_task(task_id):
 def debug_url_landing(request):
     """
     Example function how to emulate formular-processing
-    in case just a simple url is opend
+    in case just a simple url is opened
     """
 
     p = dict(request.POST)  # POST itself is immutable
-    p['meta_task_id'] = "12"
+    p['meta_task_id'] = "-1"
     p['meta_no_form'] = True  # indicate that this data is "pseudo"
     request.POST = p
 
@@ -195,6 +195,7 @@ def get_task_to_process(post_dict):
                 task.solution_flag = True
 
         return task
+
 
 def template_debug(request):
 
@@ -398,7 +399,7 @@ def compute_hash(string, date):
     result = hashlib.sha256(string + date).hexdigest()
     return result
 
-
+# TODO: rename to task_result_view
 def tc_run_view(request):
     """
     Here we land after clicking on 'Result'
