@@ -148,7 +148,7 @@ INSTALLED_APPS = (
     'quiz',
     'taggit',
     'taggit_autosuggest',
-    'ratings',
+    # 'ratings',
     'feedback',
     'django_mathjax',
     'builder',
@@ -200,12 +200,16 @@ LOGGING = {
     }
 }
 
-# from http://django-generic-ratings.readthedocs.org/en/latest/getting_started.html#installation
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+# 2017-08-12 14:07:15 commented out due to ImportError
+# see also:
+# https://stackoverflow.com/questions/39315348/cannot-import-name-template-context-processors
 
-TEMPLATE_CONTEXT_PROCESSORS += (
-    'django.core.context_processors.request',
-)
+# # from http://django-generic-ratings.readthedocs.org/en/latest/getting_started.html#installation
+# from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+#
+# TEMPLATE_CONTEXT_PROCESSORS += (
+#     'django.core.context_processors.request',
+# )
 
 
 # TAGGIT_AUTOSUGGEST_STATIC_BASE_URL:
