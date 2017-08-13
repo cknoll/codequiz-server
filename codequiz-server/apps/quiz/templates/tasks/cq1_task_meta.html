@@ -4,11 +4,11 @@
 
 <h2>Task-Meta-Infos</h2>
 
-{% load ratings_tags %}
-{% get_rating_form for task using 'difficulty' as rating_form_difficulty %}
-{% get_rating_form for task using 'quality' as rating_form_quality %}
-{% get_rating_score for task using 'difficulty' as score_difficulty %}
-{% get_rating_score for task using 'quality' as score_quality %}
+<!--{ % load ratings_tags %}-->
+<!--{ % get_rating_form for task using 'difficulty' as rating_form_difficulty %}-->
+<!--{ % get_rating_form for task using 'quality' as rating_form_quality %}-->
+<!--{ % get_rating_score for task using 'difficulty' as score_difficulty %}-->
+<!--{ % get_rating_score for task using 'quality' as score_quality %}-->
 
 <div class="clear"></div>
 <div class="grid_1 alpha">Title:</div>
@@ -23,31 +23,7 @@
 <div class="grid_1 alpha">Revision:</div>
 <div class="grid_3 omega"> {{ task.revision }} </div>
 
-<div class="grid_1 alpha">Quality:</div>
-<div class="grid_3 omega">
-    <form id="qualityratingform" action="{% url "ratings_vote" %}" class="ratings" method="post">
-        {% csrf_token %}
-        {{ rating_form_quality }}
-        <span id="score_quality" style="padding-left: 5px">
-            {{ score_quality.average }} ({{ score_quality.num_votes }})
-        </span>
-        <span class="success" style="display: none;"></span>
-        <span class="error" style="display: none;">Errors...</span>
-    </form>
-</div>
 
-<div class="grid_1 alpha">Difficulty:</div>
-<div class="grid_3 omega">
-    <form id="difficultyratingform" action="{% url "ratings_vote" %}" class="ratings" method="post">
-        {% csrf_token %}
-        {{ rating_form_difficulty }}
-        <span id="score_difficulty" style="padding-left: 5px">
-            {{ score_difficulty.average }} ({{ score_difficulty.num_votes }})
-        </span>
-        <span class="success" style="display: none;"></span>
-        <span class="error" style="display: none;">Errors...</span>
-    </form>
-</div>
 
 
 <div class="grid_1 alpha">Tags:</div>
@@ -60,7 +36,7 @@
 <div class="clear"></div>
 
 
-{% include "feedback/button.html" %}
+<!--{ % include "feedback/button.html" %}-->
 
 {# JS for updating the average ratings on the fly #}
 <script type="text/javascript" charset="utf-8">
