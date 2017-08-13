@@ -7,7 +7,7 @@ from taggit_autosuggest.managers import TaggableManager
 from django.core.urlresolvers import reverse
 
 
-class TaggedModel:
+class TaggedModel(models.Model):
     def __unicode__(self):
         return ("T%03i: " % self.id) + self.title
 
@@ -20,7 +20,7 @@ class TaggedModel:
         return ", ".join([str(x) for x in self.tags.names()])
 
 
-class Task(models.Model, TaggedModel):
+class Task(TaggedModel):
     author = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
     revision = models.IntegerField(default=0)
@@ -38,7 +38,7 @@ class QuizResult(models.Model):
     log = models.TextField()
 
 
-class TaskCollection(models.Model, TaggedModel):
+class TaskCollection(TaggedModel):
     """
     This is a Test (i.e. a collection of tasks)
     """
