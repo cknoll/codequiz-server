@@ -53,8 +53,7 @@ class TaskCollection(models.Model, TaggedModel):
         (EXAM_MODE_NO_SOLUTIONS, 'No Solutions, only Right/Wrong'),
         (EXAM_MODE_NO_RESULTS, 'No Results, just continue quiz'),
     )
-    exam_mode = models.IntegerField(max_length=1,
-                                    choices=EXAM_MODE_CHOICES,
+    exam_mode = models.IntegerField(choices=EXAM_MODE_CHOICES,
                                     default=EXAM_MODE_NONE)
 
     tasks = models.ManyToManyField(Task, through='TC_Membership')
