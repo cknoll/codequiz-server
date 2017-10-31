@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.http import HttpResponse, Http404, HttpResponseForbidden
-from django.template import Context, loader
-from django.template import RequestContext
-from django.shortcuts import render, render_to_response, get_object_or_404, redirect
+from django.template import loader
+from django.shortcuts import render, get_object_or_404, redirect
 from datetime import *
 import hashlib
 
@@ -60,14 +59,14 @@ def render_segment(segment, user_sol_list=None, tc=None):
 
         segment.update_user_solution(user_sol_list)
 
-    return template.render(Context(segment.context))
+    return template.render(segment.context)
 
 
 def simple(request, **kwargs):
     """
     Renders a single page with the HTML contents from the kwarg 'template' (html file path)
     """
-    text = loader.get_template(kwargs['template']).render(RequestContext(request))
+    text = loader.get_template(kwargs['template']).render(context=None, request=request)
     return render(request, 'tasks/cq0_simple.html', dict(pagecontent=text))
 
 
@@ -200,9 +199,7 @@ def get_task_to_process(post_dict):
 def template_debug(request):
 
     context_dict = dict()
-    context = RequestContext(request, context_dict)
-
-    return render(request, 'tasks/debug/db_cq0_main_base.html', context)
+    return render(request, 'tasks/debug/db_cq0_main_base.html', context_dict)
 
 ## This is the main function responsible for processing one task
 # TODO: should be renamed
@@ -226,12 +223,7 @@ def debug_task_process(request):
 
     context_dict = dict(main_block=main_block, task=task, tc=tc)
 
-    # context = Context(context_dict)
-    context = RequestContext(request, context_dict)
-
-    # return render(request, 'tasks/cq0_main_simple.html', context_dict)
-    # return render(request, 'tasks/debug/db_cq0_main_base.html', context)
-    return render(request, 'tasks/cq0_main_simple.html', context)
+    return render(request, 'tasks/cq0_main_simple.html', context_dict)
 
 
 def debug_main_block_object(request, task):
@@ -308,11 +300,9 @@ def filter_segment_list(segment_list, tc, solution_flag):
 def get_button(button_type):
     #!! loaded every time!!
     button_template = loader.get_template('tasks/task_buttons1.html')
-    bContext = Context({
-        'button_type': button_type, })
+    button_ctxt_dict = {'button_type': button_type}
 
-    #!!++
-    return button_template.render(bContext)
+    return button_template.render(button_ctxt_dict)
 
 
 def get_solutions_from_post(request):
@@ -390,9 +380,8 @@ def tc_run_final_view(request, tc_id):
 
     context_dict = dict(tc=tc)
     context_dict["hash"] = hash_string
-    context =RequestContext(request, context_dict)
 
-    return render(request, 'tasks/tc_run_final.html', context)
+    return render(request, 'tasks/tc_run_final.html', context_dict)
 
 
 def compute_hash(string, date):
@@ -455,10 +444,8 @@ def tc_run_view(request):
     tc = None if not tc_id else get_object_or_404(TaskCollection, pk=tc_id)
 
     context_dict = dict(main_block=main_block, task=task, tc=tc)
-    # context = Context(context_dict)
-    context = RequestContext(request, context_dict)
 
-    return render(request, 'tasks/cq0_main_simple.html', context)
+    return render(request, 'tasks/cq0_main_simple.html', context_dict)
 
 
 def task_collection_view(request, tc_id):
@@ -476,9 +463,8 @@ def task_collection_view(request, tc_id):
     request.session["log"] = log
 
     context_dict = dict(task_list=tasks, tc=tc)
-    context =RequestContext(request, context_dict)
 
     #post_dict = dict(request.POST)
     request.session['meta_tc_id'] = unicode(tc_id)
 
-    return render(request, 'tasks/task_collection.html', context)
+    return render(request, 'tasks/task_collection.html', context_dict)
