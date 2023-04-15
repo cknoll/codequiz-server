@@ -12,7 +12,7 @@ Aim: ease the processe of importing many tasks to the database
 import os, sys, time
 import json
 import pickle
-from ipHelp import IPS, Tracer, ip_syshook, sys
+from ipydex import IPS, Tracer, ip_syshook, sys
 ip_syshook(1)
 # Tracer(colors='Linux')() # start debugging
 
@@ -112,9 +112,11 @@ def model_to_json(model):
 
 if __name__ == "__main__":
 
-    
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "codequiz.settings")
+
+    # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "codequiz.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.dev")
     import django
+    IPS()
     django.setup()
 
     import quiz.models as dm
