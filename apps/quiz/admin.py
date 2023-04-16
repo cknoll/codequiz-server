@@ -47,7 +47,7 @@ class TaskAdmin(admin.ModelAdmin):
     search_fields = ['title']
     date_hierarchy = 'pub_date'
     inlines = (TC_MembershipInline,)
-    list_filter = ['author', 'tags']
+    list_filter = ['author']
 
     fieldsets = [
         (None, {'fields': ['title', 'body_data', 'tags']}),
@@ -95,7 +95,7 @@ class TaskCollectionAdmin(admin.ModelAdmin):
     list_display = ['id', 'title', 'num_tasks', 'direct_link']
     list_display_links = ['title']
     search_fields = ['title']
-    list_filter = ['author', 'tags']
+    list_filter = ['author']
 
     inlines = (TC_MembershipInline,)
     exclude = ('tasks',)
