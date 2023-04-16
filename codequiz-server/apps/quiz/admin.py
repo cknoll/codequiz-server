@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django import forms
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from builder import BuilderTextArea
 from quiz.models import Task, TaskCollection, TC_Membership, QuizResult

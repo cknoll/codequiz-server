@@ -1,8 +1,8 @@
 from __future__ import unicode_literals
 
 from django import forms
-from django.utils import six
-from django.utils.translation import ugettext as _
+import six
+from django.utils.translation import gettext_lazy as _
 
 from taggit.utils import edit_string_for_tags, parse_tags
 

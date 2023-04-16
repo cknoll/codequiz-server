@@ -10,9 +10,9 @@ from django.db.models import signals
 from django.db.models.fields import Field
 from django.db.models.fields.related import (ManyToManyRel, OneToOneRel,
                                              RelatedField)
-from django.utils import six
+import six
 from django.utils.text import capfirst
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from taggit.forms import TagField
 from taggit.models import CommonGenericTaggedItemBase, TaggedItem

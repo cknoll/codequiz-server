@@ -1,4 +1,4 @@
-from widgets import BuilderTextArea
+from .widgets import BuilderTextArea
 version = (1, 0, 0)
 
 

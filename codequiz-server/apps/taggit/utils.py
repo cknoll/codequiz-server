@@ -4,8 +4,8 @@ from importlib import import_module
 
 from django import VERSION
 from django.conf import settings
-from django.utils import six
-from django.utils.encoding import force_text
+import six
+from django.utils.encoding import force_str
 from django.utils.functional import wraps
 
 
@@ -44,7 +44,7 @@ def _parse_tags(tagstring):
     if not tagstring:
         return []
 
-    tagstring = force_text(tagstring)
+    tagstring = force_str(tagstring)
 
     # Special case - if there are no commas or double quotes in the
     # input, we don't *do* a recall... I mean, we know we only need to

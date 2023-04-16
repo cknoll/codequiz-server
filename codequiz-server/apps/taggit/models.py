@@ -6,9 +6,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import IntegrityError, models, transaction
 from django.db.models.query import QuerySet
 from django.template.defaultfilters import slugify as default_slugify
-from django.utils.encoding import python_2_unicode_compatible
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ugettext
+# from django.utils.encoding import python_2_unicode_compatible
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy
 
 from taggit.utils import _get_field
 
@@ -42,7 +42,7 @@ except AttributeError:
             transaction.savepoint_commit(sid, using=using)
 
 
-@python_2_unicode_compatible
+# @python_2_unicode_compatible
 class TagBase(models.Model):
     name = models.CharField(verbose_name=_('Name'), unique=True, max_length=100)
     slug = models.SlugField(verbose_name=_('Slug'), unique=True, max_length=100)
@@ -103,7 +103,7 @@ class Tag(TagBase):
         app_label = 'taggit'
 
 
-@python_2_unicode_compatible
+# @python_2_unicode_compatible
 class ItemBase(models.Model):
     def __str__(self):
         return ugettext("%(object)s tagged with %(tag)s") % {

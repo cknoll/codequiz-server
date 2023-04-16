@@ -4,7 +4,7 @@ import datetime
 from django.db import models
 
 from taggit_autosuggest.managers import TaggableManager
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 
 class TaggedModel(models.Model):
@@ -78,8 +78,8 @@ class TC_Membership(models.Model):
     (needed for custom ordering of Tasks in TC)
     """
 
-    task = models.ForeignKey(Task)
-    group = models.ForeignKey(TaskCollection)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    group = models.ForeignKey(TaskCollection, on_delete=models.CASCADE)
     ordering = models.PositiveIntegerField()
 
 
