@@ -171,7 +171,7 @@ def get_task_to_process(post_dict):
         next_task_flag = False
         solution_flag = False
 
-        if tc_id and not tc_id == u'None':
+        if tc_id and not tc_id == 'None':
             # FIXME Somehow the tc_id sometimes is a unicode that says None.
             # FIXME Somewhere this is wrongly being set (in the dict, probably).
             if 'button_next' in post_dict:
@@ -244,19 +244,19 @@ def debug_main_block_object(request, task):
     # and fill the missing ones with empty strings
     # TODO: This block seems obsolete
     if user_solution is not None:
-        expected_solutions = range(0, len(segment_list))
+        expected_solutions = list(range(0, len(segment_list)))
 
         missing_solutions = []
         for sol in expected_solutions:
-            if unicode(sol) not in user_solution:
-                missing_solutions.append((unicode(sol), u""))
+            if str(sol) not in user_solution:
+                missing_solutions.append((str(sol), ""))
         user_solution.update(dict(missing_solutions))
 
     button_list = []
 
     try:
         tc_id = task.tc_id
-    except AttributeError, err:
+    except AttributeError as err:
         tc_id = None
 
     if tc_id:
@@ -294,7 +294,7 @@ def filter_segment_list(segment_list, tc, solution_flag):
     if should_show_comments and solution_flag:
         return segment_list
     else:
-        return filter(lambda s: not (hasattr(s, "c_comment") and s.c_comment), segment_list)
+        return [s for s in segment_list if not (hasattr(s, "c_comment") and s.c_comment)]
 
 
 def get_button(button_type):
@@ -306,7 +306,7 @@ def get_button(button_type):
 
 
 def get_solutions_from_post(request):
-    items = request.POST.items()
+    items = list(request.POST.items())
     items.sort()
 
     transformed_items = [(k.split("_")[1], v) for k, v in items if k.startswith("answer")]
@@ -331,7 +331,7 @@ def tc_run_form_process(request, tc_id, tc_task_id):
     1/0
     post = request.POST
     if 'next' in post:
-        next_id = u"%i" % (int(tc_task_id) + 1)
+        next_id = "%i" % (int(tc_task_id) + 1)
         return tc_run_view(request, tc_id, next_id, solution_flag=False)  # FIXME Verify this method is used at all
                                                                           # FIXME Number of arguments isn't valid here
 
@@ -465,6 +465,6 @@ def task_collection_view(request, tc_id):
     context_dict = dict(task_list=tasks, tc=tc)
 
     #post_dict = dict(request.POST)
-    request.session['meta_tc_id'] = unicode(tc_id)
+    request.session['meta_tc_id'] = str(tc_id)
 
     return render(request, 'tasks/task_collection.html', context_dict)

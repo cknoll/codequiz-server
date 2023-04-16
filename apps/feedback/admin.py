@@ -51,7 +51,7 @@ class FeedbackAdmin(admin.ModelAdmin):
             body = body.replace("\n", "%0D%0A> ")
             body = "\n" + body
             body = body.replace("\n", "%0D%0A")
-            return u"<a href='mailto:{url}?subject={subject}&body={body}'>{url}</a>".format(url=url,
+            return "<a href='mailto:{url}?subject={subject}&body={body}'>{url}</a>".format(url=url,
                                                                                             subject=subject,
                                                                                             body=body)
         else:

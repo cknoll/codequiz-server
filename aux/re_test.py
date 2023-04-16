@@ -55,10 +55,10 @@ if 0:
     delim_replacements = [('<', '{+'), ('>', '+}')]
     matcher = "(%s)" % ")|(".join(pp_matches)
     
-    print re.findall(matcher, xml)
+    print(re.findall(matcher, xml))
 
 
-print pp_html(xml)
+print(pp_html(xml))
 
 
 

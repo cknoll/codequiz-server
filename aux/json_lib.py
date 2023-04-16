@@ -5,6 +5,7 @@ import shlex
 import re
 
 from IPython import embed as IPS
+from functools import reduce
 
 """
 this module is the json backend of the code-quiz server
@@ -22,9 +23,9 @@ class DictContainer(object):
             segment_dict = {}
         self.dc_name = dc_name
         self.ext_dict = dict(segment_dict)  # store a flat copy of external dict
-        self.ext_attributes = segment_dict.keys()
+        self.ext_attributes = list(segment_dict.keys())
         # only new keys are allowed
-        assert set(self.ext_attributes).intersection(self.__dict__.keys()) == set()
+        assert set(self.ext_attributes).intersection(list(self.__dict__.keys())) == set()
         self.__dict__.update(segment_dict)
 
         self.deep_recursion()
@@ -79,8 +80,8 @@ def aux_remove_needless_spaces(string):
             try:
                 for token in lexer:
                     tokens.append(token.decode("iso-8859-1"))
-            except ValueError, err:
-                tokens = [u"___|||___|||___|||___|||___" + unicode(err)]  # definitely not the solution
+            except ValueError as err:
+                tokens = ["___|||___|||___|||___|||___" + str(err)]  # definitely not the solution
 
             line_spaces_removed = " ".join(tokens)
 
@@ -143,7 +144,7 @@ class Solution(object):
 
             # test assumptions
             for sol_dc in self.parts[0]:
-                print sol_dc
+                print(sol_dc)
                 #IPS()
                 assert isinstance(sol_dc, DictContainer)
                 assert hasattr(sol_dc, 'content')
@@ -244,7 +245,7 @@ class Segment(object):
         self.idx = 0
 
     def __unicode__(self):
-        return unicode("<%s %s>" % (type(self), id(self)))
+        return str("<%s %s>" % (type(self), id(self)))
 
     def make_context(self):
         """
@@ -278,7 +279,7 @@ class Text(Segment):
 
     def __init__(self, dc):
         super(Text, self).__init__()
-        assert isinstance(dc.content, unicode)
+        assert isinstance(dc.content, str)
         self.c_text = dc.content
         self.c_multiline = "\n" in self.c_text
         self.c_comment = getattr(dc, 'comment', False)
@@ -299,7 +300,7 @@ class QuestionSegment(Segment):
     def __init__(self, dc):
         super(QuestionSegment, self).__init__()
         if 0:
-            items = dc.ext_dict.items()
+            items = list(dc.ext_dict.items())
 
             # mark the name of the keys which will go to self.context later
             # solution should not be part of self.context
@@ -323,7 +324,7 @@ class QuestionSegment(Segment):
             for s in part:
                 # TODO: remove the default args here (implement unit test before)
                 # because solutions now has a unified_solution_structure
-                solution_content = unicode(getattr(s, 'content', s))
+                solution_content = str(getattr(s, 'content', s))
                 # space replacement only should take place for code
                 sol_type = getattr(s, 'type', 'normal')
 
@@ -348,7 +349,7 @@ class QuestionSegment(Segment):
         """
 
         # get the matching solution for this segment
-        user_solution = sol_dict[unicode(self.idx)]
+        user_solution = sol_dict[str(self.idx)]
 
         user_solution = aux_remove_carriage_returns(user_solution)
 
@@ -375,7 +376,7 @@ class GapText(QuestionSegment):
 
     def __init__(self, dc):
         super(GapText, self).__init__(dc)
-        assert isinstance(dc.content, unicode)
+        assert isinstance(dc.content, str)
         self.raw_text = dc.content
         self.idx = dc.idx
 
@@ -452,11 +453,11 @@ class GapText(QuestionSegment):
 
         # get the matching solution for this segment
         start = "{idx}:".format(idx = self.idx)
-        user_solutions = [(k, v) for k, v in sol_dict.items()
+        user_solutions = [(k, v) for k, v in list(sol_dict.items())
                           if k.startswith(start)]
 
         user_solutions.sort(key = lambda t: t[0])
-        keys, sol_values = zip(*user_solutions)
+        keys, sol_values = list(zip(*user_solutions))
 
         assert len(sol_values) == len(self.solution.parts)
         sol_lists = [[dc.content for dc in p] for p in self.solution.parts]
@@ -536,10 +537,10 @@ def preprocess_task_from_db(task):
     task.segment_list = []
     for idx, segment_dict in enumerate(dict_list):
         # TODO: make this hack bosolete by fixing the data
-        print segment_dict
+        print(segment_dict)
         aux_cbox_dc_workarround(segment_dict)
-        print segment_dict
-        print "\n"*3
+        print(segment_dict)
+        print("\n"*3)
         task.segment_list.append( make_segment(segment_dict, idx) )
     task.solution_flag = False
 
@@ -562,10 +563,10 @@ def aux_cbox_dc_workarround(segment_dict):
     corrected in first place (via admin interface)
     """
 
-    for key, value in segment_dict.items():
-        if key == u'solution':
+    for key, value in list(segment_dict.items()):
+        if key == 'solution':
             pass
             #IPS()
-        if key == u'solution' and isinstance(value, bool):
-            new_value = [{u'content': unicode(value), u'type': u'bool'}]
+        if key == 'solution' and isinstance(value, bool):
+            new_value = [{'content': str(value), 'type': 'bool'}]
             segment_dict[key] = new_value

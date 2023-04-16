@@ -51,7 +51,7 @@ import os
 
 def include(filename):
     if os.path.exists(filename):
-        exec open(filename) in globals()
+        exec(open(filename), globals())
 
 
 BASE_PATH = os.path.dirname(os.path.abspath(__file__))

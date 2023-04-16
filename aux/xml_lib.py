@@ -7,7 +7,7 @@ from IPython import embed as IPS
 
 
 delim_replacements = [('<', '{+'), ('>', '+}')]
-delim_replacements_rev = zip(*reversed(zip(*delim_replacements)))
+delim_replacements_rev = list(zip(*reversed(list(zip(*delim_replacements)))))
 
 pp_matches = ['<txt>.*</txt>', "<src>.*</src>"]
 
@@ -81,7 +81,7 @@ def test_parsed_xml(root):
     """
     raise exception if assumption on xml structures are not met
     """
-    tags = map(lambda e: e.tag, root)
+    tags = [e.tag for e in root]
 
     tag_set = set(tags)
     if not tag_set.issubset(allowed_toplevel_tags):
@@ -131,7 +131,7 @@ class TopLevelElement(object):
         """
         this list can contain checkboxes, line-edits and maybe more
         """
-        input_list, depths = zip(*[xml_to_py(xml_element) for xml_element in self.element])
+        input_list, depths = list(zip(*[xml_to_py(xml_element) for xml_element in self.element]))
 
         self.template = 'tasks/part_input_list.html'
         self.context = dict(input_list=input_list)
@@ -169,7 +169,7 @@ class TopLevelElement(object):
                     element.css_class = "sol_right"
                     element.print_solution = "OK"
                 else:
-                    print element.sol.text.encode('utf8')
+                    print(element.sol.text.encode('utf8'))
                     element.css_class = "sol_wrong"
                     if element.sol.text == "":
                         # !! LANG
@@ -190,7 +190,7 @@ def load_xml(xml_string):
     resubstitute original delimiters in the .text-attributes
     """
 
-    if isinstance(xml_string, unicode):
+    if isinstance(xml_string, str):
         xml_string = xml_string.encode('utf8')
 
     test_raw_xml(xml_string)
@@ -239,7 +239,7 @@ class Element(object):
 
 
 def aux_space_convert(string):
-    u"""
+    """
     converts leading spaces into ␣
     strips trailing spaces
     """
@@ -253,7 +253,7 @@ def aux_space_convert(string):
 
     leading_spaces = string[:idx]
     # assumes utf8 file encoding:
-    brace = u"␣"  # .encode('utf8')
+    brace = "␣"  # .encode('utf8')
     res = brace * len(leading_spaces) + s2
     return res
 
@@ -287,10 +287,10 @@ def xml_to_py(xml_element):
 
     attribute_list = child_list + [( 'text', tmp_element_string.strip())]
     attribute_list += [('tag', xml_element.tag)]
-    attribute_list += xml_element.attrib.items()
+    attribute_list += list(xml_element.attrib.items())
     kwargs = dict(attribute_list)
     if not len(kwargs) == len(attribute_list):
-        raise ValueError("duplicate in attribute_list. This list should be unique: %s." % str(zip(*attribute_list)[0]))
+        raise ValueError("duplicate in attribute_list. This list should be unique: %s." % str(list(zip(*attribute_list))[0]))
 
     this = Element(**kwargs)
 

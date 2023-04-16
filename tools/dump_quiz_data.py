@@ -44,8 +44,8 @@ if __name__ == "__main__":
 
 
     model_list = [getattr(dm, a) for a in dir(dm)] # all attributes
-    model_list = filter(lambda x: isinstance(x, type), model_list) # all types
-    model_list = filter(lambda x: issubclass(x, models.Model), model_list)
+    model_list = [x for x in model_list if isinstance(x, type)] # all types
+    model_list = [x for x in model_list if issubclass(x, models.Model)]
     # all models
 
 
@@ -54,10 +54,10 @@ if __name__ == "__main__":
 
 
     with open(dumpfilname, 'w') as dumpfile:
-        if isinstance(res, unicode):
+        if isinstance(res, str):
             res = res.encode('utf-8')
         dumpfile.write(res)
-    print "%s written" % dumpfilname
+    print("%s written" % dumpfilname)
 
 
 

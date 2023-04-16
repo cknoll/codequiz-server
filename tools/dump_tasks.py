@@ -38,8 +38,8 @@ def serialize_value(val):
 ENC = "utf-8"
 
 
-uc_const1 = u'⌘'.encode(ENC) # temp for all '"'-chars in the source
-uc_const2 = u'◆'.encode(ENC) # represents all '"'-chars introduced by json (in our file)
+uc_const1 = '⌘'.encode(ENC) # temp for all '"'-chars in the source
+uc_const2 = '◆'.encode(ENC) # represents all '"'-chars introduced by json (in our file)
 
 def repl_src_quotes(string):
     assert isinstance(string, str) # we want utf-8 strings here
@@ -62,7 +62,7 @@ def repl_linebreaks(string):
 
 
 def myencode(string):
-    if isinstance(string, unicode):
+    if isinstance(string, str):
         return string.encode('utf-8')
     else:
         return string
@@ -74,14 +74,14 @@ def model_instance_to_dict(instance, fieldnames):
     for fname in fieldnames:
         value = getattr(instance, fname)
         fname = myencode(fname)
-        if isinstance(value, basestring):
+        if isinstance(value, str):
             value =  myencode(value)
             value = repl_src_quotes(value)
 
         if fname.startswith('body'):
             value = repl_linebreaks(value)
 
-        if isinstance(  value, ( basestring, int, long, float,
+        if isinstance(  value, ( str, int, float,
                                  bool, type(None) )  ):
             items.append( (fname, value) )
         else:
@@ -127,10 +127,10 @@ if __name__ == "__main__":
 
 
 with open(dumpfilname, 'w') as dumpfile:
-    if isinstance(res, unicode):
+    if isinstance(res, str):
         res = res.encode('utf-8')
     dumpfile.write(res)
-    print "%s written" % dumpfilname
+    print("%s written" % dumpfilname)
 
 
 

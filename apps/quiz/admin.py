@@ -37,7 +37,7 @@ class TaskAdmin(admin.ModelAdmin):
     """
 
     def direct_link(self, obj):
-        return '<a href="' + reverse('quiz_ns:explicit_task_view', kwargs={'task_id': obj.id}) + u'">Preview…</a>'
+        return '<a href="' + reverse('quiz_ns:explicit_task_view', kwargs={'task_id': obj.id}) + '">Preview…</a>'
 
     direct_link.short_description = ''
     direct_link.allow_tags = True
@@ -87,7 +87,7 @@ class QuizResultAdmin(admin.ModelAdmin):
 class TaskCollectionAdmin(admin.ModelAdmin):
 
     def direct_link(self, obj):
-        return '<a href="' + reverse('quiz_ns:task_collection_view', kwargs={'tc_id': obj.id}) + u'">Run Collection…</a>'
+        return '<a href="' + reverse('quiz_ns:task_collection_view', kwargs={'tc_id': obj.id}) + '">Run Collection…</a>'
 
     direct_link.short_description = ''
     direct_link.allow_tags = True
