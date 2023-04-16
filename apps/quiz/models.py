@@ -8,6 +8,7 @@ from django.urls import reverse
 
 
 class TaggedModel(models.Model):
+    id = models.AutoField(primary_key=True)
     def __unicode__(self):
         return ("T%03i: " % self.id) + self.title
 
@@ -33,6 +34,7 @@ class Task(TaggedModel):
 
 
 class QuizResult(models.Model):
+    id = models.AutoField(primary_key=True)
     date = models.DateTimeField()
     hash = models.CharField(max_length=128)
     log = models.TextField()
@@ -77,7 +79,7 @@ class TC_Membership(models.Model):
     This class specifies the association of a Task to a TaskCollection
     (needed for custom ordering of Tasks in TC)
     """
-
+    id = models.AutoField(primary_key=True)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     group = models.ForeignKey(TaskCollection, on_delete=models.CASCADE)
     ordering = models.PositiveIntegerField()

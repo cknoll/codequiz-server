@@ -39,6 +39,8 @@ PROJECT_TEMPLATES = [
 sys.path.append(normpath(join(PROJECT_ROOT, 'apps')))
 
 
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+
 # ##### APPLICATION CONFIGURATION #########################
 
 # This are the apps
@@ -72,7 +74,7 @@ MATHJAX_CONFIG_DATA = {
 }
 
 # Middlewares
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -91,6 +93,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.i18n',
