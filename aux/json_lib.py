@@ -72,14 +72,12 @@ def aux_remove_needless_spaces(string):
             new_lines.append(line)
         else:
             # :DOC: http://pymotw.com/2/shlex/
-            # encoding 'iso-8859-1' because it is being used in the database, apparently...
-            # should maybe be read from the database configuration, somehow...
-            lexer = shlex.shlex(stripped.encode("iso-8859-1"))
+            lexer = shlex.shlex(stripped)
             tokens = []
 
             try:
                 for token in lexer:
-                    tokens.append(token.decode("iso-8859-1"))
+                    tokens.append(token)
             except ValueError as err:
                 tokens = ["___|||___|||___|||___|||___" + str(err)]  # definitely not the solution
 
