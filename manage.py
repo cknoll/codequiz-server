@@ -3,7 +3,7 @@ import os
 import sys
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "codequiz-server.settings.production")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "codequiz-server-project.settings.production")
 
     current_dir = os.path.dirname(os.path.abspath(sys.modules.get(__name__).__file__))
     apps_dir = os.path.join(current_dir, "apps")
