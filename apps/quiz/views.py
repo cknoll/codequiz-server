@@ -385,7 +385,8 @@ def tc_run_final_view(request, tc_id):
 
 
 def compute_hash(string, date):
-    result = hashlib.sha256(string + date).hexdigest()
+    byte_string = (string + date).encode("utf8")
+    result = hashlib.sha256(byte_string).hexdigest()
     return result
 
 # TODO: rename to task_result_view
