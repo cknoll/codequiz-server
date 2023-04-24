@@ -566,7 +566,7 @@ $(document).ready(function () {
         .append("<a class='add' href='#' type='comment'>Comment</a>")
         .append("<a class='add' href='#' type='input'>Input Field</a>")
         .append("<a class='add' href='#' type='check'>Check</a>")
-        .append("<input type='hidden' name='body_data' value='abs'>");
+        .append("<input type='hidden' name='body_data' value='None' id='body_data_input'>");
 
     $("a.add").click(function (event) {
         event.preventDefault();
@@ -591,7 +591,10 @@ $(document).ready(function () {
     }
 
     $("#task_form").submit(function () {
+
+        event.preventDefault()  // do not yet submit the form
         updateTask();
+        this.submit();         // submit the form manually
         return;
     });
 });
