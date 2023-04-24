@@ -1,7 +1,7 @@
 from django.urls import include, re_path, path
 from django.contrib import admin
 import quiz.views as quiz_app_views
-from django.contrib import admin
+from django.shortcuts import redirect
 admin.autodiscover()
 
 
@@ -23,6 +23,7 @@ urlpatterns = [re_path(r'^$', quiz_app_views.index, name='index'),
             # re_path(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
             # Uncomment the next line to enable the admin:
+            path('favicon.ico', lambda request: redirect('/static/favicon.ico', permanent=False)),
             path('admin/', admin.site.urls)
             # re_path(r'^admin/', include(admin.site.urls)),
             ]
