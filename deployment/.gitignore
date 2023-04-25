@@ -1,12 +1,4 @@
 # specific .gitignore for this directory
 
-# ignore everything
-*
+config.ini
 
-# except the explaining README
-!README
-# oh, and this file
-!.gitignore
-
-# let's include samples of the config files
-!*.sample
