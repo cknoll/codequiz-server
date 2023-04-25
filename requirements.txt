@@ -1,2 +1,2 @@
 django-taggit-autosuggest
-install django-mathjax
+django-mathjax @ git+https://github.com/tbabej/django-mathjax@fdc70dd5a7f06a71da2eee1e8e713a16796df5d7
