@@ -495,7 +495,7 @@ if not args.omit_static:
 
 
 
-    # TODO: this does not yet work
+    # TODO: this does not yet work (and must be run and copied manually)
 
     c.run('python3 manage.py collectstatic --no-input', target_spec="remote")
 
