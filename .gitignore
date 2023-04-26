@@ -4,6 +4,7 @@
 .idea
 .DS_Store
 local_settings.py
+config.ini
 
 sqlite-jdbc-3.7.2.jar
 

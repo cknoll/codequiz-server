@@ -1,7 +1,33 @@
 # Import sys (to adjust Python path)
 import sys
 # Import some utility functions
+import os
 from os.path import abspath, basename, dirname, join, normpath
+import deploymentutils as du
+
+
+# export DJANGO_DEVMODE=True; py3 manage.py custom_command
+env_devmode = os.getenv("DJANGO_DEVMODE")
+if env_devmode is None:
+    DEVMODE = "runserver" in sys.argv
+else:
+    DEVMODE = env_devmode.lower() == "true"
+
+
+
+cfg = du.get_nearest_config("config.ini", devmode=DEVMODE)
+
+
+
+SECRET_KEY = cfg("SECRET_KEY")
+
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = cfg("DEBUG")
+
+ALLOWED_HOSTS = cfg("ALLOWED_HOSTS", cast=cfg.Csv())
+
+DJANGO_URL_PREFIX = cfg("django_url_prefix").lstrip("/")
 
 # #########################################################
 
@@ -143,7 +169,8 @@ MEDIA_URL = '/media/'
 
 
 # ##### DEBUG CONFIGURATION ###############################
-DEBUG = False
+
+# DEBUG is loaded from config above
 
 
 # ##### INTERNATIONALIZATION ##############################
@@ -161,15 +188,4 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Finally grab the SECRET KEY
-try:
-    SECRET_KEY = open(SECRET_FILE).read().strip()
-except IOError:
-    try:
-        from django.utils.crypto import get_random_string
-        chars = 'abcdefghijklmnopqrstuvwxyz0123456789!$%&()=+-_'
-        SECRET_KEY = get_random_string(50, chars)
-        with open(SECRET_FILE, 'w') as f:
-            f.write(SECRET_KEY)
-    except IOError:
-        raise Exception('Could not open %s for writing!' % SECRET_FILE)
+# SECRET_KEY is loaded from config above

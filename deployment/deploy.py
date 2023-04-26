@@ -334,11 +334,12 @@ def generate_static_files(c):
 
 
 if args.debug:
-    create_and_setup_venv(c)
+    # create_and_setup_venv(c)
     c.activate_venv(f"{venv_path}/bin/activate")
 
     # c.deploy_local_package("/home/ck/projekte/rst_python/ipydex/repo")
 
+    set_web_backend(c)
     IPS()
     exit()
 
@@ -491,6 +492,11 @@ if not args.omit_database:
 
 if not args.omit_static:
     print("\n", "collect static files", "\n")
+
+
+
+    # TODO: this does not yet work
+
     c.run('python3 manage.py collectstatic --no-input', target_spec="remote")
 
     # download external frontent dependencies: fonts
