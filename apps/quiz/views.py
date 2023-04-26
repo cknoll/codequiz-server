@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
-
-from django.http import HttpResponse, Http404, HttpResponseForbidden
+from django.http import HttpResponse, Http404, HttpResponseForbidden, FileResponse
 from django.template import loader
 from django.shortcuts import render, get_object_or_404, redirect
-from datetime import *
+from django.contrib.admin.views.decorators import staff_member_required
+from datetime import datetime
 import hashlib
 
 from IPython import embed as IPS
 
-from aux import xml_lib, json_lib
+from aux import json_lib
 from quiz.models import Task, TaskCollection, QuizResult
 
 """
@@ -469,3 +468,23 @@ def task_collection_view(request, tc_id):
     request.session['meta_tc_id'] = str(tc_id)
 
     return render(request, 'tasks/task_collection.html', context_dict)
+
+
+@staff_member_required
+def download_backup_fixtures(request):
+    import io
+    import time
+
+
+    data_str = "Hällo Wörld"
+    stream = io.BytesIO(data_str.encode("utf8"))
+    # open the file and create a FileResponse containing the file's contents
+
+    fname = time.strftime("%Y-%m-%d__%H-%M-%S_codequiz_backup_all.json")
+
+    response = FileResponse(stream, content_type='application/json')
+
+    # set the Content-Disposition header to force the browser to download the file
+    response['Content-Disposition'] = f'attachment; filename="{fname}"'
+
+    return response

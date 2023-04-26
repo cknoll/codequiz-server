@@ -11,6 +11,7 @@ urlpatterns = [re_path(r'^$', views.simple, kwargs={"template": "index.html"}, n
                # TODO: this should be restricted to moderators
                re_path(r'^explicit/(?P<task_id>\d+)/$', views.explicit_task_view,
                    name='explicit_task_view'),
+               re_path(r'^backup$', views.download_backup_fixtures, name='download_backup_fixtures'),
                ]
 
 # old advanced pattern:
