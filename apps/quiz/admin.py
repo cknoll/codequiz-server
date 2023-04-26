@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django import forms
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 
 from builder import BuilderTextArea
 from quiz.models import Task, TaskCollection, TC_Membership, QuizResult
@@ -37,10 +38,12 @@ class TaskAdmin(admin.ModelAdmin):
     """
 
     def direct_link(self, obj):
-        return '<a href="' + reverse('quiz_ns:explicit_task_view', kwargs={'task_id': obj.id}) + '">Preview…</a>'
+        url = reverse('quiz_ns:explicit_task_view', kwargs={'task_id': obj.id})
+        return mark_safe(
+            f'<a href="{url}">Preview task {obj.id}</a>'
+        )
 
-    direct_link.short_description = ''
-    direct_link.allow_tags = True
+    direct_link.short_description = "show task in front end view"
 
     list_display = ['id', 'title', 'pub_date', 'revision', 'direct_link']
     list_display_links = ['title']
@@ -87,10 +90,12 @@ class QuizResultAdmin(admin.ModelAdmin):
 class TaskCollectionAdmin(admin.ModelAdmin):
 
     def direct_link(self, obj):
-        return '<a href="' + reverse('quiz_ns:task_collection_view', kwargs={'tc_id': obj.id}) + '">Run Collection…</a>'
+        url = reverse('quiz_ns:task_collection_view', kwargs={'tc_id': obj.id})
+        return mark_safe(
+            f'<a href="{url}">Run Collection {obj.id}</a>'
+        )
 
-    direct_link.short_description = ''
-    direct_link.allow_tags = True
+    direct_link.short_description = "run task collection in front end view"
 
     list_display = ['id', 'title', 'num_tasks', 'direct_link']
     list_display_links = ['title']
