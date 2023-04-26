@@ -9,7 +9,7 @@ import deploymentutils as du
 # export DJANGO_DEVMODE=True; py3 manage.py custom_command
 env_devmode = os.getenv("DJANGO_DEVMODE")
 if env_devmode is None:
-    DEVMODE = "runserver" in sys.argv
+    DEVMODE = "runserver" in sys.argv or "shell" in sys.argv
 else:
     DEVMODE = env_devmode.lower() == "true"
 
@@ -35,9 +35,13 @@ DJANGO_URL_PREFIX = cfg("django_url_prefix").lstrip("/")
 
 # Fetch Django's project directory
 DJANGO_ROOT = dirname(dirname(abspath(__file__)))
+assert os.path.isfile(join(DJANGO_ROOT, "wsgi.py"))
 
 # Fetch the project_root
-PROJECT_ROOT = dirname(DJANGO_ROOT)
+BASEDIR = PROJECT_ROOT = dirname(DJANGO_ROOT)
+
+
+assert os.path.isfile(join(BASEDIR, "manage.py"))
 
 # The name of the whole site
 SITE_NAME = basename(DJANGO_ROOT)
@@ -49,6 +53,8 @@ STATIC_ROOT = join(PROJECT_ROOT, 'run', 'static')
 
 # Collect media files here
 MEDIA_ROOT = join(PROJECT_ROOT, 'run', 'media')
+
+BACKUP_PATH = cfg("BACKUP_PATH").replace("__BASEDIR__", BASEDIR)
 
 # look for static assets here
 STATICFILES_DIRS = [
