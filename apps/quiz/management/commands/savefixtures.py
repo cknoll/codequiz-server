@@ -1,16 +1,10 @@
-from io import StringIO
-import re
-import json
 import os
 import time
 
-from django.core.management.base import BaseCommand, CommandError
-from django.core.management import call_command
+from django.core.management.base import BaseCommand
 from django.conf import settings
 
-
-model_blacklist = [
-    "contenttypes*", "sessions*", r"admin\.logentry", r"auth\.permission"]
+from quiz import auxiliary as auxi
 
 
 class Command(BaseCommand):
@@ -18,7 +12,9 @@ class Command(BaseCommand):
     Simimilar to dumpdata, but with tweeked usability:
         - use jsonlint, to generate readable json code,
         - ignore models on the hardcoded blacklist
-        - use predefined path
+        - use predefined path;
+
+        - Note: there is also an option to download the backup-fixture (see quiz/urls.py)
     """
     help = 'Simimilar to dumpdata, but with tweeked usability.'
 
@@ -34,14 +30,8 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        from ipydex import IPS, activate_ips_on_exception
-        activate_ips_on_exception()
-        buf = StringIO()
-        call_command("dumpdata", stdout=buf)
-        buf.seek(0)
-        data = json.loads(buf.read())
 
-        blacklist_re = re.compile("|".join(model_blacklist))
+        data_bytes = auxi.make_backup()
 
         if options.get('backup'):
             opfname = time.strftime("%Y-%m-%d__%H-%M-%S_backup_all.json")
@@ -53,32 +43,10 @@ class Command(BaseCommand):
         else:
             outputpath = time.strftime("%Y-%m-%d__%H-%M-%S_all.json")
 
-        keep_data = []
-        bad_data = []
-        for d in data:
-            model = d.get("model")
-            if model is None:
-                continue
-            if blacklist_re.match(model):
-                # just for debugging
-                bad_data.append(model)
-                continue
-            else:
-                keep_data.append(d)
-
-        # dependency only needed here
-        # todo: properly handle optional dependencies (Milestone 1.0)
-        # noinspection PyPackageRequirements
-        import demjson
-        res = demjson.encode(keep_data, encoding="utf-8", compactly=False)
-
-        # remove trailing spaces and ensure final linebreak:
-        lb = b"\n"  # byte-linebreak
-        res2 = lb.join([line.rstrip() for line in res.split(lb)] + [lb])
 
         # write bytes because we have specified utf8-encoding
         with open(outputpath, "wb") as jfile:
-            jfile.write(res2)
+            jfile.write(data_bytes)
 
         self.stdout.write(f"file written: {outputpath}")
         self.stdout.write(self.style.SUCCESS('Done'))

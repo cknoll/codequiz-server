@@ -474,10 +474,10 @@ def task_collection_view(request, tc_id):
 def download_backup_fixtures(request):
     import io
     import time
+    from . import auxiliary as auxi
 
-
-    data_str = "Hällo Wörld"
-    stream = io.BytesIO(data_str.encode("utf8"))
+    data_bytes = auxi.make_backup()
+    stream = io.BytesIO(data_bytes)
     # open the file and create a FileResponse containing the file's contents
 
     fname = time.strftime("%Y-%m-%d__%H-%M-%S_codequiz_backup_all.json")

@@ -5,6 +5,9 @@
 .DS_Store
 local_settings.py
 config.ini
+local_backups
+collected_static
+apps/quiz/migrations
 
 sqlite-jdbc-3.7.2.jar
 
