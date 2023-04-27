@@ -49,10 +49,10 @@ SITE_NAME = basename(DJANGO_ROOT)
 #SITE_NAME = "codequiz"
 
 # Collect static files here
-STATIC_ROOT = join(PROJECT_ROOT, 'run', 'static')
+STATIC_ROOT = cfg("STATIC_ROOT").replace("__BASEDIR__", BASEDIR)
 
 # Collect media files here
-MEDIA_ROOT = join(PROJECT_ROOT, 'run', 'media')
+MEDIA_ROOT = cfg("MEDIA_ROOT").replace("__BASEDIR__", BASEDIR)
 
 BACKUP_PATH = cfg("BACKUP_PATH").replace("__BASEDIR__", BASEDIR)
 
