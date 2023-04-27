@@ -23,7 +23,7 @@ urlpatterns = [re_path(r'^$', quiz_app_views.index, name='index'),
             # re_path(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
             # Uncomment the next line to enable the admin:
-            path('favicon.ico', lambda request: redirect('/static/favicon.ico', permanent=False)),
+            # path('favicon.ico', lambda request: redirect('/static/favicon.ico', permanent=False)),
             path('admin/', admin.site.urls)
             # re_path(r'^admin/', include(admin.site.urls)),
             ]
