@@ -16,3 +16,15 @@ Django app for source-code related quizzes
 
 
 
+
+## Remote deployment
+
+
+The following instructions are taylored towards [uberspace](https://uberspace.de)
+
+- copy `<BASEDIR>/deployment/config-exampl.ini` to `<BASEDIR>/config.ini`
+- change that file (insert your connection data etc.)
+- review `deployment/deploy.py` to understand what happens
+- run `pip install -r deployment/deployment_requirements.txt`
+- run `python deployment/deploy.py` from `<BASEDIR>/`
+
