@@ -1,6 +1,6 @@
 import sys
 import json
-import demjson
+import demjson3
 import re
 import os
 
@@ -55,7 +55,7 @@ base, ext = os.path.splitext(fname)
 new_fname = f"{base}_stripped{ext}"
 
 with open(new_fname, "w") as fp:
-    fp.write(demjson.encode(new_data, compactly=False, indent_amount=2))
+    fp.write(demjson3.encode(new_data, compactly=False, indent_amount=2))
 
 
 print("omitted:", c)

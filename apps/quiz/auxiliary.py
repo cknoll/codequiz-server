@@ -42,8 +42,8 @@ def make_backup() -> bytes:
     # dependency only needed here
     # todo: properly handle optional dependencies (Milestone 1.0)
     # noinspection PyPackageRequirements
-    import demjson
-    res = demjson.encode(keep_data, encoding="utf-8", compactly=False)
+    import demjson3
+    res = demjson3.encode(keep_data, encoding="utf-8", compactly=False)
 
     # remove trailing spaces and ensure final linebreak:
     lb = b"\n"  # byte-linebreak
