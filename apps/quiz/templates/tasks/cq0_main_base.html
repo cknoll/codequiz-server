@@ -10,12 +10,17 @@
 <!--cq0_main_base.html (not overwritten) -->
 {% endblock %}
 
+<!-- utc_devmode_value_in_template: {{SETTINGS_DEVMODE}}!  -->
 <head>
     <title>Code Quiz</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     {% load static %}
-    <link rel="icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+{% if SETTINGS_DEVMODE %}
+    <link rel="shortcut icon" href="{% static 'favicon_dev.ico' %}" />
+{% else %}
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
+{% endif %}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/tabular_style.css?{% now "U" %}"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/1152_16_col.css?{% now "U" %}"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/style2.css?{% now "U" %}"/>

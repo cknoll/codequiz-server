@@ -1,0 +1,10 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% block extrahead %}
+    <!-- utc_custom_admin_template with_devmode {{SETTINGS_DEVMODE}}!  -->
+{% if SETTINGS_DEVMODE %}
+    <link rel="shortcut icon" href="{% static 'favicon_admin_dev.ico' %}" />
+{% else %}
+    <link rel="shortcut icon" href="{% static 'favicon_admin.ico' %}" />
+{% endif %}
+{% endblock %}

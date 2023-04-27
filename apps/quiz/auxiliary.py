@@ -8,6 +8,7 @@ import re
 import json
 
 from django.core.management import call_command
+from django.conf import settings
 
 
 def make_backup() -> bytes:
@@ -49,3 +50,20 @@ def make_backup() -> bytes:
     res2 = lb.join([line.rstrip() for line in res.split(lb)] + [lb])
 
     return res2
+
+def insert_settings_context_preprocessor(request):
+    """This function is called for every request.
+
+    see settings.TEMPLATES["OPTIONS"]["context_processors"] for details.
+    Also see: https://docs.djangoproject.com/en/4.2/ref/templates/api/#writing-your-own-context-processors
+    """
+
+    # select some settings which should be availabe in all templates
+
+    keys = ["DEVMODE"]
+
+    partial_context = { (f"SETTINGS_{k}", getattr(settings, k, None)) for k in keys }
+
+    print("called me")
+
+    return partial_context
