@@ -475,12 +475,16 @@ def download_backup_fixtures(request):
     import io
     import time
     from . import auxiliary as auxi
+    from django.conf import settings
 
     data_bytes = auxi.make_backup()
     stream = io.BytesIO(data_bytes)
     # open the file and create a FileResponse containing the file's contents
 
-    fname = time.strftime("%Y-%m-%d__%H-%M-%S_codequiz_backup_all.json")
+    time_str =time.strftime("%Y-%m-%d__%H-%M-%S")
+    dev_mode_str = "_DEV" if settings.DEVMODE else "_PRODUCTION"
+
+    fname = f"{time_str}_codequiz_backup_all{dev_mode_str}.json"
 
     response = FileResponse(stream, content_type='application/json')
 
