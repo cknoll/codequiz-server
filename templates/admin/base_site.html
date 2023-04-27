@@ -8,3 +8,12 @@
     <link rel="shortcut icon" href="{% static 'favicon_admin.ico' %}" />
 {% endif %}
 {% endblock %}
+
+
+{% block footer %}
+{% if user.is_authenticated and user.is_staff %}
+  <div class="footer" style="text-align: right; padding: 1em;">
+    <a href="{% url 'quiz:download_backup_fixtures' %}">download data backup</a>
+  </div>
+{% endif %}
+{% endblock %}
