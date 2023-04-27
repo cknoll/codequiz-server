@@ -139,20 +139,10 @@ else:
     raise NotImplementedError("local deployment is not supported by this script")
 
 
-# TODO
+# TODO: review
 init_fixture_path = os.path.join(target_deployment_path, "apps/quiz/fixtures/real_quiz_data.json")
 
 
-# this will be passed to the template of site_specific_settings.py
-app_settings = {
-    "SECRET_KEY": secrets.token_urlsafe(50),
-    "DEBUG": debug_mode,
-    "ALLOWED_HOSTS": allowed_hosts,
-    "STATIC_ROOT": static_root_dir,
-    "TIME_ZONE": TIME_ZONE,
-    "MOOD_VALUE_MAX": 2,
-    "MOOD_VALUE_MIN": -3,
-    }
 
 
 # print a warning for data destruction
