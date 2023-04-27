@@ -34,7 +34,7 @@ DJANGO_URL_PREFIX = cfg("django_url_prefix").lstrip("/")
 # ##### PATH CONFIGURATION ################################
 
 # Fetch Django's project directory
-DJANGO_ROOT = dirname(dirname(abspath(__file__)))
+DJANGO_ROOT = dirname(abspath(__file__))
 assert os.path.isfile(join(DJANGO_ROOT, "wsgi.py"))
 
 # Fetch the project_root
@@ -84,11 +84,14 @@ DEFAULT_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'quiz',
+    'builder',
     'taggit',
     'taggit_autosuggest',
-    'feedback',
     'django_mathjax',
 ]
+
+# ##### APPLICATION CONFIGURATION #########################
+
 
 INSTALLED_APPS = DEFAULT_APPS
 
@@ -138,12 +141,21 @@ TEMPLATES = [
 ]
 
 
+
+# ##### DATABASE CONFIGURATION ############################
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': cfg("DB_FILE_PATH").replace("__BASEDIR__", BASEDIR),
+    }
+}
+
+
+
 # ##### SECURITY CONFIGURATION ############################
 
-# We store the secret key here
-# The required SECRET_KEY is fetched at the end of this file
-SECRET_FILE = normpath(join(PROJECT_ROOT, 'run', 'SECRET.key'))
 
+# TODO This should be read from the config
 # These persons receive error notification
 ADMINS = (
     ('your name', 'your_name@example.com'),

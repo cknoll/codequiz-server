@@ -5,6 +5,7 @@
 .DS_Store
 local_settings.py
 config.ini
+db.sqlite3
 local_backups
 collected_static
 apps/quiz/migrations

@@ -265,7 +265,7 @@ def upload_files(c):
     print("\n", "upload current application files for deployment", "\n")
     # omit irrelevant files (like .git)
     # TODO: this should be done more elegantly
-    filters = f"--exclude='.git/' " f"--exclude='.idea/' " f"--exclude='db.sqlite3' " ""
+    filters = f"--exclude='.git/' --exclude='.idea/' --exclude='{config('DB_FILE_PATH')}' "
 
     c.rsync_upload(
         project_src_path + "/", target_deployment_path, filters=filters, target_spec="both"
@@ -371,5 +371,3 @@ c.run(f"supervisorctl restart all", target_spec="remote")
 
 
 print(final_msg)
-
-

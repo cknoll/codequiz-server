@@ -3,7 +3,7 @@ import os
 import sys
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_project.settings.dev")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_project.settings")
 
     current_dir = os.path.dirname(os.path.abspath(sys.modules.get(__name__).__file__))
     apps_dir = os.path.join(current_dir, "apps")
