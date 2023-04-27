@@ -26,8 +26,6 @@ try:
 except ImportError as err:
     print("You need to install the package `deploymentutils` to run this script.")
 
-# simplify debugging
-activate_ips_on_exception()
 
 """
 This script serves to deploy and maintain the django app `moodpoll` on an uberspace account.
@@ -36,6 +34,20 @@ It is largely based on this tutorial: <https://lab.uberspace.de/guide_django.htm
 
 # call this before running the script:
 # eval $(ssh-agent); ssh-add -t 10m
+
+
+workdir = os.path.abspath(os.getcwd())
+msg = (
+       "This deployment script is expected to be run from the BASEDIR of the django project, i.e. "
+       "from the same directory where manage.py is located. This seems not to be the case.\n"
+       f"Your current workdir is {workdir}"
+)
+
+if not os.path.isfile(pjoin(workdir, "manage.py")):
+    raise FileNotFoundError(msg)
+
+# simplify debugging
+activate_ips_on_exception()
 
 
 # -------------------------- Essential Config section  ------------------------
@@ -265,7 +277,9 @@ def upload_files(c):
     print("\n", "upload current application files for deployment", "\n")
     # omit irrelevant files (like .git)
     # TODO: this should be done more elegantly
-    filters = f"--exclude='.git/' --exclude='.idea/' --exclude='{config('DB_FILE_PATH')}' "
+
+    db_file_name = os.path.split(config('DB_FILE_PATH'))[-1]
+    filters = f"--exclude='.git/' --exclude='.idea/' --exclude='{db_file_name}' "
 
     c.rsync_upload(
         project_src_path + "/", target_deployment_path, filters=filters, target_spec="both"
@@ -283,7 +297,7 @@ def purge_deployment_dir(c):
         )
         exit()
     else:
-        answer = input(f"purging <{args.target}>/{target_deployment_path} (y/N)")
+        answer = input(f" -> {du.yellow('purging')} <{args.target}>/{target_deployment_path} (y/N)")
         if answer != "y":
             print(du.bred("Aborted."))
             exit()
@@ -340,8 +354,8 @@ if args.debug:
     c.activate_venv(f"{venv_path}/bin/activate")
 
     # c.deploy_local_package("/home/ck/projekte/rst_python/ipydex/repo")
+    # set_web_backend(c)
 
-    set_web_backend(c)
     IPS()
     exit()
 
@@ -352,6 +366,8 @@ if args.initial:
     update_supervisorctl(c)
     set_web_backend(c)
 
+if args.purge:
+    purge_deployment_dir(c)
 
 upload_files(c)
 
