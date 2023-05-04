@@ -37,6 +37,8 @@ class Command(BaseCommand):
             opfname = time.strftime("%Y-%m-%d__%H-%M-%S_backup_all.json")
 
             backup_path = settings.BACKUP_PATH
+            os.makedirs(backup_path, exist_ok=True)
+
             if not os.path.exists(backup_path):
                 os.makedirs(backup_path)
             outputpath = os.path.join(backup_path, opfname)

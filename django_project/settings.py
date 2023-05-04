@@ -54,7 +54,7 @@ STATIC_ROOT = cfg("STATIC_ROOT").replace("__BASEDIR__", BASEDIR)
 # Collect media files here
 MEDIA_ROOT = cfg("MEDIA_ROOT").replace("__BASEDIR__", BASEDIR)
 
-BACKUP_PATH = cfg("BACKUP_PATH").replace("__BASEDIR__", BASEDIR)
+BACKUP_PATH = os.path.abspath(cfg("BACKUP_PATH").replace("__BASEDIR__", BASEDIR))
 
 # look for static assets here
 STATICFILES_DIRS = [
