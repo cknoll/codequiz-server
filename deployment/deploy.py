@@ -88,15 +88,6 @@ temp_workdir = pjoin(du.get_dir_of_this_file(), "tmp_workdir")  # this will be d
 # it should not be necessary to change the data below, but it might be interesting what happens.
 # (After all, this code runs on your computer/server under your responsibility).
 
-# this is only relevant if you maintain more than one instance
-instance_path = os.path.join(du.get_dir_of_this_file(), "specific")
-
-local_deployment_files_base_dir = du.get_dir_of_this_file()
-repo_base_dir = os.path.split(local_deployment_files_base_dir)[0]
-app_path = os.path.join(repo_base_dir, app_name)
-
-
-
 
 # name of the directory for the virtual environment:
 venv = config("venv")
@@ -306,10 +297,9 @@ def initialize_db(c):
     c.chdir(target_deployment_path)
     c.run("python manage.py makemigrations", target_spec="both")
 
-    # This deletes all data (OK for this app but probably not OK for others) -> backup db before
-
+    # try to backup db before (re-)initialization
     # print("\n", "backup old database", "\n")
-    # res = c.run('python manage.py savefixtures', target_spec="both")
+    _ = c.run("python manage.py savefixtures --backup", warn=False)
 
     # delete old db
     c.run("rm -f db.sqlite3", target_spec="both")
@@ -317,8 +307,14 @@ def initialize_db(c):
     # this creates the new database
     c.run("python manage.py migrate", target_spec="both")
 
+    # create superuser with password from config
+    c.chdir(target_deployment_path)
+    cmd = f'export DJANGO_SUPERUSER_PASSWORD="{config("ADMIN_PASS")}"; '
+    cmd += 'python manage.py createsuperuser --noinput --username admin --email "a@b.org"'
+    c.run(cmd)
+
     # print("\n", "install initial data", "\n")
-    # c.run(f"python manage.py loaddata {init_fixture_path}", target_spec="both")
+    c.run(f"python manage.py loaddata {init_fixture_path}", target_spec="both")
 
 
 
@@ -351,7 +347,7 @@ if args.debug:
 
 if args.initial:
 
-    # create_and_setup_venv(c)
+    create_and_setup_venv(c)
     render_and_upload_config_files(c)
     update_supervisorctl(c)
     set_web_backend(c)
@@ -371,9 +367,8 @@ if not args.omit_static:
     generate_static_files(c)
 
 
-
 print("\n", "restart uwsgi service", "\n")
-c.run(f"supervisorctl restart all", target_spec="remote")
+c.run("supervisorctl restart all", target_spec="remote")
 
 
 print(final_msg)
