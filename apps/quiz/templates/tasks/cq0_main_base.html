@@ -1,3 +1,5 @@
+{% load static %}
+
 <!--cq0_main_base.html -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
@@ -15,7 +17,7 @@
     <title>Code Quiz</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    {% load static %}
+
 {% if SETTINGS_DEVMODE %}
     <link rel="shortcut icon" href="{% static 'favicon_dev.ico' %}" />
 {% else %}
@@ -30,8 +32,8 @@
     <script type="text/javascript" src="{{ STATIC_URL }}jquery/jquery-ui-1.10.3.custom.min.js"></script>
 
     {# part of django-generic-ratings http://django-generic-ratings.readthedocs.org#}
-    <script type="text/javascript" src="{{ STATIC_URL }}jquery-rating/jquery.metadata.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}ratings/js/ratings.js"></script>
+<!--     <script type="text/javascript" src="{{ STATIC_URL }}jquery-rating/jquery.metadata.js"></script> -->
+<!--     <script type="text/javascript" src="{{ STATIC_URL }}ratings/js/ratings.js"></script> -->
 
     {# part of jquery star rating plugin http://www.fyneworks.com/jquery/star-rating/ #}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}jquery-rating/jquery.rating.css"/>

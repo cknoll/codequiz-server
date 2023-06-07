@@ -1,17 +1,18 @@
-<!-- ==> start: task_collection.html -->
+{% extends "tasks/cq0_main_base.html" %}
+
 {% load static %}
 
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/style2.css?{% now "U" %}"/>
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/tabular_style.css"/>
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}font-awesome/css/font-awesome.min.css"/>
+{% block main_left %}
+<!-- ==> start: task_collection.html -->
 
-
-<div class="centered" style="width:400px">
-    <h1>Test: {{ tc.title }}</h1>
+<div class="general_content">
+    <h1>Task collection: <i>{{ tc.title }}</i></h1>
 
     <div class="small">
-        Author: {{ tc.author }}<br>
+        Author: {{ tc.author }}, 
         ID: {{ tc.id }}
+        <br>
+        <br>
     </div>
 
     {% if task_list %}
@@ -41,3 +42,16 @@
     {% endif %}
 </div>
 <!-- ==> end: task_collection.html -->
+{% endblock  %}
+
+
+{% block main_right %}
+
+<!-- no right collumn in task collection overview -->
+{% endblock  %}
+
+
+
+{% block progress %}
+<!-- no progress bar in task collection overview -->
+{% endblock  %}
