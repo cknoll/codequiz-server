@@ -13,6 +13,11 @@ class TC_MembershipInline(admin.TabularInline):
     model = TC_Membership
     extra = 1
     ordering = ("ordering",)
+    fields = ("task", "title", "ordering")
+    readonly_fields = ("title",)
+
+    def title(self, obj):
+        return str(obj.task.title)
 
 
 class TaskAdminForm(forms.ModelForm):
