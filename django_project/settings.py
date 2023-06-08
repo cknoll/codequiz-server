@@ -88,6 +88,7 @@ DEFAULT_APPS = [
     'taggit',
     'taggit_autosuggest',
     'django_mathjax',
+    'adminsortable2',
 ]
 
 # ##### APPLICATION CONFIGURATION #########################

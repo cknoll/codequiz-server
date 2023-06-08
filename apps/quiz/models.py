@@ -82,7 +82,15 @@ class TC_Membership(models.Model):
     id = models.AutoField(primary_key=True)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     group = models.ForeignKey(TaskCollection, on_delete=models.CASCADE)
-    ordering = models.PositiveIntegerField()
+
+    ordering = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+    )
+
+    class Meta:
+        ordering = ["ordering"]
 
 
 # TODO: remove obsolete code (rating plugin was removed 2017-08-12 14:18:19)

@@ -5,12 +5,27 @@ from django import forms
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
+from adminsortable2.admin import SortableInlineAdminMixin, SortableAdminBase
+
 from builder import BuilderTextArea
 from quiz.models import Task, TaskCollection, TC_Membership, QuizResult
 
 
 class TC_MembershipInline(admin.TabularInline):
+    """
+    Helper class to represent one or a few TC_Memberships for each Task
+    """
     model = TC_Membership
+    extra = 1
+
+
+class TC_MembershipSortableInline(SortableInlineAdminMixin, admin.TabularInline):
+    """
+    Helper class to represent many TC_Memberships for each TaskCollection.
+    → This results in a widget which supports drag and drop for sorting.
+    """
+    model = TaskCollection.tasks.through
+
     extra = 1
     ordering = ("ordering",)
     fields = ("task", "title", "ordering")
@@ -34,13 +49,16 @@ class TaskAdminForm(forms.ModelForm):
         }
 
 
-class TaskAdmin(admin.ModelAdmin):
+@admin.register(Task)
+class TaskAdmin(SortableAdminBase, admin.ModelAdmin):
     """
     Setup for a nicer Task admin interface
 
     includes a filter by author, more meta data in the list view, hides unnecessary fields,
     replaces the text field element with a sophisticated code editor
     """
+
+    inlines = (TC_MembershipInline,)
 
     def direct_link(self, obj):
         url = reverse('quiz_ns:explicit_task_view', kwargs={'task_id': obj.id})
@@ -54,7 +72,6 @@ class TaskAdmin(admin.ModelAdmin):
     list_display_links = ['title']
     search_fields = ['title']
     date_hierarchy = 'pub_date'
-    inlines = (TC_MembershipInline,)
     list_filter = ['author']
 
     fieldsets = [
@@ -87,12 +104,17 @@ class TaskAdmin(admin.ModelAdmin):
         task.save()
 
 
+
+@admin.register(QuizResult)
 class QuizResultAdmin(admin.ModelAdmin):
     list_display = ['date', 'hash']
     list_display_links = ['date', 'hash']
 
 
-class TaskCollectionAdmin(admin.ModelAdmin):
+@admin.register(TaskCollection)
+class TaskCollectionAdmin(SortableAdminBase, admin.ModelAdmin):
+
+    inlines = (TC_MembershipSortableInline,)
 
     def direct_link(self, obj):
         url = reverse('quiz_ns:task_collection_view', kwargs={'tc_id': obj.id})
@@ -107,7 +129,6 @@ class TaskCollectionAdmin(admin.ModelAdmin):
     search_fields = ['title']
     list_filter = ['author']
 
-    inlines = (TC_MembershipInline,)
     exclude = ('tasks',)
 
     fieldsets = [
@@ -135,15 +156,3 @@ class TaskCollectionAdmin(admin.ModelAdmin):
 
             collection.author = name
         collection.save()
-
-    class Media:
-        js = (
-            "jquery/jquery-1.10.2.min.js",
-            "jquery/jquery-ui-1.10.3.custom.min.js",
-            "tasks/sortable-inline-admin.js",
-        )
-
-
-admin.site.register(Task, TaskAdmin)
-admin.site.register(TaskCollection, TaskCollectionAdmin)
-admin.site.register(QuizResult, QuizResultAdmin)
