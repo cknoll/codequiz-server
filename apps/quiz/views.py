@@ -450,7 +450,7 @@ def tc_run_view(request):
 
 def task_collection_view(request, tc_id):
     tc = get_object_or_404(TaskCollection, pk=tc_id)
-    tasks = tc.tasks.iterator()
+    tasks = tc.ordered_tasks()
 
     # temporary hack to reset quiz progress
     if "tc_task_id" in request.session:
