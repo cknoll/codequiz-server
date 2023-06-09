@@ -5,10 +5,11 @@ from django.contrib.admin.views.decorators import staff_member_required
 from datetime import datetime
 import hashlib
 
-from IPython import embed as IPS
-
 from aux import json_lib
 from quiz.models import Task, TaskCollection, QuizResult
+
+# for debugging only:
+from ipydex import IPS
 
 """
 Some general notes:
