@@ -3,9 +3,11 @@ from django.test.client import Client
 
 from IPython import embed as IPS
 
+# run these tests e.g. with `pytest -s --disable-warnings`
+# (currently there are some deprecation warnings with lower priority)
 
 class URLTest(TestCase):
-    #fixtures = ['testdata.json']
+    fixtures = ['real_quiz_data.json']
 
     @classmethod
     def setUp(self):
@@ -33,6 +35,6 @@ class URLTest(TestCase):
         response = self.client.get('/quiz/result/1/')
         self.assertEqual(response.status_code, 404)
 
-    def ztest_explicit_by_task_id(self):
+    def test_explicit_by_task_id(self):
         response = self.client.get('/quiz/explicit/12/')
         self.assertEqual(response.status_code, 200)
