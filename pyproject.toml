@@ -1,0 +1,4 @@
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "django_project.settings"
+# -- recommended but optional:
+python_files = ["test_*.py"]
