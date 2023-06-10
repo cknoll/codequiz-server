@@ -1,9 +1,10 @@
-<!-- ==> start: tc_run_final.html -->
+{% extends "tasks/cq0_main_base.html" %}
 {% load static %}
 
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/style2.css?{% now "U" %}"/>
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}font-awesome/css/font-awesome.min.css"/>
 
+
+{% block main_left %}
+<!-- ==> start: tc_run_final.html (main block)-->
 <div class="centered " style="width:500px">
     <h1><i class="fa fa-flag-checkered fa-4x"></i>Congratulations!</h1>
     <p>You completed the test: "{{ tc.title }}" with {{ tc.number_of_tasks }} tasks.</p>
@@ -14,3 +15,4 @@
 </div>
 
 <!-- ==> end: tc_run_final.html -->
+{% endblock %}

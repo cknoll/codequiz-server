@@ -951,13 +951,22 @@
     "model" : "quiz.tc_membership",
     "pk" : 32
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 7,
         "ordering" : 50,
         "task" : 44
       },
     "model" : "quiz.tc_membership",
     "pk" : 33
+  },
+  { 
+    "fields" : { 
+        "group" : 2,
+        "ordering" : 1,
+        "task" : 23
+      },
+    "model" : "quiz.tc_membership",
+    "pk" : 34
   }
 ]

@@ -198,6 +198,10 @@ def get_task_to_process(post_dict):
 
 def template_debug(request):
 
+    if 1:
+        return tc_run_final_view(request, tc_id=2, debug=True)
+
+    # fallback
     context_dict = dict()
     return render(request, 'tasks/debug/db_cq0_main_base.html', context_dict)
 
@@ -342,20 +346,33 @@ def tc_run_form_process(request, tc_id, tc_task_id):
         return redirect('quiz_ns:index', )
 
 
-def tc_run_final_view(request, tc_id):
+def tc_run_final_view(request, tc_id, debug=None):
     tc = get_object_or_404(TaskCollection, pk=tc_id)
+
+    if debug:
+        request.session.update(
+            {
+                'meta_tc_id': '2',
+                'tc_id': 2,
+                'tc_task_id': 0
+
+            }
+        )
 
     response = HttpResponse()
 
+    # TODO: better error handling
     if "tc_task_id" not in request.session:
         response.write("<p>You haven't even started the quiz yet.</p>")
         return response
 
+    # TODO: better error handling
     if "tc_id" in request.session:
         if int(tc_id) != request.session["tc_id"]:
             response.write("<p>You can't switch task collections on your own.</p>")
             return response
 
+    # TODO: better error handling
     tc_task_id = request.session["tc_task_id"]
     if tc_task_id < tc.number_of_tasks() - 1:
         response.write("<p>You're not done with the quiz yet.</p>")
@@ -365,6 +382,8 @@ def tc_run_final_view(request, tc_id):
     if "log" in request.session:
         log = request.session["log"]
     log += "Show final page."
+
+    # IPS()
 
     request.session.clear()
 
