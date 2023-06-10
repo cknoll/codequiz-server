@@ -1,12 +1,16 @@
 from django.test import TestCase  # super important to load TestCase like this! fixtures won't load otherwise
 from django.test.client import Client
 from bs4 import BeautifulSoup
+from django.conf import settings
 
 # for debugging only:
 from ipydex import IPS
 
 # run these tests e.g. with `pytest -s --disable-warnings`
 # (currently there are some deprecation warnings with lower priority)
+
+settings.TESTMODE = True
+settings.TESTMODE = False
 
 
 class FollowRedirectMixin:
@@ -21,6 +25,7 @@ class FollowRedirectMixin:
 
 class TestCore1(TestCase, FollowRedirectMixin):
     fixtures = ['real_quiz_data.json']
+    # fixtures = ["2023-06-10__12-19-22_codequiz_backup_all_DEV.json"]
 
     @classmethod
     def setUp(self):
@@ -48,16 +53,28 @@ class TestCore1(TestCase, FollowRedirectMixin):
         self.assertEqual(response.status_code, 200)
 
     def test_run_tc(self):
-        response = self.follow_redirects('/quiz/test/1')
-        self.assertEqual(response.status_code, 200)
 
-        form = get_first_form(response)
+        # get overview page
+        rpns = self.follow_redirects('/quiz/test/2')
+        self.assertEqual(rpns.status_code, 200)
+
+        form = get_first_form(rpns)
 
         form_values = {"button_next": [""]}
         post_data = generate_post_data_for_form(form, spec_values=form_values)
 
-        response2 = self.client.post(form.action_url, post_data)
-        self.assertEqual(response2.status_code, 200)
+        # click on "Start Task Collection"
+        rpns = self.client.post(form.action_url, post_data)
+        self.assertEqual(rpns.status_code, 200)
+
+        form = get_first_form(rpns)
+        form_values = {"button_result": ["Result"]}
+        post_data = generate_post_data_for_form(form, spec_values=form_values)
+        rpns3 = self.client.post(form.action_url, post_data)
+
+        result_tracker = self.client.session["result_tracker"]
+
+        # IPS()
 
 
 # ----

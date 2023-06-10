@@ -1,5 +1,6 @@
 from django.http import HttpResponse, Http404, HttpResponseForbidden, FileResponse
 from django.template import loader
+from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from datetime import datetime
@@ -40,7 +41,11 @@ class NotAllowedResponse(HttpResponseForbidden):
             self.content = content
 
 
-def render_segment(segment, user_sol_list=None, tc=None):
+def evaluate_and_render_segment(segment, user_sol_list=None, tc=None):
+    """
+
+    :returns:   result ∈ (True, False, None), rendered segment (html string)
+    """
     template = loader.get_template(segment.template)
     print_solution = False
     print_feedback = False
@@ -57,9 +62,13 @@ def render_segment(segment, user_sol_list=None, tc=None):
         segment.context.update({'print_feedback': print_feedback})
         segment.context.update({'print_solution': print_solution})
 
-        segment.update_user_solution(user_sol_list)
+        result = segment.update_user_solution(user_sol_list)
+        if isinstance(segment, json_lib.QuestionSegment):
+            assert result in (True, False)
+    else:
+        result = None
 
-    return template.render(segment.context)
+    return result, template.render(segment.context)
 
 
 def simple(request, **kwargs):
@@ -121,7 +130,7 @@ def debug_url_landing(request):
     p['meta_no_form'] = True  # indicate that this data is "pseudo"
     request.POST = p
 
-    return debug_task_process(request)
+    return render_task(request)
 
 
 def explicit_task_view(request, task_id):
@@ -136,7 +145,7 @@ def explicit_task_view(request, task_id):
     p['meta_no_form'] = True  # indicate that this data is "pseudo"
     request.POST = p
 
-    return debug_task_process(request)
+    return render_task(request)
 
 
 def get_taskcollection_from_post_dict(post_dict):
@@ -205,11 +214,8 @@ def template_debug(request):
     context_dict = dict()
     return render(request, 'tasks/debug/db_cq0_main_base.html', context_dict)
 
-## This is the main function responsible for processing one task
-# TODO: should be renamed
-def debug_task_process(request):
+def render_task(request):
     """
-    # currently this docstring describes the situation we want
 
     This function is the main entry point for rendering a task
     all relevant data (task_id, tc_task_id etc) is obtained via request.POST
@@ -223,14 +229,14 @@ def debug_task_process(request):
     task = get_task_to_process(post)
     tc = get_taskcollection_from_post_dict(post)
 
-    main_block = debug_main_block_object(request, task)
+    main_block = process_main_block_object(request, task)
 
     context_dict = dict(main_block=main_block, task=task, tc=tc)
 
     return render(request, 'tasks/cq0_main_simple.html', context_dict)
 
 
-def debug_main_block_object(request, task):
+def process_main_block_object(request, task):
     """
     :param request:
     :param task: which task to insert
@@ -277,10 +283,18 @@ def debug_main_block_object(request, task):
         button_list.append("result")  # this only occurs in explicit mode
 
     button_strings = aux_task_button_strings(button_list)
-    html_strings = [render_segment(segment, user_solution, tc) for segment in
-                    filter_segment_list(segment_list, tc, task.solution_flag)]
 
-    res = myContainer(task=task, button_strings=button_strings, html_strings=html_strings)
+    html_strings = []
+    result_list = []
+    for segment in filter_segment_list(segment_list, tc, task.solution_flag):
+        result, html_str = evaluate_and_render_segment(segment, user_solution, tc)
+        result_list.append(result)
+        html_strings.append(html_str)
+
+    res = myContainer(
+        task=task, button_strings=button_strings, html_strings=html_strings, result_list=result_list
+    )
+    IPS(settings.TESTMODE)
 
     res.debug_flag = True
     res.tc_id = ""
@@ -383,7 +397,9 @@ def tc_run_final_view(request, tc_id, debug=None):
         log = request.session["log"]
     log += "Show final page."
 
-    # IPS()
+    result_tracker = request.session.get("result_tracker", {})
+
+    IPS(settings.TESTMODE)
 
     request.session.clear()
 
@@ -456,14 +472,20 @@ def tc_run_view(request):
     )
     request.session["log"] = log
 
-    main_block = debug_main_block_object(request, task)
+    result_tracker = request.session.get("result_tracker", {})
+
+    main_block = process_main_block_object(request, task)
     main_block.tc_run_flag = True  # trigger the correct url in the template
     main_block.tc_id = tc_id
     main_block.tc_task_id = tc_task_id
 
+    request.session["result_tracker"] = result_tracker
+
     tc = None if not tc_id else get_object_or_404(TaskCollection, pk=tc_id)
 
     context_dict = dict(main_block=main_block, task=task, tc=tc)
+
+    IPS(settings.TESTMODE)
 
     return render(request, 'tasks/cq0_main_simple.html', context_dict)
 
@@ -495,7 +517,6 @@ def download_backup_fixtures(request):
     import io
     import time
     from . import auxiliary as auxi
-    from django.conf import settings
 
     data_bytes = auxi.make_backup()
     stream = io.BytesIO(data_bytes)

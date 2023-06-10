@@ -13,6 +13,9 @@ if env_devmode is None:
 else:
     DEVMODE = env_devmode.lower() == "true"
 
+# this will be overridden by unittests
+TESTMODE = False
+
 
 
 cfg = du.get_nearest_config("config.ini", devmode=DEVMODE)

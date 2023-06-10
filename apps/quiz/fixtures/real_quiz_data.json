@@ -964,7 +964,7 @@
     "fields" : { 
         "group" : 2,
         "ordering" : 1,
-        "task" : 23
+        "task" : 45
       },
     "model" : "quiz.tc_membership",
     "pk" : 34

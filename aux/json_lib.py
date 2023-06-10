@@ -3,8 +3,9 @@
 import json
 import shlex
 import re
+from django.conf import settings
 
-from IPython import embed as IPS
+from ipydex import IPS
 from functools import reduce
 
 """
@@ -265,7 +266,9 @@ class Segment(object):
 
     def update_user_solution(self, *args, **kwargs):
         """Override in subclasses!"""
-        pass
+
+        # in the general Segment case (not QuestionSegment) there is no solution
+        return None
 
 
 class Text(Segment):
@@ -344,6 +347,8 @@ class QuestionSegment(Segment):
         """
         This function decides whether the users answer was correct and
         sets the respective attributes (css_class, printed_solution)
+
+        :returns:       True for correct solution, False for incorrect solution
         """
 
         # get the matching solution for this segment
@@ -359,10 +364,14 @@ class QuestionSegment(Segment):
         if self.user_was_correct:
             self.context['css_class'] = "sol_right"
             self.context['printed_solution'] = "OK"
+            result = True
         else:
             self.context['css_class'] = "sol_wrong"
             self.context['printed_solution'] = \
                 self.solution.get_printed_solution()
+            result = False
+
+        return result
 
 
 class GapText(QuestionSegment):
@@ -443,7 +452,7 @@ class GapText(QuestionSegment):
 
     def update_user_solution(self, sol_dict):
         """
-        This function decides whether the users answer was correct and
+        This GapText-specific method decides whether the users answer was correct and
         sets the respective attributes (css_class, printed_solution)
 
         special version for gap-fill-text
@@ -541,6 +550,8 @@ def preprocess_task_from_db(task):
         print("\n"*3)
         task.segment_list.append( make_segment(segment_dict, idx) )
     task.solution_flag = False
+
+    IPS(settings.TESTMODE)
 
     return None
 
