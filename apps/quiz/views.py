@@ -479,6 +479,7 @@ def tc_run_view(request):
     main_block.tc_id = tc_id
     main_block.tc_task_id = tc_task_id
 
+    _track_result(task, main_block.result_list, target_dict=result_tracker)
     request.session["result_tracker"] = result_tracker
 
     tc = None if not tc_id else get_object_or_404(TaskCollection, pk=tc_id)
@@ -488,6 +489,21 @@ def tc_run_view(request):
     IPS(settings.TESTMODE)
 
     return render(request, 'tasks/cq0_main_simple.html', context_dict)
+
+
+def _track_result(task, result_list, target_dict):
+
+    if not task.solution_flag:
+        res = {}
+    else:
+        filtered_result_list = [res for res in result_list if res in (True, False)]
+
+        length = len(filtered_result_list)
+        true_share = filtered_result_list.count(True)/length
+
+        res = {task.id: true_share}
+
+    target_dict.update(res)
 
 
 def task_collection_view(request, tc_id):
