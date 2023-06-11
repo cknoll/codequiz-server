@@ -38,6 +38,7 @@ class QuizResult(models.Model):
     date = models.DateTimeField()
     hash = models.CharField(max_length=128)
     log = models.TextField()
+    result_data = models.TextField(null=True)
 
 
 class TaskCollection(TaggedModel):

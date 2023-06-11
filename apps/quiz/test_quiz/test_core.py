@@ -25,7 +25,6 @@ class FollowRedirectMixin:
 
 class TestCore1(TestCase, FollowRedirectMixin):
     fixtures = ['real_quiz_data.json']
-    # fixtures = ["2023-06-10__12-19-22_codequiz_backup_all_DEV.json"]
 
     @classmethod
     def setUp(self):
@@ -70,11 +69,17 @@ class TestCore1(TestCase, FollowRedirectMixin):
         form = get_first_form(rpns)
         form_values = {"button_result": ["Result"]}
         post_data = generate_post_data_for_form(form, spec_values=form_values)
-        rpns3 = self.client.post(form.action_url, post_data)
+        rpns = self.client.post(form.action_url, post_data)
+
+        # finalize
+        form = get_first_form(rpns)
+        form_values = {"button_next": ["Next"]}
+        post_data = generate_post_data_for_form(form, spec_values=form_values)
+        rpns4 = self.client.post(form.action_url, post_data)
 
         result_tracker = self.client.session["result_tracker"]
 
-        # IPS()
+        IPS()
 
 
 # ----

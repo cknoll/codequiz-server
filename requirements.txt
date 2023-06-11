@@ -2,3 +2,4 @@ django-taggit-autosuggest
 django-mathjax @ git+https://github.com/tbabej/django-mathjax@fdc70dd5a7f06a71da2eee1e8e713a16796df5d7
 demjson3
 django-admin-sortable2
+cryptography

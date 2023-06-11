@@ -1,3 +1,7 @@
+import json
+import base64
+import time
+
 from django.http import HttpResponse, Http404, HttpResponseForbidden, FileResponse
 from django.template import loader
 from django.conf import settings
@@ -5,6 +9,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from datetime import datetime
 import hashlib
+from cryptography.fernet import Fernet
+
 
 from aux import json_lib
 from quiz.models import Task, TaskCollection, QuizResult
@@ -398,10 +404,12 @@ def tc_run_final_view(request, tc_id, debug=None):
     log += "Show final page."
 
     result_tracker = request.session.get("result_tracker", {})
+    _finalize_result_tracker(result_tracker)
+    request.session["result_tracker"] = result_tracker
 
     IPS(settings.TESTMODE)
 
-    request.session.clear()
+    # request.session.clear()
 
     current_date = datetime.now()
     date_iso8601 = current_date.isoformat(" ")
@@ -411,12 +419,74 @@ def tc_run_final_view(request, tc_id, debug=None):
     quiz_result.date = current_date
     quiz_result.hash = hash_string
     quiz_result.log = log
+    quiz_result.result_data = json.dumps(result_tracker).encode("utf8")
+    quiz_result.save()
+
+    result_data = _generate_result_data(result_tracker)
     quiz_result.save()
 
     context_dict = dict(tc=tc)
     context_dict["hash"] = hash_string
+    context_dict["result_data"] = result_data
 
     return render(request, 'tasks/tc_run_final.html', context_dict)
+
+
+def _finalize_result_tracker(result_tracker):
+
+    overall_res = 0
+    tasks = 0
+    for key, value in result_tracker.items():
+        try:
+            k = int(key)
+        except ValueError:
+            # if a key is not an stringified integer
+            continue
+        overall_res += value
+        tasks += 1
+
+    result_tracker["total"] = overall_res/tasks
+
+
+def _generate_result_data(result_tracker, colwidth=60):
+    """
+    :param result_tracker:    dict
+    :param colwidth:          columnwidth of the resulting string
+
+    convert the result_tracker dict into an encrypted base64 str.
+    """
+
+    assert isinstance(result_tracker, dict)
+    assert isinstance(colwidth, int) and 0 < colwidth
+
+    enc_key = b'0Tp5Lz9q-z4e6CjAj_9Xn2wpnfMOUfUoFIE2H-K1tso='
+
+    json_bytes = json.dumps(result_tracker).encode("utf8")
+    crypter = Fernet(enc_key)
+    c_bytes = crypter.encrypt(json_bytes)
+
+    meta_data = {
+        "ts": time.strftime(r"%Y-%m-%d %H:%M:%S"),
+        "txt": base64.b64decode(
+            b"SWYgeW91IHJlYWQgdGhpcywgeW91IHNob3VsZCBjb25zaWRlciBjb250cmlidXRpbmcgdG8gdGh"
+            b"lIHByb2plY3QgKGFuZCBub3QgdHJ5aW5nIHRvIG1hbmlwdWxhdGUgcmVzdWx0cyA7KSku"
+        ).decode("utf8")
+    }
+
+    meta_data_bytes = base64.b64encode(json.dumps(meta_data).encode("utf8"))
+
+    SEP = b"----"
+    all_bytes = meta_data_bytes + SEP + c_bytes
+
+    blocks = []
+    i = 0
+    while i*colwidth < len(all_bytes):
+
+        blocks.append(all_bytes[i*colwidth:(i+1)*colwidth])
+        i += 1
+
+    res = b"\n".join(blocks).decode("utf8")
+    return res
 
 
 def compute_hash(string, date):
