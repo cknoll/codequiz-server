@@ -404,8 +404,10 @@ def tc_run_final_view(request, tc_id, debug=None):
     log += "Show final page."
 
     result_tracker = request.session.get("result_tracker", {})
-    _finalize_result_tracker(result_tracker)
+    _finalize_result_tracker(result_tracker, tc)
     request.session["result_tracker"] = result_tracker
+
+    percentage = round(result_tracker["total"] *100)
 
     IPS(settings.TESTMODE)
 
@@ -428,11 +430,15 @@ def tc_run_final_view(request, tc_id, debug=None):
     context_dict = dict(tc=tc)
     context_dict["hash"] = hash_string
     context_dict["result_data"] = result_data
+    context_dict["percentage"] = percentage
+
+    # this is for unit_testing
+    request.session["result_data"] = result_data
 
     return render(request, 'tasks/tc_run_final.html', context_dict)
 
 
-def _finalize_result_tracker(result_tracker):
+def _finalize_result_tracker(result_tracker, tc):
 
     overall_res = 0
     tasks = 0
@@ -445,6 +451,7 @@ def _finalize_result_tracker(result_tracker):
         overall_res += value
         tasks += 1
 
+    result_tracker["tc"] = (tc.id, tc.title)
     result_tracker["total"] = overall_res/tasks
 
 
@@ -459,7 +466,7 @@ def _generate_result_data(result_tracker, colwidth=60):
     assert isinstance(result_tracker, dict)
     assert isinstance(colwidth, int) and 0 < colwidth
 
-    enc_key = b'0Tp5Lz9q-z4e6CjAj_9Xn2wpnfMOUfUoFIE2H-K1tso='
+    enc_key = settings.ENCRYPTION_KEY
 
     json_bytes = json.dumps(result_tracker).encode("utf8")
     crypter = Fernet(enc_key)

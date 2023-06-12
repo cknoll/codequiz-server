@@ -20,6 +20,12 @@ img {
     margin-right: auto;
     margin-bottom: 2em;
 }
+.result_data {
+
+    font-family: "monospace";
+    padding: 1em;
+    background-color: #EEE;
+}
 
 .general_content {
     margin-bottom: 2em;

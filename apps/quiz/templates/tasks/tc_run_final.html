@@ -6,12 +6,15 @@
 {% block main_left %}
 <!-- ==> start: tc_run_final.html (main block)-->
 <div class="centered " style="width:500px">
-    <h1><i class="fa fa-flag-checkered fa-4x"></i>Congratulations!</h1>
-    <p>You completed the test: "{{ tc.title }}" with {{ tc.number_of_tasks }} tasks.</p>
-    <p>To prove that you've completed it, show this receipt to your tutor:</p>
-    <p style="font-size: 18pt">{{ hash }}</p>
+    <h1>Test finished!</h1>
+    <p>You completed the test "{{ tc.title }}" with {{ tc.number_of_tasks }} tasks.</p>
+    <p>You achieved <b>{{ percentage }}&#37;</b> of possible scores. <br>The following string encodes your detailed test result:<br></p>
 
-    <p>In further versions of this web application you will see some information about your results here.</p>
+    <div class="result_data">
+    {{ result_data }}
+    </div>
+
+
 </div>
 
 <!-- ==> end: tc_run_final.html -->
