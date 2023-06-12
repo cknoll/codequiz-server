@@ -576,7 +576,11 @@ def _track_result(task, result_list, target_dict):
         filtered_result_list = [res for res in result_list if res in (True, False)]
 
         length = len(filtered_result_list)
-        true_share = filtered_result_list.count(True)/length
+        if length == 0:
+            # there is nothing to solve here. this might occurr for informational "tasks"
+            true_share = 1
+        else:
+            true_share = filtered_result_list.count(True)/length
 
         res = {task.id: true_share}
 
