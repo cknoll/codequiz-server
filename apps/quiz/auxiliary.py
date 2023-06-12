@@ -60,10 +60,8 @@ def insert_settings_context_preprocessor(request):
 
     # select some settings which should be availabe in all templates
 
-    keys = ["DEVMODE"]
+    keys = ["DEVMODE", "VERSION"]
 
     partial_context = { (f"SETTINGS_{k}", getattr(settings, k, None)) for k in keys }
-
-    print("called me")
 
     return partial_context
