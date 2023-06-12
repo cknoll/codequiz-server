@@ -295,11 +295,13 @@ def install_app(c):
 def initialize_db(c):
 
     c.chdir(target_deployment_path)
-    c.run("python manage.py makemigrations", target_spec="both")
 
-    # try to backup db before (re-)initialization
+    # try to backup db before (re-)initialization and changing database layout
     # print("\n", "backup old database", "\n")
     _ = c.run("python manage.py savefixtures --backup", warn=False)
+
+
+    c.run("python manage.py makemigrations", target_spec="both")
 
     # delete old db
     c.run("rm -f db.sqlite3", target_spec="both")
@@ -314,6 +316,8 @@ def initialize_db(c):
     c.run(cmd)
 
     # print("\n", "install initial data", "\n")
+
+    # TODO: implement option to load latest backup
     c.run(f"python manage.py loaddata {init_fixture_path}", target_spec="both")
 
 
