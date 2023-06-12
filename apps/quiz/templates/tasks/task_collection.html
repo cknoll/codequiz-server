@@ -20,7 +20,7 @@
         <div class="container" style="width: 100%">
             {% for task in task_list %}
                 <div class="row">
-                    <div class="linenumber">{{ forloop.counter }}.</div>
+                    <div class="linenumber">{{ forloop.counter }}.&nbsp;</div>
                     <div class="cell">{{ task.title }}</div>
                 </div>
             {% endfor %}
