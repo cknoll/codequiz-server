@@ -65,3 +65,19 @@ def insert_settings_context_preprocessor(request):
     partial_context = { (f"SETTINGS_{k}", getattr(settings, k, None)) for k in keys }
 
     return partial_context
+
+def decode_result_str(res_str):
+    """
+    convenience function to decode the result submitted result string
+    """
+    import json
+    from cryptography.fernet import Fernet
+    enc_key = settings.ENCRYPTION_KEY
+    crypter = Fernet(enc_key)
+
+    if isinstance(res_str, str):
+        res_str = res_str.encode("utf8")
+
+    json_bytes = crypter.decrypt(res_str.split(b"----")[1])
+
+    return json.loads(json_bytes)
