@@ -78,8 +78,17 @@ class TestCore1(TestCase, FollowRedirectMixin):
         rpns4 = self.client.post(form.action_url, post_data)
 
         result_tracker = self.client.session["result_tracker"]
+        result_data = self.client.session["result_data"]
 
-        IPS()
+        import json
+        from cryptography.fernet import Fernet
+        enc_key = settings.ENCRYPTION_KEY
+        crypter = Fernet(enc_key)
+
+        json_bytes = json.dumps(result_tracker).encode("utf8")
+
+        json_bytes2 = crypter.decrypt(result_data.split("----")[1])
+        self.assertEqual(json_bytes, json_bytes2)
 
 
 # ----
