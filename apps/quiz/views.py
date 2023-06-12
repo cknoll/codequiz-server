@@ -452,7 +452,11 @@ def _finalize_result_tracker(result_tracker, tc):
         tasks += 1
 
     result_tracker["tc"] = (tc.id, tc.title)
-    result_tracker["total"] = overall_res/tasks
+    if tasks > 0:
+        result_tracker["total"] = overall_res/tasks
+    else:
+        # there where no tasks with solutions
+        result_tracker["total"] = 0
 
 
 def _generate_result_data(result_tracker, colwidth=60):
@@ -578,7 +582,8 @@ def _track_result(task, result_list, target_dict):
         length = len(filtered_result_list)
         if length == 0:
             # there is nothing to solve here. this might occurr for informational "tasks"
-            true_share = 1
+            # do not change the dict
+            return
         else:
             true_share = filtered_result_list.count(True)/length
 
@@ -594,6 +599,9 @@ def task_collection_view(request, tc_id):
     # temporary hack to reset quiz progress
     if "tc_task_id" in request.session:
         del request.session["tc_task_id"]
+
+    # ensure that the result tracker is empty when starting a new task collection
+    request.session["result_tracker"] = {}
 
     log = ""
     if "log" in request.session:
