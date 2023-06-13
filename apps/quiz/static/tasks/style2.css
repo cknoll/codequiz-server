@@ -25,6 +25,9 @@ img {
     font-family: "monospace";
     padding: 1em;
     background-color: #EEE;
+    width: 60ch;
+    display: block;
+    overflow: hidden;
 }
 
 .general_content {
@@ -34,6 +37,32 @@ img {
 .small {
     font-size: small;
 }
+
+
+.copy_button {
+    color: red;
+    float: right;
+}
+.copy_button {
+
+  cursor: pointer;
+  vertical-align: top;
+  box-sizing: content-box;
+  flex-direction: row;
+  border: 1px solid rgba(22, 22, 117, 0.15);
+  background-color: rgb(43, 43, 46, 0.3);
+  display: flex;
+  -moz-box-align: center;
+  align-items: center;
+  -moz-box-pack: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  padding: 8px;
+  float: right;
+}
+
 
 .button {
     -moz-box-shadow: inset 0 1px 0 0 #fceaca;
