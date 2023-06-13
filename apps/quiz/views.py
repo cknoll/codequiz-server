@@ -407,10 +407,6 @@ def tc_run_final_view(request, tc_id, debug=None):
     _finalize_result_tracker(result_tracker, tc)
     request.session["result_tracker"] = result_tracker
 
-    percentage = round(result_tracker["total"] *100)
-
-    IPS(settings.TESTMODE)
-
     # request.session.clear()
 
     current_date = datetime.now()
@@ -430,7 +426,8 @@ def tc_run_final_view(request, tc_id, debug=None):
     context_dict = dict(tc=tc)
     context_dict["hash"] = hash_string
     context_dict["result_data"] = result_data
-    context_dict["percentage"] = percentage
+    context_dict["percentage"] = round(result_tracker["total"] *100)
+    context_dict["percentage_segments"] = round(result_tracker["total_segments"] *100)
 
     # this is for unit_testing
     request.session["result_data"] = result_data
@@ -440,7 +437,9 @@ def tc_run_final_view(request, tc_id, debug=None):
 
 def _finalize_result_tracker(result_tracker, tc):
 
-    overall_res = 0
+
+    overall_segment_res = 0
+    overall_task_res = 0
     tasks = 0
     for key, value in result_tracker.items():
         try:
@@ -448,15 +447,23 @@ def _finalize_result_tracker(result_tracker, tc):
         except ValueError:
             # if a key is not an stringified integer
             continue
-        overall_res += value
+
+        # value contains the fraction of correct answer-segments
+        # here we want to count only fully correct tasks
+        if value >= 1:
+            overall_task_res += 1
+
+        overall_segment_res += value
         tasks += 1
 
     result_tracker["tc"] = (tc.id, tc.title)
     if tasks > 0:
-        result_tracker["total"] = overall_res/tasks
+        result_tracker["total"] = overall_task_res/tasks
+        result_tracker["total_segments"] = overall_segment_res/tasks
     else:
         # there where no tasks with solutions
         result_tracker["total"] = 0
+        result_tracker["total_segments"] = 0
 
 
 def _generate_result_data(result_tracker, colwidth=60):
