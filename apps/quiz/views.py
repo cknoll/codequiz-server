@@ -479,22 +479,15 @@ def _generate_result_data(result_tracker, colwidth=60):
 
     enc_key = settings.ENCRYPTION_KEY
 
-    json_bytes = json.dumps(result_tracker).encode("utf8")
+    # only store the most important keys in the encrypted string
+    dump_data = dict( (k, v) for k, v in result_tracker.items() if k in ["tc", "total", "total_segments"])
+    dump_data["ts"]= time.strftime(r"%Y-%m-%d %H:%M:%S")
+
+    json_bytes = json.dumps(dump_data).encode("utf8")
     crypter = Fernet(enc_key)
     c_bytes = crypter.encrypt(json_bytes)
 
-    meta_data = {
-        "ts": time.strftime(r"%Y-%m-%d %H:%M:%S"),
-        "txt": base64.b64decode(
-            b"SWYgeW91IHJlYWQgdGhpcywgeW91IHNob3VsZCBjb25zaWRlciBjb250cmlidXRpbmcgdG8gdGh"
-            b"lIHByb2plY3QgKGFuZCBub3QgdHJ5aW5nIHRvIG1hbmlwdWxhdGUgcmVzdWx0cyA7KSku"
-        ).decode("utf8")
-    }
-
-    meta_data_bytes = base64.b64encode(json.dumps(meta_data).encode("utf8"))
-
-    SEP = b"----"
-    all_bytes = meta_data_bytes + SEP + c_bytes
+    all_bytes  = c_bytes
 
     blocks = []
     i = 0
