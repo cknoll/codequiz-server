@@ -1,3 +1,19 @@
+
+/* definition of variables */
+:root {
+
+    --color-code-background: #EEE;
+    --width-content: min(75vw, 60em);
+
+    /* not yet used */
+    --color-gray-dark-text: #333;
+    --color-footer-background: hsl(230, 20%, 95%);
+    --color-footer-text: hsl(00, 10%, 70%);
+
+
+}
+
+
 body {
     min-width: 960px;
     margin: 0 0 30px 0;
@@ -5,7 +21,17 @@ body {
     background: #FFF;
     font-size: 75%;
     font-family: "arial", "verdana", "tahoma", "georgia", "trebuchet ms",serif;
-    color: #666;
+    color: var(--color-gray-dark-text);
+}
+
+.fullheight {
+  min-height: 99vh;
+}
+
+footer {
+    padding: 1em;
+    background: var(--color-footer-background);
+    overflow: hidden;
 }
 
 img {
@@ -24,7 +50,7 @@ img {
 
     font-family: "monospace";
     padding: 1em;
-    background-color: #EEE;
+    background-color: var(--color-code-background);
     width: 60ch;
     display: block;
     overflow: hidden;
@@ -201,12 +227,13 @@ input[type="submit"]:hover {
 }
 
 pre {
-    background-color: #ffffcc;
+    background-color: var(--color-code-background);
     margin-top: 0;
     margin-bottom: 0;
     padding: 2px;
     font-size: 1em;
     line-height: 1em;
+    color: var(--color-gray-dark-text);
 }
 
 .source {
@@ -234,7 +261,7 @@ div.comment:before {
 }
 
 span.source {
-    background-color: #ffffcc;
+    background-color: var(--color-code-background);
     margin-top: 0;
     margin-bottom: 0;
     padding: 2px;
@@ -245,7 +272,7 @@ span.source {
 code, tt {
     font-size: 9pt;
     font-weight: bold;
-    background-color: #ffffcc;
+    background-color: var(--color-code-background);
 }
 
 textarea {
@@ -299,7 +326,7 @@ input.gap.gap_wrong {
 /* no glowing outline, when editing */
 input.gap:focus {
     outline: none;
-    background-color: #ffffcc;
+    background-color: var(--color-code-background);
 }
 
 i.sol_wrong {
