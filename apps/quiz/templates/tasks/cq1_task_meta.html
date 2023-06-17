@@ -1,14 +1,9 @@
-<!-- content of one single task  -->
+<!-- start of cq1_task_meta.html  -->
 
-{# javascripts required by SliderVoteForm #}
-
-<h2>Task-Meta-Infos</h2>
-
-<!--{ % load ratings_tags %}-->
-<!--{ % get_rating_form for task using 'difficulty' as rating_form_difficulty %}-->
-<!--{ % get_rating_form for task using 'quality' as rating_form_quality %}-->
-<!--{ % get_rating_score for task using 'difficulty' as score_difficulty %}-->
-<!--{ % get_rating_score for task using 'quality' as score_quality %}-->
+<details class="meta_data_details">
+<summary>
+<h2>Task-Meta-Data</h2>
+</summary>
 
 <div class="clear"></div>
 <div class="grid_1 alpha">Title:</div>
@@ -35,30 +30,6 @@
 
 <div class="clear"></div>
 
+</details>
 
-<!--{ % include "feedback/button.html" %}-->
-
-{# JS for updating the average ratings on the fly #}
-<script type="text/javascript" charset="utf-8">
-
-    $(document).ready(function () {
-        /**
-         * Dynamically updates the rating value and average after sending the vote
-         * (by clicking on the star rating widget)
-         * @param element which of the forms to hook up with the code
-         * @param target where to change the text
-         */
-        function updateRatingAverage(element, target) {
-            $('#' + element).on("vote_submit", function (event, data) {
-                score_average = data["score_average"];
-                score_num = data["score_num_votes"];
-                $('#' + target).text(score_average + "(" + score_num + ")");
-            });
-        };
-
-        updateRatingAverage("difficultyratingform", "score_difficulty");
-        updateRatingAverage("qualityratingform", "score_quality");
-    });
-
-</script>
 

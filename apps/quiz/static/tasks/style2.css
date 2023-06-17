@@ -28,6 +28,19 @@ body {
   min-height: 99vh;
 }
 
+
+.meta_data_details {
+
+    margin-top: 5em;
+
+}
+
+summary h2 {
+
+    color: red;
+    display: inline;
+}
+
 footer {
     padding: 1em;
     background: var(--color-footer-background);
@@ -356,6 +369,7 @@ pre.sol_wrong {
 #main_container {
     line-height: 160%;
     padding: 15px 0 0 0;
+    padding-bottom: 2em;
     border-bottom: 2px solid #F90;
 }
 
