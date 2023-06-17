@@ -23,8 +23,6 @@
 {% else %}
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
 {% endif %}
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/tabular_style.css?{% now "U" %}"/>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/1152_16_col.css?{% now "U" %}"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tasks/style2.css?{% now "U" %}"/>
 
     {# jQuery #}
@@ -49,7 +47,7 @@
 <body>
 
 
-<div class="container_16">
+<div class="container_all">
     <main class="fullheight">
         {% block header %}
             <div id="header_container">
@@ -73,7 +71,7 @@
 
         <div id="main_container">
             {% block main %}
-                <div class="grid_14" style="position: relative;">
+                <div class="grid_14">
                     {% block main_left %}
 
                         Main content
@@ -82,14 +80,12 @@
                 </div>
 
                 <!-- End of main_left -->
-                <div class="clear"></div>
 
                 <div class="grid_4">
                     {% block main_right %}
                         <!-- content of meta area -->
                     {% endblock %}
                 </div>
-                <div class="clear"></div>
 
 
                 <!-- End of main_right -->

@@ -1,9 +1,7 @@
-<!-- ==> start: txt.html -->
+        <!-- ==> start: txt.html -->
+        <div class="grid_col_1_3 {% if comment %} comment {% endif %}" style="padding: 0.5em 0px">
 
-<div class="grid_12 alpha omega {% if comment %} comment {% endif %}" style="padding: 0.5em 0px">
+            {{ text|safe }}
 
-    {{ text|safe }}
-
-</div>
-<div class="clear"></div>
-<!-- ==> end: txt.html -->
+        </div>
+        <!-- ==> end: txt.html -->

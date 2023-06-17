@@ -1,6 +1,7 @@
 <!-- content of one single task  -->
 
 <form action="{% url 'quiz_ns:tc_run_view' %}" method="post" autocomplete="off">
+<div class="task_grid">
 
 <!-- protect against cross site reference forgery -->
 {% csrf_token %}
@@ -11,19 +12,19 @@
 
 <h2><span class="color1">Task:</span> "{{ mb.task.title }}"</h2>
 
+{# the html strings are rendered by django and passed via the context #}
 {% for s in mb.html_strings %}
     {{ s|safe }}
-    {#        <div class="clear"></div>#}
 {% endfor %}
 
-<!-- Buttons: -->
-<span style="display: block; text-align: right; position: relative; bottom:0px; right:10px;">
+    <!-- Buttons: -->
+    <div style="display: block; text-align: right;" class="grid_col_s3">
         {% for bs in mb.button_strings %}
             {{ bs|safe }}
         {% endfor %}
-    </span>
+    </div>
 </form>
-
+</div> <!--  end of class=task_grid-->
 <script type="application/javascript" charset="utf-8">
     $(document).ready(function () {
         $('textarea.disablecopypaste').bind('copy paste', function (e) {

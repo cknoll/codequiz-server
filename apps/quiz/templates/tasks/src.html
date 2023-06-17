@@ -1,13 +1,11 @@
-<!-- ==> start: src.html -->
-
-<div class="grid_12 alpha omega" style="padding: 0.5em 0px">
-    {% if multiline %}
-        <pre class="source{% if comment %} comment {% endif %}">{{ text }}</pre>
-    {% else %}
-        <span class="source{% if comment %} comment {% endif %}">
-        {{ text }}
-    </span>
-    {% endif %}
-</div>
-<div class="clear"></div>
-<!-- ==> end: src.html -->
+        <!-- ==> start: src.html -->
+        <div class="grid_col_s1" style="padding: 0.5em 0px">
+            {% if multiline %}
+                <pre class="source{% if comment %} comment {% endif %}">{{ text }}</pre>
+            {% else %}
+                <span class="source{% if comment %} comment {% endif %}">
+                {{ text }}
+            </span>
+            {% endif %}
+        </div>
+        <!-- ==> end: src.html -->
