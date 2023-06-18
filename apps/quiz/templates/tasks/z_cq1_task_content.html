@@ -10,7 +10,9 @@
 <input type="hidden" name="meta_tc_id" value="{{ mb.tc_id }}">
 <input type="hidden" name="meta_tc_task_id" value="{{ mb.tc_task_id }}">
 
+<div class="grid_col_1_4">
 <h2><span class="color1">Task:</span> "{{ mb.task.title }}"</h2>
+</div>
 
 {# the html strings are rendered by django and passed via the context #}
 {% for s in mb.html_strings %}

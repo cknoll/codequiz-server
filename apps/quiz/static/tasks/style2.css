@@ -56,6 +56,11 @@ body {
     grid-column-end: 3; /* end column is exclusive*/
 }
 
+.grid_col_1_4 {
+    grid-column-start: 1;
+    grid-column-end: 4; /* end column is exclusive*/
+}
+
 /*this once was tabular_style.css*/
 div.table_container {
     display: table;
