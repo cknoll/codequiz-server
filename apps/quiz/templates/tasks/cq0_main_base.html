@@ -91,17 +91,17 @@
                 <!-- End of main_right -->
             {% endblock %}
         </div>
+        {% block progress %}
+            <div class="progressbar">
+                {% include "tasks/z_cq1_taskcollection_progress.html" %}
+            </div>
+        {% endblock %}
     </main>
     <footer>
         <div id="footer_container">
             <div id="footer_left">
                 <p><a title="back to top" href="#"><i class="fa fa-arrow-circle-up"></i> back to top</a></p>
             </div>
-            {% block progress %}
-                <div style="position: relative; top: 12px; left:25%; width: 50%">
-                    {% include "tasks/z_cq1_taskcollection_progress.html" %}
-                </div>
-            {% endblock %}
             <div id="footer_right">
                 {% if user.is_authenticated %}
                     <a href="/admin/logout">logout</a>

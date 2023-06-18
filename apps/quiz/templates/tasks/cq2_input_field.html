@@ -1,6 +1,6 @@
 <!-- ==> start: cq2_input_field.html -->
 
-<div class="grid_4 alpha">
+<div class="grid_col_s1">
     <div style="margin-left:-110px;text-align: right; width:100px; float: left">
         {{ question_counter }}.
     </div>
@@ -11,7 +11,7 @@
     {% endif %}
 </div>
 
-<div class="input_field grid_4{% if not print_feedback %} suffix_4 omega{% endif %}">
+<div class="">
     <textarea class="disablecopypaste {{ answer_class }}" style="width: 100%" name="answer_{{ idx }}" rows="{{ lines }}"
               autocomplete="off">{{ prefilled_text }}</textarea>
 </div>
@@ -28,6 +28,5 @@
     </div>
 {% endif %}
 
-<div class="clear"></div>
 
 <!-- ==> end: cq2_input_field.html -->

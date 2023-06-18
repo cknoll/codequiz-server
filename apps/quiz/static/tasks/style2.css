@@ -7,6 +7,7 @@
 
     /* not yet used */
     --color-gray-dark-text: #333;
+    --color-gray-medium-text: #999;
     --color-footer-background: hsl(230, 20%, 95%);
     --color-footer-text: hsl(00, 10%, 70%);
 
@@ -59,6 +60,16 @@ body {
 .grid_col_1_4 {
     grid-column-start: 1;
     grid-column-end: 4; /* end column is exclusive*/
+}
+
+.progressbar {
+/*
+ */
+ position: relative;
+ left:25%;
+ color: var(--color-gray-medium-text);
+/*  margin-left: auto; */
+/*  margin-right: auto; */
 }
 
 /*this once was tabular_style.css*/
@@ -462,7 +473,7 @@ pre.sol_wrong {
     float: left;
     height: 50px;
     width: 100%;
-    color: #999;
+    color: var(--color-gray-medium-text);
 }
 
 #footer_container p {
@@ -471,7 +482,7 @@ pre.sol_wrong {
 }
 
 #footer_container a {
-    color: #999;
+    color: var(--color-gray-medium-text);
     text-decoration: none;
 }
 
