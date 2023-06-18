@@ -56,6 +56,30 @@ body {
     grid-column-end: 3; /* end column is exclusive*/
 }
 
+/*this once was tabular_style.css*/
+div.table_container {
+    display: table;
+}
+
+div.row {
+    display: table-row;
+}
+
+div.cell {
+    display: table-cell;
+    padding-right: 0.5em;
+    padding-bottom: 5px;
+    vertical-align: top;
+/*     border: 1px solid red; */
+/*     text-align: left; */
+}
+
+div.cell p {
+    margin: 1px 1px;
+}
+
+/* end of tabular_style */
+
 
 
 .fullheight {
