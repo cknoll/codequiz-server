@@ -64,8 +64,13 @@ body {
 
 
 .meta_data_details {
-
     margin-top: 5em;
+
+}
+.meta_data_grid {
+    margin-top: 1em;
+    display: grid;
+    grid-template-columns: 15em 1fr;
 
 }
 

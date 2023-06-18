@@ -5,30 +5,33 @@
 <h2>Task-Meta-Data</h2>
 </summary>
 
-<div class="clear"></div>
-<div class="grid_1 alpha">Title:</div>
-<div class="grid_3 omega"> {{ task.title }} </div>
 
-<div class="grid_1 alpha">ID:</div>
-<div class="grid_3 omega"> {{ task.id }} </div>
+<div class="meta_data_grid">
 
-<div class="grid_1 alpha">Author:</div>
-<div class="grid_3 omega"> {{ task.author }} </div>
+<div class="grid_col_s1">Title:</div>
+<div class=""> {{ task.title }} </div>
 
-<div class="grid_1 alpha">Revision:</div>
-<div class="grid_3 omega"> {{ task.revision }} </div>
+<div class="grid_col_s1">ID:</div>
+<div class=""> {{ task.id }} </div>
+
+<div class="grid_col_s1">Author:</div>
+<div class=""> {{ task.author }} </div>
+
+<div class="grid_col_s1">Revision:</div>
+<div class=""> {{ task.revision }} </div>
 
 
 
+{% if task.tags_as_string %}
+<div class="grid_col_s1">Tags:</div>
+<div class=""> {{ task.tags_as_string }} </div>
+</div>
+{% endif %}
 
-<div class="grid_1 alpha">Tags:</div>
-<div class="grid_3 omega"> {{ task.tags_as_string }} </div>
-
-<div class="grid_4 alpha omega" style="margin-top: 10px">
+<div class="" style="margin-top: 10px">
     <i class="fa fa-pencil"></i> <a href="#" onclick="return false;" id="feedback_link">Send feedback for this task</a>
 </div>
 
-<div class="clear"></div>
 
 </details>
 
