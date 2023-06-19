@@ -29,7 +29,9 @@
 {% endif %}
 
 <div class="" style="margin-top: 10px">
-    <i class="fa fa-pencil"></i> <a href="#" onclick="return false;" id="feedback_link">Send feedback for this task</a>
+    <i class="fa fa-pencil"></i>
+<!--     <a href="#" onclick="return false;" id="feedback_link">Send feedback for this task</a> -->
+    <a href="{% url 'quiz_ns:about' %}" target="_blank" id="feedback_link">Send feedback for this task</a>
 </div>
 
 
