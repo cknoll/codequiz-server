@@ -323,7 +323,6 @@ pre {
     margin-top: 0;
     margin-bottom: 0;
     padding: 2px;
-    font-size: 1em;
     line-height: 1em;
     color: var(--color-gray-dark-text);
 }
@@ -338,9 +337,23 @@ pre {
 
 }
 
+/*  class for normal (i.e. non-source) text*/
+.normal_txt, .normal_subtask {
+    font-size: 1.2em;
+}
+
+.normal_subtask {
+    display: block;
+    border: 1px solid #aaa;
+    padding-left: 0.5em;
+
+}
+
 .source {
     border: 1px solid #aaa;
     font-family: Fixedsys, Courier, monospace;
+    font-size: 1.2em;
+    padding-left: 0.5em;
 }
 
 div.comment p {
@@ -372,9 +385,9 @@ span.source {
 }
 
 code, tt {
-    font-size: 11pt;
-    font-weight: bold;
+    font-size: 120%;
     background-color: var(--color-code-background);
+    padding: 0 0.2em;
 }
 
 textarea {
