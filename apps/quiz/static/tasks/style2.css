@@ -328,6 +328,16 @@ pre {
     color: var(--color-gray-dark-text);
 }
 
+
+.about_source {
+    padding: 10px;
+    border: 1px solid #aaa;
+    font-family: Fixedsys, Courier, monospace;
+    font-size: 1.2em;
+
+
+}
+
 .source {
     border: 1px solid #aaa;
     font-family: Fixedsys, Courier, monospace;
@@ -362,7 +372,7 @@ span.source {
 }
 
 code, tt {
-    font-size: 9pt;
+    font-size: 11pt;
     font-weight: bold;
     background-color: var(--color-code-background);
 }

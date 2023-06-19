@@ -1,22 +1,35 @@
-<div style="background-color:#ffffff; padding:1em; margin:1em; width:50%">
+<div style="width: max(50%, 50em)">
     <h2>About this project</h2>
 
-    <p style="font-size: 1.2em; text-align: justify; padding:10%">
-        CodeQuiz is a web platform for source code related quiz-tests. Currently it is used in
-        one specific course (Python for Engineers), held in two universities [1].
+    <span style="font-size: 1.2em;">
+        CodeQuiz is a web platform which supports source code related quiz-tests (e.g. with a
+        <span class="source code">code</span>-mode in tasks and some preprocessing to evaluate provided solutions).
+
+        It was originally developed in 2013 for the course
+        <i><a title="http://tu-dresden.de/pythonkurs" href="http://tu-dresden.de/pythonkurs">Python for Engineers</a></i>
+        held at TU Dresden.
+
+        Currently (2023) it is also used in the <i><a href="https://tu-dresden.de/ing/maschinenwesen/ifww/biomaterialien/forschung/korrosion-und-oberflaechen/summerschool?set_language=en">Online Summer School Python for Women Engineers</a></i>
         <br/>
         <br/>
         The web application is implemented in Python using the django framework.
         It is still under active development, as user comments reveal bugs and suggest features.
-        The project is open source and anybody is encouraged to use it and/or to contribute [2].
+        The project is open source and anybody is encouraged to use it and/or to contribute:
+        <a title="github" href="https://github.com/cknoll/codequiz-server">https://github.com/cknoll/codequiz-server</a>.
         <br/>
+        The content (i.e. tasks) was mainly contributed by <a href="https://chaos.social/@piko">piko</a>.
         <br/>
-        [1] <a title="http://tu-dresden.de/pythonkurs" href="http://tu-dresden.de/pythonkurs">http://tu-dresden.de/pythonkurs</a>
+
         <br/>
-        <br/>
-        [2] <a title="github" href="https://github.com/cknoll/codequiz-server">https://github.com/cknoll/codequiz-server</a>
-        <br/>
-        <br/>
-    </p>
+        Feedback w.r.t. the content can be reported via email to the maintainer:
+        <br>
+        <pre class="about_source code">
+mail = "firstname.lastname@tu-dresden.de"
+mail = mail.replace("firstname", "carsten")
+mail = .replace("lastname", "knoll")
+</pre>
+        <br>
+        To refer to a specific task the task-id is helpful (displayed in the section "Task-Meta-Data").
+    </span>
     <br/>
 </div>
