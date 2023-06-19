@@ -19,6 +19,11 @@
     {{ s|safe }}
 {% endfor %}
 
+{%if mb.html_strings %}
+<!-- add empty grid row to achieve consistent styling -->
+<div class="grid_col_s1">&nbsp;</div>
+{% endif %}
+
     <!-- Buttons: -->
     <div style="display: block; text-align: right;" class="grid_col_s3">
         {% for bs in mb.button_strings %}

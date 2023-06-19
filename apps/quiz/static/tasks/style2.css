@@ -4,12 +4,23 @@
 
     --color-code-background: #EEE;
     --width-content: min(75vw, 60em);
+    --row-bg-even: hsl(00, 00%, 92%);
+    --row-bg-odd: hsl(00, 00%, 97%);
+
+    --color-sol-wrong-fg: hsl(0, 20%, 100%); /*#941214, #500*/
+    --color-sol-wrong-bg: hsl(0, 70%, 50%); /* #c65543, #FAA*/
+    --color-sol-wrong-border: #500; /**/
+
+    --color-sol-right-fg:  hsl(120, 99%, 10%); /*#33a821, #050*/
+    --color-sol-right-bg: hsl(120, 70%, 60%); /*#9dff7c, #AFA*/
+    --color-sol-right-border: #050; /*#21781e*/
 
     /* not yet used */
     --color-gray-dark-text: #333;
     --color-gray-medium-text: #999;
     --color-footer-background: hsl(230, 20%, 95%);
     --color-footer-text: hsl(00, 10%, 70%);
+
 
 
 }
@@ -38,10 +49,22 @@ body {
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: 10px;
     row-gap: 5px;
+    column-gap: 15px;
 /*     background: #707; */
 }
 .task_grid > * {
 /*     background: #F0F; */
+}
+
+
+.row_mod2_True {
+    background: var(--row-bg-even);
+
+}
+
+.row_mod2_False {
+    background: var(--row-bg-odd);
+
 }
 
 
@@ -71,6 +94,16 @@ body {
 /*  margin-left: auto; */
 /*  margin-right: auto; */
 }
+
+.user_input_ta_parent {
+/*     background: black; */
+}
+.user_input_ta_parent  textarea {
+
+    width: calc(100% - 1em);
+    margin-right: 1em;
+}
+
 
 /*this once was tabular_style.css*/
 div.table_container {
@@ -104,7 +137,7 @@ div.cell p {
 
 
 .meta_data_details {
-    margin-top: 5em;
+    margin-top: 0em;
 
 }
 .meta_data_grid {
@@ -445,27 +478,33 @@ input.gap:focus {
 }
 
 i.sol_wrong {
-    color:#941214;
+    color: var(--color-sol-wrong-fg);
     font-size: 1.5em;
 }
 
 i.sol_right {
-    color: #33a821;
+    color: var(--color-sol-right-fg);
     font-size: 1.5em;
 }
 
 pre.sol_right {
-    border: 1px solid #21781e;
+    padding-left: 0.5em;
+    font-size: 1.2em;
+    font-weight: bold;
+    border: 1px solid var(--color-sol-right-border);
     font-family: Fixedsys, Courier, monospace;
-    color: black;
-    background-color: #9dff7c;
+    color: var(--color-sol-right-fg);;
+    background-color: var(--color-sol-right-bg);
 }
 
 pre.sol_wrong {
-    border: 1px solid #941214;
+    padding-left: 0.5em;
+    font-size: 1.2em;
+    font-weight: bold;
+    border: 1px solid var(--color-sol-wrong-border);
     font-family: Fixedsys, Courier, monospace;
-    color: white;
-    background-color: #c65543;
+    color: var(--color-sol-wrong-fg);;
+    background-color: var(--color-sol-wrong-bg);
 }
 
 #main_container {

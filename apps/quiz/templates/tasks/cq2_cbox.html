@@ -6,13 +6,13 @@
             </div>
 
             {% if text_slots.0.type == "source" %}
-                <pre class="source">{{ text_slots.0.content }}</pre>
+                <pre class="source row_mod2_{{idx|divisibleby:2}}">{{ text_slots.0.content }}</pre>
             {% else %}
                 <span class="normal_subtask">{{ text_slots.0.content|safe }}</span>
             {% endif %}
         </div>
 
-        <div class="input_field">
+        <div class="input_field row_mod2_{{idx|divisibleby:2}}">
             <input name="answer_{{ idx }}" type="checkbox" {% if user_solution == "on" %} checked="checked" {% endif %}>
         </div>
 

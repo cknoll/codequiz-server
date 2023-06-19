@@ -11,8 +11,8 @@
     {% endif %}
 </div>
 
-<div class="">
-    <textarea class="disablecopypaste {{ answer_class }}" style="width: 100%" name="answer_{{ idx }}" rows="{{ lines }}"
+<div class="user_input_ta_parent">
+    <textarea class="disablecopypaste user_input_ta {{ answer_class }}" name="answer_{{ idx }}" rows="{{ lines }}"
               autocomplete="off">{{ prefilled_text }}</textarea>
 </div>
 
