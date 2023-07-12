@@ -85,7 +85,7 @@ def simple(request, **kwargs):
     return render(request, 'tasks/cq0_simple.html', dict(pagecontent=text))
 
 
-def decode_result(request, **kwargs):
+def decode_result_view(request, **kwargs):
     """
     renders a form and displays the decoding results
     """
@@ -93,12 +93,39 @@ def decode_result(request, **kwargs):
     c = myContainer()
 
     post = request.POST
-    if post.get("data-text"):
-        c.display_text = "some result"
+    if data_text := post.get("data_text"):
+
+        data_dict = _decode_result(data_text)
+        lines = []
+        for key, value in data_dict.items():
+            lines.append(f"<b>{key}</b>: {value}<br>")
+
+
+        c.display_text = "\n".join(lines)
     else:
         c.display_text = None
 
     return render(request, 'tasks/cq0_z_decode_result.html', dict(c=c))
+
+def _decode_result(data_text):
+
+    data_text = data_text.replace("\r\n", "").encode("utf8")
+    enc_key = settings.ENCRYPTION_KEY
+    crypter = Fernet(enc_key)
+
+    try:
+        json_bytes = crypter.decrypt(data_text)
+    except Exception as e:
+        data = {"error during decryption": f"{repr(e)}"}
+        return data
+
+    try:
+        data = json.loads(json_bytes.decode("utf8"))
+    except Exception as e:
+        data = {"error during json parsing": f"{repr(e)}"}
+        return data
+
+    return data
 
 
 def index(request):

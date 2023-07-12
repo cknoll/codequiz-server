@@ -10,7 +10,7 @@
     {# hcl #}
     
     {% if c.display_text %}
-    {{ c.display_text }}
+    {{ c.display_text | safe }}
     
     <hr>
     {% endif %}
@@ -19,7 +19,7 @@
     <form action="#" method="post">
     {% csrf_token %} <!-- protect against cross site reference forgery -->
     
-    <textarea id="data-text" name="data-text" rows="6" cols="80" placeholder="Please insert encoded data here ..."></textarea>
+    <textarea id="data_text" name="data_text" rows="6" cols="80" placeholder="Please insert encoded data here ..."></textarea>
     
     <br>
     <button type="submit">decode!</button> 
