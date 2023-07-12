@@ -24,7 +24,7 @@ cfg = du.get_nearest_config("config.ini", devmode=DEVMODE)
 
 SECRET_KEY = cfg("SECRET_KEY")
 ENCRYPTION_KEY = cfg("ENCRYPTION_KEY")
-VERSION = cfg("VERSION")
+VERSION = "0.6.1"
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
