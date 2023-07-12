@@ -27,4 +27,6 @@ The following instructions are taylored towards [uberspace](https://uberspace.de
 - review `deployment/deploy.py` to understand what happens
 - run `pip install -r deployment/deployment_requirements.txt`
 - run `python deployment/deploy.py` from `<BASEDIR>/`
+- to just update the code (with no changes on data or static files):
+  `py3 deployment/deploy.py -odsxq remote`
 
