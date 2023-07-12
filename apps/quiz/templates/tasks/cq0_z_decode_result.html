@@ -1,0 +1,33 @@
+{% extends "tasks/cq0_main_base.html" %}
+{# This template is used to render a task independed of a task_collection #}
+
+
+{% block template_comment %}
+<!-- begin cq0_main_simple.html  static:{{ STATIC_URL }}| -->
+{% endblock template_comment %}
+
+{% block main_left %}
+    {# hcl #}
+    
+    {% if c.display_text %}
+    {{ c.display_text }}
+    
+    <hr>
+    {% endif %}
+    
+    <p>Result data decoding</p>
+    <form action="#" method="post">
+    {% csrf_token %} <!-- protect against cross site reference forgery -->
+    
+    <textarea id="data-text" name="data-text" rows="6" cols="80" placeholder="Please insert encoded data here ..."></textarea>
+    
+    <br>
+    <button type="submit">decode!</button> 
+    
+    </form>
+{% endblock main_left %}
+
+{% block main_right %}
+{% endblock main_right %}
+
+<!-- end cq0_main_simple.html  -->

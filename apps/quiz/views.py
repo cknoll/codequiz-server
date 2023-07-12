@@ -85,6 +85,22 @@ def simple(request, **kwargs):
     return render(request, 'tasks/cq0_simple.html', dict(pagecontent=text))
 
 
+def decode_result(request, **kwargs):
+    """
+    renders a form and displays the decoding results
+    """
+
+    c = myContainer()
+
+    post = request.POST
+    if post.get("data-text"):
+        c.display_text = "some result"
+    else:
+        c.display_text = None
+
+    return render(request, 'tasks/cq0_z_decode_result.html', dict(c=c))
+
+
 def index(request):
     return simple(request, template="index.html")
 

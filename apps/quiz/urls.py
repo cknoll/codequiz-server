@@ -4,6 +4,7 @@ from quiz import views
 urlpatterns = [re_path(r'^$', views.simple, kwargs={"template": "index.html"}, name='index'),
                re_path(r'^debug$', views.template_debug, name='debug'),
                re_path(r'^about$', views.simple, kwargs={"template": "about.html"}, name='about'),
+               re_path(r'^decode$', views.decode_result, name='decode'),
                re_path(r'^test/run/', views.tc_run_view, name='tc_run_view'),
                re_path(r'^test/(?P<tc_id>\d+)/$', views.task_collection_view,
                    name='task_collection_view'),
