@@ -248,8 +248,8 @@ def get_task_to_process(post_dict):
             task.solution_flag = solution_flag
 
         else:
+            task = aux_get_json_task(task_id=task_id)
             if 'button_result' in post_dict:
-                task = aux_get_json_task(task_id=task_id)
                 task.solution_flag = True
 
         return task

@@ -52,8 +52,15 @@ class TestCore1(TestCase, FollowRedirectMixin):
         self.assertEqual(response.status_code, 200)
 
     def test_gap_fill_text(self):
-        response = self.client.get('/quiz/explicit/82/')
-        self.assertEqual(response.status_code, 200)
+        rpns = self.client.get('/quiz/explicit/82/')
+        self.assertEqual(rpns.status_code, 200)
+
+        form = get_first_form(rpns)
+        form_values = {"button_next": [""]}
+
+        # post wrong answer
+        post_data = generate_post_data_for_form(form, spec_values=form_values)
+        rpns = self.client.post(form.action_url, post_data)
 
     def test_run_tc(self):
 
