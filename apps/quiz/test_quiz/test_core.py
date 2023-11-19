@@ -56,11 +56,17 @@ class TestCore1(TestCase, FollowRedirectMixin):
         self.assertEqual(rpns.status_code, 200)
 
         form = get_first_form(rpns)
-        form_values = {"button_next": [""]}
+        form_values = {"button_result": [""]}
 
         # post wrong answer
         post_data = generate_post_data_for_form(form, spec_values=form_values)
         rpns = self.client.post(form.action_url, post_data)
+
+        # post correct answer
+        post_data["answer_0:0"] = "ist"
+        post_data = generate_post_data_for_form(form, spec_values=form_values)
+        rpns = self.client.post(form.action_url, post_data)
+        # IPS()
 
     def test_run_tc(self):
 

@@ -19,6 +19,8 @@ from quiz.models import Task, TaskCollection, QuizResult
 # for debugging only:
 from ipydex import IPS
 
+# use this for debugging: IPS(settings.TESTMODE)
+
 """
 Some general notes:
 tc means task collection
@@ -192,7 +194,7 @@ def explicit_task_view(request, task_id):
 
     p = dict(request.POST)  # POST itself is immutable
     p['meta_task_id'] = task_id
-    p['meta_no_form'] = True  # indicate that this data is "pseudo"
+    p['meta_no_form'] = True  # indicate that this data is "pseudo" (not part of a task collection)
     request.POST = p
 
     return render_task(request)
@@ -337,6 +339,7 @@ def process_main_block_object(request, task):
     html_strings = []
     result_list = []
     for segment in filter_segment_list(segment_list, tc, task.solution_flag):
+
         result, html_str = evaluate_and_render_segment(segment, user_solution, tc)
         result_list.append(result)
         html_strings.append(html_str)
@@ -344,7 +347,6 @@ def process_main_block_object(request, task):
     res = myContainer(
         task=task, button_strings=button_strings, html_strings=html_strings, result_list=result_list
     )
-    IPS(settings.TESTMODE)
 
     res.debug_flag = True
     res.tc_id = ""
@@ -610,8 +612,6 @@ def tc_run_view(request):
     tc = None if not tc_id else get_object_or_404(TaskCollection, pk=tc_id)
 
     context_dict = dict(main_block=main_block, task=task, tc=tc)
-
-    IPS(settings.TESTMODE)
 
     return render(request, 'tasks/cq0_main_simple.html', context_dict)
 
