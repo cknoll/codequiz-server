@@ -5,6 +5,7 @@ import time
 from django.http import HttpResponse, Http404, HttpResponseForbidden, FileResponse
 from django.template import loader
 from django.conf import settings
+from django.utils import timezone
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from datetime import datetime
@@ -457,7 +458,7 @@ def tc_run_final_view(request, tc_id, debug=None):
     hash_string = compute_hash(log, date_iso8601)
 
     quiz_result = QuizResult()
-    quiz_result.date = current_date
+    quiz_result.date = timezone.make_aware(current_date)
     quiz_result.hash = hash_string
     quiz_result.log = log
     quiz_result.result_data = json.dumps(result_tracker).encode("utf8")

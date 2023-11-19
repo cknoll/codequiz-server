@@ -207,7 +207,9 @@ TIME_ZONE = 'Europe/Berlin'
 USE_I18N = True
 
 # Localisation
-USE_L10N = True
+
+# this is now always true (and thus deprecated by newer django versions)
+# USE_L10N = True
 
 # enable timezone awareness by default
 USE_TZ = True

@@ -87,8 +87,17 @@ class TestCore1(TestCase, FollowRedirectMixin):
 
         json_bytes = json.dumps(result_tracker).encode("utf8")
 
-        json_bytes2 = crypter.decrypt(result_data.split("----")[1])
-        self.assertEqual(json_bytes, json_bytes2)
+        # this worked, until I changed some details how the the ressult data is composed.
+        # json_bytes2 = crypter.decrypt(result_data.split("----")[1])
+        # self.assertEqual(json_bytes, json_bytes2)
+
+        json_bytes2 = crypter.decrypt(result_data)
+
+        decrypted_data = json.loads(json_bytes2)
+        assert isinstance(decrypted_data, dict)
+        for k in ["tc", "total", "total_segments"]:
+            self.assertEqual(decrypted_data[k], result_tracker[k])
+
 
 
 # ----
