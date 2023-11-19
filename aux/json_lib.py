@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from typing import List
 import json
 import shlex
 import re
@@ -450,7 +451,7 @@ class GapText(QuestionSegment):
             field_data_list.append(field_data)
         return field_data_list
 
-    def update_user_solution(self, sol_dict):
+    def update_user_solution(self, sol_dict) -> bool:
         """
         This GapText-specific method decides whether the users answer was correct and
         sets the respective attributes (css_class, printed_solution)
@@ -468,7 +469,7 @@ class GapText(QuestionSegment):
 
         assert len(sol_values) == len(self.solution.parts)
         sol_lists = [[dc.content for dc in p] for p in self.solution.parts]
-        user_results = [sv in sl for sv, sl in zip(sol_values, sol_lists)]
+        user_results: List[bool] = [sv in sl for sv, sl in zip(sol_values, sol_lists)]
 
         css = ['gap_right' if r else "gap_wrong" for r in user_results]
         printed_solutions = self.solution.get_printed_solution()
@@ -476,6 +477,10 @@ class GapText(QuestionSegment):
         # write the detail information directly into the text
         txt = self.render_text_with_fields(css, printed_solutions)
         self.context['text'] = txt
+
+        result = all(user_results)
+        return result
+
 
 
 class InputField(QuestionSegment):
