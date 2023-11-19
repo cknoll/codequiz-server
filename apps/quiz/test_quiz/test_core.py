@@ -51,6 +51,10 @@ class TestCore1(TestCase, FollowRedirectMixin):
         response = self.client.get('/quiz/explicit/12/')
         self.assertEqual(response.status_code, 200)
 
+    def test_gap_fill_text(self):
+        response = self.client.get('/quiz/explicit/82/')
+        self.assertEqual(response.status_code, 200)
+
     def test_run_tc(self):
 
         # get overview page

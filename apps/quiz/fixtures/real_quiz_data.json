@@ -968,5 +968,21 @@
       },
     "model" : "quiz.tc_membership",
     "pk" : 34
+  },
+  {
+    "fields" : {  },
+    "model" : "quiz.taggedmodel",
+    "pk" : 82
+  },
+  {
+    "fields" : {
+        "author" : "admin",
+        "body_data" : "{\"segments\":[{\"content\":\"<p>Das &para;ist|ist&para; ein Test.</p>\\n<p>&nbsp;</p>\",\"type\":\"gap-fill-text\",\"solution\":[{\"type\":\"gapTextSolution\",\"answer\":\"ist\",\"solutions\":[\"ist\"]}]}]}",
+        "pub_date" : "2023-11-19T16:27:42Z",
+        "revision" : 1,
+        "title" : "gap-test"
+      },
+    "model" : "quiz.task",
+    "pk" : 82
   }
 ]
