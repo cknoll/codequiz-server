@@ -977,7 +977,7 @@
   {
     "fields" : {
         "author" : "admin",
-        "body_data" : "{\"segments\":[{\"content\":\"Das ¶ist|ist¶ ein Test. Die Lösung funktioniert ¶|uneingeschränkt¶  \",\"type\":\"gap-fill-text\",\"solution\":[{\"type\":\"gapTextSolution\",\"answer\":\"ist\",\"solutions\":[\"ist\"]},{\"type\":\"gapTextSolution\",\"answer\":\"\",\"solutions\":[\"uneingeschränkt\"]}]}]}",
+        "body_data" : "{\"segments\":[{\"content\":\"Das ¶ist|ist¶ ein Test. Die Lösung funktioniert ¶|uneingeschränkt,perfekt¶  \",\"type\":\"gap-fill-text\",\"solution\":[{\"type\":\"gapTextSolution\",\"answer\":\"ist\",\"solutions\":[\"ist\"]},{\"type\":\"gapTextSolution\",\"answer\":\"\",\"solutions\":[\"uneingeschränkt\",\"perfekt\"]}]}]}",
         "pub_date" : "2023-11-19T16:27:42Z",
         "revision" : 1,
         "title" : "gap-test"

@@ -71,6 +71,14 @@ class TestCore1(TestCase, FollowRedirectMixin):
         # TODO: add machine readable information of correctness (<script type="application/json">...</script>)
         self.assertNotIn(b"gap_wrong", rpns.content)
 
+        # try a different solution
+        form_values["answer_0:1"] = "perfekt"
+        post_data = generate_post_data_for_form(form, spec_values=form_values)
+        rpns = self.client.post(form.action_url, post_data)
+
+        # TODO: add machine readable information of correctness (<script type="application/json">...</script>)
+        self.assertNotIn(b"gap_wrong", rpns.content)
+
     def test_run_tc(self):
 
         # get overview page

@@ -415,6 +415,9 @@ function updateTask() {
     $("input[name='body_data']").val(JSON.stringify(dict));
 }
 
+/*
+ * This function counteracts the html encoding (ä -> &auml;) (probably performed by tinymce)
+ */
 // source: https://stackoverflow.com/questions/5796718/html-entity-decode
 var decodeEntities = (function() {
     // this prevents any overhead from creating the object each time
@@ -585,7 +588,7 @@ $(document).ready(function () {
     $("#builderbuttons")
         .append("<a class='add' href='#' type='text'>Text</a>")
         .append("<a class='add' href='#' type='source'>Source</a>")
-        .append("<a class='add gray' href='#' type='gap-fill-text'>Gap Text</a>")
+        .append("<a class='add' href='#' type='gap-fill-text'>Gap Text</a>")
         .append("<a class='add' href='#' type='comment'>Comment</a>")
         .append("<a class='add' href='#' type='input'>Input Field</a>")
         .append("<a class='add' href='#' type='check'>Check</a>")
