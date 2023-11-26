@@ -1,3 +1,4 @@
+import json
 from django.test import TestCase  # super important to load TestCase like this! fixtures won't load otherwise
 from django.test.client import Client
 from bs4 import BeautifulSoup
@@ -30,6 +31,13 @@ class TestCore1(TestCase, FollowRedirectMixin):
     def setUp(self):
         self.client = Client()
 
+    def assertSolutionResult(self, response, segment_idx, value):
+
+        soup = BeautifulSoup(response.content.decode("utf8"), "lxml")
+        soup_res = soup.find(id=f"soluton_result_{segment_idx}")
+        solution_result = json.loads(soup_res.string)
+        self.assertEqual(solution_result, value)
+
     def test_index(self):
         response = self.client.get("/quiz/")
         self.assertEqual(response.status_code, 200)
@@ -54,6 +62,7 @@ class TestCore1(TestCase, FollowRedirectMixin):
     def test_gap_fill_text(self):
         rpns = self.client.get('/quiz/explicit/82/')
         self.assertEqual(rpns.status_code, 200)
+        self.assertSolutionResult(rpns, segment_idx=0, value="undefined")
 
         form = get_first_form(rpns)
         form_values = {"button_result": [""]}
@@ -61,23 +70,20 @@ class TestCore1(TestCase, FollowRedirectMixin):
         # post wrong answer
         post_data = generate_post_data_for_form(form, spec_values=form_values)
         rpns = self.client.post(form.action_url, post_data)
+        self.assertSolutionResult(rpns, segment_idx=0, value=False)
 
         # post correct answer
         form_values["answer_0:0"] = "ist"
         form_values["answer_0:1"] = "uneingeschränkt"
         post_data = generate_post_data_for_form(form, spec_values=form_values)
         rpns = self.client.post(form.action_url, post_data)
-
-        # TODO: add machine readable information of correctness (<script type="application/json">...</script>)
-        self.assertNotIn(b"gap_wrong", rpns.content)
+        self.assertSolutionResult(rpns, segment_idx=0, value=True)
 
         # try a different solution
         form_values["answer_0:1"] = "perfekt"
         post_data = generate_post_data_for_form(form, spec_values=form_values)
         rpns = self.client.post(form.action_url, post_data)
-
-        # TODO: add machine readable information of correctness (<script type="application/json">...</script>)
-        self.assertNotIn(b"gap_wrong", rpns.content)
+        self.assertSolutionResult(rpns, segment_idx=0, value=True)
 
     def test_run_tc(self):
 

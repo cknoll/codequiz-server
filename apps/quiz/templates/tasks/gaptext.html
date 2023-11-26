@@ -1,9 +1,13 @@
 <!-- ==> start: gaptxt.html -->
 
-<div class="grid_12 alpha omega" style="padding: 0.5em 0px">
+{{ solution_result|json_script:solution_result_id }}
 
-    {{ text|safe }}
+<div class="grid_12 alpha omega" style="padding: 0.5em 0px;">
 
+    <div>
+        {{ text|safe }}
+
+    </div>
 </div>
 <div class="clear"></div>
 <!-- ==> end: gaptxt.html -->

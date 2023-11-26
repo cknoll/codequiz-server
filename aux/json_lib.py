@@ -257,6 +257,9 @@ class Segment(object):
         items = [(k.replace('c_', ''), getattr(self, k)) for k in keys]
         self.context = dict(items)
 
+        self.context["solution_result"] = "undefined"
+        self.context["solution_result_id"] = f"soluton_result_{self.idx}"
+
     def set_idx(self, idx):
         assert self.context.get('idx') is None
         self.context['idx'] = idx  # for the template
@@ -369,6 +372,7 @@ class QuestionSegment(Segment):
                 self.solution.get_printed_solution()
             result = False
 
+        self.context["solution_result"] = result
         return result
 
 
@@ -480,6 +484,7 @@ class GapText(QuestionSegment):
         self.context['text'] = txt
 
         result = all(user_results)
+        self.context["solution_result"] = result
         return result
 
 

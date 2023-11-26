@@ -294,7 +294,6 @@ def process_main_block_object(request, task):
     :param task: which task to insert
     :return: a container which will be passed to an "include"-template tag
 
-    This function is primarily for testing
     """
 
     segment_list = task.segment_list
