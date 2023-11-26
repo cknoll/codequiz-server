@@ -1,231 +1,231 @@
-[ 
-  { 
+[
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 1
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 2
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 3
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 4
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 5
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 6
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 7
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 8
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 9
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 10
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 11
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 12
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 13
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 14
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 15
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 16
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 17
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 18
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 19
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 20
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 21
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 22
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 23
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 24
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 25
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 26
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 27
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 28
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 29
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 30
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 31
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 32
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 33
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 34
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 35
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 36
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 37
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 38
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 39
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 40
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 41
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 42
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 43
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 44
   },
-  { 
+  {
     "fields" : {  },
     "model" : "quiz.taggedmodel",
     "pk" : 45
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "C. Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Gegeben sei folgender Quelltext:</p>\",\"type\":\"text\"},{\"content\":\"\\nimport numpy as np\\nx = np.linspace(0, 2*np.pi)\\n\",\"type\":\"source\"},{\"type\":\"input\",\"content\":[{\"content\":\"Vervollst\u00e4ndigen Sie folgenden Code mit der passenden import-Anweisung f\u00fcr das Paket pylab:\",\"type\":\"text\"}],\"answer\":{\"content\":\"\\nplt.plot(x, np.sin(x))\\nplt.show()\",\"type\":\"source\"},\"solution\":[{\"content\":\"import matplotlib.pyplot as plt\\nplt.plot(x, np.sin(x))\\nplt.show()\",\"type\":\"source\"}]}]}",
         "pub_date" : "2013-11-11T01:03:29Z",
@@ -235,8 +235,8 @@
     "model" : "quiz.task",
     "pk" : 11
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "C. Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Eine Grafik soll interaktiv erstellt werden. Gegeben sei dazu folgender Quelltext</p>\",\"type\":\"text\"},{\"content\":\"import numpy as np\\nfrom pylab import * # Alles importieren (nicht zu viel verraten)\\nx = np.linspace(-10, 10, 1e3)\\ny = x**2\",\"type\":\"source\"},{\"type\":\"input\",\"content\":[{\"content\":\"Mit welcher Anweisung wird erreicht, dass die folgenden Aufrufe sofort eine sichtbare Wirkung zeigen? (Anschalten des Interaktiven Modus'))\",\"type\":\"text\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"ion()\",\"type\":\"source\"}]},{\"content\":\"\\nplot(x, y, 'r--o')\\ntitle('Parabel')\",\"type\":\"source\"}]}",
         "pub_date" : "2013-11-11T14:25:53Z",
@@ -246,8 +246,8 @@
     "model" : "quiz.task",
     "pk" : 12
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "C. Knoll",
         "body_data" : "{\r\n    \"segments\": [\r\n        {\r\n            \"content\": \"Matplotlib bietet eine Kurzschreibweise zur Formatierung von plots.\\nGeben Sie den ensprechenden Format-String f\u00fcr folgende Wunsch-Formatierungen ein:\",\r\n            \"type\": \"text\"\r\n        },\r\n        {\r\n            \"type\": \"input\",\r\n            \"content\": [\r\n                {\r\n                    \"content\": \"Gr\u00fcne durchgezogene Linie, Kreisf\u00f6rmige Marker:\",\r\n                    \"type\": \"text\"\r\n                }\r\n            ],\r\n            \"answer\": {\r\n                \"content\": \"'xxx'\",\r\n                \"type\": \"text\"\r\n            },\r\n            \"solution\": {\r\n                \"content\": \"'g-o'\",\r\n                \"type\": \"text\"\r\n            }\r\n        },\r\n        {\r\n            \"type\": \"input\",\r\n            \"content\": [\r\n                {\r\n                    \"content\": \"Blaue punktierte Line, keine Marker:\",\r\n                    \"type\": \"text\"\r\n                }\r\n            ],\r\n            \"answer\": {\r\n                \"content\": \"'xx'\",\r\n                \"type\": \"text\"\r\n            },\r\n            \"solution\": {\r\n                \"content\": \"'b:'\",\r\n                \"type\": \"text\"\r\n            }\r\n        },\r\n        {\r\n            \"type\": \"input\",\r\n            \"content\": [\r\n                {\r\n                    \"content\": \"Rote gestrichelte Linie quadratische Marker:\",\r\n                    \"type\": \"text\"\r\n                }\r\n            ],\r\n            \"answer\": {\r\n                \"content\": \"'xxxx'\",\r\n                \"type\": \"text\"\r\n            },\r\n            \"solution\": {\r\n                \"content\": \"'r--s'\",\r\n                \"type\": \"text\"\r\n            }\r\n        },\r\n        {\r\n            \"type\": \"input\",\r\n            \"content\": [\r\n                {\r\n                    \"content\": \"Keine Line, nur schwarze X-f\u00f6rmige Marker:\",\r\n                    \"type\": \"text\"\r\n                }\r\n            ],\r\n            \"answer\": {\r\n                \"content\": \"'xx'\",\r\n                \"type\": \"text\"\r\n            },\r\n            \"solution\": {\r\n                \"content\": \"'kx'\",\r\n                \"type\": \"text\"\r\n            }\r\n        }\r\n    ]\r\n}",
         "pub_date" : "2013-11-11T14:39:39Z",
@@ -257,8 +257,8 @@
     "model" : "quiz.task",
     "pk" : 13
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "C. Knoll",
         "body_data" : "{\r\n    \"segments\": [\r\n        {\r\n            \"content\": \"Bringen Sie die folgenden Begriffe, die im Zusammenhang mit der VTK-Visualisierungspipeline stehen in die richtige Reihenfolge:\\n\\n<br>\\na: Renderer\\n<br>\\nb: Source\\n<br>\\nc: Mapper\\n<br>\\nd: Actor\",\r\n            \"type\": \"text\"\r\n        },\r\n        {\r\n            \"type\": \"input\",\r\n            \"content\": [\r\n                {\r\n                    \"content\": \"Gebens Sie die richtige Reihenfolge (ohne Leerzeichen) an:\",\r\n                    \"type\": \"text\"\r\n                }\r\n            ],\r\n            \"answer\": {\r\n                \"content\": \"abcd\",\r\n                \"type\": \"text\"\r\n            },\r\n            \"solution\": {\r\n                \"content\": \"bcda\",\r\n                \"type\": \"text\"\r\n            }\r\n        }\r\n    ]\r\n}",
         "pub_date" : "2013-11-11T14:47:32Z",
@@ -268,8 +268,8 @@
     "model" : "quiz.task",
     "pk" : 14
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "C. Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"<p>In VTK wird werden Verdrehungen und Verschiebungen von K&ouml;rpern im 3D-Raum mittels einer sog. Poke-Matrix (mit den Dimensionen $4 \\\\times 4$) bechrieben. Im vorliegenden Beispiel soll eine solche Matrix als numpy-array konstruiert werden. Dieser kann dann anschlie&szlig;end in das VTK-eigene Format konvertiert werden. Ziel ist es einen K&ouml;per in Richtung des $(x,y,z)$-Vektors $v:=(-3, 7, 1.5)^T$ zu verschieben.</p>\",\"type\":\"text\"},{\"content\":\"\\nimport numpy as np\\nimport vtk\\n\\n# K\u00f6rper erstellen etc.\\n# ...\\n\\nP = np.eye(4)\\n\",\"type\":\"source\"},{\"type\":\"input\",\"content\":[{\"content\":\"Korrigieren und erweitern Sie folgenden Quellcode: \",\"type\":\"text\"}],\"answer\":{\"content\":\"v = np.array([xxx])\\nP[xx:xx, xx] = xxx \",\"type\":\"source\"},\"solution\":[{\"content\":\"v = np.array([-3, 7, 1.5])\\nP[:-1, -1] = v\",\"type\":\"source\"}]},{\"content\":\"\\n# so geht das Skript weiter:\\n# numpy-array in VTK-Matrix umwandeln und als Poke-Matrix anwenden.\\n# ...\",\"type\":\"source\"}]}",
         "pub_date" : "2013-11-11T14:59:10Z",
@@ -279,8 +279,8 @@
     "model" : "quiz.task",
     "pk" : 15
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "Carsten Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Gegeben sei der Quelltext:</p>\",\"type\":\"text\"},{\"content\":\"def func(a=5, b=7):\\n    print(a, b)\",\"type\":\"source\"},{\"content\":\"<p>Erg&auml;nzen Sie die von folgenden Funktionsaufrufen erzeugten Ausgaben</p>\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"func()\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"5 7\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"func(3)\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"3 7\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"func(3, 'test')\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"3 test\",\"type\":\"text\"}]},{\"content\":\"<p><strong>Hinweis:</strong> siehe Kurs02 (Funktionen)</p>\",\"type\":\"text\"}]}",
         "pub_date" : "2013-11-14T11:07:55Z",
@@ -290,8 +290,8 @@
     "model" : "quiz.task",
     "pk" : 16
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "Carsten Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Vervollst&auml;ndigen Sie folgenden Quelltext mit zwei geeigneten Typumwandlungen, sodass die Ausgabe am Ende lautet: <tt>101</tt></p>\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"\",\"type\":\"text\"}],\"answer\":{\"content\":\"a = 10\\nb = 1\\n\\n\\n\\n\",\"type\":\"source\"},\"solution\":[{\"content\":\"a = 10\\nb = 1\\na = str(a)\\nb = str(b)\",\"type\":\"source\"}]},{\"content\":\"print a + b # -> 101\",\"type\":\"source\"}]}",
         "pub_date" : "2013-11-14T11:15:10Z",
@@ -301,8 +301,8 @@
     "model" : "quiz.task",
     "pk" : 17
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "Carsten Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"Die folgenden Code-Schnipsel enthalten zum Teil <em>Syntax</em>-Fehler.\\n\\nKorrigieren Sie ggf. den Quelltext (nur die fehlerhafte Zeile). Wenn kein Fehler vorliegen sollte, so lassen Sie das Eingabefeld leer.\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"\",\"type\":\"text\"}],\"answer\":{\"content\":\"def sch\u00f6neFunktion(a):\\n    return 2*a\",\"type\":\"source\"},\"solution\":{\"content\":\"def schoeneFunktion(a):\\n    return 2*a\",\"type\":\"source\"}},{\"type\":\"input\",\"content\":[{\"content\":\"\",\"type\":\"text\"}],\"answer\":{\"content\":\"if a=b: print(\\\"gleich\\\")\",\"type\":\"source\"},\"solution\":{\"content\":\"if a==b: print(\\\"gleich\\\")\",\"type\":\"text\"}},{\"type\":\"input\",\"content\":[{\"content\":\"\",\"type\":\"text\"}],\"answer\":{\"content\":\"a, b, c = b, c, a\",\"type\":\"source\"},\"solution\":{\"content\":\"a, b, c = b, c, a\",\"type\":\"source\"}}]}",
         "pub_date" : "2013-11-14T11:20:23Z",
@@ -312,8 +312,8 @@
     "model" : "quiz.task",
     "pk" : 18
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "Carsten Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Erg&auml;nzen Sie die Funktion <tt>func1</tt> so, dass sie beliebig viele (unbenannte) Argumente empfangen kann, nichts tut und nichts (bzw. <code>None</code>) zur&uuml;ckgibt.</p>\\n<p><strong>Hinweise:</strong> Die Musterl&ouml;sung hat weiterhin zwei Zeilen und verwendet vier Leerzeichen pro Einr&uuml;ckungsebene. Als Bezeichner f&uuml;r das Argumenten-Tupel wird wie allgemein &uuml;blich <code>args</code> verwendet</p>\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"\",\"type\":\"text\"}],\"answer\":{\"content\":\"def func1(...):\\n    pass\",\"type\":\"source\"},\"solution\":[{\"content\":\"def func1(*args):\\n    pass\",\"type\":\"source\"}]}]}",
         "pub_date" : "2013-11-14T11:23:52Z",
@@ -323,8 +323,8 @@
     "model" : "quiz.task",
     "pk" : 19
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "Carsten Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Erg&auml;nzen Sie jeweils das Ergebnis folgender Code-Zeilen.</p>\\n<p><strong>Hinweise zur Notaion:</strong> Beispiel-Liste: <tt>[8, 9, 10]</tt>, Beispiel-String: <tt>\\\"xyz\\\"</tt> (inkl. Anf&uuml;hrungszeichen).</p>\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"list(range(3))\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"source\"},\"solution\":[{\"content\":\"[0, 1, 2]\",\"type\":\"source\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"\\\"Hallo Welt\\\"[1]\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"source\"},\"solution\":[{\"content\":\"\\\"a\\\"\",\"type\":\"source\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"\\\"Hallo Welt\\\"[:4]\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"source\"},\"solution\":[{\"content\":\"\\\"Hall\\\"\",\"type\":\"source\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"\\\"Hallo Welt\\\"[-3]\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"source\"},\"solution\":[{\"content\":\"\\\"e\\\"\",\"type\":\"source\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"\\\"Hallo Welt\\\"[-3:]\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"source\"},\"solution\":[{\"content\":\"\\\"elt\\\"\",\"type\":\"source\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"\\\"Hallo Welt\\\"[1:5]\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"source\"},\"solution\":[{\"content\":\"\\\"allo\\\"\",\"type\":\"source\"}]}]}",
         "pub_date" : "2013-11-14T11:25:28Z",
@@ -334,8 +334,8 @@
     "model" : "quiz.task",
     "pk" : 20
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "Carsten Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Erg&auml;nzen sie jeweils das Ergebnis folgender Code-Zeilen (ohne Leerzeichen).</p>\\n<p><strong>Hinweise:</strong> Beispiel-Liste: <tt>[8, 9, 10]</tt>, Beispiel-String: <tt>\\\"Hallo Welt\\\"</tt>, Bei <code>bool</code>-Werten: Haken setzen oder nicht setzen</p>\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"[1, 5]*3\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"source\"},\"solution\":[{\"content\":\"[1, 5, 1, 5, 1, 5]\",\"type\":\"source\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"\\\"-\\\"*3\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"source\"},\"solution\":[{\"content\":\"\\\"---\\\"\",\"type\":\"source\"}]},{\"type\":\"check\",\"content\":[{\"content\":\"# (unterschidliche Anf\u00fcrhungszeichen)\\n\\\"abc\\\" == 'abc'\",\"type\":\"source\"}],\"solution\":true},{\"type\":\"check\",\"content\":[{\"content\":\"8 in range(10)\",\"type\":\"source\"}],\"solution\":true},{\"type\":\"check\",\"content\":[{\"content\":\"8.5 in range(10)\",\"type\":\"source\"}],\"solution\":false},{\"type\":\"check\",\"content\":[{\"content\":\"\\\"all\\\" in 'Hallo'\",\"type\":\"source\"}],\"solution\":true},{\"type\":\"check\",\"content\":[{\"content\":\"\\\"g\\\" not in \\\"[a-z]\\\"\",\"type\":\"source\"}],\"solution\":true},{\"type\":\"check\",\"content\":[{\"content\":\"\\\"g\\\" not in \\\"[a-z]\\\"\",\"type\":\"source\"}],\"solution\":true}]}",
         "pub_date" : "2013-11-14T11:29:11Z",
@@ -345,8 +345,8 @@
     "model" : "quiz.task",
     "pk" : 21
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "Carsten Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"<p>In Python gibt es verschiedene Datentypen. Jeder dieser Typen wird durch ein entsprechendes-Typ-Objekt repr&auml;sentiert, z.B. 'str' f&uuml;r einen String. Aus den folgenden Zuweisungen geht jeweils eindeutig der Datentyp hervor. Geben Sie den Namen des jeweiligen Typ-Objekts an. Also z. B. <tt>str</tt> statt <tt>String</tt>.</p>\\n<p><strong>Hinweis: </strong>ggf ist <code>type(...)</code> n&uuml;tzlich.</p>\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"x = \\\"abcd\\\"\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"str\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"x = 105\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"int\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"x = 105.1\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"float\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"x = [1, 2, 3]\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"list\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"x = (1, 2, 3)\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"tuple\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"x = (4)\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"int\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"x = (4,)\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"tuple\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"x = {7: \\\"sieben, 10: \\\"zehn\\\"}\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"dict\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"x = 3 > 7\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"bool\",\"type\":\"text\"}]}]}",
         "pub_date" : "2013-11-14T11:32:48Z",
@@ -356,8 +356,8 @@
     "model" : "quiz.task",
     "pk" : 22
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "Carsten Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Gegeben sei folgender Quellcode:</p>\",\"type\":\"text\"},{\"content\":\"x = 5\\ny = 2\\ny2 = 2.0\",\"type\":\"source\"},{\"content\":\"<p>Gegeben Sie jeweils den Inhalt von <tt>z</tt> nach der Ausf&uuml;hrung folgender Anweisungen an!</p>\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"z = x*y\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"10\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"z = x/y\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"2.5\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"z = x/y2\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"2.5\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"z = x//y # (Ganzzahldivision)\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"2\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"z = x**y\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"25\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"z = (x+y)*y2\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"14.0\",\"type\":\"text\"}]}]}",
         "pub_date" : "2013-11-14T11:39:44Z",
@@ -367,8 +367,8 @@
     "model" : "quiz.task",
     "pk" : 23
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "Carsten Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"Geben Sie jeweils die vollst\u00e4ndige (naheliegende) Importanweisung an!\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"import *** as sp\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"source\"},\"solution\":{\"content\":\"import sympy as sp\",\"type\":\"source\"}},{\"type\":\"input\",\"content\":[{\"content\":\"from *** import sin, cos, pi\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"source\"},\"solution\":{\"content\":\"from sympy import sin, cos, pi\",\"type\":\"source\"}}]}",
         "pub_date" : "2013-11-14T11:43:15Z",
@@ -378,8 +378,8 @@
     "model" : "quiz.task",
     "pk" : 24
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "Carsten Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"Gegeben sei folgender Quellcode:\",\"type\":\"text\"},{\"content\":\"import sympy as sp\\na = 365\\nA, B, C = 3, 4, 5\",\"type\":\"source\"},{\"type\":\"input\",\"content\":[{\"content\":\"Legen Sie ein Symbol namens 'x' in einer Variable namens 'x_symb' an.\",\"type\":\"text\"}],\"answer\":{\"content\":\"\",\"type\":\"source\"},\"solution\":{\"content\":\"x_symb = sp.Symbol('x')\",\"type\":\"source\"}},{\"type\":\"input\",\"content\":[{\"content\":\"Legen Sie in einer Anweisung drei Symbole namens 'i', 'j', 'k' in gleichnamigen Variablen an.\",\"type\":\"text\"}],\"answer\":{\"content\":\"\",\"type\":\"source\"},\"solution\":{\"content\":\"i, j, k = sp.symbols('i j k')\",\"type\":\"source\"}}]}",
         "pub_date" : "2013-11-14T11:45:01Z",
@@ -389,8 +389,8 @@
     "model" : "quiz.task",
     "pk" : 25
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "Carsten Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"Gegeben sei folgender Quellcode:\",\"type\":\"text\"},{\"content\":\"import sympy as sp\\nfrom sympy import sin, cos\\na, x, y = sp.symbols('a x y')\",\"type\":\"source\"},{\"content\":\"Vervollst\u00e4ndingen Sie jeweils die Code-Zeile so, dass die Ausgabe mit dem Kommentar \u00fcbereinstimmt.\\n(Die Sterne sind zu ersetzen!)\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"\",\"type\":\"text\"}],\"answer\":{\"content\":\"r = a*(x+y)\\nr2 = sp.******(r)\\nprint r2 # a*x + a*y\",\"type\":\"source\"},\"solution\":{\"content\":\"r = a*(x+y)\\nr2 = sp.expand(r)\\nprint r2 # a*x + a*y\",\"type\":\"source\"}},{\"type\":\"input\",\"content\":[{\"content\":\"\",\"type\":\"text\"}],\"answer\":{\"content\":\"r = sin(y)**2 + cos(y)**2\\nr2 = sp.******(r)\\nprint r2 # 1\",\"type\":\"source\"},\"solution\":{\"content\":\"r = sin(y)**2 + cos(y)**2\\nr2 = sp.trigsimp(r)\\nprint r2 # 1\",\"type\":\"source\"}},{\"type\":\"input\",\"content\":[{\"content\":\"\",\"type\":\"text\"}],\"answer\":{\"content\":\"r = 5*x**3 + 7*x -a\\nr2 = sp.****(***)\\n# Ableitung:\\nprint r2 # 15*x**2 + 7\",\"type\":\"source\"},\"solution\":{\"content\":\"r = 5*x**3 + 7*x -a\\nr2 = sp.diff(r,x)\\n# Ableitung:\\nprint r2 # 15*x**2 + 7\",\"type\":\"source\"}}]}",
         "pub_date" : "2013-11-14T11:48:54Z",
@@ -400,8 +400,8 @@
     "model" : "quiz.task",
     "pk" : 26
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "Carsten Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"Gegeben sei folgender Quellcode:\",\"type\":\"text\"},{\"content\":\"import sympy as sp\\na, b, c, x = sp.symbols('a b c x')\\nr =  a*x**b + c\",\"type\":\"source\"},{\"content\":\"Ersetzen Sie zun\u00e4chst im Ausdruck <tt>r</tt> die Variable <tt>c</tt> durch den Wert 7.\\nErsetzen Sie danach im Ausdruck <tt>r</tt> die Variablen <tt>a, b, c</tt> durch die Werte 7, 8 bzw 9.\\n(Liste von Tupeln, kein Dictionary)\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"\",\"type\":\"text\"}],\"answer\":{\"content\":\"r2  = r.****\",\"type\":\"source\"},\"solution\":{\"content\":\"r2 = r.subs(c, 7)\",\"type\":\"source\"}},{\"type\":\"input\",\"content\":[{\"content\":\"\",\"type\":\"text\"}],\"answer\":{\"content\":\"r3  = r.****\",\"type\":\"source\"},\"solution\":{\"content\":\"r3 = r.subs([(a, 7), (b, 8), (c, 9)])\",\"type\":\"source\"}}]}",
         "pub_date" : "2013-11-14T11:55:59Z",
@@ -411,8 +411,8 @@
     "model" : "quiz.task",
     "pk" : 27
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "Carsten Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Gegeben sei folgender Quellcode:</p>\",\"type\":\"text\"},{\"content\":\"import numpy as np\\na = np.arange(5)\\nb = np.linspace(-3, 3, 12)\\nc = np.eye(50)\\nd = a[:-1].reshape((2,2))\",\"type\":\"source\"},{\"content\":\"<p>Geben Sie jeweils den Wert der Variablen <tt>z</tt> in folgenden F&auml;llen an.</p>\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"z = len(a)\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"5\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"z = b.shape # Tupel der L\u00e4nge 1\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"(12,)\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"x = a*3;\\nz = x[3]\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"9\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"z = c.shape\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"(50, 50)\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"z = c[0,0]\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"1\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"z = d[-1,0]\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"2\",\"type\":\"text\"}]}]}",
         "pub_date" : "2013-11-14T11:58:44Z",
@@ -422,8 +422,8 @@
     "model" : "quiz.task",
     "pk" : 28
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "C. Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Gegeben sei folgender Quelltext:</p>\",\"type\":\"text\"},{\"content\":\"class ABCD():\\n    def __init__(self):\\n        self.x = 100\\n        \\n    def print_x(self):\\n        print(\\\"x ist gleich\\\", self.x)\\n\\nclass EFGH(ABCD):\\n    def print_x(self):\\n        print(\\\"x hat den Wert\\\", self.x)\\n        \\ne1 = EFGH()\",\"type\":\"source\"},{\"content\":\"<p>Geben sie f&uuml;r die folgenden Code-Sequenzen den jeweils am besten passenden Fachbegriff an. Begriffsauswahl: Instanz, Konstruktor, Methode, Klasse, Attribut, Instanziierung, Basisklasse</p>\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"e1\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"Instanz\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"EFGH\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"Klasse\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"a1 = ABCD()\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"Instanziierung\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"e1.x\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"Attribut\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"e1.print_x\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"Methode\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"ABCD\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"Basisklasse\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"e1.__init__\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"Konstruktor\",\"type\":\"text\"}]}]}",
         "pub_date" : "2013-11-24T20:38:50Z",
@@ -433,8 +433,8 @@
     "model" : "quiz.task",
     "pk" : 29
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "C. Knoll",
         "body_data" : "{\"segments\":[{\"type\":\"input\",\"content\":[{\"content\":\"Korrigieren Sie typische Fehler in folgendem Quellcode:\\nIn folgenden Zeilen ist jeweils mindestens ein Fehler: 1, 2, 6, 7, 8.\",\"type\":\"text\"}],\"answer\":{\"content\":\"class ABC()\\n    def _init_(x, y):\\n        self.x = x\\n        self.y = y\\n\\n    def get_x_square()\\n    ret_val = x**2\",\"type\":\"source\"},\"solution\":[{\"content\":\"class ABC():\\n    def __init__(self, x, y):\\n        self.x = x\\n        self.y = y\\n\\n    def get_x_square(self):\\n        ret_val = self.x**2\\n        return ret_val\",\"type\":\"source\"}]}]}",
         "pub_date" : "2013-11-24T21:00:07Z",
@@ -444,8 +444,8 @@
     "model" : "quiz.task",
     "pk" : 30
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "C. Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"Geben Sie jeweils die passende (einzeilige) import-Anweisung an:\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"Pakete <tt>numpy</tt> und <tt>scipy</tt> importieren:\",\"type\":\"text\"}],\"answer\":{\"content\":\"\",\"type\":\"source\"},\"solution\":{\"content\":\"import numpy, scipy\",\"type\":\"source\"}},{\"type\":\"input\",\"content\":[{\"content\":\"Paket <tt>scipy.optimize</tt> als <tt>opt</tt> importieren:\",\"type\":\"text\"}],\"answer\":{\"content\":\"import ...\",\"type\":\"source\"},\"solution\":{\"content\":\"import scipy.optimize as opt\",\"type\":\"source\"}},{\"type\":\"input\",\"content\":[{\"content\":\"Paket <tt>scipy.optimize</tt> als <tt>opt</tt> importieren (2. Variante):\",\"type\":\"text\"}],\"answer\":{\"content\":\"from ...\",\"type\":\"source\"},\"solution\":{\"content\":\"from scipy import optimize as opt\",\"type\":\"source\"}}]}",
         "pub_date" : "2013-11-25T13:09:42Z",
@@ -455,8 +455,8 @@
     "model" : "quiz.task",
     "pk" : 31
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "C. Knoll",
         "body_data" : "{\"segments\":[{\"type\":\"input\",\"content\":[{\"content\":\"Geben Sie die passende import-Anweisung an, um alles aus dem Paket <tt>scipy</tt> in den globalen Namensraum importieren\",\"type\":\"text\"}],\"answer\":{\"content\":\"from ...\",\"type\":\"source\"},\"solution\":[{\"content\":\"from scipy import *\",\"type\":\"source\"}]},{\"content\":\"<p>Dieses Vorgehen ist ... (Richtige Antworten markieren)</p>\",\"type\":\"text\",\"comment\":true},{\"type\":\"check\",\"content\":[{\"content\":\"... v\u00f6llig unbedenklich.\",\"type\":\"text\"}],\"solution\":false},{\"type\":\"check\",\"content\":[{\"content\":\"... problematisch, weil unbeabsichtigt schon vergebene Namen \u00fcberschrieben werden k\u00f6nnen.\",\"type\":\"text\"}],\"solution\":true},{\"type\":\"check\",\"content\":[{\"content\":\"... nur f\u00fcr das interaktive Arbeiten zu empfehlen (wenn \u00fcberhaupt).\",\"type\":\"text\"}],\"solution\":true}]}",
         "pub_date" : "2013-11-25T13:23:50Z",
@@ -466,8 +466,8 @@
     "model" : "quiz.task",
     "pk" : 32
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "C. Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Gegeben sei folgender Quelltext:</p>\",\"type\":\"text\"},{\"content\":\"x = 7\\ny = 10\\n\\ndef f1(y):\\n    def f2(x):\\n        return y + x\\n    \\n    return f2\\n\\na = f1(3.1)\\nb = f1(\\\"xyz\\\")\\n\",\"type\":\"source\"},{\"content\":\"<p>Geben Sie jeweils das Ergebnis folgender Anweisungen an.</p>\\n<p>Strings werden in Anf&uuml;hrungszeichen notiert. Falls eine Anweisung zu Fehlern f&uuml;hrt, geben Sie den Fehlertyp an (Siehe Beispiele). Hier verwendete Fehler-Typen sind: <tt>[AssertionError], [TypeError], [NameError], [ZeroDivisionError]</tt>.</p>\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"res = b(\\\" jkl\\\") # Beispiel\",\"type\":\"source\"}],\"answer\":{\"content\":\"\\\"xyz jkl\\\"\",\"type\":\"source\"},\"solution\":[{\"content\":\"\\\"xyz jkl\\\"\",\"type\":\"source\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"res = 5/0 # Beispiel\",\"type\":\"source\"}],\"answer\":{\"content\":\"[ZeroDivisionError]\",\"type\":\"source\"},\"solution\":[{\"content\":\"[ZeroDivisionError]\",\"type\":\"source\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"res = a(1)\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"source\"},\"solution\":[{\"content\":\"4.1\",\"type\":\"source\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"res = a(\\\"hallo: \\\")\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"source\"},\"solution\":[{\"content\":\"[TypeError]\",\"type\":\"source\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"res = f2()\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"source\"},\"solution\":[{\"content\":\"[NameError]\",\"type\":\"source\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"res = b(\\\"\\\")\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"source\"},\"solution\":[{\"content\":\"\\\"xyz\\\"\",\"type\":\"source\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"assert a(y) < 12\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"source\"},\"solution\":[{\"content\":\"[AssertionError]\",\"type\":\"source\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"res = str( type(a) )\",\"type\":\"source\"}],\"answer\":{\"content\":\"\\\"<class 'XXX'>\\\"\",\"type\":\"source\"},\"solution\":[{\"content\":\"\\\"<class 'function'>\\\"\",\"type\":\"source\"}]}]}",
         "pub_date" : "2013-11-25T13:32:17Z",
@@ -477,8 +477,8 @@
     "model" : "quiz.task",
     "pk" : 33
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "admin01",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Gegeben sei folgender Quelltext</p>\",\"type\":\"text\"},{\"content\":\"from PyQt4 import *\",\"type\":\"source\"},{\"type\":\"input\",\"content\":[{\"content\":\"Frage?\",\"type\":\"text\"}],\"answer\":{\"content\":\"Vorgabe\",\"type\":\"text\"},\"solution\":{\"content\":\"L\u00f6sung\",\"type\":\"text\"}}]}",
         "pub_date" : "2013-12-05T21:54:44Z",
@@ -488,8 +488,8 @@
     "model" : "quiz.task",
     "pk" : 34
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "admin01",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Ordnen Sie die folgenden Widget-Typen (Klassen) in PyQT ihrem Zweck zu: <tt>QLabel</tt>, <tt>QPushButton</tt>, <tt>QLineEdit.</tt></p>\\n<p><strong>Hinweis:</strong> Antworten sind die Klassennamen.</p>\\n<p>&nbsp;</p>\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"\\\"Ausl\u00f6sen einer Aktion\\\"\",\"type\":\"text\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":{\"content\":\"QPushButton\",\"type\":\"text\"}},{\"type\":\"input\",\"content\":[{\"content\":\"\\\"Beschriftung\\\"\",\"type\":\"text\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":{\"content\":\"QLabel\",\"type\":\"text\"}},{\"type\":\"input\",\"content\":[{\"content\":\"\\\"Eingabe von Text\\\"\",\"type\":\"text\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":{\"content\":\"QLineEdit\",\"type\":\"text\"}},{\"content\":\"<p>Nach der Eingabe von Text in ein Textfeld durch den Nutzer soll der Text daraus wieder ausgelesen werden. Welche Methode stellt das entsprechende Widget zur Verf&uuml;gung?</p>\",\"type\":\"text\"},{\"type\":\"check\",\"content\":[{\"content\":\"widget.content()\",\"type\":\"source\"}],\"solution\":false},{\"type\":\"check\",\"content\":[{\"content\":\"widget.input()\",\"type\":\"source\"}],\"solution\":false},{\"type\":\"check\",\"content\":[{\"content\":\"widget.text()\",\"type\":\"source\"}],\"solution\":true}]}",
         "pub_date" : "2013-12-07T13:30:35Z",
@@ -499,8 +499,8 @@
     "model" : "quiz.task",
     "pk" : 35
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "admin01",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Das Gridlayout von PyQT erm&ouml;glicht eine geziehlte Positionierung der einzelnen Widgets im Fenster.</p>\\n<p>Gegeben sei folgender Code:</p>\",\"type\":\"text\"},{\"content\":\"import PyQt5.QtGui as QtGui\\nfrom PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton\\n\\nclass Widget_0_8_15(QWidget):\\n    def __init__(self, parent):\\n        QWidget.__init__(self)\\n\\n        # Layout festlegen\\n        layout = QGridLayout()\\n        self.setLayout(layout)\\n\\n        # 3 Test-Buttons Erstellen\\n        testButton1 = QPushButton('Test1')\\n        testButton2 = QPushButton('Test2')\\n        testButton3 = QPushButton('Test3')\\n        \\n        # Platzierung vornehmen\\n        layout.addWidget(testButton1, 0, 0)\\n        # ...\\n       \\napp = QtGui.QApplication(sys.argv)\\ngui = Widget_0_8_15()\\ngui.show()\\napp.exec_()\",\"type\":\"source\"},{\"content\":\"<p>Gew&uuml;nscht ist folgende dreispaltige Anordnung der Buttons: (1): oberste Zeile, linke Spalte; (2) mittlere Zeile, rechte Spalte; (3) untere Zeile, mittlere Spalte.</p>\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"Passen Sie den Quellcodeausschnitt entsprechend an:\",\"type\":\"text\"}],\"answer\":{\"content\":\"# Platzierung vornehmen\\nlayout.addWidget(testButton1, 0, 0)\\n...\\n...\",\"type\":\"source\"},\"solution\":[{\"content\":\"# Platzierung vornehmen\\nlayout.addWidget(testButton1, 0, 0)\\nlayout.addWidget(testButton2, 1, 2)\\nlayout.addWidget(testButton3, 2, 1)\",\"type\":\"source\"}]}]}",
         "pub_date" : "2013-12-07T13:55:18Z",
@@ -510,8 +510,8 @@
     "model" : "quiz.task",
     "pk" : 36
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "admin01",
         "body_data" : "{\"segments\":[{\"content\":\"<p>PyQT stellt f&uuml;r Eingabefelder sog. \\\"Validatoren\\\" zur &Uuml;berpr&uuml;fung bereit. Wie l&auml;sst sich im Folgenden sicherstellen, dass in das Eingabefeld nur Zahlen (mit oder ohne Komma) eingegeben werden k&ouml;nnen?</p>\\n<p>Gegeben sei dazu folgender (unvollst&auml;ndiger) Quelltext:</p>\",\"type\":\"text\"},{\"content\":\"from PyQt5.QtGui import QValidator, QDoubleValidator, QRegExpValidator\\nfrom PyQt5.QtWidgets import QLineEdit\\n\\n# ...\\nfield_1 = QLineEdit()\\n# ...\",\"type\":\"source\"},{\"type\":\"input\",\"content\":[{\"content\":\"Erg\u00e4nzen Sie folgenden Quelltext\",\"type\":\"text\"}],\"answer\":{\"content\":\"field_1.setValidator(...)\",\"type\":\"source\"},\"solution\":[{\"content\":\"field_1.setValidator(QDoubleValidator(field_1))\",\"type\":\"source\"}]}]}",
         "pub_date" : "2013-12-07T14:08:03Z",
@@ -521,8 +521,8 @@
     "model" : "quiz.task",
     "pk" : 37
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "admin01",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Wenn beim Klick auf einen Button eine Aktion geschehen soll, so muss das Signal \\\"Klicken\\\" mit dem entsprechenden Slot verbunden werden (Signal-Slot-Konzept von PyQt).</p>\\n<p>Gegeben sei folgender Quelltext:</p>\",\"type\":\"text\"},{\"content\":\"import PyQt5.QtGui as QtGui\\nfrom PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QFileDialog\\n\\n\\nclass Widget_0_8_15(QWidget):\\n    def __init__(self, parent):\\n        QWidget.__init__(self)\\n\\n        # Layout setzen\\n        layout = QGridLayout()\\n        self.setLayout(layout)\\n\\n        openButton = QPushButton(u\\\"\u00d6ffnen\\\")\\n        layout.addWidget(openButton, 0, 0)\\n        \\n        # Button mit Funktionalit\u00e4t ausstatten\\n        #...\\n    \\n    def openFile(self):\\n        print QFileDialog.getOpenFileName()\\n\\n\\napp = QApplication(sys.argv)\\ngui = Widget_0_8_15()\\ngui.show()\\napp.exec_()\",\"type\":\"source\"},{\"content\":\"<p>Neu hinzugekommen ist die Methode \\\"<tt>openFile</tt>\\\". Sie &ouml;ffnet einen PyQT-Datei-Dialog zum Ausw&auml;hlen einer Datei und gibt bei Best&auml;tigung den Pfad zu dieser Datei aus.</p>\\n<p>Wie muss nun das <tt>openButton</tt>-Objekt verkn&uuml;pft werden, so dass beim Klick der Dateidialog erscheint?</p>\",\"type\":\"text\"},{\"type\":\"check\",\"content\":[{\"content\":\"openButton.connect(self.openFile))\",\"type\":\"source\"}],\"solution\":false},{\"type\":\"check\",\"content\":[{\"content\":\"openButton.clicked.connect(self.openFile)\",\"type\":\"source\"}],\"solution\":true},{\"type\":\"check\",\"content\":[{\"content\":\"openButton.triggered(self.openFile)\",\"type\":\"source\"}],\"solution\":false}]}",
         "pub_date" : "2013-12-07T14:13:49Z",
@@ -532,8 +532,8 @@
     "model" : "quiz.task",
     "pk" : 38
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "admin01",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Gegeben sei folgender Quelltext. Das Programm soll ein \\\"Datei\\\"-Men&uuml; enthalten, welches die Aktion \\\"Oeffnen\\\" zur Verf&uuml;gung stellt, zum Aul&ouml;sen der Methode <tt>openFile</tt>.</p>\",\"type\":\"text\"},{\"content\":\"import PyQt5.QtGui as QtGui\\nfrom PyQt5.QtWidgets import QWidget, QFileDialog, QMainWindow, QAction\\n\\nclass Gui(QMainWindow):\\n\\n    def __init__(self):\\n        QMainWindow.__init__(self)\\n\\n        # self.menu = \\n        self.actOpenFile = QAction(self)\\n        # Hier die weiteren Codezeilen\\n\\n    def openFile(self):\\n        print(QFileDialog.getOpenFileName())\\n\\n\\napp = QtGui.QApplication(sys.argv)\\ngui = Gui()\\ngui.show()\\napp.exec_()\",\"type\":\"source\"},{\"content\":\"<p>Erg&auml;nzen Sie die (oben fehlenden) Quelltext-Zeilen schrittweise:</p>\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"Erstellen des Men\u00fcs:\",\"type\":\"text\"}],\"answer\":{\"content\":\"self.menu = self.menuBar(). ...\",\"type\":\"source\"},\"solution\":[{\"content\":\"self.menu =\\nself.menuBar().addMenu(\\\"&Datei\\\")\",\"type\":\"source\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"Beschriftung von \\\"actOpenFile\\\":\",\"type\":\"text\"}],\"answer\":{\"content\":\"self.actOpenFile. ...\",\"type\":\"source\"},\"solution\":[{\"content\":\"self.actOpenFile.setText(\\\"Oeffnen\\\")\",\"type\":\"source\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"Hinzuf\u00fcgen der Action zum Menu:\",\"type\":\"text\"}],\"answer\":{\"content\":\"self.menu. ...\",\"type\":\"source\"},\"solution\":[{\"content\":\"self.menu.addAction(self.actOpenFile)\",\"type\":\"source\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"Verkn\u00fcpfen der Action mit \\\"openFile\\\":\",\"type\":\"text\"}],\"answer\":{\"content\":\"self.actOpenFile. ...\",\"type\":\"source\"},\"solution\":[{\"content\":\"self.actOpenFile.triggered.connect(self.openFile)\\n\",\"type\":\"source\"}]}]}",
         "pub_date" : "2013-12-07T14:22:14Z",
@@ -543,8 +543,8 @@
     "model" : "quiz.task",
     "pk" : 39
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "C. Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Gegeben sei folgender Quelltext, der zwei arrays jeweils in einer Datei abspeichert.</p>\",\"type\":\"text\"},{\"content\":\"import numpy as np\\n\\nx1 = np.linspace(0, 10, 300)\\ny1 = 5*np.exp(x1)\\n\\n\\nnp.save('file1.npy', x1)  # im Binaerformat speichern\\n\\nnp.savetxt('file2.txt', y1)  # im Textformat speichern\",\"type\":\"source\"},{\"content\":\"<p>Kreuzen Sie richtige Aussagen an, falsche nicht:</p>\",\"type\":\"text\"},{\"type\":\"check\",\"content\":[{\"content\":\"Das Bin\u00e4rformat ist effizienter bzgl. des Speicherplatzes.\",\"type\":\"text\"}],\"solution\":true},{\"type\":\"check\",\"content\":[{\"content\":\"Die Endung des \u00fcbergebenen Dateinames muss konsistent zum Format sein.\",\"type\":\"text\"}],\"solution\":false},{\"type\":\"check\",\"content\":[{\"content\":\"Arrays mit mehr als zwei Dimensionen k\u00f6nnen im Bin\u00e4rformat, aber nicht im Textformat gespeichert werden.\",\"type\":\"text\"}],\"solution\":true},{\"type\":\"input\",\"content\":[{\"content\":\"Erg\u00e4nzen/korrigieren Sie folgenden Quelltext um obige arrays in einem anderen Skript/Modul unter gleichem Namen wieder aus den Dateien in den Namensraum zu laden.\",\"type\":\"text\"}],\"answer\":{\"content\":\"import numpy as np\\nx1 = load('file1.xyz')\\ny1 = load('file2.xyz')\",\"type\":\"source\"},\"solution\":[{\"content\":\"import numpy as np\\nx1 = np.load('file1.npy')\\ny1 = np.loadtxt('file2.txt')\",\"type\":\"source\"}]}]}",
         "pub_date" : "2014-01-07T22:04:59Z",
@@ -554,8 +554,8 @@
     "model" : "quiz.task",
     "pk" : 40
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "C. Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Gegeben sei folgender Quelltext:</p>\",\"type\":\"text\"},{\"content\":\"import numpy as np\\na = np.arange(10)\\nb = np.array([4, 5, 4, 2])\\nx = 1 + a*0.1\\nx1 = x[:3]\\n\",\"type\":\"source\"},{\"content\":\"<p>Geben Sie jeweils den Wert der Variablen &lt;tt&gt;z&lt;/tt&gt; in folgenden F&auml;llen an. Zur Vereinfachung werden Arrays dabei wie Listen in eckigen Klammern notiert. Nach jedem Komma folgt genau ein Leerzeichen. Wenn die angegebene Zeile einen Fehler verursachtt, notieren Sie \\\"F\\\" (ohne Anf&uuml;hrungszeichen).</p>\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"z = x1\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"[1.0, 1.1, 1.2]\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"z = x1 > 1\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"[False, True, True]\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"z = x1[a]\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"F\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"z = x[b]\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"[1.4, 1.5, 1.4, 1.2]\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"z = x[b>3]\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"[1.0,  1.1,  1.2]\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"z = x1[x1 < 1.2]\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"[1.0, 1.1]\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"z = x[a>7]\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"[1.8, 1.9]\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"z = b % 2 == 0\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"[True, False, True, True]\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"z = x[-4:][b % 2 == 0]\",\"type\":\"source\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"[1.6, 1.8, 1.9]\",\"type\":\"text\"}]}]}",
         "pub_date" : "2014-01-07T22:27:57Z",
@@ -565,8 +565,8 @@
     "model" : "quiz.task",
     "pk" : 41
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "C. Knoll",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Kreuzen Sie von den folgenden Aussagen jeweils die richtigen an.</p>\",\"type\":\"text\"},{\"type\":\"check\",\"content\":[{\"content\":\"Das <tt>interpolate</tt>-Submodul muss separat importiert werden. Ein \\\"normaler\\\" Aufruf von  <tt>import scipy</tt> reicht nicht.\",\"type\":\"text\"}],\"solution\":true},{\"type\":\"check\",\"content\":[{\"content\":\"\\\"Interpolation\\\" und \\\"Regression\\\" sind Synonyme.\",\"type\":\"text\"}],\"solution\":false},{\"type\":\"check\",\"content\":[{\"content\":\"Bei verrauschten Daten empfiehlt sich meist Regression.\",\"type\":\"text\"}],\"solution\":true},{\"type\":\"check\",\"content\":[{\"content\":\"Mit \\\"scipy.polyfit\\\" kann man nur lineare Regression durchf\u00fchren.\",\"type\":\"text\"}],\"solution\":false}]}",
         "pub_date" : "2014-01-07T22:59:23Z",
@@ -576,8 +576,8 @@
     "model" : "quiz.task",
     "pk" : 42
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "C. Knoll",
         "body_data" : "{\"segments\":[{\"type\":\"input\",\"content\":[{\"content\":\"Erg\u00e4nzen sei folgenden (Pseudo)-Quelltext, so dass am Ende die Laufzeit ausgegeben wird:\",\"type\":\"text\"}],\"answer\":{\"content\":\"import time\\nimport langwierige\\nt0 = ...\\nlangwierige.berechnung()\\nprint(\\\"Laufzeit:\\\", ...)\",\"type\":\"source\"},\"solution\":[{\"content\":\"import time\\nimport langwierige\\nt0 = time.time()\\nlangwierige.berechnung()\\nprint(\\\"Laufzeit:\\\", time.time()-t0)\",\"type\":\"source\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"Wie hei\u00dft der Vorgang, ein Programm auf den Zeitkonsum seiner Komponenten hin zu untersuchen (engl., kleingeschrieben)?\",\"type\":\"text\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"profiling\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"Wie hei\u00dft das im Kurs vorgestellte Modul f\u00fcr diesen Zweck? (Case-Sensitiv)\",\"type\":\"text\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"cProfile\",\"type\":\"text\"}]}]}",
         "pub_date" : "2014-01-07T23:10:40Z",
@@ -587,8 +587,8 @@
     "model" : "quiz.task",
     "pk" : 43
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "C. Knoll",
         "body_data" : "{\"segments\":[{\"type\":\"input\",\"content\":[{\"content\":\"Wie hei\u00dft das (Teil)-Paket zur Handhabung von \\\"Just-in-Time\\\"-Erzeugung und Kompilierung?\",\"type\":\"text\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"numba\",\"type\":\"text\"}]},{\"type\":\"input\",\"content\":[{\"content\":\"Wie hei\u00dft das Paket und gleichzeitig die Programmiersprache, zum Erstellen von C-Code mit Python-\u00e4hnlicher Syntax\",\"type\":\"text\"}],\"answer\":{\"content\":\"\",\"type\":\"text\"},\"solution\":[{\"content\":\"cython\",\"type\":\"text\"}]}]}",
         "pub_date" : "2014-01-07T23:22:54Z",
@@ -598,8 +598,8 @@
     "model" : "quiz.task",
     "pk" : 44
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "ck",
         "body_data" : "{\"segments\":[{\"content\":\"<p>Text mit <code>code</code> und $mathe$</p>\",\"type\":\"text\"},{\"type\":\"input\",\"content\":[{\"content\":\"Das ist die\",\"type\":\"text\"}],\"answer\":{\"content\":\"A\",\"type\":\"text\"},\"solution\":[{\"content\":\"Antwort\",\"type\":\"text\"}]}]}",
         "pub_date" : "2014-03-30T21:06:56Z",
@@ -609,8 +609,8 @@
     "model" : "quiz.task",
     "pk" : 45
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "ck",
         "exam_mode" : 0,
         "title" : "Python Grundlagen"
@@ -618,8 +618,8 @@
     "model" : "quiz.taskcollection",
     "pk" : 1
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "C. Knoll",
         "exam_mode" : 0,
         "title" : "Test"
@@ -627,8 +627,8 @@
     "model" : "quiz.taskcollection",
     "pk" : 2
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "C. Knoll",
         "exam_mode" : 0,
         "title" : "sympy numpy"
@@ -636,8 +636,8 @@
     "model" : "quiz.taskcollection",
     "pk" : 3
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "C. Knoll",
         "exam_mode" : 0,
         "title" : "2D/3D-Visualisierung"
@@ -645,8 +645,8 @@
     "model" : "quiz.taskcollection",
     "pk" : 4
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "Carsten Knoll",
         "exam_mode" : 0,
         "title" : "Objektorierung und fortgeschrittene Programmierkonzepte"
@@ -654,8 +654,8 @@
     "model" : "quiz.taskcollection",
     "pk" : 5
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "admin01",
         "exam_mode" : 0,
         "title" : "GUI-Programmierung"
@@ -663,8 +663,8 @@
     "model" : "quiz.taskcollection",
     "pk" : 6
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "author" : "C. Knoll",
         "exam_mode" : 0,
         "title" : "Datenauswertung und Laufzeitoptimierung"
@@ -672,8 +672,8 @@
     "model" : "quiz.taskcollection",
     "pk" : 7
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 4,
         "ordering" : 10,
         "task" : 11
@@ -681,8 +681,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 1
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 4,
         "ordering" : 20,
         "task" : 12
@@ -690,8 +690,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 2
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 4,
         "ordering" : 30,
         "task" : 13
@@ -699,8 +699,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 3
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 4,
         "ordering" : 50,
         "task" : 14
@@ -708,8 +708,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 4
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 4,
         "ordering" : 60,
         "task" : 15
@@ -717,8 +717,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 5
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 1,
         "ordering" : 40,
         "task" : 16
@@ -726,8 +726,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 6
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 1,
         "ordering" : 30,
         "task" : 17
@@ -735,8 +735,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 7
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 1,
         "ordering" : 50,
         "task" : 19
@@ -744,8 +744,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 8
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 1,
         "ordering" : 60,
         "task" : 20
@@ -753,8 +753,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 9
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 1,
         "ordering" : 70,
         "task" : 21
@@ -762,8 +762,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 10
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 1,
         "ordering" : 20,
         "task" : 22
@@ -771,8 +771,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 11
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 1,
         "ordering" : 10,
         "task" : 23
@@ -780,8 +780,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 12
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 3,
         "ordering" : 10,
         "task" : 24
@@ -789,8 +789,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 14
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 3,
         "ordering" : 20,
         "task" : 25
@@ -798,8 +798,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 15
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 3,
         "ordering" : 30,
         "task" : 26
@@ -807,8 +807,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 16
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 3,
         "ordering" : 40,
         "task" : 27
@@ -816,8 +816,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 17
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 3,
         "ordering" : 50,
         "task" : 28
@@ -825,8 +825,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 18
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 5,
         "ordering" : 10,
         "task" : 29
@@ -834,8 +834,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 19
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 5,
         "ordering" : 20,
         "task" : 30
@@ -843,8 +843,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 20
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 5,
         "ordering" : 30,
         "task" : 31
@@ -852,8 +852,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 21
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 5,
         "ordering" : 40,
         "task" : 32
@@ -861,8 +861,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 22
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 5,
         "ordering" : 50,
         "task" : 33
@@ -870,8 +870,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 23
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 6,
         "ordering" : 10,
         "task" : 35
@@ -879,8 +879,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 24
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 6,
         "ordering" : 20,
         "task" : 36
@@ -888,8 +888,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 25
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 6,
         "ordering" : 30,
         "task" : 37
@@ -897,8 +897,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 26
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 6,
         "ordering" : 40,
         "task" : 38
@@ -906,8 +906,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 27
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 6,
         "ordering" : 50,
         "task" : 39
@@ -915,8 +915,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 28
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 7,
         "ordering" : 10,
         "task" : 40
@@ -924,8 +924,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 29
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 7,
         "ordering" : 20,
         "task" : 41
@@ -933,8 +933,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 30
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 7,
         "ordering" : 30,
         "task" : 42
@@ -942,8 +942,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 31
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 7,
         "ordering" : 40,
         "task" : 43
@@ -960,8 +960,8 @@
     "model" : "quiz.tc_membership",
     "pk" : 33
   },
-  { 
-    "fields" : { 
+  {
+    "fields" : {
         "group" : 2,
         "ordering" : 1,
         "task" : 45
