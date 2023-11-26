@@ -215,9 +215,6 @@ def make_segment(segment_dict, idx):
     dc = DictContainer(segment_dict, segment_type)
     dc.idx = idx
 
-    #print "\n"*3, segment_type, "\n"*3
-    #IPS()
-
     if segment_type == "text":
         segment = Text(dc)
     elif segment_type == "source":
@@ -423,7 +420,8 @@ class GapText(QuestionSegment):
                                    prefill=pf, name=fd.name)
             rendered_fields.append(tmp)
 
-        pattern = r"(&para;).*?\1"
+        # pattern = r"(&para;).*?\1"
+        pattern = r"(¶).*?\1"
         text = reduce(lambda x, y: re.sub(pattern, str(y), x, 1), rendered_fields, self.raw_text)
 
         self.c_text = text
@@ -468,8 +466,11 @@ class GapText(QuestionSegment):
         keys, sol_values = list(zip(*user_solutions))
 
         assert len(sol_values) == len(self.solution.parts)
-        sol_lists = [[dc.content for dc in p] for p in self.solution.parts]
+        sol_lists = [[dc.content for dc in part] for part in self.solution.parts]
+
+        # here solution checking takes place:
         user_results: List[bool] = [sv in sl for sv, sl in zip(sol_values, sol_lists)]
+
 
         css = ['gap_right' if r else "gap_wrong" for r in user_results]
         printed_solutions = self.solution.get_printed_solution()
@@ -549,10 +550,7 @@ def preprocess_task_from_db(task):
     task.segment_list = []
     for idx, segment_dict in enumerate(dict_list):
         # TODO: make this hack bosolete by fixing the data
-        print(segment_dict)
         aux_cbox_dc_workarround(segment_dict)
-        print(segment_dict)
-        print("\n"*3)
         task.segment_list.append( make_segment(segment_dict, idx) )
     task.solution_flag = False
 

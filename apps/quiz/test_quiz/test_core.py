@@ -63,10 +63,13 @@ class TestCore1(TestCase, FollowRedirectMixin):
         rpns = self.client.post(form.action_url, post_data)
 
         # post correct answer
-        post_data["answer_0:0"] = "ist"
+        form_values["answer_0:0"] = "ist"
+        form_values["answer_0:1"] = "uneingeschränkt"
         post_data = generate_post_data_for_form(form, spec_values=form_values)
         rpns = self.client.post(form.action_url, post_data)
-        # IPS()
+
+        # TODO: add machine readable information of correctness (<script type="application/json">...</script>)
+        self.assertNotIn(b"gap_wrong", rpns.content)
 
     def test_run_tc(self):
 

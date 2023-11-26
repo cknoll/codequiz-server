@@ -415,6 +415,28 @@ function updateTask() {
     $("input[name='body_data']").val(JSON.stringify(dict));
 }
 
+// source: https://stackoverflow.com/questions/5796718/html-entity-decode
+var decodeEntities = (function() {
+    // this prevents any overhead from creating the object each time
+    var element = document.createElement('div');
+
+    function decodeHTMLEntities (str) {
+      if(str && typeof str === 'string') {
+        // strip script/html tags
+        str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
+        str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+        element.innerHTML = str;
+        str = element.textContent;
+        element.textContent = '';
+      }
+
+      return str;
+    }
+
+    return decodeHTMLEntities;
+  })();
+
+
 /**
  * Extracts a text area type of input, whose key will be the type of the <li> its contained in
  */
@@ -424,14 +446,14 @@ function extractTextArea(node) {
 
     var type = node.attr("type");
     var dict = {
-        "content": $textArea.val(),
+        "content": decodeEntities($textArea.val()),
         "type": type
     };
 
     // workaround for strange bug, where after switching from normal to source (ACE) the changed text isn't saved
     var $typeSelect = $(this).next();
     if ($typeSelect.val() == "source") {
-        dict["content"] = $textArea.text();
+        dict["content"] = decodeEntities($textArea.text());
     }
 
     if (node.hasClass("comment")) {
@@ -473,7 +495,8 @@ function exportValues() {
                 var dict = extractTextArea(li);
 
                 // parse text, create solutions from it
-                var pattern = /(&para;).*?\|.*?\1/g;
+                // var pattern = /(&para;).*?\|.*?\1/g;
+                var pattern = /(¶).*?\|.*?\1/g;
 
                 var matches = dict["content"].match(pattern);
 
@@ -481,7 +504,7 @@ function exportValues() {
 
                 for (var i = 0; i < matches.length; i++) {
                     var gapText = matches[i];
-                    var strippedText = gapText.replace(new RegExp("&para;", 'g'), "");
+                    var strippedText = gapText.replace(new RegExp("¶", 'g'), "");
 
                     var parts = strippedText.split("|");
                     var solutionPart = parts[1];
