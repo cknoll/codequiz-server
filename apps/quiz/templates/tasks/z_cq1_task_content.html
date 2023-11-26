@@ -1,7 +1,7 @@
 <!-- content of one single task  -->
 
-<form action="{% url 'quiz_ns:tc_run_view' %}" method="post" autocomplete="off">
 <div class="task_grid">
+<form action="{% url 'quiz_ns:tc_run_view' %}" method="post" autocomplete="off">
 
 <!-- protect against cross site reference forgery -->
 {% csrf_token %}

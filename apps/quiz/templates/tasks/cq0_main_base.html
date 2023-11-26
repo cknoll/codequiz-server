@@ -81,16 +81,16 @@
 
                 <!-- End of main_left -->
 
-                <div class="grid_4">
+                <div class="grid_4">  <!-- div-for-meta -->
                     {% block main_right %}
                         <!-- content of meta area -->
                     {% endblock %}
-                </div>
+                </div> <!-- /div-for-meta -->
 
 
                 <!-- End of main_right -->
             {% endblock %}
-        </div>
+        </div> <!-- /div main_container -->
         {% block progress %}
             <div class="progressbar">
                 {% include "tasks/z_cq1_taskcollection_progress.html" %}
