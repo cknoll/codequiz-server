@@ -8,6 +8,13 @@
         {{ text|safe }}
 
     </div>
+    <div style="margin-top: 1em;">
+
+{% if solution_hints %}
+        {# !!hcl hard-coded-language #}
+        Hinweise zur Lösung: {% for hint in solution_hints %} <pre style="display: inline;">{{hint}}</pre>{% endfor %}
+{% endif %}
+    </div>
 </div>
 <div class="clear"></div>
 <!-- ==> end: gaptxt.html -->

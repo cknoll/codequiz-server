@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from typing import List
+import random
 import json
 import shlex
 import re
@@ -259,6 +260,7 @@ class Segment(object):
 
         self.context["solution_result"] = "undefined"
         self.context["solution_result_id"] = f"soluton_result_{self.idx}"
+        self.context["solution_hints"] = []
 
     def set_idx(self, idx):
         assert self.context.get('idx') is None
@@ -391,6 +393,10 @@ class GapText(QuestionSegment):
 
         self.render_text_with_fields()
         self.make_context()
+
+        sol_strings = [sol[0].content for sol in self.solution.parts]
+        random.shuffle(sol_strings)
+        self.context["solution_hints"] = sol_strings
 
     def render_text_with_fields(self, css=None, sol=None):
         """
