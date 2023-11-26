@@ -2,6 +2,8 @@
 *.pot
 *.pyc
 .idea
+.vscode
+bugs.txt
 .DS_Store
 local_settings.py
 config.ini
